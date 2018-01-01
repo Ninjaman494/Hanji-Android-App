@@ -14,6 +14,7 @@ import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.util.ArrayList;
 
 /**
  * Created by akash on 12/31/2017.
@@ -35,18 +36,20 @@ public class Server {
                 @Override
                 public void onResponse(JSONArray response) {
                     try {
-                        JSONObject object = ((JSONObject)response.get(1));
-                        String infin = object.getString(KEY_CONJ_INFIN);
-                        String type = object.getString(KEY_CONJ_TYPE);
-                        String conj = object.getString(KEY_CONJ_CONJ);
-                        String pronc = object.getString(KEY_CONJ_PRONC);
-                        String roman = object.getString(KEY_CONJ_ROMAN);
-                        Conjugation conjugation = new Conjugation(infin,type,conj,pronc,roman);
-                        listener.onConjugationReceived(conjugation);
+                        ArrayList<Conjugation> conjugations = new ArrayList<>();
+                        for(int i = 0;i<response.length();i++) {
+                            JSONObject object = ((JSONObject) response.get(i));
+                            String infin = object.getString(KEY_CONJ_INFIN);
+                            String type = object.getString(KEY_CONJ_TYPE);
+                            String conj = object.getString(KEY_CONJ_CONJ);
+                            String pronc = object.getString(KEY_CONJ_PRONC);
+                            String roman = object.getString(KEY_CONJ_ROMAN);
+                            conjugations.add(new Conjugation(infin, type, conj, pronc, roman));
+                        }
+                        listener.onConjugationReceived(conjugations);
                     }catch (JSONException e){
                         e.printStackTrace();
                         listener.onErrorOccurred(e.getMessage());
-
                     }
                 }
             }, new Response.ErrorListener() {
@@ -62,7 +65,7 @@ public class Server {
     }
 
     public interface ServerListener {
-        void onConjugationReceived(Conjugation conjugation);
+        void onConjugationReceived(ArrayList<Conjugation> conjugations);
         void onErrorOccurred(String errorMsg);
     }
 }

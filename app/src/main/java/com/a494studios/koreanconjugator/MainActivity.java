@@ -1,5 +1,6 @@
 package com.a494studios.koreanconjugator;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.KeyEvent;
@@ -13,6 +14,8 @@ import com.android.volley.VolleyError;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -28,9 +31,12 @@ public class MainActivity extends AppCompatActivity {
                 if (actionId == EditorInfo.IME_ACTION_DONE) {
                     Server.requestConjugation(editText.getText().toString().trim(), getApplicationContext(), new Server.ServerListener() {
                         @Override
-                        public void onConjugationReceived(Conjugation conjugation) {
-                                textView.setText(conjugation.getType()+":"+conjugation.getConjugated());
-                                textView.setVisibility(View.VISIBLE);
+                        public void onConjugationReceived(ArrayList<Conjugation> conjugations) {
+                                /*textView.setText(conjugation.getType()+":"+conjugation.getConjugated());
+                                textView.setVisibility(View.VISIBLE);*/
+                                Intent intent = new Intent(getApplicationContext(),DisplayActivity.class);
+                                intent.putExtra("conj",conjugations);
+                                startActivity(intent);
                         }
 
                         @Override
