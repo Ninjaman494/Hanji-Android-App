@@ -1,5 +1,6 @@
 package com.a494studios.koreanconjugator;
 
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -19,57 +20,10 @@ public class DisplayActivity extends AppCompatActivity {
         setContentView(R.layout.activity_display);
 
         ArrayList<Conjugation> conjugations = (ArrayList<Conjugation>)getIntent().getSerializableExtra("conj");
-        ListView listView = findViewById(R.id.quickLookCard_list);
-
         ArrayList<Conjugation> declarative = Form.getSubSet(conjugations, Form.DECLARATIVE);
-        ConjugationAdapter adapter = new ConjugationAdapter(Tense.getSubSet(declarative,Tense.PRESENT));
-        listView.setAdapter(adapter);
-    }
 
-    private class ConjugationAdapter extends BaseAdapter {
-
-        private ArrayList<Conjugation> conjugations;
-        private static final int RESOURCE_ID = R.layout.item_conjugation;
-
-        public ConjugationAdapter(ArrayList<Conjugation> conjugations) {
-            this.conjugations = conjugations;
-        }
-
-        @Override
-        public View getView(int i, View view, ViewGroup viewGroup) {
-            if (view == null) {
-                view = LayoutInflater.from(viewGroup.getContext()).inflate(RESOURCE_ID, viewGroup, false);
-            }
-            Conjugation c = conjugations.get(i);
-            if(c.getForm() == Form.DECLARATIVE) {
-                TextView typeView = view.findViewById(R.id.conjFormal);
-                TextView conjView = view.findViewById(R.id.conjText);
-                typeView.setText(c.getFormality().toString());
-                conjView.setText(c.getConjugated());
-            }else{
-               view.setVisibility(View.GONE);
-            }
-            return view;
-        }
-
-        @Override
-        public int getCount() {
-            return conjugations.size();
-        }
-
-        @Override
-        public Object getItem(int i) {
-            return conjugations.get(i);
-        }
-
-        @Override
-        public long getItemId(int position) {
-            return position;
-        }
-
-        @Override
-        public boolean hasStableIds() {
-            return true;
-        }
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.add(R.id.disp_root,ConjugationCardFragment.newInstance("Declarative Present", Tense.getSubSet(declarative,Tense.PRESENT)));
+        transaction.commit();
     }
 }
