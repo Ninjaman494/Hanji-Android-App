@@ -1,4 +1,4 @@
-package com.a494studios.koreanconjugator;
+package com.a494studios.koreanconjugator.parsing;
 
 import java.io.Serializable;
 
@@ -16,7 +16,7 @@ public class Conjugation implements Serializable {
     private Form form;
     private Tense tense;
 
-    public Conjugation(String infinitive, String type, String conjugated, String pronunciation, String romanization) {
+    Conjugation(String infinitive, String type, String conjugated, String pronunciation, String romanization) {
         this.infinitive = infinitive;
         this.type = type;
         this.conjugated = conjugated;
@@ -75,6 +75,15 @@ public class Conjugation implements Serializable {
         } else {
             return null;
         }
+    }
+
+    public boolean matchesCategories(Category... categories){
+        for(Category c: categories){
+            if(formality != c && form != c && tense != c ){
+                return false;
+            }
+        }
+        return true;
     }
 
     public String getInfinitive() {

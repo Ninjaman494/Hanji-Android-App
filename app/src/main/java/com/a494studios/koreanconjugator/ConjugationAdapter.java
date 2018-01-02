@@ -6,6 +6,9 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
+import com.a494studios.koreanconjugator.parsing.Conjugation;
+import com.a494studios.koreanconjugator.parsing.Form;
+
 import java.util.ArrayList;
 
 public class ConjugationAdapter extends BaseAdapter {

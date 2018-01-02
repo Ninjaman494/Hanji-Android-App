@@ -1,17 +1,15 @@
-package com.a494studios.koreanconjugator;
-
-import java.util.ArrayList;
+package com.a494studios.koreanconjugator.parsing;
 
 /**
  * Created by akash on 1/1/2018.
  */
 
-public enum Form {
+public enum Form implements Category {
     DECLARATIVE, INQUISITIVE, IMPERATIVE, PROPOSITIVE, CON_IF, CON_AND,
     NOMINAL, PAST_BASE, FUTURE_BASE;
 
     @Override
-    public String toString() {
+    public String printName() {
         switch(this) {
             case DECLARATIVE:   return "declarative";
             case INQUISITIVE:   return "inquisitive";
@@ -26,13 +24,8 @@ public enum Form {
         }
     }
 
-    public static ArrayList<Conjugation> getSubSet(ArrayList<Conjugation> conjugations, Form f){
-        ArrayList<Conjugation> subset = new ArrayList<>();
-        for(Conjugation c: conjugations){
-            if(c.getForm() == f){
-                subset.add(c);
-            }
-        }
-        return subset;
+    @Override
+    public String toString(){
+        return printName();
     }
 }

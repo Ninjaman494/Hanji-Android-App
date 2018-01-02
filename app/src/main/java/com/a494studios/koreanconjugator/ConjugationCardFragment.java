@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.a494studios.koreanconjugator.parsing.Conjugation;
 import com.linearlistview.LinearListView;
 
 import java.util.ArrayList;

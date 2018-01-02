@@ -1,16 +1,14 @@
-package com.a494studios.koreanconjugator;
-
-import java.util.ArrayList;
+package com.a494studios.koreanconjugator.parsing;
 
 /**
  * Created by akash on 1/1/2018.
  */
 
-public enum Tense {
+public enum Tense implements Category{
     PAST, PRESENT, FUTURE, FUT_COND, NONE;
 
     @Override
-    public String toString() {
+    public String printName() {
         switch(this) {
             case PAST:      return "past";
             case PRESENT:   return "present";
@@ -21,13 +19,8 @@ public enum Tense {
         }
     }
 
-    public static ArrayList<Conjugation> getSubSet(ArrayList<Conjugation> conjugations, Tense t){
-        ArrayList<Conjugation> subset = new ArrayList<>();
-        for(Conjugation c: conjugations){
-            if(c.getTense() == t){
-                subset.add(c);
-            }
-        }
-        return subset;
+    @Override
+    public String toString(){
+        return printName();
     }
 }

@@ -1,7 +1,8 @@
-package com.a494studios.koreanconjugator;
+package com.a494studios.koreanconjugator.parsing;
 
 import android.content.Context;
 
+import com.a494studios.koreanconjugator.parsing.Conjugation;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
