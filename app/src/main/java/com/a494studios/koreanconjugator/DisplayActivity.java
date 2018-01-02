@@ -23,7 +23,10 @@ public class DisplayActivity extends AppCompatActivity {
         ArrayList<Conjugation> declarative = Form.getSubSet(conjugations, Form.DECLARATIVE);
 
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.add(R.id.disp_root,ConjugationCardFragment.newInstance("Declarative Past", Tense.getSubSet(declarative,Tense.PAST)));
         transaction.add(R.id.disp_root,ConjugationCardFragment.newInstance("Declarative Present", Tense.getSubSet(declarative,Tense.PRESENT)));
+        transaction.add(R.id.disp_root,ConjugationCardFragment.newInstance("Declarative Future", Tense.getSubSet(declarative,Tense.FUTURE)));
+        transaction.add(R.id.disp_root,ConjugationCardFragment.newInstance("Declarative Future Conditional", Tense.getSubSet(declarative,Tense.FUT_COND)));
         transaction.commit();
     }
 }
