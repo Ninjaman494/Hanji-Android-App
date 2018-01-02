@@ -13,11 +13,25 @@ public interface Category {
         public static ArrayList<Conjugation> getSubSet(ArrayList<Conjugation> conjugations, Category... categories){
             ArrayList<Conjugation> subset = new ArrayList<>();
             for(Conjugation c: conjugations){
-                if(c.matchesCategories(categories)){
+                if(c.inCategories(categories)){
                     subset.add(c);
                 }
             }
             return subset;
         }
+
+        public static ArrayList<Conjugation> getSubSet(ArrayList<Conjugation> conjugations,
+                                                       Formality formality, Form form, Tense tense ){
+            ArrayList<Conjugation> subset = new ArrayList<>();
+            for(Conjugation c: conjugations){
+                if((formality == null || c.getFormality() == formality) &&
+                        (c.getForm() == form) &&
+                        (tense == null || c.getTense() == tense)){
+                    subset.add(c);
+                }
+            }
+            return subset;
+        }
+
     }
 }

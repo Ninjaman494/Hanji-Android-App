@@ -7,7 +7,7 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.a494studios.koreanconjugator.parsing.Conjugation;
-import com.a494studios.koreanconjugator.parsing.Form;
+import com.a494studios.koreanconjugator.parsing.Formality;
 
 import java.util.ArrayList;
 
@@ -26,14 +26,14 @@ public class ConjugationAdapter extends BaseAdapter {
             view = LayoutInflater.from(viewGroup.getContext()).inflate(RESOURCE_ID, viewGroup, false);
         }
         Conjugation c = conjugations.get(i);
-        if(c.getForm() == Form.DECLARATIVE) {
-            TextView typeView = view.findViewById(R.id.conjFormal);
-            TextView conjView = view.findViewById(R.id.conjText);
+        TextView typeView = view.findViewById(R.id.conjFormal);
+        TextView conjView = view.findViewById(R.id.conjText);
+        if(c.getFormality() == Formality.NONE){
+            typeView.setText(c.getForm().toString());
+        }else {
             typeView.setText(c.getFormality().toString());
-            conjView.setText(c.getConjugated());
-        }else{
-            view.setVisibility(View.GONE);
         }
+        conjView.setText(c.getConjugated());
         return view;
     }
 

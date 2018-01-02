@@ -71,19 +71,21 @@ public class Conjugation implements Serializable {
         } else if (type.contains(Form.NOMINAL.toString())) {
             return Form.NOMINAL;
         } else if (type.contains(Form.PAST_BASE.toString())) {
+            return Form.PAST_BASE;
+        } else if (type.contains(Form.FUTURE_BASE.toString())) {
             return Form.FUTURE_BASE;
         } else {
             return null;
         }
     }
 
-    public boolean matchesCategories(Category... categories){
+    public boolean inCategories(Category... categories){
         for(Category c: categories){
-            if(formality != c && form != c && tense != c ){
-                return false;
+            if(formality == c || form == c || tense == c ){
+                return true;
             }
         }
-        return true;
+        return false;
     }
 
     public String getInfinitive() {
