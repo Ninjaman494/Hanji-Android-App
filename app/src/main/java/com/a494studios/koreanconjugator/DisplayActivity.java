@@ -8,6 +8,7 @@ import android.widget.TextView;
 import com.a494studios.koreanconjugator.parsing.Category;
 import com.a494studios.koreanconjugator.parsing.Conjugation;
 import com.a494studios.koreanconjugator.parsing.Form;
+import com.a494studios.koreanconjugator.parsing.Formality;
 import com.a494studios.koreanconjugator.parsing.Server;
 import com.a494studios.koreanconjugator.parsing.Tense;
 
@@ -48,7 +49,13 @@ public class DisplayActivity extends AppCompatActivity {
         // Other
         ArrayList<Conjugation> other = Category.Categories.getSubSet(conjugations,Form.NOMINAL,Form.CON_AND,Form.CON_IF);
 
+        // Favorites
+        Conjugation past = Category.Categories.getSubSet(conjugations, Formality.INFORMAL_HIGH,Form.DECLARATIVE, Tense.PAST).get(0);
+        Conjugation present = Category.Categories.getSubSet(conjugations, Formality.INFORMAL_HIGH,Form.DECLARATIVE, Tense.PRESENT).get(0);
+        Conjugation future = Category.Categories.getSubSet(conjugations, Formality.INFORMAL_HIGH,Form.DECLARATIVE, Tense.FUTURE).get(0);
+
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.add(R.id.disp_root,FavoritesFragment.newInstance(past,present,future));
         transaction.add(R.id.disp_root,ConjugationCardFragment.newInstance("Declarative Past", decPast));
         transaction.add(R.id.disp_root,ConjugationCardFragment.newInstance("Declarative Present", decPres));
         transaction.add(R.id.disp_root,ConjugationCardFragment.newInstance("Declarative Future", decFut));
