@@ -3,10 +3,12 @@ package com.a494studios.koreanconjugator;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.widget.TextView;
 
 import com.a494studios.koreanconjugator.parsing.Category;
 import com.a494studios.koreanconjugator.parsing.Conjugation;
 import com.a494studios.koreanconjugator.parsing.Form;
+import com.a494studios.koreanconjugator.parsing.Server;
 import com.a494studios.koreanconjugator.parsing.Tense;
 
 import java.util.ArrayList;
@@ -18,6 +20,18 @@ public class DisplayActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_display);
         ArrayList<Conjugation> conjugations = (ArrayList<Conjugation>)getIntent().getSerializableExtra("conj");
+        final TextView defView = findViewById(R.id.defCard_content);
+        Server.requestDefinition(conjugations.get(0).getInfinitive(), this, new Server.DefinitionListener() {
+            @Override
+            public void onDefinitionReceived(String definition) {
+                defView.setText(definition);
+            }
+
+            @Override
+            public void onErrorOccurred(String errorMsg) {
+                System.out.println(errorMsg);
+            }
+        });
 
         // Declarative
         ArrayList<Conjugation> decPast = Category.Categories.getSubSet(conjugations,null, Form.DECLARATIVE, Tense.PAST);

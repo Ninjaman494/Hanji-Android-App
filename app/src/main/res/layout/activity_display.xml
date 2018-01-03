@@ -35,13 +35,18 @@
                     android:textColor="@color/colorPrimaryDark" />
 
                 <TextView
+                    android:id="@+id/defCard_content"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/defCard_heading"
-                    android:paddingBottom="10dp"
-                    android:text="to go"
+                    android:layout_alignLeft="@id/defCard_heading"
+                    android:layout_alignStart="@id/defCard_heading"
+                    android:layout_alignRight="@id/defCard_heading"
+                    android:layout_alignEnd="@id/defCard_heading"
+                    android:paddingBottom="20dp"
+                    android:text="go, come, get, (formal) proceed"
                     android:textAlignment="center"
-                    android:textSize="36sp" />
+                    android:textSize="32sp" />
             </RelativeLayout>
         </android.support.v7.widget.CardView>
     </LinearLayout>

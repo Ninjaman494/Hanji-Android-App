@@ -2,11 +2,11 @@ package com.a494studios.koreanconjugator.parsing;
 
 import android.content.Context;
 
-import com.a494studios.koreanconjugator.parsing.Conjugation;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
 import org.json.JSONArray;
@@ -22,7 +22,9 @@ import java.util.ArrayList;
  */
 
 public class Server {
-    private static final String searchURL = "http://192.168.1.9:3000/search=";
+    private static final String serverURL = "http://192.168.1.9:3000/";
+    private static final String searchURL = serverURL + "search=";
+    private static final String defURL = serverURL + "definition=";
 
     private static final String KEY_CONJ_INFIN = "infinitive";
     private static final String KEY_CONJ_TYPE = "conjugation_name";
@@ -62,11 +64,38 @@ public class Server {
             Volley.newRequestQueue(context).add(jsRequest);
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
+            listener.onErrorOccurred(e.getMessage());
+        }
+    }
+
+    public static void requestDefinition(final String word, Context context, final DefinitionListener listener){
+        try {
+            String encoded = URLEncoder.encode(word, "UTF-8"); // Convert to %-encoding
+            StringRequest jsRequest = new StringRequest(Request.Method.GET, defURL + encoded, new Response.Listener<String>() {
+                @Override
+                public void onResponse(String response) {
+                    listener.onDefinitionReceived(response);
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    listener.onErrorOccurred(error.getMessage());
+                }
+            });
+            Volley.newRequestQueue(context).add(jsRequest);
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+            listener.onErrorOccurred(e.getMessage());
         }
     }
 
     public interface ServerListener {
         void onConjugationReceived(ArrayList<Conjugation> conjugations);
+        void onErrorOccurred(String errorMsg);
+    }
+
+    public interface DefinitionListener {
+        void onDefinitionReceived(String definition);
         void onErrorOccurred(String errorMsg);
     }
 }
