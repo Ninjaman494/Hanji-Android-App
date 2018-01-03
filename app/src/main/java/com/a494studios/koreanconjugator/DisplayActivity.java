@@ -22,7 +22,7 @@ public class DisplayActivity extends AppCompatActivity {
         setContentView(R.layout.activity_display);
         ArrayList<Conjugation> conjugations = (ArrayList<Conjugation>)getIntent().getSerializableExtra("conj");
         final TextView defView = findViewById(R.id.defCard_content);
-        Server.requestDefinition(conjugations.get(0).getInfinitive(), this, new Server.DefinitionListener() {
+        Server.requestKorDefinition(conjugations.get(0).getInfinitive(), this, new Server.DefinitionListener() {
             @Override
             public void onDefinitionReceived(String definition) {
                 defView.setText(definition);

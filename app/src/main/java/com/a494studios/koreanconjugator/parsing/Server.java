@@ -14,8 +14,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
 import java.util.ArrayList;
 
 /**
@@ -25,7 +23,7 @@ import java.util.ArrayList;
 public class Server {
     private static final String serverURL = "http://192.168.1.9:3000/";
     private static final String searchURL = serverURL + "search=";
-    private static final String defURL = serverURL + "definition=";
+    private static final String defKorURL = serverURL + "defineKor=";
 
     private static final String KEY_CONJ_INFIN = "infinitive";
     private static final String KEY_CONJ_TYPE = "conjugation_name";
@@ -64,25 +62,20 @@ public class Server {
         Volley.newRequestQueue(context).add(jsRequest);
     }
 
-    public static void requestDefinition(final String word, Context context, final DefinitionListener listener){
-        try {
-            String encoded = URLEncoder.encode(word, "UTF-8"); // Convert to %-encoding
-            StringRequest jsRequest = new StringRequest(Request.Method.GET, defURL + encoded, new Response.Listener<String>() {
-                @Override
-                public void onResponse(String response) {
-                    listener.onDefinitionReceived(response);
-                }
-            }, new Response.ErrorListener() {
-                @Override
-                public void onErrorResponse(VolleyError error) {
-                    listener.onErrorOccurred(error.getMessage());
-                }
-            });
-            Volley.newRequestQueue(context).add(jsRequest);
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-            listener.onErrorOccurred(e.getMessage());
-        }
+    public static void requestKorDefinition(final String word, Context context, final DefinitionListener listener) {
+        String encoded = UrlEscapers.urlFragmentEscaper().escape(defKorURL + word); // Convert to %-encoding
+        StringRequest jsRequest = new StringRequest(Request.Method.GET, encoded, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                listener.onDefinitionReceived(response);
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                listener.onErrorOccurred(error.getMessage());
+            }
+        });
+        Volley.newRequestQueue(context).add(jsRequest);
     }
 
     public interface ServerListener {
