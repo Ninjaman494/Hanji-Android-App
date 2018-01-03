@@ -19,7 +19,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        final TextView textView = findViewById(R.id.textView);
         final EditText editText = findViewById(R.id.editText);
         editText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
@@ -28,8 +27,7 @@ public class MainActivity extends AppCompatActivity {
                     Server.requestConjugation(editText.getText().toString().trim(), getApplicationContext(), new Server.ServerListener() {
                         @Override
                         public void onConjugationReceived(ArrayList<Conjugation> conjugations) {
-                                /*textView.setText(conjugation.getType()+":"+conjugation.getConjugated());
-                                textView.setVisibility(View.VISIBLE);*/
+
                                 Intent intent = new Intent(getApplicationContext(),DisplayActivity.class);
                                 intent.putExtra("conj",conjugations);
                                 startActivity(intent);
