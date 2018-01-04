@@ -12,6 +12,7 @@ import com.a494studios.koreanconjugator.parsing.Conjugation;
 import com.a494studios.koreanconjugator.parsing.Server;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -24,13 +25,18 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (actionId == EditorInfo.IME_ACTION_DONE) {
-                    Server.requestConjugation(editText.getText().toString().trim(), getApplicationContext(), new Server.ServerListener() {
+                    Server.requestKoreanSearch(editText.getText().toString().trim(), getApplicationContext(), new Server.ServerListener() {
                         @Override
-                        public void onConjugationReceived(ArrayList<Conjugation> conjugations) {
-
-                                Intent intent = new Intent(getApplicationContext(),DisplayActivity.class);
-                                intent.putExtra("conj",conjugations);
+                        public void onResultReceived(ArrayList<Conjugation> conjugations, HashMap<String,String> searchResults) {
+                            if(conjugations != null) {
+                                Intent intent = new Intent(getApplicationContext(), DisplayActivity.class);
+                                intent.putExtra("conj", conjugations);
                                 startActivity(intent);
+                            }else if(searchResults != null){
+                                Intent intent = new Intent(getApplicationContext(),SearchResultsActivity.class);
+                                intent.putExtra("search",searchResults);
+                                startActivity(intent);
+                            }
                         }
 
                         @Override
