@@ -30,7 +30,7 @@ public class MainActivity extends AppCompatActivity {
                         public void onResultReceived(ArrayList<Conjugation> conjugations, HashMap<String,String> searchResults) {
                             if(conjugations != null) {
                                 Intent intent = new Intent(getApplicationContext(), DisplayActivity.class);
-                                intent.putExtra("conj", conjugations);
+                                intent.putExtra(DisplayActivity.EXTRA_CONJ, conjugations);
                                 startActivity(intent);
                             }else if(searchResults != null){
                                 Intent intent = new Intent(getApplicationContext(),SearchResultsActivity.class);
@@ -41,7 +41,7 @@ public class MainActivity extends AppCompatActivity {
 
                         @Override
                         public void onErrorOccurred(String errorMsg) {
-                            System.out.println(errorMsg);
+                            System.out.println("error:"+errorMsg);
                         }
                     });
                 }

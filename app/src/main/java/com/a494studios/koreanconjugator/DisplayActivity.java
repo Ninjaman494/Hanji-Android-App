@@ -16,11 +16,13 @@ import java.util.ArrayList;
 
 public class DisplayActivity extends AppCompatActivity {
 
+    public static final String EXTRA_CONJ = "conj";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_display);
-        ArrayList<Conjugation> conjugations = (ArrayList<Conjugation>)getIntent().getSerializableExtra("conj");
+        ArrayList<Conjugation> conjugations = (ArrayList<Conjugation>)getIntent().getSerializableExtra(EXTRA_CONJ);
         final TextView defView = findViewById(R.id.defCard_content);
         Server.requestKorDefinition(conjugations.get(0).getInfinitive(), this, new Server.DefinitionListener() {
             @Override

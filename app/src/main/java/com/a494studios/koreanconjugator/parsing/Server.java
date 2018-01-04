@@ -23,7 +23,8 @@ import java.util.HashMap;
 
 public class Server {
     private static final String serverURL = "http://192.168.1.9:8080/";
-    private static final String searchURL = serverURL + "search=";
+    private static final String conjURL = serverURL + "conjugate=";
+    private static final String searchKorURL = serverURL + "searchKor=";
     private static final String defKorURL = serverURL + "defineKor=";
     private static final String stemURL = serverURL + "stem=";
 
@@ -37,7 +38,7 @@ public class Server {
 
 
     public static void requestKoreanSearch(final String kword, final Context context, final ServerListener listener){
-        String encoded = UrlEscapers.urlFragmentEscaper().escape(stemURL + kword);// Convert to %-encoding
+        String encoded = UrlEscapers.urlFragmentEscaper().escape(searchKorURL + kword);// Convert to %-encoding
         JsonArrayRequest jsRequest = new JsonArrayRequest(Request.Method.GET, encoded, null, new Response.Listener<JSONArray>() {
             @Override
             public void onResponse(JSONArray response) {
@@ -60,14 +61,14 @@ public class Server {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                listener.onErrorOccurred(error.getMessage());
+                listener.onErrorOccurred(error.toString());
             }
         });
         Volley.newRequestQueue(context).add(jsRequest);
     }
 
     public static void requestConjugation(final String kword, Context context, final ServerListener listener) {
-        String encoded = UrlEscapers.urlFragmentEscaper().escape(searchURL + kword);// Convert to %-encoding
+        String encoded = UrlEscapers.urlFragmentEscaper().escape(conjURL + kword);// Convert to %-encoding
         JsonArrayRequest jsRequest = new JsonArrayRequest(Request.Method.GET, encoded, null, new Response.Listener<JSONArray>() {
             @Override
             public void onResponse(JSONArray response) {
@@ -76,7 +77,7 @@ public class Server {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                listener.onErrorOccurred(error.getMessage());
+                listener.onErrorOccurred(error.toString());
             }
         });
         Volley.newRequestQueue(context).add(jsRequest);
@@ -127,7 +128,7 @@ public class Server {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                listener.onErrorOccurred(error.getMessage());
+                listener.onErrorOccurred(error.toString());
             }
         });
         Volley.newRequestQueue(context).add(jsRequest);

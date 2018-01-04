@@ -1,16 +1,19 @@
 package com.a494studios.koreanconjugator;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import com.a494studios.koreanconjugator.parsing.Conjugation;
 import com.a494studios.koreanconjugator.parsing.Formality;
+import com.a494studios.koreanconjugator.parsing.Server;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -24,7 +27,49 @@ public class SearchResultsActivity extends AppCompatActivity {
 
         HashMap<String,String> results = (HashMap<String,String>)getIntent().getSerializableExtra("search");
         ListView listView = findViewById(R.id.search_listView);
-        listView.setAdapter(new SearchAdapter(results));
+        final SearchAdapter adapter = new SearchAdapter(results);
+        listView.setAdapter(adapter);
+
+        final HashMap<String, ArrayList<Conjugation>> resultConjs = new HashMap<>();
+        for(final String key : results.keySet()){
+            Server.requestConjugation(key, this, new Server.ServerListener() {
+                @Override
+                public void onResultReceived(ArrayList<Conjugation> conjugations, HashMap<String, String> searchResults) {
+                    resultConjs.put(key,conjugations);
+                }
+
+                @Override
+                public void onErrorOccurred(String errorMsg) {
+
+                }
+            });
+        }
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                ArrayList<Conjugation> conjugations = resultConjs.get(adapter.getKey(i));
+                if(conjugations == null){
+                    Server.requestConjugation(adapter.getKey(i), getBaseContext(), new Server.ServerListener() {
+                        @Override
+                        public void onResultReceived(ArrayList<Conjugation> conjugations, HashMap<String, String> searchResults) {
+                            Intent intent = new Intent(getApplicationContext(),DisplayActivity.class);
+                            intent.putExtra(DisplayActivity.EXTRA_CONJ,conjugations);
+                            startActivity(intent);
+                        }
+
+                        @Override
+                        public void onErrorOccurred(String errorMsg) {
+
+                        }
+                    });
+                }else {
+                    Intent intent = new Intent(getApplicationContext(), DisplayActivity.class);
+                    intent.putExtra(DisplayActivity.EXTRA_CONJ,conjugations );
+                    startActivity(intent);
+                }
+            }
+        });
     }
 }
 
@@ -61,7 +106,11 @@ class SearchAdapter extends BaseAdapter {
 
     @Override
     public Object getItem(int i) {
-        return results.get(i);
+        return results.get(keyList.get(i));
+    }
+
+    public String getKey(int i){
+        return keyList.get(i);
     }
 
     @Override
