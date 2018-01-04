@@ -21,7 +21,7 @@ import java.util.ArrayList;
  */
 
 public class Server {
-    private static final String serverURL = "http://192.168.1.9:3000/";
+    private static final String serverURL = "http://nodejs-ex-conjify.1d35.starter-us-east-1.openshiftapps.com/";
     private static final String searchURL = serverURL + "search=";
     private static final String defKorURL = serverURL + "defineKor=";
 
