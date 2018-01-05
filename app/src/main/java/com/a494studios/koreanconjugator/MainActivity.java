@@ -7,6 +7,7 @@ import android.view.KeyEvent;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.a494studios.koreanconjugator.parsing.Conjugation;
 import com.a494studios.koreanconjugator.parsing.Server;
@@ -25,28 +26,45 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (actionId == EditorInfo.IME_ACTION_DONE) {
-                    Server.requestKoreanSearch(editText.getText().toString().trim(), getApplicationContext(), new Server.ServerListener() {
-                        @Override
-                        public void onResultReceived(ArrayList<Conjugation> conjugations, HashMap<String,String> searchResults) {
-                            if(conjugations != null) {
-                                Intent intent = new Intent(getApplicationContext(), DisplayActivity.class);
-                                intent.putExtra(DisplayActivity.EXTRA_CONJ, conjugations);
-                                startActivity(intent);
-                            }else if(searchResults != null){
-                                Intent intent = new Intent(getApplicationContext(),SearchResultsActivity.class);
-                                intent.putExtra("search",searchResults);
-                                startActivity(intent);
+                    String entry = editText.getText().toString().trim();
+                    if(isHangul(entry)) {
+                        Server.requestKoreanSearch(entry, getApplicationContext(), new Server.ServerListener() {
+                            @Override
+                            public void onResultReceived(ArrayList<Conjugation> conjugations, HashMap<String, String> searchResults) {
+                                if (conjugations != null) {
+                                    Intent intent = new Intent(getApplicationContext(), DisplayActivity.class);
+                                    intent.putExtra(DisplayActivity.EXTRA_CONJ, conjugations);
+                                    startActivity(intent);
+                                } else if (searchResults != null) {
+                                    Intent intent = new Intent(getApplicationContext(), SearchResultsActivity.class);
+                                    intent.putExtra("search", searchResults);
+                                    startActivity(intent);
+                                }
                             }
-                        }
 
-                        @Override
-                        public void onErrorOccurred(String errorMsg) {
-                            System.out.println("error:"+errorMsg);
-                        }
-                    });
+                            @Override
+                            public void onErrorOccurred(String errorMsg) {
+                                System.out.println("error:" + errorMsg);
+                            }
+                        });
+                    }else{
+                        Toast.makeText(getBaseContext(),"English search not implemented",Toast.LENGTH_SHORT).show();
+                    }
                 }
                 return false;
             }
         });
+    }
+
+    private static boolean isHangul(String korean){
+        korean = korean.replace(" ","");
+        for(int i=0;i<korean.length();i++){
+            char c = korean.charAt(i);
+            //System.out.println("char:"+c);
+            if(!((int)c >= '가' && (int)c <= '힣')){
+                return false;
+            }
+        }
+        return true;
     }
 }
