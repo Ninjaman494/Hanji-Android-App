@@ -17,6 +17,7 @@ import java.util.ArrayList;
 public class DisplayActivity extends AppCompatActivity {
 
     public static final String EXTRA_CONJ = "conj";
+    public static final String EXTRA_DEF = "definition";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,17 +25,22 @@ public class DisplayActivity extends AppCompatActivity {
         setContentView(R.layout.activity_display);
         ArrayList<Conjugation> conjugations = (ArrayList<Conjugation>)getIntent().getSerializableExtra(EXTRA_CONJ);
         final TextView defView = findViewById(R.id.defCard_content);
-        Server.requestKorDefinition(conjugations.get(0).getInfinitive(), this, new Server.DefinitionListener() {
-            @Override
-            public void onDefinitionReceived(String definition) {
-                defView.setText(definition);
-            }
+        String definition = getIntent().getStringExtra(EXTRA_DEF);
+        if(definition == null) {
+            Server.requestKorDefinition(conjugations.get(0).getInfinitive(), this, new Server.DefinitionListener() {
+                @Override
+                public void onDefinitionReceived(String definition) {
+                    defView.setText(definition);
+                }
 
-            @Override
-            public void onErrorOccurred(String errorMsg) {
-                System.out.println(errorMsg);
-            }
-        });
+                @Override
+                public void onErrorOccurred(String errorMsg) {
+                    System.out.println(errorMsg);
+                }
+            });
+        }else{
+            defView.setText(definition);
+        }
 
         // Declarative
         ArrayList<Conjugation> decPast = Category.Categories.getSubSet(conjugations,null, Form.DECLARATIVE, Tense.PAST);

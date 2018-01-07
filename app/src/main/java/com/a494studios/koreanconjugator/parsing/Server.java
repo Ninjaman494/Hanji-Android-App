@@ -144,7 +144,7 @@ public class Server {
                     HashMap<String, String> entries = new HashMap<>();
                     for (int i = 0; i < response.length(); i++) {
                         String key = response.getString(i);
-                        entries.put(key,"Loading...");
+                        entries.put(key,null);
                     }
                     listener.onResultReceived(null,entries);
                 }catch (JSONException e){

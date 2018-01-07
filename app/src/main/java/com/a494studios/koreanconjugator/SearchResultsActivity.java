@@ -12,20 +12,23 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.a494studios.koreanconjugator.parsing.Conjugation;
-import com.a494studios.koreanconjugator.parsing.Formality;
 import com.a494studios.koreanconjugator.parsing.Server;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import javax.annotation.Nullable;
+
 public class SearchResultsActivity extends AppCompatActivity {
+
+    private static final String LOADING_TEXT = "Loading...";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search_results);
 
-        HashMap<String,String> results = (HashMap<String,String>)getIntent().getSerializableExtra("search");
+        final HashMap<String,String> results = (HashMap<String,String>)getIntent().getSerializableExtra("search");
         ListView listView = findViewById(R.id.search_listView);
         final SearchAdapter adapter = new SearchAdapter(results);
         listView.setAdapter(adapter);
@@ -43,19 +46,34 @@ public class SearchResultsActivity extends AppCompatActivity {
 
                 }
             });
+
+            if(results.get(key) == null){ // No definition, so we have to send a request for one.
+                results.put(key,LOADING_TEXT);
+                Server.requestKorDefinition(key, this, new Server.DefinitionListener() {
+                    @Override
+                    public void onDefinitionReceived(String definition) {
+                        results.put(key,definition);
+                        adapter.notifyDataSetChanged();
+                    }
+
+                    @Override
+                    public void onErrorOccurred(String errorMsg) {
+
+                    }
+                });
+            }
         }
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                ArrayList<Conjugation> conjugations = resultConjs.get(adapter.getKey(i));
+                final String term = adapter.getKey(i);
+                ArrayList<Conjugation> conjugations = resultConjs.get(term);
                 if(conjugations == null){
-                    Server.requestConjugation(adapter.getKey(i), getBaseContext(), new Server.ServerListener() {
+                    Server.requestConjugation(term, getBaseContext(), new Server.ServerListener() {
                         @Override
                         public void onResultReceived(ArrayList<Conjugation> conjugations, HashMap<String, String> searchResults) {
-                            Intent intent = new Intent(getApplicationContext(),DisplayActivity.class);
-                            intent.putExtra(DisplayActivity.EXTRA_CONJ,conjugations);
-                            startActivity(intent);
+                            sendIntent(conjugations,results.get(term));
                         }
 
                         @Override
@@ -64,12 +82,21 @@ public class SearchResultsActivity extends AppCompatActivity {
                         }
                     });
                 }else {
-                    Intent intent = new Intent(getApplicationContext(), DisplayActivity.class);
-                    intent.putExtra(DisplayActivity.EXTRA_CONJ,conjugations );
-                    startActivity(intent);
+                    sendIntent(conjugations,results.get(term));
                 }
             }
         });
+    }
+
+    private void sendIntent(ArrayList<Conjugation> conjugations,String definition){
+        Intent intent = new Intent(this,DisplayActivity.class);
+        if(definition.equals(LOADING_TEXT)){
+            intent.putExtra(DisplayActivity.EXTRA_DEF,(String)null);
+        }else {
+            intent.putExtra(DisplayActivity.EXTRA_DEF, definition);
+        }
+        intent.putExtra(DisplayActivity.EXTRA_CONJ,conjugations);
+        startActivity(intent);
     }
 }
 
