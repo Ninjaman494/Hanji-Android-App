@@ -48,7 +48,21 @@ public class MainActivity extends AppCompatActivity {
                             }
                         });
                     }else{
-                        Toast.makeText(getBaseContext(),"English search not implemented",Toast.LENGTH_SHORT).show();
+                        Server.requestEngDefinition(entry, getApplicationContext(), new Server.ServerListener() {
+                            @Override
+                            public void onResultReceived(ArrayList<Conjugation> conjugations, HashMap<String, String> searchResults) {
+                                if(searchResults != null){
+                                    Intent intent = new Intent(getApplicationContext(), SearchResultsActivity.class);
+                                    intent.putExtra("search", searchResults);
+                                    startActivity(intent);
+                                }
+                            }
+
+                            @Override
+                            public void onErrorOccurred(String errorMsg) {
+
+                            }
+                        });
                     }
                 }
                 return false;

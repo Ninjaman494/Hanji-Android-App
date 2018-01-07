@@ -16,16 +16,18 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 
 /**
  * Created by akash on 12/31/2017.
  */
 
 public class Server {
-    private static final String serverURL = "http://192.168.1.9:8080/";
+    private static final String serverURL = "http://nodejs-ex-conjify.1d35.starter-us-east-1.openshiftapps.com/";
     private static final String conjURL = serverURL + "conjugate=";
     private static final String searchKorURL = serverURL + "searchKor=";
     private static final String defKorURL = serverURL + "defineKor=";
+    private static final String defEngURL = serverURL + "defineEng=";
     private static final String stemURL = serverURL + "stem=";
 
     private static final String KEY_CONJ_INFIN = "infinitive";
@@ -124,6 +126,31 @@ public class Server {
             @Override
             public void onResponse(String response) {
                 listener.onDefinitionReceived(response);
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                listener.onErrorOccurred(error.toString());
+            }
+        });
+        Volley.newRequestQueue(context).add(jsRequest);
+    }
+
+    public static void requestEngDefinition(final String word, Context context, final ServerListener listener){
+        JsonArrayRequest jsRequest = new JsonArrayRequest(Request.Method.GET, defEngURL+word, null,new Response.Listener<JSONArray>() {
+            @Override
+            public void onResponse(JSONArray response) {
+                try {
+                    HashMap<String, String> entries = new HashMap<>();
+                    for (int i = 0; i < response.length(); i++) {
+                        String key = response.getString(i);
+                        entries.put(key,"Loading...");
+                    }
+                    listener.onResultReceived(null,entries);
+                }catch (JSONException e){
+                    e.printStackTrace();
+                    listener.onErrorOccurred(e.toString());
+                }
             }
         }, new Response.ErrorListener() {
             @Override
