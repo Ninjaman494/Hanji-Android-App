@@ -137,7 +137,8 @@ public class Server {
     }
 
     public static void requestEngDefinition(final String word, Context context, final ServerListener listener){
-        JsonArrayRequest jsRequest = new JsonArrayRequest(Request.Method.GET, defEngURL+word, null,new Response.Listener<JSONArray>() {
+        String encoded = UrlEscapers.urlFragmentEscaper().escape(defEngURL + word); // Needed for spaces
+        JsonArrayRequest jsRequest = new JsonArrayRequest(Request.Method.GET, encoded, null,new Response.Listener<JSONArray>() {
             @Override
             public void onResponse(JSONArray response) {
                 try {
