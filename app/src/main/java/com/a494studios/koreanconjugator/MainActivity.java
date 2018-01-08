@@ -23,6 +23,7 @@ public class MainActivity extends AppCompatActivity {
     ProgressBar progressBar;
     TextView loadingText;
     CardView searchCard;
+    EditText editText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,7 +32,7 @@ public class MainActivity extends AppCompatActivity {
         progressBar = findViewById(R.id.main_loadingBar);
         loadingText = findViewById(R.id.main_loadingText);
         searchCard = findViewById(R.id.main_searchCard);
-        final EditText editText = findViewById(R.id.main_editText);
+        editText = findViewById(R.id.main_editText);
 
         progressBar.getIndeterminateDrawable().setColorFilter(getResources().getColor(R.color.colorAccent), PorterDuff.Mode.SRC_IN);
         progressBar.getProgressDrawable().setColorFilter(getResources().getColor(R.color.colorAccent), PorterDuff.Mode.SRC_IN);
@@ -46,7 +47,7 @@ public class MainActivity extends AppCompatActivity {
 
                     final String entry = editText.getText().toString().trim();
                     if(isHangul(entry)) {
-                       doKoreanSearch(entry);
+                        doKoreanSearch(entry);
                     }else{
                         Server.requestEngDefinition(entry, getApplicationContext(), new Server.ServerListener() {
                             @Override
@@ -83,6 +84,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onResume(){
         super.onResume();
+        editText.getText().clear();
         searchCard.setVisibility(View.VISIBLE);
         progressBar.setVisibility(View.INVISIBLE);
         loadingText.setVisibility(View.INVISIBLE);

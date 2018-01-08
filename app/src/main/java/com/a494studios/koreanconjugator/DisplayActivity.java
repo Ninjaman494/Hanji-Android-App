@@ -25,23 +25,30 @@ public class DisplayActivity extends AppCompatActivity {
     public static final String EXTRA_CONJ = "conj";
     public static final String EXTRA_DEF = "definition";
 
+    private String definition;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_display);
         final TextView defView = findViewById(R.id.defCard_content);
         ArrayList<Conjugation> conjugations = (ArrayList<Conjugation>)getIntent().getSerializableExtra(EXTRA_CONJ);
+        if(savedInstanceState != null){
+            definition = savedInstanceState.getString(EXTRA_DEF);
+        }else{
+            definition = getIntent().getStringExtra(EXTRA_DEF);
+        }
 
         ActionBar actionBar = getSupportActionBar();
         if(actionBar != null) {
             actionBar.setTitle("Result: "+conjugations.get(0).getInfinitive());
         }
 
-        String definition = getIntent().getStringExtra(EXTRA_DEF);
         if(definition == null) {
             Server.requestKorDefinition(conjugations.get(0).getInfinitive(), this, new Server.DefinitionListener() {
                 @Override
-                public void onDefinitionReceived(String definition) {
+                public void onDefinitionReceived(String result) {
+                    definition = result;
                     defView.setText(definition);
                 }
 
@@ -85,6 +92,12 @@ public class DisplayActivity extends AppCompatActivity {
         transaction.replace(R.id.frag_9,ConjugationCardFragment.newInstance("Propositive Present", propPres));
         transaction.replace(R.id.frag_10,ConjugationCardFragment.newInstance("Other Forms", other));
         transaction.commit();
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle savedInstanceState) {
+        savedInstanceState.putString(EXTRA_DEF, definition);
+        super.onSaveInstanceState(savedInstanceState);
     }
 
     @Override

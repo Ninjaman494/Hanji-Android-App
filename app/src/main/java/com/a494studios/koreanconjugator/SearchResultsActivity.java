@@ -24,13 +24,23 @@ public class SearchResultsActivity extends AppCompatActivity {
 
     public static final String EXTRA_RESULTS = "RESULTS";
     public static final String EXTRA_SEARCHED = "SEARCHED";
+    private static final String SAVED_RESULT_CONJS = "RESULT_CONJS";
+
+    private HashMap<String, String> results;
+    private HashMap<String, ArrayList<Conjugation>> resultConjs;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search_results);
         ListView listView = findViewById(R.id.search_listView);
-        final HashMap<String,String> results = (HashMap<String,String>)getIntent().getSerializableExtra(EXTRA_RESULTS);
+        if(savedInstanceState != null){
+            results = (HashMap<String,String>)savedInstanceState.getSerializable(EXTRA_RESULTS);
+            resultConjs = (HashMap<String,ArrayList<Conjugation>>)savedInstanceState.getSerializable(SAVED_RESULT_CONJS);
+        }else {
+            results = (HashMap<String, String>) getIntent().getSerializableExtra(EXTRA_RESULTS);
+            resultConjs = new HashMap<>();
+        }
 
         ActionBar actionBar = getSupportActionBar();
         if(actionBar != null){
@@ -40,19 +50,20 @@ public class SearchResultsActivity extends AppCompatActivity {
         final SearchAdapter adapter = new SearchAdapter(results);
         listView.setAdapter(adapter);
 
-        final HashMap<String, ArrayList<Conjugation>> resultConjs = new HashMap<>();
         for(final String key : results.keySet()){
-            Server.requestConjugation(key, this, new Server.ServerListener() {
-                @Override
-                public void onResultReceived(ArrayList<Conjugation> conjugations, HashMap<String, String> searchResults) {
-                    resultConjs.put(key,conjugations);
-                }
+            if(resultConjs.get(key) == null) { // No conjugation, so we have to request one.
+                Server.requestConjugation(key, this, new Server.ServerListener() {
+                    @Override
+                    public void onResultReceived(ArrayList<Conjugation> conjugations, HashMap<String, String> searchResults) {
+                        resultConjs.put(key, conjugations);
+                    }
 
-                @Override
-                public void onErrorOccurred(String errorMsg) {
+                    @Override
+                    public void onErrorOccurred(String errorMsg) {
 
-                }
-            });
+                    }
+                });
+            }
 
             if(results.get(key) == null){ // No definition, so we have to send a request for one.
                 results.put(key,getString(R.string.loading));
@@ -93,6 +104,13 @@ public class SearchResultsActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle savedInstanceState) {
+        savedInstanceState.putSerializable(EXTRA_RESULTS, results);
+        savedInstanceState.putSerializable(SAVED_RESULT_CONJS,resultConjs);
+        super.onSaveInstanceState(savedInstanceState);
     }
 
     @Override
