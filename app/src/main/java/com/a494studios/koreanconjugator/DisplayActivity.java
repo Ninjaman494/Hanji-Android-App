@@ -1,6 +1,5 @@
 package com.a494studios.koreanconjugator;
 
-import android.os.Handler;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -29,9 +28,8 @@ public class DisplayActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_display);
-        ArrayList<Conjugation> conjugations = (ArrayList<Conjugation>)getIntent().getSerializableExtra(EXTRA_CONJ);
         final TextView defView = findViewById(R.id.defCard_content);
-        final ArrayList<ViewGroup> fragViews = makeFragViewList();
+        ArrayList<Conjugation> conjugations = (ArrayList<Conjugation>)getIntent().getSerializableExtra(EXTRA_CONJ);
 
         String definition = getIntent().getStringExtra(EXTRA_DEF);
         if(definition == null) {
@@ -81,19 +79,21 @@ public class DisplayActivity extends AppCompatActivity {
         transaction.replace(R.id.frag_9,ConjugationCardFragment.newInstance("Propositive Present", propPres));
         transaction.replace(R.id.frag_10,ConjugationCardFragment.newInstance("Other Forms", other));
         transaction.commit();
+    }
 
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                for(int i = 0;i<fragViews.size();i++){
-                    ViewGroup v = fragViews.get(i);
-                    Transition t = new Fade(Fade.IN);
-                    t.setStartDelay(((i+1)*80));
-                    TransitionManager.beginDelayedTransition(v,t);
-                    v.setVisibility(View.VISIBLE);
-                }
+    @Override
+    public void onWindowFocusChanged (boolean hasFocus) {
+        super.onWindowFocusChanged(hasFocus);
+        if(hasFocus){
+            ArrayList<ViewGroup> fragViews = makeFragViewList();
+            for (int i = 0; i < fragViews.size(); i++) {
+                ViewGroup v = fragViews.get(i);
+                Transition t = new Fade(Fade.IN);
+                t.setStartDelay(((i + 1) * 80));
+                TransitionManager.beginDelayedTransition(v, t);
+                v.setVisibility(View.VISIBLE);
             }
-        },500);
+        }
     }
 
     private ArrayList<ViewGroup> makeFragViewList(){

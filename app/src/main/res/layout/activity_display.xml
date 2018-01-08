@@ -15,10 +15,10 @@
             android:id="@+id/disp_defCard"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
-            android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp"
-            android:layout_marginTop="8dp"
+            android:layout_marginBottom="@dimen/verticalMargin"
+            android:layout_marginLeft="@dimen/horizontalMargin"
+            android:layout_marginRight="@dimen/horizontalMargin"
+            android:layout_marginTop="@dimen/verticalMargin"
             android:visibility="invisible">
 
             <RelativeLayout
@@ -45,7 +45,7 @@
                     android:layout_alignRight="@id/defCard_heading"
                     android:layout_alignEnd="@id/defCard_heading"
                     android:paddingBottom="20dp"
-                    android:text="Loading..."
+                    android:text="@string/loading"
                     android:textAlignment="center"
                     android:textSize="32sp" />
             </RelativeLayout>

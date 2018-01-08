@@ -3,9 +3,9 @@
         android:id="@+id/conjCard"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
+        android:layout_marginBottom="@dimen/verticalMargin"
+        android:layout_marginLeft="@dimen/horizontalMargin"
+        android:layout_marginRight="@dimen/horizontalMargin"
         tools:context="com.a494studios.koreanconjugator.ConjugationCardFragment">
 
         <RelativeLayout
