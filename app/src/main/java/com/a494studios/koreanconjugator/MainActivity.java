@@ -60,7 +60,8 @@ public class MainActivity extends AppCompatActivity {
                                         loadingText.setText(R.string.main_results_found);
 
                                         Intent intent = new Intent(getApplicationContext(), SearchResultsActivity.class);
-                                        intent.putExtra("search", searchResults);
+                                        intent.putExtra(SearchResultsActivity.EXTRA_RESULTS, searchResults);
+                                        intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                                         startActivity(intent);
                                     }
                                 }
@@ -99,10 +100,12 @@ public class MainActivity extends AppCompatActivity {
                 if (conjugations != null) {
                     Intent intent = new Intent(getApplicationContext(), DisplayActivity.class);
                     intent.putExtra(DisplayActivity.EXTRA_CONJ, conjugations);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                     startActivity(intent);
                 } else if (searchResults != null) {
                     Intent intent = new Intent(getApplicationContext(), SearchResultsActivity.class);
-                    intent.putExtra("search", searchResults);
+                    intent.putExtra(SearchResultsActivity.EXTRA_RESULTS, searchResults);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                     startActivity(intent);
                 }
             }

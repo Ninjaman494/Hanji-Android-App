@@ -3,6 +3,7 @@ package com.a494studios.koreanconjugator;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,23 +14,21 @@ import android.widget.TextView;
 
 import com.a494studios.koreanconjugator.parsing.Conjugation;
 import com.a494studios.koreanconjugator.parsing.Server;
+import com.github.andkulikov.materialin.MaterialIn;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import javax.annotation.Nullable;
-
 public class SearchResultsActivity extends AppCompatActivity {
 
-    private static final String LOADING_TEXT = "Loading...";
+    public static final String EXTRA_RESULTS = "RESULTS";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search_results);
-
-        final HashMap<String,String> results = (HashMap<String,String>)getIntent().getSerializableExtra("search");
         ListView listView = findViewById(R.id.search_listView);
+        final HashMap<String,String> results = (HashMap<String,String>)getIntent().getSerializableExtra(EXTRA_RESULTS);
         final SearchAdapter adapter = new SearchAdapter(results);
         listView.setAdapter(adapter);
 
@@ -48,7 +47,7 @@ public class SearchResultsActivity extends AppCompatActivity {
             });
 
             if(results.get(key) == null){ // No definition, so we have to send a request for one.
-                results.put(key,LOADING_TEXT);
+                results.put(key,getString(R.string.loading));
                 Server.requestKorDefinition(key, this, new Server.DefinitionListener() {
                     @Override
                     public void onDefinitionReceived(String definition) {
@@ -86,16 +85,19 @@ public class SearchResultsActivity extends AppCompatActivity {
                 }
             }
         });
+
+        MaterialIn.animate(listView, Gravity.BOTTOM, Gravity.BOTTOM);
     }
 
     private void sendIntent(ArrayList<Conjugation> conjugations,String definition){
         Intent intent = new Intent(this,DisplayActivity.class);
-        if(definition.equals(LOADING_TEXT)){
+        if(definition.equals(getString(R.string.loading))){
             intent.putExtra(DisplayActivity.EXTRA_DEF,(String)null);
         }else {
             intent.putExtra(DisplayActivity.EXTRA_DEF, definition);
         }
         intent.putExtra(DisplayActivity.EXTRA_CONJ,conjugations);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
         startActivity(intent);
     }
 }

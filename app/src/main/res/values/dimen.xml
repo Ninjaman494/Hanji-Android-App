@@ -2,4 +2,6 @@
 <resources>
     <dimen name="horizontalMargin">16dp</dimen>
     <dimen name="verticalMargin">8dp</dimen>
+    <dimen name="material_in_anim_slide_offset">16dp</dimen>
+    <dimen name="material_in_delay_denominator">0.5dp</dimen>
 </resources>
