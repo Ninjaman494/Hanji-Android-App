@@ -62,6 +62,7 @@ public class MainActivity extends AppCompatActivity {
                 if (conjugations != null) {
                     Intent intent = new Intent(getApplicationContext(), DisplayActivity.class);
                     intent.putExtra(DisplayActivity.EXTRA_CONJ, conjugations);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                     startActivity(intent);
                 } else if (searchResults != null) {
                     Intent intent = new Intent(getApplicationContext(), SearchResultsActivity.class);

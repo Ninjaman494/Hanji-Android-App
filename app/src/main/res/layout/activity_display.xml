@@ -18,7 +18,8 @@
             android:layout_marginBottom="8dp"
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
-            android:layout_marginTop="8dp">
+            android:layout_marginTop="8dp"
+            android:visibility="invisible">
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -44,10 +45,70 @@
                     android:layout_alignRight="@id/defCard_heading"
                     android:layout_alignEnd="@id/defCard_heading"
                     android:paddingBottom="20dp"
-                    android:text="go, come, get, (formal) proceed"
+                    android:text="Loading..."
                     android:textAlignment="center"
                     android:textSize="32sp" />
             </RelativeLayout>
         </android.support.v7.widget.CardView>
+
+        <FrameLayout
+            android:id="@+id/frag_1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="invisible"/>
+
+        <FrameLayout
+            android:id="@+id/frag_2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="invisible"/>
+
+        <FrameLayout
+            android:id="@+id/frag_3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="invisible"/>
+
+        <FrameLayout
+            android:id="@+id/frag_4"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="invisible"/>
+
+        <FrameLayout
+            android:id="@+id/frag_5"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="invisible"/>
+
+        <FrameLayout
+            android:id="@+id/frag_6"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="invisible"/>
+
+        <FrameLayout
+            android:id="@+id/frag_7"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="invisible"/>
+
+        <FrameLayout
+            android:id="@+id/frag_8"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="invisible"/>
+
+        <FrameLayout
+            android:id="@+id/frag_9"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="invisible"/>
+
+        <FrameLayout
+            android:id="@+id/frag_10"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="invisible"/>
     </LinearLayout>
 </ScrollView>

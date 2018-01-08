@@ -1,8 +1,11 @@
 package com.a494studios.koreanconjugator;
 
+import android.os.Handler;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.a494studios.koreanconjugator.parsing.Category;
@@ -11,6 +14,9 @@ import com.a494studios.koreanconjugator.parsing.Form;
 import com.a494studios.koreanconjugator.parsing.Formality;
 import com.a494studios.koreanconjugator.parsing.Server;
 import com.a494studios.koreanconjugator.parsing.Tense;
+import com.transitionseverywhere.Fade;
+import com.transitionseverywhere.Transition;
+import com.transitionseverywhere.TransitionManager;
 
 import java.util.ArrayList;
 
@@ -25,6 +31,8 @@ public class DisplayActivity extends AppCompatActivity {
         setContentView(R.layout.activity_display);
         ArrayList<Conjugation> conjugations = (ArrayList<Conjugation>)getIntent().getSerializableExtra(EXTRA_CONJ);
         final TextView defView = findViewById(R.id.defCard_content);
+        final ArrayList<ViewGroup> fragViews = makeFragViewList();
+
         String definition = getIntent().getStringExtra(EXTRA_DEF);
         if(definition == null) {
             Server.requestKorDefinition(conjugations.get(0).getInfinitive(), this, new Server.DefinitionListener() {
@@ -56,23 +64,51 @@ public class DisplayActivity extends AppCompatActivity {
         ArrayList<Conjugation> propPres = Category.Categories.getSubSet(conjugations,null, Form.PROPOSITIVE, Tense.PRESENT);
         // Other
         ArrayList<Conjugation> other = Category.Categories.getSubSet(conjugations,Form.NOMINAL,Form.CON_AND,Form.CON_IF);
-
         // Favorites
         Conjugation past = Category.Categories.getSubSet(conjugations, Formality.INFORMAL_HIGH,Form.DECLARATIVE, Tense.PAST).get(0);
         Conjugation present = Category.Categories.getSubSet(conjugations, Formality.INFORMAL_HIGH,Form.DECLARATIVE, Tense.PRESENT).get(0);
         Conjugation future = Category.Categories.getSubSet(conjugations, Formality.INFORMAL_HIGH,Form.DECLARATIVE, Tense.FUTURE).get(0);
 
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.add(R.id.disp_root,FavoritesFragment.newInstance(past,present,future));
-        transaction.add(R.id.disp_root,ConjugationCardFragment.newInstance("Declarative Past", decPast));
-        transaction.add(R.id.disp_root,ConjugationCardFragment.newInstance("Declarative Present", decPres));
-        transaction.add(R.id.disp_root,ConjugationCardFragment.newInstance("Declarative Future", decFut));
-        transaction.add(R.id.disp_root,ConjugationCardFragment.newInstance("Declarative Future Conditional", decFutC));
-        transaction.add(R.id.disp_root,ConjugationCardFragment.newInstance("Inquisitive Past", inqPast));
-        transaction.add(R.id.disp_root,ConjugationCardFragment.newInstance("Inquisitive Present", inqPres));
-        transaction.add(R.id.disp_root,ConjugationCardFragment.newInstance("Imperative Present", imPres));
-        transaction.add(R.id.disp_root,ConjugationCardFragment.newInstance("Propositive Present", propPres));
-        transaction.add(R.id.disp_root,ConjugationCardFragment.newInstance("Other Forms", other));
+        transaction.replace(R.id.frag_1,FavoritesFragment.newInstance(past,present,future));
+        transaction.replace(R.id.frag_2,ConjugationCardFragment.newInstance("Declarative Past", decPast));
+        transaction.replace(R.id.frag_3,ConjugationCardFragment.newInstance("Declarative Present", decPres));
+        transaction.replace(R.id.frag_4,ConjugationCardFragment.newInstance("Declarative Future", decFut));
+        transaction.replace(R.id.frag_5,ConjugationCardFragment.newInstance("Declarative Future Conditional", decFutC));
+        transaction.replace(R.id.frag_6,ConjugationCardFragment.newInstance("Inquisitive Past", inqPast));
+        transaction.replace(R.id.frag_7,ConjugationCardFragment.newInstance("Inquisitive Present", inqPres));
+        transaction.replace(R.id.frag_8,ConjugationCardFragment.newInstance("Imperative Present", imPres));
+        transaction.replace(R.id.frag_9,ConjugationCardFragment.newInstance("Propositive Present", propPres));
+        transaction.replace(R.id.frag_10,ConjugationCardFragment.newInstance("Other Forms", other));
         transaction.commit();
+
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                for(int i = 0;i<fragViews.size();i++){
+                    ViewGroup v = fragViews.get(i);
+                    Transition t = new Fade(Fade.IN);
+                    t.setStartDelay(((i+1)*80));
+                    TransitionManager.beginDelayedTransition(v,t);
+                    v.setVisibility(View.VISIBLE);
+                }
+            }
+        },500);
+    }
+
+    private ArrayList<ViewGroup> makeFragViewList(){
+        ArrayList<ViewGroup> views = new ArrayList<>();
+        views.add((ViewGroup) findViewById(R.id.disp_defCard));
+        views.add((ViewGroup) findViewById(R.id.frag_1));
+        views.add((ViewGroup) findViewById(R.id.frag_2));
+        views.add((ViewGroup) findViewById(R.id.frag_3));
+        views.add((ViewGroup) findViewById(R.id.frag_4));
+        views.add((ViewGroup) findViewById(R.id.frag_5));
+        views.add((ViewGroup) findViewById(R.id.frag_6));
+        views.add((ViewGroup) findViewById(R.id.frag_7));
+        views.add((ViewGroup) findViewById(R.id.frag_8));
+        views.add((ViewGroup) findViewById(R.id.frag_9));
+        views.add((ViewGroup) findViewById(R.id.frag_10));
+        return views;
     }
 }
