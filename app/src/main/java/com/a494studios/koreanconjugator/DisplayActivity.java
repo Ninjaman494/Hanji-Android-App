@@ -1,6 +1,7 @@
 package com.a494studios.koreanconjugator;
 
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -30,6 +31,11 @@ public class DisplayActivity extends AppCompatActivity {
         setContentView(R.layout.activity_display);
         final TextView defView = findViewById(R.id.defCard_content);
         ArrayList<Conjugation> conjugations = (ArrayList<Conjugation>)getIntent().getSerializableExtra(EXTRA_CONJ);
+
+        ActionBar actionBar = getSupportActionBar();
+        if(actionBar != null) {
+            actionBar.setTitle("Result: "+conjugations.get(0).getInfinitive());
+        }
 
         String definition = getIntent().getStringExtra(EXTRA_DEF);
         if(definition == null) {

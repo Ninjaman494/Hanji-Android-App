@@ -44,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
                     loadingText.setVisibility(View.VISIBLE);
                     searchCard.setVisibility(View.INVISIBLE);
 
-                    String entry = editText.getText().toString().trim();
+                    final String entry = editText.getText().toString().trim();
                     if(isHangul(entry)) {
                        doKoreanSearch(entry);
                     }else{
@@ -61,6 +61,7 @@ public class MainActivity extends AppCompatActivity {
 
                                         Intent intent = new Intent(getApplicationContext(), SearchResultsActivity.class);
                                         intent.putExtra(SearchResultsActivity.EXTRA_RESULTS, searchResults);
+                                        intent.putExtra(SearchResultsActivity.EXTRA_SEARCHED,entry);
                                         intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                                         startActivity(intent);
                                     }
@@ -89,7 +90,7 @@ public class MainActivity extends AppCompatActivity {
         progressBar.setIndeterminate(true);
     }
 
-    private void doKoreanSearch(String entry){
+    private void doKoreanSearch(final String entry){
         Server.requestKoreanSearch(entry, getApplicationContext(), new Server.ServerListener() {
             @Override
             public void onResultReceived(final ArrayList<Conjugation> conjugations, HashMap<String, String> searchResults) {
@@ -105,6 +106,7 @@ public class MainActivity extends AppCompatActivity {
                 } else if (searchResults != null) {
                     Intent intent = new Intent(getApplicationContext(), SearchResultsActivity.class);
                     intent.putExtra(SearchResultsActivity.EXTRA_RESULTS, searchResults);
+                    intent.putExtra(SearchResultsActivity.EXTRA_SEARCHED,entry);
                     intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                     startActivity(intent);
                 }

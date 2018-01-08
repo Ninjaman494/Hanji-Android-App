@@ -1,6 +1,7 @@
 package com.a494studios.koreanconjugator;
 
 import android.content.Intent;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Gravity;
@@ -22,6 +23,7 @@ import java.util.HashMap;
 public class SearchResultsActivity extends AppCompatActivity {
 
     public static final String EXTRA_RESULTS = "RESULTS";
+    public static final String EXTRA_SEARCHED = "SEARCHED";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,6 +31,12 @@ public class SearchResultsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_search_results);
         ListView listView = findViewById(R.id.search_listView);
         final HashMap<String,String> results = (HashMap<String,String>)getIntent().getSerializableExtra(EXTRA_RESULTS);
+
+        ActionBar actionBar = getSupportActionBar();
+        if(actionBar != null){
+            actionBar.setTitle("Multiple results: "+getIntent().getStringExtra(EXTRA_SEARCHED));
+        }
+
         final SearchAdapter adapter = new SearchAdapter(results);
         listView.setAdapter(adapter);
 
@@ -85,8 +93,12 @@ public class SearchResultsActivity extends AppCompatActivity {
                 }
             }
         });
+    }
 
-        MaterialIn.animate(listView, Gravity.BOTTOM, Gravity.BOTTOM);
+    @Override
+    public void onResume(){
+        super.onResume();
+        MaterialIn.animate(findViewById(R.id.search_listView), Gravity.BOTTOM, Gravity.BOTTOM);
     }
 
     private void sendIntent(ArrayList<Conjugation> conjugations,String definition){
