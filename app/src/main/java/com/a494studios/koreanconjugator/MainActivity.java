@@ -19,6 +19,7 @@ import android.widget.Toast;
 
 import com.a494studios.koreanconjugator.parsing.Conjugation;
 import com.a494studios.koreanconjugator.parsing.Server;
+import com.a494studios.koreanconjugator.settings.SettingsActivity;
 import com.android.volley.NoConnectionError;
 import com.android.volley.ParseError;
 
@@ -61,26 +62,20 @@ public class MainActivity extends AppCompatActivity {
                         return false;
                     }
 
-                    if(isHangul(entry)) {
+                    if(Utils.isHangul(entry)) {
                         doKoreanSearch(entry);
                     }else if(entry.matches("[A-Za-z ]+")){ // Check if String in English
                         Server.requestEngDefinition(entry, getApplicationContext(), new Server.ServerListener() {
                             @Override
                             public void onResultReceived(ArrayList<Conjugation> conjugations, HashMap<String, String> searchResults) {
                                 if(searchResults != null) {
-                                    if (searchResults.size() == 1) {
-                                        doKoreanSearch(searchResults.keySet().iterator().next()); // Get the first, and only, key in map
+                                    if (searchResults.size() == 1 || Utils.getEnglishLuck(getBaseContext())) {
+                                        doKoreanSearch(searchResults.keySet().iterator().next()); // Get the first key in map
                                     } else {
-                                        prepForIntent();
-                                        Intent intent = new Intent(getApplicationContext(), SearchResultsActivity.class);
-                                        intent.putExtra(SearchResultsActivity.EXTRA_RESULTS, searchResults);
-                                        intent.putExtra(SearchResultsActivity.EXTRA_SEARCHED,entry);
-                                        intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-                                        startActivity(intent);
+                                        goToSearchResults(searchResults,entry);
                                     }
                                 }
                             }
-
                             @Override
                             public void onErrorOccurred(Exception error) {
                                 handleError(error);
@@ -105,7 +100,7 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public boolean onMenuItemClick(MenuItem item) {
                         if(item.getItemId() == R.id.overflow_settings){
-                            Toast.makeText(getBaseContext(),"Setings not made yet",Toast.LENGTH_SHORT).show();
+                            startActivity(new Intent(getBaseContext(), SettingsActivity.class));
                             return true;
                         }else if(item.getItemId() == R.id.overflow_about){
                             Toast.makeText(getBaseContext(),"About not made yet",Toast.LENGTH_SHORT).show();
@@ -131,24 +126,33 @@ public class MainActivity extends AppCompatActivity {
         Server.requestKoreanSearch(entry, getApplicationContext(), new Server.ServerListener() {
             @Override
             public void onResultReceived(final ArrayList<Conjugation> conjugations, HashMap<String, String> searchResults) {
-                prepForIntent();
                 if (conjugations != null) {
-                    Intent intent = new Intent(getApplicationContext(), DisplayActivity.class);
-                    intent.putExtra(DisplayActivity.EXTRA_CONJ, conjugations);
-                    intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-                    startActivity(intent);
+                    goToDisplay(conjugations);
                 } else if (searchResults != null) {
-                    Intent intent = new Intent(getApplicationContext(), SearchResultsActivity.class);
-                    intent.putExtra(SearchResultsActivity.EXTRA_RESULTS, searchResults);
-                    intent.putExtra(SearchResultsActivity.EXTRA_SEARCHED,entry);
-                    intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-                    startActivity(intent);
+                    if(Utils.getKoreanLuck(getApplicationContext())){
+                        requestConjugations(searchResults.keySet().iterator().next());
+                    }else{
+                        goToSearchResults(searchResults,entry);
+                    }
                 }
             }
 
             @Override
             public void onErrorOccurred(Exception error) {
                handleError(error);
+            }
+        });
+    }
+
+    private void requestConjugations(String word){
+        Server.requestConjugation(word, this, new Server.ServerListener() {
+            @Override
+            public void onResultReceived(ArrayList<Conjugation> conjugations, HashMap<String, String> searchResults) {
+                goToDisplay(conjugations);
+            }
+            @Override
+            public void onErrorOccurred(Exception error) {
+                handleError(error);
             }
         });
     }
@@ -190,14 +194,20 @@ public class MainActivity extends AppCompatActivity {
         searchInProgress = false;
     }
 
-    public static boolean isHangul(String korean){
-        korean = korean.replace(" ","");
-        for(int i=0;i<korean.length();i++){
-            char c = korean.charAt(i);
-            if(!((int)c >= '가' && (int)c <= '힣')){
-                return false;
-            }
-        }
-        return true;
+    private void goToSearchResults(HashMap<String,String> searchResults, String entry){
+        Intent intent = new Intent(getApplicationContext(), SearchResultsActivity.class);
+        intent.putExtra(SearchResultsActivity.EXTRA_RESULTS, searchResults);
+        intent.putExtra(SearchResultsActivity.EXTRA_SEARCHED,entry);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+        startActivity(intent);
+        prepForIntent();
+    }
+
+    private void goToDisplay(ArrayList<Conjugation> conjugations){
+        Intent intent = new Intent(getApplicationContext(), DisplayActivity.class);
+        intent.putExtra(DisplayActivity.EXTRA_CONJ, conjugations);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+        startActivity(intent);
+        prepForIntent();
     }
 }

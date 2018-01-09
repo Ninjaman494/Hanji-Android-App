@@ -31,7 +31,7 @@ public class SearchActivity extends AppCompatActivity {
         loadingText = findViewById(R.id.main_loadingText);
 
         if (!Intent.ACTION_SEARCH.equals(getIntent().getAction())) {
-            finishAffinity();
+            this.onBackPressed();
             return;
         }
 
@@ -42,26 +42,18 @@ public class SearchActivity extends AppCompatActivity {
 
         // Search
         if (entry.equals("")) {
-            finishAffinity();
-        } else if (MainActivity.isHangul(entry)) {
+            this.onBackPressed();
+        } else if (Utils.isHangul(entry)) {
             doKoreanSearch(entry);
-        } else {
+        } else if(entry.matches("[A-Za-z ]+")){ // Check if String in English
             Server.requestEngDefinition(entry, getApplicationContext(), new Server.ServerListener() {
                 @Override
                 public void onResultReceived(ArrayList<Conjugation> conjugations, HashMap<String, String> searchResults) {
-                    if (searchResults != null) {
-                        loadingText.setText(R.string.main_results_found);
-                        progressBar.setIndeterminate(false);
-                        progressBar.setProgress(100);
-
-                        if (searchResults.size() == 1) {
-                            doKoreanSearch(searchResults.keySet().iterator().next()); // Get the first, and only, key in map
+                    if(searchResults != null) {
+                        if (searchResults.size() == 1 || Utils.getEnglishLuck(getBaseContext())) {
+                            doKoreanSearch(searchResults.keySet().iterator().next()); // Get the first key in map
                         } else {
-                            Intent intent = new Intent(getApplicationContext(), SearchResultsActivity.class);
-                            intent.putExtra(SearchResultsActivity.EXTRA_RESULTS, searchResults);
-                            intent.putExtra(SearchResultsActivity.EXTRA_SEARCHED, entry);
-                            intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-                            startActivity(intent);
+                            goToSearchResults(searchResults,entry);
                         }
                     }
                 }
@@ -78,24 +70,30 @@ public class SearchActivity extends AppCompatActivity {
         Server.requestKoreanSearch(entry, getApplicationContext(), new Server.ServerListener() {
             @Override
             public void onResultReceived(final ArrayList<Conjugation> conjugations, HashMap<String, String> searchResults) {
-                loadingText.setText(R.string.main_results_found);
-                progressBar.setIndeterminate(false);
-                progressBar.setProgress(100);
-
                 if (conjugations != null) {
-                    Intent intent = new Intent(getApplicationContext(), DisplayActivity.class);
-                    intent.putExtra(DisplayActivity.EXTRA_CONJ, conjugations);
-                    intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-                    startActivity(intent);
+                    goToDisplay(conjugations);
                 } else if (searchResults != null) {
-                    Intent intent = new Intent(getApplicationContext(), SearchResultsActivity.class);
-                    intent.putExtra(SearchResultsActivity.EXTRA_RESULTS, searchResults);
-                    intent.putExtra(SearchResultsActivity.EXTRA_SEARCHED, entry);
-                    intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-                    startActivity(intent);
+                    if(Utils.getKoreanLuck(getApplicationContext())){
+                        requestConjugations(searchResults.keySet().iterator().next());
+                    }else{
+                        goToSearchResults(searchResults,entry);
+                    }
                 }
             }
 
+            @Override
+            public void onErrorOccurred(Exception error) {
+                handleError(error);
+            }
+        });
+    }
+
+    private void requestConjugations(String word){
+        Server.requestConjugation(word, this, new Server.ServerListener() {
+            @Override
+            public void onResultReceived(ArrayList<Conjugation> conjugations, HashMap<String, String> searchResults) {
+                goToDisplay(conjugations);
+            }
             @Override
             public void onErrorOccurred(Exception error) {
                 handleError(error);
@@ -124,5 +122,28 @@ public class SearchActivity extends AppCompatActivity {
             }
         });
         builder.create().show();
+    }
+
+    private void prepForIntent(){
+        progressBar.setIndeterminate(false);
+        progressBar.setProgress(100);
+        loadingText.setText(R.string.main_results_found);
+    }
+
+    private void goToSearchResults(HashMap<String,String> searchResults, String entry){
+        Intent intent = new Intent(getApplicationContext(), SearchResultsActivity.class);
+        intent.putExtra(SearchResultsActivity.EXTRA_RESULTS, searchResults);
+        intent.putExtra(SearchResultsActivity.EXTRA_SEARCHED,entry);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+        startActivity(intent);
+        prepForIntent();
+    }
+
+    private void goToDisplay(ArrayList<Conjugation> conjugations){
+        Intent intent = new Intent(getApplicationContext(), DisplayActivity.class);
+        intent.putExtra(DisplayActivity.EXTRA_CONJ, conjugations);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+        startActivity(intent);
+        prepForIntent();
     }
 }

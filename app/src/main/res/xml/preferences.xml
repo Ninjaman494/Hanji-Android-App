@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <Preference
+        android:title="Favorites"
+        android:persistent="false">
+        <!--<intent
+            android:targetPackage="example.interviewbuddy"
+            android:targetClass="example.interviewbuddy.settings.LegalDisplayActivity">
+            <extra android:name="type" android:value="TERMS_CONDITIONS" />
+        </intent>-->
+    </Preference>
+    <SwitchPreference
+        android:key="pref_luckyKorean"
+        android:title="I'm Feeling Lucky - Korean"
+        android:summary="@string/lucky_kor_false"
+        android:defaultValue="false"/>
+    <SwitchPreference
+        android:key="pref_luckyEnglish"
+        android:title="I'm Feeling Lucky - English"
+        android:summary="@string/lucky_eng_false"
+        android:defaultValue="false"/>
+</PreferenceScreen>

@@ -3,4 +3,6 @@
     <string name="main_results_found">Results Found!</string>
     <string name="loading">Loading…</string>
     <string name="main_search_hint">Search Korean or English…</string>
+    <string name="lucky_kor_false">Show all results during Korean searches</string>
+    <string name="lucky_eng_false">Show all results during English searches</string>
 </resources>
