@@ -124,18 +124,20 @@ public class DisplayActivity extends AppCompatActivity {
     }
 
     private void handleError(Exception error) {
+        Snackbar snackbar;
         if (error instanceof NoConnectionError) {
-            Snackbar snackbar = Snackbar.make(findViewById(R.id.disp_root), "Lost connection", Snackbar.LENGTH_INDEFINITE);
-            snackbar.setAction("Retry", new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    requestDefinition();
-                }
-            });
-            snackbar.show();
+            snackbar = Snackbar.make(findViewById(R.id.disp_root), "Lost connection", Snackbar.LENGTH_INDEFINITE);
         }else{
+            snackbar = Snackbar.make(findViewById(R.id.disp_root), "Couldn't connect to server", Snackbar.LENGTH_INDEFINITE);
             System.err.println(error.toString());
         }
+        snackbar.setAction("Retry", new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                requestDefinition();
+            }
+        });
+        snackbar.show();
     }
 
     private void requestDefinition(){

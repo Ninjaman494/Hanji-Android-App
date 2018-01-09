@@ -142,21 +142,23 @@ public class SearchResultsActivity extends AppCompatActivity {
     }
 
     private void handleError(Exception error){
-        if(error instanceof NoConnectionError){
-            if(!snackbarShown) {
-                Snackbar snackbar = Snackbar.make(findViewById(R.id.search_listView), "Lost connection", Snackbar.LENGTH_INDEFINITE);
-                snackbar.setAction("Retry", new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        requestData();
-                        snackbarShown = false;
-                    }
-                });
-                snackbar.show();
-                snackbarShown = true;
+        if (!snackbarShown) {
+            Snackbar snackbar;
+            if (error instanceof NoConnectionError) {
+                snackbar = Snackbar.make(findViewById(R.id.search_listView), "Lost connection", Snackbar.LENGTH_INDEFINITE);
+            } else {
+                snackbar = Snackbar.make(findViewById(R.id.disp_root), "Couldn't connect to server", Snackbar.LENGTH_INDEFINITE);
+                System.err.println(error.toString());
             }
-        }else{
-            System.err.println(error.toString());
+            snackbar.setAction("Retry", new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    requestData();
+                    snackbarShown = false;
+                }
+            });
+            snackbar.show();
+            snackbarShown = true;
         }
     }
 
