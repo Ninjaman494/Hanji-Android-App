@@ -8,6 +8,7 @@ import java.util.ArrayList;
 
 public interface Category {
     String printName();
+    String getType();
 
     class Categories{
         public static ArrayList<Conjugation> getSubSet(ArrayList<Conjugation> conjugations, Category... categories){
@@ -31,6 +32,22 @@ public interface Category {
                 }
             }
             return subset;
+        }
+
+        public static Category valueOf(String string){
+            Tense t = Tense.fromString(string);
+            if(t != null){
+                return t;
+            }
+            Form f = Form.fromString(string);
+            if(f != null){
+                return f;
+            }
+            Formality fr = Formality.fromString(string);
+            if(fr != null){
+                return fr;
+            }
+            return null;
         }
 
     }

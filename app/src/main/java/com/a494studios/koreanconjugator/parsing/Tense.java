@@ -19,8 +19,21 @@ public enum Tense implements Category{
         }
     }
 
+
+    public static Tense fromString(String string) {
+        try{
+            return valueOf(string);
+        }catch (IllegalArgumentException e){
+            return null;
+        }
+    }
+
     @Override
     public String toString(){
         return printName();
+    }
+
+    public String getType(){
+        return super.toString();
     }
 }

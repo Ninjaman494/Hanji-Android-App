@@ -13,6 +13,9 @@ import com.a494studios.koreanconjugator.parsing.Conjugation;
 import com.a494studios.koreanconjugator.parsing.Tense;
 import com.linearlistview.LinearListView;
 
+import java.util.ArrayList;
+import java.util.Map.Entry;
+
 
 /**
  * A simple {@link Fragment} subclass.
@@ -21,14 +24,9 @@ import com.linearlistview.LinearListView;
  */
 public class FavoritesFragment extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PAST = "PAST_CONJUGATION";
-    private static final String ARG_PRESENT = "PRESENT_CONJUGATION";
-    private static final String ARG_FUTURE = "FUTURE_CONJUGATION";
+    private static final String ARG_ENTRIES = "PAST_CONJUGATION";
 
-    private Conjugation past;
-    private Conjugation present;
-    private Conjugation future;
-
+    private ArrayList<Entry<String,Conjugation>> entries;
     public FavoritesFragment() {
         // Required empty public constructor
     }
@@ -37,16 +35,13 @@ public class FavoritesFragment extends Fragment {
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
      *
-     * @param past Parameter 1.
-     * @param present Parameter 2.
+     * @param entries Parameter 1.
      * @return A new instance of fragment FavoritesFragment.
      */
-    public static FavoritesFragment newInstance(Conjugation past, Conjugation present, Conjugation future) {
+    public static FavoritesFragment newInstance(ArrayList<Entry<String,Conjugation>> entries) {
         FavoritesFragment fragment = new FavoritesFragment();
         Bundle args = new Bundle();
-        args.putSerializable(ARG_PAST, past);
-        args.putSerializable(ARG_PRESENT, present);
-        args.putSerializable(ARG_FUTURE, future);
+        args.putSerializable(ARG_ENTRIES, entries);
         fragment.setArguments(args);
         return fragment;
     }
@@ -55,9 +50,7 @@ public class FavoritesFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            past = (Conjugation)getArguments().getSerializable(ARG_PAST);
-            present = (Conjugation)getArguments().getSerializable(ARG_PRESENT);
-            future = (Conjugation)getArguments().getSerializable(ARG_FUTURE);
+            entries = (ArrayList<Entry<String,Conjugation>>)getArguments().getSerializable(ARG_ENTRIES);
         }
     }
 
@@ -68,21 +61,18 @@ public class FavoritesFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_favorites, container, false);
 
         LinearListView listView = view.findViewById(R.id.favCard_list);
-        listView.setAdapter(new FavoritesAdapter(past,present,future));
+        listView.setAdapter(new FavoritesAdapter(entries));
         return view;
     }
 
 
     private class FavoritesAdapter extends BaseAdapter {
 
-        private Conjugation[] conjugations;
+        private ArrayList<Entry<String,Conjugation>> entries;
         private static final int RESOURCE_ID = R.layout.item_conjugation;
 
-        public FavoritesAdapter(Conjugation past, Conjugation present, Conjugation future) {
-            conjugations = new Conjugation[3];
-            conjugations[0] = past;
-            conjugations[1] = present;
-            conjugations[2] = future;
+        public FavoritesAdapter(ArrayList<Entry<String,Conjugation>> entries) {
+            this.entries = entries;
         }
 
         @Override
@@ -90,26 +80,22 @@ public class FavoritesFragment extends Fragment {
             if (view == null) {
                 view = LayoutInflater.from(viewGroup.getContext()).inflate(RESOURCE_ID, viewGroup, false);
             }
-            Conjugation c = conjugations[i];
+            Entry<String,Conjugation> entry = entries.get(i);
             TextView typeView = view.findViewById(R.id.conjFormal);
             TextView conjView = view.findViewById(R.id.conjText);
-            if(c.getTense() == Tense.NONE){
-                typeView.setText(c.getForm().toString());
-            }else {
-                typeView.setText(c.getTense().toString());
-            }
-            conjView.setText(c.getConjugated());
+            typeView.setText(entry.getKey());
+            conjView.setText(entry.getValue().getConjugated());
             return view;
         }
 
         @Override
         public int getCount() {
-            return conjugations.length;
+            return entries.size();
         }
 
         @Override
         public Object getItem(int i) {
-            return conjugations[i];
+            return entries.get(i);
         }
 
         @Override

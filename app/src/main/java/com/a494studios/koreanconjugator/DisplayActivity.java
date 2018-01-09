@@ -28,7 +28,9 @@ import com.transitionseverywhere.Fade;
 import com.transitionseverywhere.Transition;
 import com.transitionseverywhere.TransitionManager;
 
+import java.util.AbstractMap;
 import java.util.ArrayList;
+import java.util.Map.Entry;
 
 public class DisplayActivity extends AppCompatActivity {
 
@@ -78,12 +80,16 @@ public class DisplayActivity extends AppCompatActivity {
         // Other
         ArrayList<Conjugation> other = Category.Categories.getSubSet(conjugations,Form.NOMINAL,Form.CON_AND,Form.CON_IF);
         // Favorites
-        Conjugation past = Category.Categories.getSubSet(conjugations, Formality.INFORMAL_HIGH,Form.DECLARATIVE, Tense.PAST).get(0);
-        Conjugation present = Category.Categories.getSubSet(conjugations, Formality.INFORMAL_HIGH,Form.DECLARATIVE, Tense.PRESENT).get(0);
-        Conjugation future = Category.Categories.getSubSet(conjugations, Formality.INFORMAL_HIGH,Form.DECLARATIVE, Tense.FUTURE).get(0);
+        ArrayList<Entry<String,Category[]>> map = Utils.getFavorites(this);
+        ArrayList<Entry<String,Conjugation>> conjMap = new ArrayList<>();
+        for(Entry<String,Category[]> entry: map){
+            Category[] categories = entry.getValue();
+            Conjugation c = Category.Categories.getSubSet(conjugations,(Formality)categories[0],(Form)categories[1],(Tense)categories[2]).get(0);
+            conjMap.add(new AbstractMap.SimpleEntry<>(entry.getKey(),c));
+        }
 
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.frag_1,FavoritesFragment.newInstance(past,present,future));
+        transaction.replace(R.id.frag_1,FavoritesFragment.newInstance(conjMap));
         transaction.replace(R.id.frag_2,ConjugationCardFragment.newInstance("Declarative Past", decPast));
         transaction.replace(R.id.frag_3,ConjugationCardFragment.newInstance("Declarative Present", decPres));
         transaction.replace(R.id.frag_4,ConjugationCardFragment.newInstance("Declarative Future", decFut));

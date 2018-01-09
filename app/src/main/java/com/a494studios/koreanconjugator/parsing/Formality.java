@@ -19,8 +19,20 @@ public enum Formality implements Category{
         }
     }
 
+    public static Formality fromString(String string) {
+        try{
+            return valueOf(string);
+        }catch (IllegalArgumentException e){
+            return null;
+        }
+    }
+
     @Override
     public String toString(){
         return printName();
+    }
+
+    public String getType(){
+        return super.toString();
     }
 }
