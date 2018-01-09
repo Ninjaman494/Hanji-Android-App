@@ -6,7 +6,10 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.CardView;
+import android.support.v7.widget.PopupMenu;
+import android.view.Gravity;
 import android.view.KeyEvent;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
@@ -43,6 +46,7 @@ public class MainActivity extends AppCompatActivity {
         progressBar.getIndeterminateDrawable().setColorFilter(getResources().getColor(R.color.colorAccent), PorterDuff.Mode.SRC_IN);
         progressBar.getProgressDrawable().setColorFilter(getResources().getColor(R.color.colorAccent), PorterDuff.Mode.SRC_IN);
 
+        // Handle Search
         editText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
@@ -88,6 +92,29 @@ public class MainActivity extends AppCompatActivity {
                     }
                 }
                 return false;
+            }
+        });
+
+        // Setting up Overflow Menu
+        findViewById(R.id.main_menu_icon).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                PopupMenu popup = new PopupMenu(MainActivity.this, view, Gravity.END);
+                popup.inflate(R.menu.menu_overflow);
+                popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem item) {
+                        if(item.getItemId() == R.id.overflow_settings){
+                            Toast.makeText(getBaseContext(),"Setings not made yet",Toast.LENGTH_SHORT).show();
+                            return true;
+                        }else if(item.getItemId() == R.id.overflow_about){
+                            Toast.makeText(getBaseContext(),"About not made yet",Toast.LENGTH_SHORT).show();
+                            return true;
+                        }
+                        return false;
+                    }
+                });
+                popup.show();
             }
         });
     }
