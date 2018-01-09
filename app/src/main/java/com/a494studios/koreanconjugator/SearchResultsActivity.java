@@ -2,6 +2,7 @@ package com.a494studios.koreanconjugator;
 
 import android.app.SearchManager;
 import android.content.Intent;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -19,6 +20,7 @@ import android.widget.TextView;
 
 import com.a494studios.koreanconjugator.parsing.Conjugation;
 import com.a494studios.koreanconjugator.parsing.Server;
+import com.android.volley.NoConnectionError;
 import com.github.andkulikov.materialin.MaterialIn;
 
 import java.util.ArrayList;
@@ -32,12 +34,15 @@ public class SearchResultsActivity extends AppCompatActivity {
 
     private HashMap<String, String> results;
     private HashMap<String, ArrayList<Conjugation>> resultConjs;
+    private SearchAdapter adapter;
+    private boolean snackbarShown;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search_results);
         ListView listView = findViewById(R.id.search_listView);
+        snackbarShown = false;
         if(savedInstanceState != null){
             results = (HashMap<String,String>)savedInstanceState.getSerializable(EXTRA_RESULTS);
             resultConjs = (HashMap<String,ArrayList<Conjugation>>)savedInstanceState.getSerializable(SAVED_RESULT_CONJS);
@@ -51,40 +56,9 @@ public class SearchResultsActivity extends AppCompatActivity {
             actionBar.setTitle("Multiple results: "+getIntent().getStringExtra(EXTRA_SEARCHED));
         }
 
-        final SearchAdapter adapter = new SearchAdapter(results);
+        adapter = new SearchAdapter(results);
         listView.setAdapter(adapter);
-
-        for(final String key : results.keySet()){
-            if(resultConjs.get(key) == null) { // No conjugation, so we have to request one.
-                Server.requestConjugation(key, this, new Server.ServerListener() {
-                    @Override
-                    public void onResultReceived(ArrayList<Conjugation> conjugations, HashMap<String, String> searchResults) {
-                        resultConjs.put(key, conjugations);
-                    }
-
-                    @Override
-                    public void onErrorOccurred(Exception error) {
-
-                    }
-                });
-            }
-
-            if(results.get(key) == null){ // No definition, so we have to send a request for one.
-                results.put(key,getString(R.string.loading));
-                Server.requestKorDefinition(key, this, new Server.DefinitionListener() {
-                    @Override
-                    public void onDefinitionReceived(String definition) {
-                        results.put(key,definition);
-                        adapter.notifyDataSetChanged();
-                    }
-
-                    @Override
-                    public void onErrorOccurred(String errorMsg) {
-
-                    }
-                });
-            }
-        }
+        requestData();
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -100,7 +74,7 @@ public class SearchResultsActivity extends AppCompatActivity {
 
                         @Override
                         public void onErrorOccurred(Exception error) {
-
+                            handleError(error);
                         }
                     });
                 }else {
@@ -108,6 +82,40 @@ public class SearchResultsActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    private void requestData(){
+        for(final String key : results.keySet()){
+            if(resultConjs.get(key) == null) { // No conjugation, so we have to request one.
+                Server.requestConjugation(key, this, new Server.ServerListener() {
+                    @Override
+                    public void onResultReceived(ArrayList<Conjugation> conjugations, HashMap<String, String> searchResults) {
+                        resultConjs.put(key, conjugations);
+                    }
+
+                    @Override
+                    public void onErrorOccurred(Exception error) {
+                        handleError(error);
+                    }
+                });
+            }
+
+            if(results.get(key) == null || results.get(key).equals(getString(R.string.loading))){ // No definition, so we have to send a request for one.
+                results.put(key,getString(R.string.loading));
+                Server.requestKorDefinition(key, this, new Server.DefinitionListener() {
+                    @Override
+                    public void onDefinitionReceived(String definition) {
+                        results.put(key,definition);
+                        adapter.notifyDataSetChanged();
+                    }
+
+                    @Override
+                    public void onErrorOccurred(Exception error) {
+                        handleError(error);
+                    }
+                });
+            }
+        }
     }
 
     @Override
@@ -131,6 +139,25 @@ public class SearchResultsActivity extends AppCompatActivity {
     public void onResume(){
         super.onResume();
         MaterialIn.animate(findViewById(R.id.search_listView), Gravity.BOTTOM, Gravity.BOTTOM);
+    }
+
+    private void handleError(Exception error){
+        if(error instanceof NoConnectionError){
+            if(!snackbarShown) {
+                Snackbar snackbar = Snackbar.make(findViewById(R.id.search_listView), "Lost connection", Snackbar.LENGTH_INDEFINITE);
+                snackbar.setAction("Retry", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        requestData();
+                        snackbarShown = false;
+                    }
+                });
+                snackbar.show();
+                snackbarShown = true;
+            }
+        }else{
+            System.err.println(error.toString());
+        }
     }
 
     private void sendIntent(ArrayList<Conjugation> conjugations,String definition){

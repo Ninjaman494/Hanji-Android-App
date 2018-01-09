@@ -1,6 +1,7 @@
 package com.a494studios.koreanconjugator;
 
 import android.app.SearchManager;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -18,6 +19,7 @@ import com.a494studios.koreanconjugator.parsing.Form;
 import com.a494studios.koreanconjugator.parsing.Formality;
 import com.a494studios.koreanconjugator.parsing.Server;
 import com.a494studios.koreanconjugator.parsing.Tense;
+import com.android.volley.NoConnectionError;
 import com.transitionseverywhere.Fade;
 import com.transitionseverywhere.Transition;
 import com.transitionseverywhere.TransitionManager;
@@ -30,37 +32,29 @@ public class DisplayActivity extends AppCompatActivity {
     public static final String EXTRA_DEF = "definition";
 
     private String definition;
+    private String infinitive;
+    TextView defView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_display);
-        final TextView defView = findViewById(R.id.defCard_content);
+        defView = findViewById(R.id.defCard_content);
         ArrayList<Conjugation> conjugations = (ArrayList<Conjugation>)getIntent().getSerializableExtra(EXTRA_CONJ);
         if(savedInstanceState != null){
             definition = savedInstanceState.getString(EXTRA_DEF);
         }else{
             definition = getIntent().getStringExtra(EXTRA_DEF);
         }
+        infinitive = conjugations.get(0).getInfinitive();
 
         ActionBar actionBar = getSupportActionBar();
         if(actionBar != null) {
-            actionBar.setTitle("Result: "+conjugations.get(0).getInfinitive());
+            actionBar.setTitle("Result: "+infinitive);
         }
 
         if(definition == null) {
-            Server.requestKorDefinition(conjugations.get(0).getInfinitive(), this, new Server.DefinitionListener() {
-                @Override
-                public void onDefinitionReceived(String result) {
-                    definition = result;
-                    defView.setText(definition);
-                }
-
-                @Override
-                public void onErrorOccurred(String errorMsg) {
-                    System.out.println(errorMsg);
-                }
-            });
+            requestDefinition();
         }else{
             defView.setText(definition);
         }
@@ -127,6 +121,36 @@ public class DisplayActivity extends AppCompatActivity {
                 v.setVisibility(View.VISIBLE);
             }
         }
+    }
+
+    private void handleError(Exception error) {
+        if (error instanceof NoConnectionError) {
+            Snackbar snackbar = Snackbar.make(findViewById(R.id.disp_root), "Lost connection", Snackbar.LENGTH_INDEFINITE);
+            snackbar.setAction("Retry", new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    requestDefinition();
+                }
+            });
+            snackbar.show();
+        }else{
+            System.err.println(error.toString());
+        }
+    }
+
+    private void requestDefinition(){
+        Server.requestKorDefinition(infinitive, this, new Server.DefinitionListener() {
+            @Override
+            public void onDefinitionReceived(String result) {
+                definition = result;
+                defView.setText(definition);
+            }
+
+            @Override
+            public void onErrorOccurred(Exception error) {
+                handleError(error);
+            }
+        });
     }
 
     private ArrayList<ViewGroup> makeFragViewList(){

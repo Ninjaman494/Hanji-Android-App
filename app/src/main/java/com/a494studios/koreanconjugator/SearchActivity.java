@@ -1,8 +1,10 @@
 package com.a494studios.koreanconjugator;
 
 import android.app.SearchManager;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.PorterDuff;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.ProgressBar;
@@ -10,6 +12,8 @@ import android.widget.TextView;
 
 import com.a494studios.koreanconjugator.parsing.Conjugation;
 import com.a494studios.koreanconjugator.parsing.Server;
+import com.android.volley.NoConnectionError;
+import com.android.volley.ParseError;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -64,7 +68,7 @@ public class SearchActivity extends AppCompatActivity {
 
                 @Override
                 public void onErrorOccurred(Exception error) {
-
+                    handleError(error);
                 }
             });
         }
@@ -94,8 +98,31 @@ public class SearchActivity extends AppCompatActivity {
 
             @Override
             public void onErrorOccurred(Exception error) {
-                System.out.println("error:" + error.toString());
+                handleError(error);
             }
         });
+    }
+
+    private void handleError(Exception error){
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        if(error instanceof NoConnectionError){
+            builder.setMessage("Check your network settings and try again")
+                    .setTitle("Can't load results");
+
+        } else if(error instanceof ParseError) {
+            builder.setMessage("A response was given that we couldn't understand")
+                    .setTitle("Can't read results");
+        }else{
+            builder.setMessage("Try again later or contact support")
+                    .setTitle("Something went wrong");
+            System.err.println(error.toString());
+        }
+        builder.setOnCancelListener(new DialogInterface.OnCancelListener() {
+            @Override
+            public void onCancel(DialogInterface dialogInterface) {
+                onBackPressed(); // Go back to previous activity
+            }
+        });
+        builder.create().show();
     }
 }

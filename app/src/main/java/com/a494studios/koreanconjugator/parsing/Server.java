@@ -130,7 +130,7 @@ public class Server {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                listener.onErrorOccurred(error.toString());
+                listener.onErrorOccurred(error);
             }
         });
         Volley.newRequestQueue(context).add(jsRequest);
@@ -169,6 +169,6 @@ public class Server {
 
     public interface DefinitionListener {
         void onDefinitionReceived(String definition);
-        void onErrorOccurred(String errorMsg);
+        void onErrorOccurred(Exception error);
     }
 }
