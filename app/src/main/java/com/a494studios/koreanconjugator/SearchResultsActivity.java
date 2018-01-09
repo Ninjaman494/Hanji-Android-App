@@ -63,7 +63,7 @@ public class SearchResultsActivity extends AppCompatActivity {
                     }
 
                     @Override
-                    public void onErrorOccurred(String errorMsg) {
+                    public void onErrorOccurred(Exception error) {
 
                     }
                 });
@@ -99,7 +99,7 @@ public class SearchResultsActivity extends AppCompatActivity {
                         }
 
                         @Override
-                        public void onErrorOccurred(String errorMsg) {
+                        public void onErrorOccurred(Exception error) {
 
                         }
                     });

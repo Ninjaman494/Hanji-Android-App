@@ -63,7 +63,7 @@ public class SearchActivity extends AppCompatActivity {
                 }
 
                 @Override
-                public void onErrorOccurred(String errorMsg) {
+                public void onErrorOccurred(Exception error) {
 
                 }
             });
@@ -93,8 +93,8 @@ public class SearchActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onErrorOccurred(String errorMsg) {
-                System.out.println("error:" + errorMsg);
+            public void onErrorOccurred(Exception error) {
+                System.out.println("error:" + error.toString());
             }
         });
     }

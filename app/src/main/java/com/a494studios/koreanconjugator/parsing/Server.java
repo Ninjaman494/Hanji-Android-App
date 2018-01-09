@@ -47,14 +47,14 @@ public class Server {
                if(response.toString().contains("\"type\":")) {
                    ArrayList<Conjugation> conjugations = parseConjugations(response);
                    if(conjugations == null){
-                       listener.onErrorOccurred("Something went wrong with JSON parsing");
+                       listener.onErrorOccurred(new JSONException("Something went wrong with JSON parsing"));
                    }else{
                        listener.onResultReceived(conjugations,null);
                    }
                }else if(response.toString().contains("\"key\":")){
                    HashMap<String,String> results = parseSearchResults(response);
                    if(results == null){
-                       listener.onErrorOccurred("Something went wrong with JSON parsing");
+                       listener.onErrorOccurred(new JSONException("Something went wrong with JSON parsing"));
                    }else{
                        listener.onResultReceived(null,results);
                    }
@@ -63,7 +63,7 @@ public class Server {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                listener.onErrorOccurred(error.toString());
+                listener.onErrorOccurred(error);
             }
         });
         Volley.newRequestQueue(context).add(jsRequest);
@@ -79,7 +79,7 @@ public class Server {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                listener.onErrorOccurred(error.toString());
+                listener.onErrorOccurred(error);
             }
         });
         Volley.newRequestQueue(context).add(jsRequest);
@@ -150,13 +150,13 @@ public class Server {
                     listener.onResultReceived(null,entries);
                 }catch (JSONException e){
                     e.printStackTrace();
-                    listener.onErrorOccurred(e.toString());
+                    listener.onErrorOccurred(e);
                 }
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                listener.onErrorOccurred(error.toString());
+                listener.onErrorOccurred(error);
             }
         });
         Volley.newRequestQueue(context).add(jsRequest);
@@ -164,7 +164,7 @@ public class Server {
 
     public interface ServerListener {
         void onResultReceived(ArrayList<Conjugation> conjugations, HashMap<String, String> searchResults);
-        void onErrorOccurred(String errorMsg);
+        void onErrorOccurred(Exception error);
     }
 
     public interface DefinitionListener {
