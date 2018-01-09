@@ -1,9 +1,13 @@
 package com.a494studios.koreanconjugator;
 
+import android.app.SearchManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.SearchView;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -92,6 +96,16 @@ public class DisplayActivity extends AppCompatActivity {
         transaction.replace(R.id.frag_9,ConjugationCardFragment.newInstance("Propositive Present", propPres));
         transaction.replace(R.id.frag_10,ConjugationCardFragment.newInstance("Other Forms", other));
         transaction.commit();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.search_menu, menu);
+        SearchManager searchManager = (SearchManager) getSystemService(SEARCH_SERVICE);
+        SearchView searchView = (SearchView) menu.findItem(R.id.menu_search).getActionView();
+        searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
+        return true;
     }
 
     @Override

@@ -20,10 +20,11 @@ import java.util.HashMap;
 
 public class MainActivity extends AppCompatActivity {
 
-    ProgressBar progressBar;
-    TextView loadingText;
-    CardView searchCard;
-    EditText editText;
+    private ProgressBar progressBar;
+    private TextView loadingText;
+    private CardView searchCard;
+    private EditText editText;
+    private boolean searchInProgress;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,6 +34,7 @@ public class MainActivity extends AppCompatActivity {
         loadingText = findViewById(R.id.main_loadingText);
         searchCard = findViewById(R.id.main_searchCard);
         editText = findViewById(R.id.main_editText);
+        searchInProgress = false;
 
         progressBar.getIndeterminateDrawable().setColorFilter(getResources().getColor(R.color.colorAccent), PorterDuff.Mode.SRC_IN);
         progressBar.getProgressDrawable().setColorFilter(getResources().getColor(R.color.colorAccent), PorterDuff.Mode.SRC_IN);
@@ -44,8 +46,13 @@ public class MainActivity extends AppCompatActivity {
                     progressBar.setVisibility(View.VISIBLE);
                     loadingText.setVisibility(View.VISIBLE);
                     searchCard.setVisibility(View.INVISIBLE);
+                    searchInProgress = true;
 
                     final String entry = editText.getText().toString().trim();
+                    if (entry.equals("")) {
+                        return false;
+                    }
+
                     if(isHangul(entry)) {
                         doKoreanSearch(entry);
                     }else{
@@ -59,6 +66,7 @@ public class MainActivity extends AppCompatActivity {
                                         progressBar.setIndeterminate(false);
                                         progressBar.setProgress(100);
                                         loadingText.setText(R.string.main_results_found);
+                                        searchInProgress = false;
 
                                         Intent intent = new Intent(getApplicationContext(), SearchResultsActivity.class);
                                         intent.putExtra(SearchResultsActivity.EXTRA_RESULTS, searchResults);
@@ -84,12 +92,14 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onResume(){
         super.onResume();
-        editText.getText().clear();
-        searchCard.setVisibility(View.VISIBLE);
-        progressBar.setVisibility(View.INVISIBLE);
-        loadingText.setVisibility(View.INVISIBLE);
-        loadingText.setText(R.string.loading);
-        progressBar.setIndeterminate(true);
+        if(!searchInProgress) {
+            editText.getText().clear();
+            searchCard.setVisibility(View.VISIBLE);
+            progressBar.setVisibility(View.INVISIBLE);
+            loadingText.setVisibility(View.INVISIBLE);
+            loadingText.setText(R.string.loading);
+            progressBar.setIndeterminate(true);
+        }
     }
 
     private void doKoreanSearch(final String entry){
@@ -99,6 +109,7 @@ public class MainActivity extends AppCompatActivity {
                 progressBar.setIndeterminate(false);
                 progressBar.setProgress(100);
                 loadingText.setText(R.string.main_results_found);
+                searchInProgress = false;
 
                 if (conjugations != null) {
                     Intent intent = new Intent(getApplicationContext(), DisplayActivity.class);
@@ -121,7 +132,7 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    private static boolean isHangul(String korean){
+    public static boolean isHangul(String korean){
         korean = korean.replace(" ","");
         for(int i=0;i<korean.length();i++){
             char c = korean.charAt(i);
