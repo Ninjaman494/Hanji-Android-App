@@ -11,15 +11,18 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.a494studios.koreanconjugator.parsing.Conjugation;
 import com.a494studios.koreanconjugator.parsing.Server;
+import com.a494studios.koreanconjugator.settings.SettingsActivity;
 import com.android.volley.NoConnectionError;
 import com.github.andkulikov.materialin.MaterialIn;
 
@@ -126,6 +129,19 @@ public class SearchResultsActivity extends AppCompatActivity {
         SearchView searchView = (SearchView) menu.findItem(R.id.menu_search).getActionView();
         searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
         return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if(item.getItemId() == R.id.overflow_settings){
+            startActivity(new Intent(getBaseContext(), SettingsActivity.class));
+            return true;
+        }else if(item.getItemId() == R.id.overflow_about){
+            Toast.makeText(getBaseContext(),"About not made yet",Toast.LENGTH_SHORT).show();
+            return true;
+        }else{
+            return super.onOptionsItemSelected(item);
+        }
     }
 
     @Override

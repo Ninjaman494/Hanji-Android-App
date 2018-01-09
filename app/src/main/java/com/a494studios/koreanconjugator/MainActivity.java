@@ -95,7 +95,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 PopupMenu popup = new PopupMenu(MainActivity.this, view, Gravity.END);
-                popup.inflate(R.menu.menu_overflow);
+                popup.inflate(R.menu.main_menu);
                 popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                     @Override
                     public boolean onMenuItemClick(MenuItem item) {

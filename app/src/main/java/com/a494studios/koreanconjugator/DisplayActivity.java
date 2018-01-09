@@ -1,6 +1,7 @@
 package com.a494studios.koreanconjugator;
 
 import android.app.SearchManager;
+import android.content.Intent;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBar;
@@ -9,9 +10,11 @@ import android.os.Bundle;
 import android.support.v7.widget.SearchView;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.a494studios.koreanconjugator.parsing.Category;
 import com.a494studios.koreanconjugator.parsing.Conjugation;
@@ -19,6 +22,7 @@ import com.a494studios.koreanconjugator.parsing.Form;
 import com.a494studios.koreanconjugator.parsing.Formality;
 import com.a494studios.koreanconjugator.parsing.Server;
 import com.a494studios.koreanconjugator.parsing.Tense;
+import com.a494studios.koreanconjugator.settings.SettingsActivity;
 import com.android.volley.NoConnectionError;
 import com.transitionseverywhere.Fade;
 import com.transitionseverywhere.Transition;
@@ -100,6 +104,19 @@ public class DisplayActivity extends AppCompatActivity {
         SearchView searchView = (SearchView) menu.findItem(R.id.menu_search).getActionView();
         searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
         return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if(item.getItemId() == R.id.overflow_settings){
+            startActivity(new Intent(getBaseContext(), SettingsActivity.class));
+            return true;
+        }else if(item.getItemId() == R.id.overflow_about){
+            Toast.makeText(getBaseContext(),"About not made yet",Toast.LENGTH_SHORT).show();
+            return true;
+        }else{
+            return super.onOptionsItemSelected(item);
+        }
     }
 
     @Override

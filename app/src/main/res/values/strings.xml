@@ -3,6 +3,13 @@
     <string name="main_results_found">Results Found!</string>
     <string name="loading">Loading…</string>
     <string name="main_search_hint">Search Korean or English…</string>
+    <!--Menu Titles-->
+    <string name="menu_search">Search</string>
+    <string name="menu_settings">Settings</string>
+    <string name="menu_about">About</string>
+    <!--Preferences-->
     <string name="lucky_kor_false">Show all results during Korean searches</string>
     <string name="lucky_eng_false">Show all results during English searches</string>
+    <string name="lucky_kor_true">Go to first result during Korean searches</string>
+    <string name="lucky_eng_true">Go to first result during English searches</string>
 </resources>

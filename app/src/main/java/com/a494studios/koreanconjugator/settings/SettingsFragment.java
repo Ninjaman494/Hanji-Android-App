@@ -24,13 +24,13 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
         if (key.equals(Utils.PREF_LUCKY_KOR)) {
             if(sharedPreferences.getBoolean(key,false)) {
-                findPreference(key).setSummary("Go to first result during Korean searches");
+                findPreference(key).setSummary(R.string.lucky_kor_true);
             }else{
                 findPreference(key).setSummary(R.string.lucky_kor_false);
             }
         }else if(key.equals(Utils.PREF_LUCKY_ENG)){
             if(sharedPreferences.getBoolean(key,false)) {
-                findPreference(key).setSummary("Go to first result during English searches");
+                findPreference(key).setSummary(R.string.lucky_eng_true);
             }else{
                 findPreference(key).setSummary(R.string.lucky_eng_false);
             }
