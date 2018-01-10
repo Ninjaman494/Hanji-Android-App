@@ -18,12 +18,12 @@ import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.a494studios.koreanconjugator.parsing.Conjugation;
 import com.a494studios.koreanconjugator.parsing.Server;
 import com.a494studios.koreanconjugator.settings.SettingsActivity;
 import com.android.volley.NoConnectionError;
+import com.eggheadgames.aboutbox.activity.AboutActivity;
 import com.github.andkulikov.materialin.MaterialIn;
 
 import java.util.ArrayList;
@@ -39,6 +39,7 @@ public class SearchResultsActivity extends AppCompatActivity {
     private HashMap<String, ArrayList<Conjugation>> resultConjs;
     private SearchAdapter adapter;
     private boolean snackbarShown;
+    private boolean overflowClicked;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -137,7 +138,8 @@ public class SearchResultsActivity extends AppCompatActivity {
             startActivity(new Intent(getBaseContext(), SettingsActivity.class));
             return true;
         }else if(item.getItemId() == R.id.overflow_about){
-            Toast.makeText(getBaseContext(),"About not made yet",Toast.LENGTH_SHORT).show();
+            Utils.makeAboutBox(this);
+            AboutActivity.launch(this);
             return true;
         }else{
             return super.onOptionsItemSelected(item);
@@ -152,8 +154,15 @@ public class SearchResultsActivity extends AppCompatActivity {
     }
 
     @Override
+    public void onPause(){
+        super.onPause();
+        if(!overflowClicked) overridePendingTransition(0,0);
+    }
+
+    @Override
     public void onResume(){
         super.onResume();
+        overflowClicked = false;
         MaterialIn.animate(findViewById(R.id.search_listView), Gravity.BOTTOM, Gravity.BOTTOM);
     }
 

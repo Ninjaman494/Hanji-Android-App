@@ -13,6 +13,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -34,6 +35,7 @@ public class MainActivity extends AppCompatActivity {
     private CardView searchCard;
     private EditText editText;
     private TextView logo;
+    private ImageView overflowMenu;
     private boolean searchInProgress;
 
     @Override
@@ -42,6 +44,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         progressBar = findViewById(R.id.main_loadingBar);
         loadingText = findViewById(R.id.main_loadingText);
+        overflowMenu = findViewById(R.id.main_menu_icon);
         searchCard = findViewById(R.id.main_searchCard);
         editText = findViewById(R.id.main_editText);
         logo = findViewById(R.id.main_logo);
@@ -58,6 +61,7 @@ public class MainActivity extends AppCompatActivity {
                     progressBar.setVisibility(View.VISIBLE);
                     loadingText.setVisibility(View.VISIBLE);
                     searchCard.setVisibility(View.INVISIBLE);
+                    overflowMenu.setVisibility(View.INVISIBLE);
                     logo.setVisibility(View.INVISIBLE);
                     searchInProgress = true;
 
@@ -95,7 +99,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
         // Setting up Overflow Menu
-        findViewById(R.id.main_menu_icon).setOnClickListener(new View.OnClickListener() {
+        overflowMenu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 PopupMenu popup = new PopupMenu(MainActivity.this, view, Gravity.END);
@@ -185,8 +189,9 @@ public class MainActivity extends AppCompatActivity {
 
     private void showSearchCard(){
         editText.getText().clear();
-        searchCard.setVisibility(View.VISIBLE);
         logo.setVisibility(View.VISIBLE);
+        searchCard.setVisibility(View.VISIBLE);
+        overflowMenu.setVisibility(View.VISIBLE);
         progressBar.setVisibility(View.INVISIBLE);
         loadingText.setVisibility(View.INVISIBLE);
         loadingText.setText(R.string.loading);

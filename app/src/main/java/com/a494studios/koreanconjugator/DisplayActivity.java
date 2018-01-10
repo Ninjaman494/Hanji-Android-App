@@ -14,7 +14,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.a494studios.koreanconjugator.parsing.Category;
 import com.a494studios.koreanconjugator.parsing.Conjugation;
@@ -24,6 +23,7 @@ import com.a494studios.koreanconjugator.parsing.Server;
 import com.a494studios.koreanconjugator.parsing.Tense;
 import com.a494studios.koreanconjugator.settings.SettingsActivity;
 import com.android.volley.NoConnectionError;
+import com.eggheadgames.aboutbox.activity.AboutActivity;
 import com.transitionseverywhere.Fade;
 import com.transitionseverywhere.Transition;
 import com.transitionseverywhere.TransitionManager;
@@ -39,7 +39,8 @@ public class DisplayActivity extends AppCompatActivity {
 
     private String definition;
     private String infinitive;
-    TextView defView;
+    private TextView defView;
+    private boolean overflowClicked;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -115,10 +116,13 @@ public class DisplayActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if(item.getItemId() == R.id.overflow_settings){
+            overflowClicked = true;
             startActivity(new Intent(getBaseContext(), SettingsActivity.class));
             return true;
         }else if(item.getItemId() == R.id.overflow_about){
-            Toast.makeText(getBaseContext(),"About not made yet",Toast.LENGTH_SHORT).show();
+            overflowClicked = true;
+            Utils.makeAboutBox(this);
+            AboutActivity.launch(this);
             return true;
         }else{
             return super.onOptionsItemSelected(item);
@@ -144,6 +148,18 @@ public class DisplayActivity extends AppCompatActivity {
                 v.setVisibility(View.VISIBLE);
             }
         }
+    }
+
+    @Override
+    public void onPause(){
+        super.onPause();
+        if(!overflowClicked) overridePendingTransition(0,0);
+    }
+
+    @Override
+    public void onResume(){
+        super.onResume();
+        overflowClicked = false;
     }
 
     private void handleError(Exception error) {

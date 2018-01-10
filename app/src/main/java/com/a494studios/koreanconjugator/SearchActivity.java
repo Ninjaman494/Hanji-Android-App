@@ -124,6 +124,12 @@ public class SearchActivity extends AppCompatActivity {
         builder.create().show();
     }
 
+    @Override
+    public void onPause(){
+        super.onPause();
+        overridePendingTransition(0,0);
+    }
+
     private void prepForIntent(){
         progressBar.setIndeterminate(false);
         progressBar.setProgress(100);
