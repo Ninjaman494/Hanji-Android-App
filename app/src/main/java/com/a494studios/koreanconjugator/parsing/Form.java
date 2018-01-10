@@ -17,7 +17,7 @@ public enum Form implements Category {
             case PROPOSITIVE:   return "propositive";
             case CON_IF:        return "connective if";
             case CON_AND:       return "connective and";
-            case NOMINAL:       return "nominal ing";
+            case NOMINAL:       return "nominal";
             case PAST_BASE:     return "past base";
             case FUTURE_BASE:   return "future base";
             default: throw new IllegalArgumentException();

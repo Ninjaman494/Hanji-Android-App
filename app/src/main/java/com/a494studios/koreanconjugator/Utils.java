@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
 import com.a494studios.koreanconjugator.parsing.Category;
+import com.a494studios.koreanconjugator.parsing.Conjugation;
 
 import java.util.AbstractMap;
 import java.util.ArrayList;
@@ -53,6 +54,16 @@ public class Utils {
         }
         editor.putString(PREF_FAV_VALUES, valueBuilder.toString());
         editor.apply();
+    }
+
+    public static void setFavorites(ArrayList<Map.Entry<String,Category[]>> data, Context context){
+        ArrayList<String> keys = new ArrayList<>();
+        ArrayList<Category[]> values = new ArrayList<>();
+        for(Map.Entry<String,Category[]> entry : data){
+            keys.add(entry.getKey());
+            values.add(entry.getValue());
+        }
+        setFavorites(keys,values,context);
     }
 
     public static ArrayList<Map.Entry<String,Category[]>> getFavorites(Context context) {

@@ -2,12 +2,18 @@ package com.a494studios.koreanconjugator.settings;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.a494studios.koreanconjugator.R;
 import com.a494studios.koreanconjugator.Utils;
@@ -17,7 +23,9 @@ import java.util.ArrayList;
 import java.util.Map;
 
 
-public class FavoritesActivity extends AppCompatActivity {
+public class FavoritesActivity extends AppCompatActivity implements AddFavoriteFragment.AddFavoriteFragmentListener {
+
+    FavoritesAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,7 +33,53 @@ public class FavoritesActivity extends AppCompatActivity {
         setContentView(R.layout.activity_favorites);
 
         ListView listView = findViewById(R.id.fav_listView);
-        listView.setAdapter(new FavoritesAdapter(Utils.getFavorites(this)));
+        adapter = new FavoritesAdapter(Utils.getFavorites(this));
+        listView.setAdapter(adapter);
+        registerForContextMenu(listView);
+    }
+
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+        super.onCreateContextMenu(menu, v, menuInfo);
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.context_menu, menu);
+    }
+
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+        if( item.getItemId() == R.id.context_delete) {
+            ArrayList<Map.Entry<String,Category[]>> data = adapter.remove(adapter.getItem(info.position));
+            Utils.setFavorites(data,this);
+            adapter.notifyDataSetChanged();
+            return true;
+        }else{
+            return super.onContextItemSelected(item);
+        }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.fav_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if(item.getItemId() == R.id.menu_add) {
+            AddFavoriteFragment.newInstance().show(getSupportFragmentManager(),"add_fav_frag");
+            return true;
+        }else{
+            return super.onOptionsItemSelected(item);
+        }
+    }
+
+    @Override
+    public void onFavoriteAdded(Map.Entry<String, Category[]> entry) {
+        ArrayList<Map.Entry<String,Category[]>> data = adapter.add(entry);
+        Utils.setFavorites(data,this);
+        adapter.notifyDataSetChanged();
     }
 
     private class FavoritesAdapter extends BaseAdapter {
@@ -70,7 +124,7 @@ public class FavoritesActivity extends AppCompatActivity {
         }
 
         @Override
-        public Object getItem(int i) {
+        public Map.Entry<String,Category[]> getItem(int i) {
             return entries.get(i);
         }
 
@@ -82,6 +136,16 @@ public class FavoritesActivity extends AppCompatActivity {
         @Override
         public boolean hasStableIds() {
             return true;
+        }
+
+        public ArrayList<Map.Entry<String,Category[]>> remove(Map.Entry<String,Category[]> entry){
+            entries.remove(entry);
+            return entries;
+        }
+
+        public ArrayList<Map.Entry<String,Category[]>> add(Map.Entry<String,Category[]> entry){
+            entries.add(entry);
+            return entries;
         }
     }
 }

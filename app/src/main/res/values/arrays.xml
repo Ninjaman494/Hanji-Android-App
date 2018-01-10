@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="forms">
+        <item>Select a Form…</item>
+        <item>Declarative</item>
+        <item>Inquisitive</item>
+        <item>Imperative</item>
+        <item>Propositive</item>
+        <item>Connective If</item>
+        <item>Connective And</item>
+        <item>Nominal</item>
+    </string-array>
+    <string-array name="formality">
+        <item>Informal Low</item>
+        <item>Informal High</item>
+        <item>Formal Low</item>
+        <item>Formal High</item>
+    </string-array>
+    <string-array name="tense_dec">
+        <item>Past</item>
+        <item>Present</item>
+        <item>Future</item>
+        <item>Future Conditional</item>
+    </string-array>
+    <string-array name="tense_inq">
+        <item>Past</item>
+        <item>Present</item>
+    </string-array>
+    <string-array name="tense_imp_prop">
+        <item>Present</item>
+    </string-array>
+</resources>

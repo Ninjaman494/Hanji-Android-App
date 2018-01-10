@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <EditText
+        android:id="@+id/addFav_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Enter favorites name..."
+        android:layout_margin="10dp"/>
+
+    <Spinner
+        android:id="@+id/addFav_formSpinner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/addFav_name"
+        android:layout_margin="10dp" />
+    <Spinner
+        android:id="@+id/addFav_formalitySpinner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/addFav_formSpinner"
+        android:layout_margin="10dp"/>
+    <Spinner
+        android:id="@+id/addFav_tenseSpinner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/addFav_formalitySpinner"
+        android:layout_margin="10dp"/>
+
+</RelativeLayout>

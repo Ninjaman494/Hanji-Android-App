@@ -27,7 +27,7 @@ public class Conjugation implements Serializable {
         this.tense = generateTense(type);
     }
 
-    private Formality generateFormality(String type) {
+    public static Formality generateFormality(String type) {
         if (type.contains(Formality.INFORMAL_LOW.toString())) {
             return Formality.INFORMAL_LOW;
         } else if (type.contains(Formality.INFORMAL_HIGH.toString())) {
@@ -41,7 +41,7 @@ public class Conjugation implements Serializable {
         }
     }
 
-    private Tense generateTense(String type){
+    public static Tense generateTense(String type){
         if(type.contains(Tense.FUT_COND.toString())){
             return Tense.FUT_COND;
         }else if(type.contains(Tense.FUTURE.toString())){
@@ -55,7 +55,7 @@ public class Conjugation implements Serializable {
         }
     }
 
-    private Form generateForm(String type) {
+    public static Form generateForm(String type) {
         if (type.contains(Form.DECLARATIVE.toString())) {
             return Form.DECLARATIVE;
         } else if (type.contains(Form.INQUISITIVE.toString())) {
