@@ -22,18 +22,21 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
 
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-        if (key.equals(Utils.PREF_LUCKY_KOR)) {
-            if(sharedPreferences.getBoolean(key,false)) {
-                findPreference(key).setSummary(R.string.lucky_kor_true);
-            }else{
-                findPreference(key).setSummary(R.string.lucky_kor_false);
-            }
-        }else if(key.equals(Utils.PREF_LUCKY_ENG)){
-            if(sharedPreferences.getBoolean(key,false)) {
-                findPreference(key).setSummary(R.string.lucky_eng_true);
-            }else{
-                findPreference(key).setSummary(R.string.lucky_eng_false);
-            }
+        switch (key) {
+            case Utils.PREF_LUCKY_KOR:
+                if (sharedPreferences.getBoolean(key, false)) {
+                    findPreference(key).setSummary(R.string.lucky_kor_true);
+                } else {
+                    findPreference(key).setSummary(R.string.lucky_kor_false);
+                }
+                break;
+            case Utils.PREF_LUCKY_ENG:
+                if (sharedPreferences.getBoolean(key, false)) {
+                    findPreference(key).setSummary(R.string.lucky_eng_true);
+                } else {
+                    findPreference(key).setSummary(R.string.lucky_eng_false);
+                }
+                break;
         }
     }
 
@@ -41,6 +44,9 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
     public void onResume() {
         super.onResume();
         getPreferenceScreen().getSharedPreferences().registerOnSharedPreferenceChangeListener(this);
+
+        int count = Utils.getFavCount(getActivity());
+        findPreference(Utils.PREF_FAV_COUNT).setSummary("You have " + count + " favorites");
     }
 
     @Override

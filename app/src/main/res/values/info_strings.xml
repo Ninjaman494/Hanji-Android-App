@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="define_aboutBox"/>
+    <string name="library_aboutBox_author">Egghead Games</string>
+    <string name="library_aboutBox_authorWebsite">https://eggheadgames.com</string>
+    <string name="library_aboutBox_libraryName">About Box</string>
+    <string name="library_aboutBox_libraryDescription">Easily display the common items of an About Box in a modern Android friendly way.</string>
+    <string name="library_aboutBox_libraryVersion">1.3.2</string>
+    <string name="library_aboutBox_libraryWebsite">https://github.com/eggheadgames/android-about-box</string>
+    <string name="library_aboutBox_licenseId">MIT</string>
+    <string name="library_aboutBox_isOpenSource">true</string>
+    <string name="library_aboutBox_repositoryLink">https://github.com/eggheadgames/android-about-box</string>
+    <string name="define_linear_list"/>
+    <string name="library_linear_list_author">Frankie Sardo</string>
+    <string name="library_linear_list_authorWebsite">https://www.wonderkiln.com/</string>
+    <string name="library_linear_list_libraryName">LinearListView</string>
+    <string name="library_linear_list_libraryDescription">Android library that allows you to bind a LinearLayout with a ListAdapter.</string>
+    <string name="library_linear_list_libraryVersion">1.0.1</string>
+    <string name="library_linear_list_libraryWebsite">https://github.com/frankiesardo/LinearListView</string>
+    <string name="library_linear_list_licenseId">apache_2_0</string>
+    <string name="library_linear_list_isOpenSource">true</string>
+    <string name="library_linear_list_repositoryLink">https://github.com/frankiesardo/LinearListView</string>
+    <string name="define_transitions"/>
+    <string name="library_transitions_author">Andrey Kulikov</string>
+    <string name="library_transitions_authorWebsite">https://github.com/andkulikov/Transitions-Everywhere</string>
+    <string name="library_transitions_libraryName">Transitions Everywhere</string>
+    <string name="library_transitions_libraryDescription">Backport of Android Transitions API. Animations backported to Android 4.0+. API compatible with Android 2.3+</string>
+    <string name="library_transitions_libraryVersion">1.7.8</string>
+    <string name="library_transitions_libraryWebsite">https://github.com/andkulikov/Transitions-Everywhere</string>
+    <string name="library_transitions_licenseId">apache_2_0</string>
+    <string name="library_transitions_isOpenSource">true</string>
+    <string name="library_transitions_repositoryLink">https://github.com/andkulikov/Transitions-Everywhere</string>
+</resources>

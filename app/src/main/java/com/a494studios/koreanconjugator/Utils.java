@@ -1,13 +1,21 @@
 package com.a494studios.koreanconjugator;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
+import android.support.v7.app.AppCompatActivity;
 
 import com.a494studios.koreanconjugator.parsing.Category;
 import com.a494studios.koreanconjugator.parsing.Form;
 import com.a494studios.koreanconjugator.parsing.Formality;
 import com.a494studios.koreanconjugator.parsing.Tense;
+import com.a494studios.koreanconjugator.settings.LegalDisplayActivity;
+import com.eggheadgames.aboutbox.AboutConfig;
+import com.eggheadgames.aboutbox.IDialog;
+import com.mikepenz.aboutlibraries.Libs;
+import com.mikepenz.aboutlibraries.LibsBuilder;
 
 import java.util.AbstractMap;
 import java.util.ArrayList;
@@ -20,8 +28,9 @@ import java.util.Map;
 public class Utils {
     public static final String PREF_LUCKY_KOR = "pref_luckyKorean";
     public static final String PREF_LUCKY_ENG = "pref_luckyEnglish";
-    public static final String PREF_FAV_KEYS = "FAVORITES_KEYS";
-    public static final String PREF_FAV_VALUES = "FAVORITES_VALUES";
+    public static final String PREF_FAV_COUNT = "pref_fav_count";
+    private static final String PREF_FAV_KEYS = "FAVORITES_KEYS";
+    private static final String PREF_FAV_VALUES = "FAVORITES_VALUES";
 
     private static final String DEFAULT_FAV_KEYS = "Past,Present,Future,";
     private static final String DEFAULT_FAV_VALUES = "INFORMAL_HIGH:DECLARATIVE:PAST:,INFORMAL_HIGH:DECLARATIVE:PRESENT:,INFORMAL_HIGH:DECLARATIVE:FUTURE:,";
@@ -34,7 +43,15 @@ public class Utils {
         return PreferenceManager.getDefaultSharedPreferences(context).getBoolean(PREF_LUCKY_ENG, false);
     }
 
-    public static void setFavorites(ArrayList<String> keys, ArrayList<Category[]> values, Context context) {
+    public static int getFavCount(Context context){
+        return PreferenceManager.getDefaultSharedPreferences(context).getInt(PREF_FAV_COUNT, 3);
+    }
+
+    public static void setFavCount(int count, Context context){
+        PreferenceManager.getDefaultSharedPreferences(context).edit().putInt(PREF_FAV_COUNT, count).apply();
+    }
+
+    private static void setFavorites(ArrayList<String> keys, ArrayList<Category[]> values, Context context) {
         SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(context).edit();
         StringBuilder keyBuilder = new StringBuilder();
         for (String key : keys) {
@@ -64,6 +81,7 @@ public class Utils {
             values.add(entry.getValue());
         }
         setFavorites(keys,values,context);
+        setFavCount(data.size(),context);
     }
 
     public static ArrayList<Map.Entry<String,Category[]>> getFavorites(Context context) {
@@ -145,5 +163,44 @@ public class Utils {
         } else {
             return null;
         }
+    }
+
+    public static void makeAboutBox(final Activity activity){
+        final AboutConfig aboutConfig = AboutConfig.getInstance();
+        aboutConfig.appName = activity.getString(R.string.app_name);
+        aboutConfig.appIcon = R.mipmap.ic_launcher;
+        aboutConfig.version = "1.2.2";
+        aboutConfig.author = "494 Studios";
+        aboutConfig.aboutLabelTitle = "About App";
+        aboutConfig.packageName = activity.getPackageName();
+        aboutConfig.buildType = AboutConfig.BuildType.GOOGLE;
+        aboutConfig.facebookUserName = "the.medy";
+        aboutConfig.webHomePage = "http://medyo.github.io/";
+        aboutConfig.appPublisher = "494 Studios"; // app publisher for "Try Other Apps" item
+        // Contact Support email details
+        aboutConfig.emailAddress = "akasheldo@hotmail.com";
+        aboutConfig.emailSubject = "Hanji - Contact Us";
+        aboutConfig.privacyHtmlPath = "file:///android_asset/PrivacyPolicy.html";
+        aboutConfig.acknowledgmentHtmlPath = "www.google.com";
+        // Custom handler for Acknowledgements and Privacy Policy options
+        aboutConfig.dialog = new IDialog() {
+            @Override
+            public void open(AppCompatActivity appCompatActivity, String url, String tag) {
+                if(tag.equals(activity.getString(R.string.egab_privacy_policy))) {
+                    Intent intent = new Intent(activity,LegalDisplayActivity.class);
+                    intent.putExtra("type",LegalDisplayActivity.TYPE_PRIV_POLICY);
+                    activity.startActivity(intent);
+                }else if(tag.equals(activity.getString(R.string.egab_acknowledgements))){
+                    new LibsBuilder()
+                            .withActivityStyle(Libs.ActivityStyle.LIGHT_DARK_TOOLBAR)
+                            .withExcludedLibraries("support_cardview","support_v4","support_annotations","AppCompat","appcompat_v7","recyclerview_v7","GooglePlayServices","design","volleyplus")
+                            .withLicenseDialog(true)
+                            .withLicenseShown(true)
+                            .withActivityTitle("Libraries Used")
+                            .withLibraries("aboutBox","linear_list","transitions")
+                            .start(activity);
+                }
+            }
+        };
     }
 }

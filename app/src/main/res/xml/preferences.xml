@@ -1,21 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
-    <Preference
-        android:title="Favorites"
-        android:persistent="false">
-        <intent
-            android:targetPackage="com.a494studios.koreanconjugator"
-            android:targetClass="com.a494studios.koreanconjugator.settings.FavoritesActivity">
-        </intent>
-    </Preference>
-    <SwitchPreference
-        android:key="pref_luckyKorean"
-        android:title="I'm Feeling Lucky - Korean"
-        android:summary="@string/lucky_kor_false"
-        android:defaultValue="false"/>
-    <SwitchPreference
-        android:key="pref_luckyEnglish"
-        android:title="I'm Feeling Lucky - English"
-        android:summary="@string/lucky_eng_false"
-        android:defaultValue="false"/>
+    <PreferenceCategory android:title="Preferences">
+        <SwitchPreference
+            android:defaultValue="false"
+            android:key="pref_luckyKorean"
+            android:summary="@string/lucky_kor_false"
+            android:title="I'm Feeling Lucky - Korean" />
+        <SwitchPreference
+            android:defaultValue="false"
+            android:key="pref_luckyEnglish"
+            android:summary="@string/lucky_eng_false"
+            android:title="I'm Feeling Lucky - English" />
+        <Preference
+            android:defaultValue="3"
+            android:key="pref_fav_count"
+            android:summary="You have 3 favorites"
+            android:title="Favorites">
+            <intent android:targetClass="com.a494studios.koreanconjugator.settings.FavoritesActivity"
+                android:targetPackage="com.a494studios.koreanconjugator"/>
+        </Preference>
+    </PreferenceCategory>
+    <PreferenceCategory android:title="Legal Information">
+        <Preference
+            android:persistent="false"
+            android:title="Terms and Conditions of Use">
+            <intent android:targetClass="com.a494studios.koreanconjugator.settings.LegalDisplayActivity"
+                android:targetPackage="com.a494studios.koreanconjugator">
+                <extra android:name="type"
+                    android:value="TERMS_CONDITIONS" />
+            </intent>
+        </Preference>
+        <Preference
+            android:persistent="false"
+            android:title="Privacy Policy">
+            <intent android:targetClass="com.a494studios.koreanconjugator.settings.LegalDisplayActivity"
+                android:targetPackage="com.a494studios.koreanconjugator">
+                <extra android:name="type"
+                    android:value="PRIVACY_POLICY" />
+            </intent>
+        </Preference>
+    </PreferenceCategory>
 </PreferenceScreen>

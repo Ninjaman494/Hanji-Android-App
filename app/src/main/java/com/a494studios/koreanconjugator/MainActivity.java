@@ -22,6 +22,7 @@ import com.a494studios.koreanconjugator.parsing.Server;
 import com.a494studios.koreanconjugator.settings.SettingsActivity;
 import com.android.volley.NoConnectionError;
 import com.android.volley.ParseError;
+import com.eggheadgames.aboutbox.activity.AboutActivity;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -103,7 +104,8 @@ public class MainActivity extends AppCompatActivity {
                             startActivity(new Intent(getBaseContext(), SettingsActivity.class));
                             return true;
                         }else if(item.getItemId() == R.id.overflow_about){
-                            Toast.makeText(getBaseContext(),"About not made yet",Toast.LENGTH_SHORT).show();
+                            Utils.makeAboutBox(MainActivity.this);
+                            AboutActivity.launch(MainActivity.this);
                             return true;
                         }
                         return false;
