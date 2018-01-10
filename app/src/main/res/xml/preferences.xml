@@ -3,11 +3,10 @@
     <Preference
         android:title="Favorites"
         android:persistent="false">
-        <!--<intent
-            android:targetPackage="example.interviewbuddy"
-            android:targetClass="example.interviewbuddy.settings.LegalDisplayActivity">
-            <extra android:name="type" android:value="TERMS_CONDITIONS" />
-        </intent>-->
+        <intent
+            android:targetPackage="com.a494studios.koreanconjugator"
+            android:targetClass="com.a494studios.koreanconjugator.settings.FavoritesActivity">
+        </intent>
     </Preference>
     <SwitchPreference
         android:key="pref_luckyKorean"

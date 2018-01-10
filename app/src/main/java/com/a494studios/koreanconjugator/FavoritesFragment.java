@@ -10,7 +10,6 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.a494studios.koreanconjugator.parsing.Conjugation;
-import com.a494studios.koreanconjugator.parsing.Tense;
 import com.linearlistview.LinearListView;
 
 import java.util.ArrayList;

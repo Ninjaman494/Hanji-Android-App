@@ -117,7 +117,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        // Temp making Fav Pref.
+        /*// Temp making Fav Pref.
         HashMap<String,Category[]> hashMap = new HashMap<>();
         Category[] past = {Formality.INFORMAL_HIGH, Form.DECLARATIVE, Tense.PAST};
         Category[] present = {Formality.INFORMAL_HIGH, Form.DECLARATIVE, Tense.PRESENT};
@@ -127,9 +127,9 @@ public class MainActivity extends AppCompatActivity {
         keys.add("Past");keys.add("Present");keys.add("Future");
         ArrayList<Category[]> values = new ArrayList<>();
         values.add(past);values.add(present);values.add(future);
-        //Utils.setFavorites(keys,values,this);
-        //HashMap<String,Category[]> result = Utils.getFavorites(this);
-        //System.out.println(result.toString());
+        Utils.setFavorites(keys,values,this);
+        HashMap<String,Category[]> result = Utils.getFavorites(this);
+        System.out.println(result.toString());*/
     }
 
     @Override
