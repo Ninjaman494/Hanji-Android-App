@@ -33,6 +33,7 @@ public class MainActivity extends AppCompatActivity {
     private TextView loadingText;
     private CardView searchCard;
     private EditText editText;
+    private TextView logo;
     private boolean searchInProgress;
 
     @Override
@@ -43,6 +44,7 @@ public class MainActivity extends AppCompatActivity {
         loadingText = findViewById(R.id.main_loadingText);
         searchCard = findViewById(R.id.main_searchCard);
         editText = findViewById(R.id.main_editText);
+        logo = findViewById(R.id.main_logo);
         searchInProgress = false;
 
         progressBar.getIndeterminateDrawable().setColorFilter(getResources().getColor(R.color.colorAccent), PorterDuff.Mode.SRC_IN);
@@ -56,6 +58,7 @@ public class MainActivity extends AppCompatActivity {
                     progressBar.setVisibility(View.VISIBLE);
                     loadingText.setVisibility(View.VISIBLE);
                     searchCard.setVisibility(View.INVISIBLE);
+                    logo.setVisibility(View.INVISIBLE);
                     searchInProgress = true;
 
                     final String entry = editText.getText().toString().trim();
@@ -183,6 +186,7 @@ public class MainActivity extends AppCompatActivity {
     private void showSearchCard(){
         editText.getText().clear();
         searchCard.setVisibility(View.VISIBLE);
+        logo.setVisibility(View.VISIBLE);
         progressBar.setVisibility(View.INVISIBLE);
         loadingText.setVisibility(View.INVISIBLE);
         loadingText.setText(R.string.loading);
