@@ -11,12 +11,11 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
-import android.widget.NumberPicker;
 import android.widget.Spinner;
 
 import com.a494studios.koreanconjugator.R;
+import com.a494studios.koreanconjugator.Utils;
 import com.a494studios.koreanconjugator.parsing.Category;
-import com.a494studios.koreanconjugator.parsing.Conjugation;
 import com.a494studios.koreanconjugator.parsing.Form;
 import com.a494studios.koreanconjugator.parsing.Formality;
 import com.a494studios.koreanconjugator.parsing.Tense;
@@ -33,7 +32,7 @@ import java.util.Map;
  * create an instance of this fragment.
  */
 public class AddFavoriteFragment extends DialogFragment implements DialogInterface.OnClickListener {
-    private static final String title = "Create Favorite";
+    public static final int ITEM_LAYOUT = R.layout.item_spinner;
 
     private EditText nameEditText;
     private Spinner formSpinner;
@@ -52,24 +51,13 @@ public class AddFavoriteFragment extends DialogFragment implements DialogInterfa
      * @return A new instance of fragment TimePickerFragment.
      */
     public static AddFavoriteFragment newInstance() {
-        AddFavoriteFragment fragment = new AddFavoriteFragment();
-        Bundle args = new Bundle();
-        fragment.setArguments(args);
-        return fragment;
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-        }
+        return new AddFavoriteFragment();
     }
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setView(R.layout.fragment_add_favorites);
-        builder.setTitle(title);
         builder.setPositiveButton(getString(android.R.string.ok),this);
         builder.setNegativeButton(getString(android.R.string.cancel),this);
 
@@ -83,34 +71,34 @@ public class AddFavoriteFragment extends DialogFragment implements DialogInterfa
         formalitySpinner.setEnabled(false);
         tenseSpinner.setEnabled(false);
 
-        final ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getContext(), R.array.forms, android.R.layout.simple_spinner_item);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        final ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getContext(), R.array.forms, ITEM_LAYOUT);
+        adapter.setDropDownViewResource(ITEM_LAYOUT);
         formSpinner.setAdapter(adapter);
         formSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 String selection = adapter.getItem(i).toString().toLowerCase();
-                if(selection.equals("select a form…")){
-                    return;
-                }
 
                 formalitySpinner.setEnabled(true);
                 tenseSpinner.setEnabled(true);
                 formalitySpinner.setAdapter(ArrayAdapter.createFromResource(getContext(),
-                        R.array.formality, android.R.layout.simple_spinner_item));
+                        R.array.formality, ITEM_LAYOUT));
                 if(selection.equals(Form.DECLARATIVE.toString())){
                     tenseSpinner.setAdapter(ArrayAdapter.createFromResource(getContext(),
-                            R.array.tense_dec, android.R.layout.simple_spinner_item));
+                            R.array.tense_dec, ITEM_LAYOUT));
                 }else if(selection.equals(Form.INQUISITIVE.toString())){
                     tenseSpinner.setAdapter(ArrayAdapter.createFromResource(getContext(),
-                            R.array.tense_inq, android.R.layout.simple_spinner_item));
+                            R.array.tense_inq, ITEM_LAYOUT));
                 }else if(selection.equals(Form.IMPERATIVE.toString())
                         || selection.equals(Form.PROPOSITIVE.toString())){
                     tenseSpinner.setAdapter(ArrayAdapter.createFromResource(getContext(),
-                            R.array.tense_imp_prop, android.R.layout.simple_spinner_item));
+                            R.array.tense_imp_prop, ITEM_LAYOUT));
                 }else{
+                    ArrayAdapter<String> emptyAdapter = new ArrayAdapter<>(getContext(), ITEM_LAYOUT,new String[0]);
                     formalitySpinner.setEnabled(false);
+                    formalitySpinner.setAdapter(emptyAdapter);
                     tenseSpinner.setEnabled(false);
+                    tenseSpinner.setAdapter(emptyAdapter);
                 }
             }
 
@@ -130,8 +118,7 @@ public class AddFavoriteFragment extends DialogFragment implements DialogInterfa
         if (context instanceof AddFavoriteFragmentListener) {
             mListener = (AddFavoriteFragmentListener) context;
         } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement TimerPickerFragmentListener");
+            throw new RuntimeException(context.toString() + " must implement AddFavoriteFragmentListener");
         }
     }
 
@@ -149,12 +136,12 @@ public class AddFavoriteFragment extends DialogFragment implements DialogInterfa
         }
 
         String name = nameEditText.getText().toString();
-        Form form = Conjugation.generateForm(formSpinner.getSelectedItem().toString().toLowerCase());
+        Form form = Utils.generateForm(formSpinner.getSelectedItem().toString().toLowerCase());
         Formality formality = null;
         Tense tense = null;
         if(!(form == Form.NOMINAL || form == Form.CON_AND || form == Form.CON_IF)){
-            tense = Conjugation.generateTense(tenseSpinner.getSelectedItem().toString().toLowerCase());
-            formality = Conjugation.generateFormality(formalitySpinner.getSelectedItem().toString().toLowerCase());
+            tense = Utils.generateTense(tenseSpinner.getSelectedItem().toString().toLowerCase());
+            formality = Utils.generateFormality(formalitySpinner.getSelectedItem().toString().toLowerCase());
         }
         Category[] categories = {formality,form,tense};
         mListener.onFavoriteAdded(new AbstractMap.SimpleEntry<>(name,categories));

@@ -12,4 +12,5 @@
     <string name="lucky_eng_false">Show all results during English searches</string>
     <string name="lucky_kor_true">Go to first result during Korean searches</string>
     <string name="lucky_eng_true">Go to first result during English searches</string>
+    <string name="add_fav_hint">Favorite\'s name…</string>
 </resources>

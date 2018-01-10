@@ -1,5 +1,7 @@
 package com.a494studios.koreanconjugator.parsing;
 
+import com.a494studios.koreanconjugator.Utils;
+
 import java.io.Serializable;
 
 /**
@@ -22,61 +24,9 @@ public class Conjugation implements Serializable {
         this.conjugated = conjugated;
         this.pronunciation = pronunciation;
         this.romanization = romanization;
-        this.formality = generateFormality(type);
-        this.form = generateForm(type);
-        this.tense = generateTense(type);
-    }
-
-    public static Formality generateFormality(String type) {
-        if (type.contains(Formality.INFORMAL_LOW.toString())) {
-            return Formality.INFORMAL_LOW;
-        } else if (type.contains(Formality.INFORMAL_HIGH.toString())) {
-            return Formality.INFORMAL_HIGH;
-        } else if (type.contains(Formality.FORMAL_LOW.toString())) {
-            return Formality.FORMAL_LOW;
-        } else if (type.contains(Formality.FORMAL_HIGH.toString())) {
-            return Formality.FORMAL_HIGH;
-        } else {
-            return Formality.NONE;
-        }
-    }
-
-    public static Tense generateTense(String type){
-        if(type.contains(Tense.FUT_COND.toString())){
-            return Tense.FUT_COND;
-        }else if(type.contains(Tense.FUTURE.toString())){
-            return Tense.FUTURE;
-        }else if(type.contains(Tense.PRESENT.toString())){
-            return Tense.PRESENT;
-        }else if(type.contains(Tense.PAST.toString())){
-            return Tense.PAST;
-        }else{
-            return Tense.NONE;
-        }
-    }
-
-    public static Form generateForm(String type) {
-        if (type.contains(Form.DECLARATIVE.toString())) {
-            return Form.DECLARATIVE;
-        } else if (type.contains(Form.INQUISITIVE.toString())) {
-            return Form.INQUISITIVE;
-        } else if (type.contains(Form.IMPERATIVE.toString())) {
-            return Form.IMPERATIVE;
-        } else if (type.contains(Form.PROPOSITIVE.toString())) {
-            return Form.PROPOSITIVE;
-        } else if (type.contains(Form.CON_IF.toString())) {
-            return Form.CON_IF;
-        } else if (type.contains(Form.CON_AND.toString())) {
-            return Form.CON_AND;
-        } else if (type.contains(Form.NOMINAL.toString())) {
-            return Form.NOMINAL;
-        } else if (type.contains(Form.PAST_BASE.toString())) {
-            return Form.PAST_BASE;
-        } else if (type.contains(Form.FUTURE_BASE.toString())) {
-            return Form.FUTURE_BASE;
-        } else {
-            return null;
-        }
+        this.formality = Utils.generateFormality(type);
+        this.form = Utils.generateForm(type);
+        this.tense = Utils.generateTense(type);
     }
 
     public boolean inCategories(Category... categories){

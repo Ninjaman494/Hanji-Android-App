@@ -5,12 +5,12 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
 import com.a494studios.koreanconjugator.parsing.Category;
-import com.a494studios.koreanconjugator.parsing.Conjugation;
+import com.a494studios.koreanconjugator.parsing.Form;
+import com.a494studios.koreanconjugator.parsing.Formality;
+import com.a494studios.koreanconjugator.parsing.Tense;
 
 import java.util.AbstractMap;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
@@ -93,5 +93,57 @@ public class Utils {
             }
         }
         return true;
+    }
+
+    public static Formality generateFormality(String type) {
+        if (type.contains(Formality.INFORMAL_LOW.toString())) {
+            return Formality.INFORMAL_LOW;
+        } else if (type.contains(Formality.INFORMAL_HIGH.toString())) {
+            return Formality.INFORMAL_HIGH;
+        } else if (type.contains(Formality.FORMAL_LOW.toString())) {
+            return Formality.FORMAL_LOW;
+        } else if (type.contains(Formality.FORMAL_HIGH.toString())) {
+            return Formality.FORMAL_HIGH;
+        } else {
+            return Formality.NONE;
+        }
+    }
+
+    public static Tense generateTense(String type){
+        if(type.contains(Tense.FUT_COND.toString())){
+            return Tense.FUT_COND;
+        }else if(type.contains(Tense.FUTURE.toString())){
+            return Tense.FUTURE;
+        }else if(type.contains(Tense.PRESENT.toString())){
+            return Tense.PRESENT;
+        }else if(type.contains(Tense.PAST.toString())){
+            return Tense.PAST;
+        }else{
+            return Tense.NONE;
+        }
+    }
+
+    public static Form generateForm(String type) {
+        if (type.contains(Form.DECLARATIVE.toString())) {
+            return Form.DECLARATIVE;
+        } else if (type.contains(Form.INQUISITIVE.toString())) {
+            return Form.INQUISITIVE;
+        } else if (type.contains(Form.IMPERATIVE.toString())) {
+            return Form.IMPERATIVE;
+        } else if (type.contains(Form.PROPOSITIVE.toString())) {
+            return Form.PROPOSITIVE;
+        } else if (type.contains(Form.CON_IF.toString())) {
+            return Form.CON_IF;
+        } else if (type.contains(Form.CON_AND.toString())) {
+            return Form.CON_AND;
+        } else if (type.contains(Form.NOMINAL.toString())) {
+            return Form.NOMINAL;
+        } else if (type.contains(Form.PAST_BASE.toString())) {
+            return Form.PAST_BASE;
+        } else if (type.contains(Form.FUTURE_BASE.toString())) {
+            return Form.FUTURE_BASE;
+        } else {
+            return null;
+        }
     }
 }

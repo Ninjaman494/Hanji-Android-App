@@ -1,14 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:layout_marginLeft="@dimen/horizontalMargin"
+    android:layout_marginRight="@dimen/horizontalMargin"
+    android:layout_marginStart="@dimen/horizontalMargin"
+    android:layout_marginEnd="@dimen/horizontalMargin"
+    android:layout_marginTop="@dimen/verticalMargin"
+    android:layout_marginBottom="@dimen/verticalMargin">
 
     <EditText
         android:id="@+id/addFav_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Enter favorites name..."
-        android:layout_margin="10dp"/>
+        android:hint="@string/add_fav_hint"
+        android:layout_margin="10dp"
+        android:textSize="25sp"
+        android:imeOptions="actionDone"
+        android:inputType="text"/>
 
     <Spinner
         android:id="@+id/addFav_formSpinner"
