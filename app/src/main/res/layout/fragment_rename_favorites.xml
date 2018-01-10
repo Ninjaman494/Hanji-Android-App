@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingLeft="@dimen/horizontalMargin"
+    android:paddingRight="@dimen/horizontalMargin"
+    android:paddingStart="@dimen/horizontalMargin"
+    android:paddingEnd="@dimen/horizontalMargin"
+    android:paddingTop="@dimen/verticalMargin"
+    android:paddingBottom="@dimen/verticalMargin">
+
+    <EditText
+        android:id="@+id/renameFav_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/add_fav_hint"
+        android:layout_margin="10dp"
+        android:textSize="20sp"
+        android:imeOptions="actionDone"
+        android:inputType="text"/>
+</RelativeLayout>

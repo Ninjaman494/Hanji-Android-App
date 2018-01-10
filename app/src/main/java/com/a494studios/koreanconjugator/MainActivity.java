@@ -17,12 +17,8 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.a494studios.koreanconjugator.parsing.Category;
 import com.a494studios.koreanconjugator.parsing.Conjugation;
-import com.a494studios.koreanconjugator.parsing.Form;
-import com.a494studios.koreanconjugator.parsing.Formality;
 import com.a494studios.koreanconjugator.parsing.Server;
-import com.a494studios.koreanconjugator.parsing.Tense;
 import com.a494studios.koreanconjugator.settings.SettingsActivity;
 import com.android.volley.NoConnectionError;
 import com.android.volley.ParseError;
@@ -116,20 +112,6 @@ public class MainActivity extends AppCompatActivity {
                 popup.show();
             }
         });
-
-        /*// Temp making Fav Pref.
-        HashMap<String,Category[]> hashMap = new HashMap<>();
-        Category[] past = {Formality.INFORMAL_HIGH, Form.DECLARATIVE, Tense.PAST};
-        Category[] present = {Formality.INFORMAL_HIGH, Form.DECLARATIVE, Tense.PRESENT};
-        Category[] future = {Formality.INFORMAL_HIGH, Form.DECLARATIVE, Tense.FUTURE};
-
-        ArrayList<String> keys = new ArrayList<>();
-        keys.add("Past");keys.add("Present");keys.add("Future");
-        ArrayList<Category[]> values = new ArrayList<>();
-        values.add(past);values.add(present);values.add(future);
-        Utils.setFavorites(keys,values,this);
-        HashMap<String,Category[]> result = Utils.getFavorites(this);
-        System.out.println(result.toString());*/
     }
 
     @Override

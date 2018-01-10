@@ -13,17 +13,18 @@ import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.a494studios.koreanconjugator.R;
 import com.a494studios.koreanconjugator.Utils;
 import com.a494studios.koreanconjugator.parsing.Category;
 
+import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.Map;
 
 
-public class FavoritesActivity extends AppCompatActivity implements AddFavoriteFragment.AddFavoriteFragmentListener {
+public class FavoritesActivity extends AppCompatActivity implements AddFavoriteFragment.AddFavoriteFragmentListener
+        ,RenameFavoriteFragment.RenameFavoriteFragmentListener{
 
     FavoritesAdapter adapter;
 
@@ -31,6 +32,10 @@ public class FavoritesActivity extends AppCompatActivity implements AddFavoriteF
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_favorites);
+        if(getSupportActionBar() != null) {
+            getSupportActionBar().setTitle("Favorites");
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
 
         ListView listView = findViewById(R.id.fav_listView);
         adapter = new FavoritesAdapter(Utils.getFavorites(this));
@@ -53,6 +58,10 @@ public class FavoritesActivity extends AppCompatActivity implements AddFavoriteF
             Utils.setFavorites(data,this);
             adapter.notifyDataSetChanged();
             return true;
+        }else if(item.getItemId() == R.id.context_rename) {
+            RenameFavoriteFragment frag = RenameFavoriteFragment.newInstance(info.position);
+            frag.show(getSupportFragmentManager(),"rename_frag");
+            return true;
         }else{
             return super.onContextItemSelected(item);
         }
@@ -70,6 +79,9 @@ public class FavoritesActivity extends AppCompatActivity implements AddFavoriteF
         if(item.getItemId() == R.id.menu_add) {
             AddFavoriteFragment.newInstance().show(getSupportFragmentManager(),"add_fav_frag");
             return true;
+        }else if(item.getItemId() == android.R.id.home) {
+            this.onBackPressed();
+            return true;
         }else{
             return super.onOptionsItemSelected(item);
         }
@@ -79,6 +91,15 @@ public class FavoritesActivity extends AppCompatActivity implements AddFavoriteF
     public void onFavoriteAdded(Map.Entry<String, Category[]> entry) {
         ArrayList<Map.Entry<String,Category[]>> data = adapter.add(entry);
         Utils.setFavorites(data,this);
+        adapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void onRenameSelected(String newName, int position) {
+        Map.Entry<String, Category[]> entry = adapter.getItem(position);
+        Map.Entry<String, Category[]> newEntry = new AbstractMap.SimpleEntry<>(newName, entry.getValue());
+        ArrayList<Map.Entry<String, Category[]>> data = adapter.replace(entry, newEntry);
+        Utils.setFavorites(data, this);
         adapter.notifyDataSetChanged();
     }
 
@@ -145,6 +166,11 @@ public class FavoritesActivity extends AppCompatActivity implements AddFavoriteF
 
         public ArrayList<Map.Entry<String,Category[]>> add(Map.Entry<String,Category[]> entry){
             entries.add(entry);
+            return entries;
+        }
+
+        public ArrayList<Map.Entry<String,Category[]>> replace(Map.Entry<String,Category[]> old, Map.Entry<String,Category[]> newEntry){
+            entries.set(entries.indexOf(old),newEntry);
             return entries;
         }
     }
