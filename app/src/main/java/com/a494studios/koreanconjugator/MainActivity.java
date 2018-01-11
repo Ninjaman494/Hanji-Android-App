@@ -50,6 +50,19 @@ public class MainActivity extends AppCompatActivity {
         logo = findViewById(R.id.main_logo);
         searchInProgress = false;
 
+        if(getIntent().getExtras() != null) {
+            for(String s: getIntent().getExtras().keySet()){
+                System.out.println(s+": "+getIntent().getSerializableExtra(s));
+            }
+
+            if(getIntent().getStringExtra("dialog").equals("true")){
+                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                builder.setTitle("Alert");
+                builder.setMessage(getIntent().getStringExtra("message"));
+                builder.create().show();
+            }
+        }
+
         progressBar.getIndeterminateDrawable().setColorFilter(getResources().getColor(R.color.colorAccent), PorterDuff.Mode.SRC_IN);
         progressBar.getProgressDrawable().setColorFilter(getResources().getColor(R.color.colorAccent), PorterDuff.Mode.SRC_IN);
 
