@@ -57,7 +57,7 @@ public class MainActivity extends AppCompatActivity {
 
             if(getIntent().getStringExtra("dialog").equals("true")){
                 AlertDialog.Builder builder = new AlertDialog.Builder(this);
-                builder.setTitle("Alert");
+                builder.setTitle(getIntent().getStringExtra("title"));
                 builder.setMessage(getIntent().getStringExtra("message"));
                 builder.create().show();
             }
