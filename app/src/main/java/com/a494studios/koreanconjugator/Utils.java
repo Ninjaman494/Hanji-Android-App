@@ -169,13 +169,11 @@ public class Utils {
         final AboutConfig aboutConfig = AboutConfig.getInstance();
         aboutConfig.appName = activity.getString(R.string.app_name);
         aboutConfig.appIcon = R.mipmap.ic_launcher;
-        aboutConfig.version = "1.2.2";
+        aboutConfig.version = BuildConfig.VERSION_NAME;
         aboutConfig.author = "494 Studios";
         aboutConfig.aboutLabelTitle = "About App";
         aboutConfig.packageName = activity.getPackageName();
         aboutConfig.buildType = AboutConfig.BuildType.GOOGLE;
-        aboutConfig.facebookUserName = "the.medy";
-        aboutConfig.webHomePage = "http://medyo.github.io/";
         aboutConfig.appPublisher = "494 Studios"; // app publisher for "Try Other Apps" item
         // Contact Support email details
         aboutConfig.emailAddress = "akasheldo@hotmail.com";
