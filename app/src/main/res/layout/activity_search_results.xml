@@ -3,12 +3,22 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context="com.a494studios.koreanconjugator.SearchResultsActivity">
 
     <ListView
         android:id="@+id/search_listView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:divider="@null"/>
+        android:paddingBottom="50dp"
+        android:divider="@null" />
+
+    <com.google.android.gms.ads.AdView
+        android:id="@+id/search_results_adView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        app:adSize="BANNER"
+        app:adUnitId="ca-app-pub-3940256099942544/6300978111"/>
 
 </RelativeLayout>

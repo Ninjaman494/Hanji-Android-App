@@ -58,7 +58,7 @@
             android:layout_marginTop="15dp"
             android:background="@null"
             android:hint="@string/main_search_hint"
-            android:imeOptions="actionDone"
+            android:imeOptions="actionSearch"
             android:inputType="text"
             android:maxLines="1"
             android:textSize="20sp" />
