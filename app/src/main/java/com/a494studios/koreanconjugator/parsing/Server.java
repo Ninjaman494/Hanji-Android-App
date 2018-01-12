@@ -8,6 +8,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.crashlytics.android.Crashlytics;
 import com.google.common.net.UrlEscapers;
 
 import org.json.JSONArray;
@@ -63,6 +64,9 @@ public class Server {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
+                Crashlytics.setString("requestType","koreanSearch");
+                Crashlytics.setString("word",kword);
+                Crashlytics.logException(error);
                 listener.onErrorOccurred(error);
             }
         });
@@ -79,6 +83,9 @@ public class Server {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
+                Crashlytics.setString("requestType","conjugate");
+                Crashlytics.setString("word",kword);
+                Crashlytics.logException(error);
                 listener.onErrorOccurred(error);
             }
         });
@@ -99,6 +106,7 @@ public class Server {
             }
             return conjugations;
         } catch (JSONException e) {
+            Crashlytics.logException(e);
             e.printStackTrace();
         }
         return null;
@@ -115,6 +123,7 @@ public class Server {
             }
             return results;
         } catch (JSONException e) {
+            Crashlytics.logException(e);
             e.printStackTrace();
         }
         return null;
@@ -130,6 +139,9 @@ public class Server {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
+                Crashlytics.setString("requestType","koreanDefinition");
+                Crashlytics.setString("word",word);
+                Crashlytics.logException(error);
                 listener.onErrorOccurred(error);
             }
         });
@@ -156,6 +168,9 @@ public class Server {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
+                Crashlytics.setString("requestType","engDefinition");
+                Crashlytics.setString("word",word);
+                Crashlytics.logException(error);
                 listener.onErrorOccurred(error);
             }
         });
