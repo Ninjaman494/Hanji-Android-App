@@ -115,7 +115,7 @@ public class MainActivity extends AppCompatActivity {
                                         new AlertDialog.Builder(MainActivity.this)
                                                 .setTitle(R.string.no_results_title)
                                                 .setMessage(R.string.no_results_msg)
-                                                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                                                     @Override
                                                     public void onClick(DialogInterface dialogInterface, int i) {
                                                         dialogInterface.dismiss();

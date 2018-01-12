@@ -9,6 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.a494studios.koreanconjugator.parsing.Conjugation;
 import com.a494studios.koreanconjugator.parsing.Server;
@@ -60,7 +61,7 @@ public class SearchActivity extends AppCompatActivity {
                             new AlertDialog.Builder(SearchActivity.this)
                                     .setTitle(R.string.no_results_title)
                                     .setMessage(R.string.no_results_msg)
-                                    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                    .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                                         @Override
                                         public void onClick(DialogInterface dialogInterface, int i) {
                                             dialogInterface.dismiss();
@@ -85,6 +86,9 @@ public class SearchActivity extends AppCompatActivity {
                     handleError(error);
                 }
             });
+        }else{
+            Toast.makeText(getBaseContext(),"Input not Valid",Toast.LENGTH_LONG).show();
+            onBackPressed();
         }
     }
 
