@@ -14,4 +14,7 @@
     <string name="lucky_eng_true">Go to first result during English searches</string>
     <string name="add_fav_hint">Favorite\'s name…</string>
     <string name="logo_text">한지 |Hanji</string>
+    <!--Error Messages-->
+    <string name="no_results_title">No Results</string>
+    <string name="no_results_msg">We couldn\'t find anything matching your search</string>
 </resources>

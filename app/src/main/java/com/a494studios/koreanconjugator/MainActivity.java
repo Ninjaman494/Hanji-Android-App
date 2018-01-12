@@ -1,6 +1,7 @@
 package com.a494studios.koreanconjugator;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.PorterDuff;
 import android.support.v7.app.AlertDialog;
@@ -109,7 +110,19 @@ public class MainActivity extends AppCompatActivity {
                                 if(searchResults != null) {
                                     if (searchResults.size() == 1 || Utils.getEnglishLuck(getBaseContext())) {
                                         doKoreanSearch(searchResults.keySet().iterator().next()); // Get the first key in map
-                                    } else {
+                                    } else if(searchResults.isEmpty()) {
+                                        showSearchCard();
+                                        new AlertDialog.Builder(MainActivity.this)
+                                                .setTitle(R.string.no_results_title)
+                                                .setMessage(R.string.no_results_msg)
+                                                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                                    @Override
+                                                    public void onClick(DialogInterface dialogInterface, int i) {
+                                                        dialogInterface.dismiss();
+                                                    }
+                                                })
+                                                .create().show();
+                                    }else{
                                         goToSearchResults(searchResults,entry);
                                     }
                                 }

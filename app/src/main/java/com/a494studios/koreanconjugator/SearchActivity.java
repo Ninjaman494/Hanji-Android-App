@@ -56,6 +56,24 @@ public class SearchActivity extends AppCompatActivity {
                     if(searchResults != null) {
                         if (searchResults.size() == 1 || Utils.getEnglishLuck(getBaseContext())) {
                             doKoreanSearch(searchResults.keySet().iterator().next()); // Get the first key in map
+                        } else if(searchResults.isEmpty()){
+                            new AlertDialog.Builder(SearchActivity.this)
+                                    .setTitle(R.string.no_results_title)
+                                    .setMessage(R.string.no_results_msg)
+                                    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialogInterface, int i) {
+                                            dialogInterface.dismiss();
+                                            onBackPressed();
+                                        }
+                                    })
+                                    .setOnCancelListener(new DialogInterface.OnCancelListener() {
+                                        @Override
+                                        public void onCancel(DialogInterface dialogInterface) {
+                                            onBackPressed();
+                                        }
+                                    })
+                                    .create().show();
                         } else {
                             goToSearchResults(searchResults,entry);
                         }
