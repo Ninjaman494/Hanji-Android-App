@@ -25,6 +25,8 @@ import com.a494studios.koreanconjugator.settings.SettingsActivity;
 import com.android.volley.NoConnectionError;
 import com.eggheadgames.aboutbox.activity.AboutActivity;
 import com.github.andkulikov.materialin.MaterialIn;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -46,6 +48,7 @@ public class SearchResultsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search_results);
         ListView listView = findViewById(R.id.search_listView);
+        AdView adView = findViewById(R.id.search_results_adView);
         snackbarShown = false;
         if(savedInstanceState != null){
             results = (HashMap<String,String>)savedInstanceState.getSerializable(EXTRA_RESULTS);
@@ -54,6 +57,7 @@ public class SearchResultsActivity extends AppCompatActivity {
             results = (HashMap<String, String>) getIntent().getSerializableExtra(EXTRA_RESULTS);
             resultConjs = new HashMap<>();
         }
+        adView.loadAd(new AdRequest.Builder().build());
 
         ActionBar actionBar = getSupportActionBar();
         if(actionBar != null){

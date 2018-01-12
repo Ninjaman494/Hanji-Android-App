@@ -14,6 +14,8 @@ import com.a494studios.koreanconjugator.parsing.Conjugation;
 import com.a494studios.koreanconjugator.parsing.Server;
 import com.android.volley.NoConnectionError;
 import com.android.volley.ParseError;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -29,6 +31,8 @@ public class SearchActivity extends AppCompatActivity {
         setContentView(R.layout.activity_search);
         progressBar = findViewById(R.id.main_loadingBar);
         loadingText = findViewById(R.id.main_loadingText);
+        AdView adView = findViewById(R.id.search_adView);
+        adView.loadAd(new AdRequest.Builder().build());
 
         if (!Intent.ACTION_SEARCH.equals(getIntent().getAction())) {
             this.onBackPressed();

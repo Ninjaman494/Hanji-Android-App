@@ -24,6 +24,8 @@ import com.a494studios.koreanconjugator.parsing.Tense;
 import com.a494studios.koreanconjugator.settings.SettingsActivity;
 import com.android.volley.NoConnectionError;
 import com.eggheadgames.aboutbox.activity.AboutActivity;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
 import com.transitionseverywhere.Fade;
 import com.transitionseverywhere.Transition;
 import com.transitionseverywhere.TransitionManager;
@@ -47,6 +49,7 @@ public class DisplayActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_display);
         defView = findViewById(R.id.defCard_content);
+        AdView adView = findViewById(R.id.display_adView);
         ArrayList<Conjugation> conjugations = (ArrayList<Conjugation>)getIntent().getSerializableExtra(EXTRA_CONJ);
         if(savedInstanceState != null){
             definition = savedInstanceState.getString(EXTRA_DEF);
@@ -54,6 +57,7 @@ public class DisplayActivity extends AppCompatActivity {
             definition = getIntent().getStringExtra(EXTRA_DEF);
         }
         infinitive = conjugations.get(0).getInfinitive();
+        adView.loadAd(new AdRequest.Builder().build());
 
         ActionBar actionBar = getSupportActionBar();
         if(actionBar != null) {
