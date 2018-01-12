@@ -88,13 +88,13 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.7"/>
+        app:layout_constraintVertical_bias="0.7" />
 
     <com.google.android.gms.ads.AdView
         android:id="@+id/main_adView"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        app:adSize="MEDIUM_RECTANGLE"
+        app:adSize="LARGE_BANNER"
         app:adUnitId="ca-app-pub-3940256099942544/6300978111"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

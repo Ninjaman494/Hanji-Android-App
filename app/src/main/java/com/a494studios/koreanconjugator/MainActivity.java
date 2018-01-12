@@ -24,11 +24,16 @@ import com.a494studios.koreanconjugator.settings.SettingsActivity;
 import com.android.volley.NoConnectionError;
 import com.android.volley.ParseError;
 import com.eggheadgames.aboutbox.activity.AboutActivity;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.MobileAds;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 
 public class MainActivity extends AppCompatActivity {
+
+    private static final String APP_ID = "***REMOVED***";
 
     private ProgressBar progressBar;
     private TextView loadingText;
@@ -42,13 +47,17 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        MobileAds.initialize(this, APP_ID);
         progressBar = findViewById(R.id.main_loadingBar);
         loadingText = findViewById(R.id.main_loadingText);
         overflowMenu = findViewById(R.id.main_menu_icon);
         searchCard = findViewById(R.id.main_searchCard);
         editText = findViewById(R.id.main_editText);
         logo = findViewById(R.id.main_logo);
+        AdView adView = findViewById(R.id.main_adView);
         searchInProgress = false;
+
+        adView.loadAd(new AdRequest.Builder().build());
 
         if(getIntent().getExtras() != null) {
             for(String s: getIntent().getExtras().keySet()){
