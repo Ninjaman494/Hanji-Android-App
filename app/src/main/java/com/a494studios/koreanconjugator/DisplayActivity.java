@@ -89,12 +89,18 @@ public class DisplayActivity extends AppCompatActivity {
         ArrayList<Entry<String,Conjugation>> conjMap = new ArrayList<>();
         for(Entry<String,Category[]> entry: map){
             Category[] categories = entry.getValue();
-            Conjugation c = Category.Categories.getSubSet(conjugations,(Formality)categories[0],(Form)categories[1],(Tense)categories[2]).get(0);
-            conjMap.add(new AbstractMap.SimpleEntry<>(entry.getKey(),c));
+            if(categories != null && categories.length == 3) {
+                Conjugation c = Category.Categories.getSubSet(conjugations, (Formality) categories[0], (Form) categories[1], (Tense) categories[2]).get(0);
+                conjMap.add(new AbstractMap.SimpleEntry<>(entry.getKey(), c));
+            }
         }
 
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.frag_1,FavoritesFragment.newInstance(conjMap));
+        if(!conjMap.isEmpty()) {
+            transaction.replace(R.id.frag_1, FavoritesFragment.newInstance(conjMap));
+        }else{
+            findViewById(R.id.frag_1).setVisibility(View.GONE);
+        }
         transaction.replace(R.id.frag_2,ConjugationCardFragment.newInstance("Declarative Past", decPast));
         transaction.replace(R.id.frag_3,ConjugationCardFragment.newInstance("Declarative Present", decPres));
         transaction.replace(R.id.frag_4,ConjugationCardFragment.newInstance("Declarative Future", decFut));
