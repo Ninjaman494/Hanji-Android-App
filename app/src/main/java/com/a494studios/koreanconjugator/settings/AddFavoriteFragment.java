@@ -7,11 +7,14 @@ import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.a494studios.koreanconjugator.R;
 import com.a494studios.koreanconjugator.Utils;
@@ -61,8 +64,9 @@ public class AddFavoriteFragment extends DialogFragment implements DialogInterfa
         builder.setPositiveButton(getString(android.R.string.ok),this);
         builder.setNegativeButton(getString(android.R.string.cancel),this);
 
-        Dialog dialog = builder.create();
+        final AlertDialog dialog = builder.create();
         dialog.show();
+        dialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(false);
         formalitySpinner = dialog.findViewById(R.id.addFav_formalitySpinner);
         formSpinner = dialog.findViewById(R.id.addFav_formSpinner);
         tenseSpinner = dialog.findViewById(R.id.addFav_tenseSpinner);
@@ -78,6 +82,14 @@ public class AddFavoriteFragment extends DialogFragment implements DialogInterfa
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 String selection = adapter.getItem(i).toString().toLowerCase();
+
+                if(!nameEditText.getText().toString().isEmpty()){
+                    dialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(true);
+                }
+
+                if(selection.equals("select a form…")){
+                    dialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(false);
+                }
 
                 formalitySpinner.setEnabled(true);
                 tenseSpinner.setEnabled(true);
@@ -108,6 +120,26 @@ public class AddFavoriteFragment extends DialogFragment implements DialogInterfa
             }
         });
 
+        nameEditText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                if(!nameEditText.getText().toString().isEmpty() && !formSpinner.getSelectedItem().toString().equals("Select a Form…")){
+                    dialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(true);
+                }else{
+                    dialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(false);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
 
         return dialog;
     }
@@ -134,6 +166,12 @@ public class AddFavoriteFragment extends DialogFragment implements DialogInterfa
             dialog.dismiss();
             return;
         }
+
+        if(nameEditText.getText().toString().isEmpty() || formSpinner.getSelectedItem().toString().equals("Select a Form…")){
+            Toast.makeText(getContext(),"Invalid input",Toast.LENGTH_LONG).show();
+            return;
+        }
+
 
         String name = nameEditText.getText().toString();
         Form form = Utils.generateForm(formSpinner.getSelectedItem().toString().toLowerCase());
