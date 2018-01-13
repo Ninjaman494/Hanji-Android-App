@@ -31,9 +31,18 @@ public class Utils {
     public static final String PREF_FAV_COUNT = "pref_fav_count";
     private static final String PREF_FAV_KEYS = "FAVORITES_KEYS";
     private static final String PREF_FAV_VALUES = "FAVORITES_VALUES";
+    private static final String PREF_FIRST_BOOT = "FIRST_BOOT";
 
     private static final String DEFAULT_FAV_KEYS = "Past,Present,Future,";
     private static final String DEFAULT_FAV_VALUES = "INFORMAL_HIGH:DECLARATIVE:PAST:,INFORMAL_HIGH:DECLARATIVE:PRESENT:,INFORMAL_HIGH:DECLARATIVE:FUTURE:,";
+
+    public static boolean isFirstBoot(Context context){
+        return PreferenceManager.getDefaultSharedPreferences(context).getBoolean(PREF_FIRST_BOOT,true);
+    }
+
+    public static void setFirstBoot(Context context, boolean firstBoot){
+        PreferenceManager.getDefaultSharedPreferences(context).edit().putBoolean(PREF_FIRST_BOOT,firstBoot).apply();
+    }
 
     public static boolean getKoreanLuck(Context context){
         return PreferenceManager.getDefaultSharedPreferences(context).getBoolean(PREF_LUCKY_KOR, false);
@@ -88,12 +97,18 @@ public class Utils {
         SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(context);
         ArrayList<Map.Entry<String, Category[]>> outputMap = new ArrayList<>();
 
-        String[] keys = pref.getString(PREF_FAV_KEYS,DEFAULT_FAV_KEYS).split(",");
-        String[] values = pref.getString(PREF_FAV_VALUES,DEFAULT_FAV_VALUES).split(",");
+        String keyString = pref.getString(PREF_FAV_KEYS,DEFAULT_FAV_KEYS);
+        String valString = pref.getString(PREF_FAV_VALUES,DEFAULT_FAV_VALUES);
+        if(keyString.equals("") || valString.equals("")){
+            return outputMap;
+        }
+
+        String[] keys = keyString.split(",");
+        String[] values = valString.split(",");
         for(int i=0;i<values.length;i++){
             String s = values[i];
             String[] catStrings = s.split(":");
-            Category[] categories = new Category[catStrings.length];
+            Category[] categories = new Category[3];
             for(int j=0;j<catStrings.length;j++){
                 categories[j] = Category.Categories.valueOf(catStrings[j]);
             }

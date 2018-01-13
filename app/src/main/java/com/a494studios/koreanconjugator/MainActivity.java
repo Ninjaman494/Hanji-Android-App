@@ -21,8 +21,12 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.a494studios.koreanconjugator.parsing.Category;
 import com.a494studios.koreanconjugator.parsing.Conjugation;
+import com.a494studios.koreanconjugator.parsing.Form;
+import com.a494studios.koreanconjugator.parsing.Formality;
 import com.a494studios.koreanconjugator.parsing.Server;
+import com.a494studios.koreanconjugator.parsing.Tense;
 import com.a494studios.koreanconjugator.settings.SettingsActivity;
 import com.android.volley.NoConnectionError;
 import com.android.volley.ParseError;
@@ -31,8 +35,10 @@ import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.MobileAds;
 
+import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -73,6 +79,19 @@ public class MainActivity extends AppCompatActivity {
                 builder.setMessage(getIntent().getStringExtra("message"));
                 builder.create().show();
             }
+        }
+
+        if(Utils.isFirstBoot(this)){
+            // Make default favorites
+            Category[] past = {Formality.INFORMAL_HIGH, Form.DECLARATIVE, Tense.PAST};
+            Category[] present = {Formality.INFORMAL_HIGH, Form.DECLARATIVE, Tense.PRESENT};
+            Category[] future = {Formality.INFORMAL_HIGH, Form.DECLARATIVE, Tense.FUTURE};
+            ArrayList<Map.Entry<String,Category[]>> favorites = new ArrayList<>();
+            favorites.add(new AbstractMap.SimpleEntry<>("Past",past));
+            favorites.add(new AbstractMap.SimpleEntry<>("Present",present));
+            favorites.add(new AbstractMap.SimpleEntry<>("Future",future));
+            Utils.setFavorites(favorites,this);
+            Utils.setFirstBoot(this,false);
         }
 
         progressBar.getIndeterminateDrawable().setColorFilter(getResources().getColor(R.color.colorAccent), PorterDuff.Mode.SRC_IN);
