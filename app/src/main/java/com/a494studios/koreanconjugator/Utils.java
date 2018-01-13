@@ -176,7 +176,7 @@ public class Utils {
         aboutConfig.buildType = AboutConfig.BuildType.GOOGLE;
         aboutConfig.appPublisher = "494 Studios"; // app publisher for "Try Other Apps" item
         // Contact Support email details
-        aboutConfig.emailAddress = "akasheldo@hotmail.com";
+        aboutConfig.emailAddress = "494studios@gmail.com";
         aboutConfig.emailSubject = "Hanji - Contact Us";
         aboutConfig.privacyHtmlPath = "file:///android_asset/PrivacyPolicy.html";
         aboutConfig.acknowledgmentHtmlPath = "www.google.com";
