@@ -176,7 +176,7 @@ public class SearchResultsActivity extends AppCompatActivity {
             if (error instanceof NoConnectionError) {
                 snackbar = Snackbar.make(findViewById(R.id.search_listView), "Lost connection", Snackbar.LENGTH_INDEFINITE);
             } else {
-                snackbar = Snackbar.make(findViewById(R.id.disp_root), "Couldn't connect to server", Snackbar.LENGTH_INDEFINITE);
+                snackbar = Snackbar.make(findViewById(R.id.search_listView), "Couldn't connect to server", Snackbar.LENGTH_INDEFINITE);
                 System.err.println(error.toString());
             }
             snackbar.setAction("Retry", new View.OnClickListener() {
