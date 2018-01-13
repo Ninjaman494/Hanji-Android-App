@@ -8,16 +8,19 @@ import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 
 import com.a494studios.koreanconjugator.parsing.Category;
+import com.a494studios.koreanconjugator.parsing.EntrySerializer;
 import com.a494studios.koreanconjugator.parsing.Form;
 import com.a494studios.koreanconjugator.parsing.Formality;
 import com.a494studios.koreanconjugator.parsing.Tense;
 import com.a494studios.koreanconjugator.settings.LegalDisplayActivity;
 import com.eggheadgames.aboutbox.AboutConfig;
 import com.eggheadgames.aboutbox.IDialog;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
 import com.mikepenz.aboutlibraries.Libs;
 import com.mikepenz.aboutlibraries.LibsBuilder;
 
-import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.Map;
 
@@ -56,65 +59,24 @@ public class Utils {
         return PreferenceManager.getDefaultSharedPreferences(context).getInt(PREF_FAV_COUNT, 3);
     }
 
-    public static void setFavCount(int count, Context context){
-        PreferenceManager.getDefaultSharedPreferences(context).edit().putInt(PREF_FAV_COUNT, count).apply();
-    }
-
-    private static void setFavorites(ArrayList<String> keys, ArrayList<Category[]> values, Context context) {
+    public static void setFavorites(ArrayList<Map.Entry<String,Category[]>> data, Context context){
+        Gson gson = new Gson();
         SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(context).edit();
-        StringBuilder keyBuilder = new StringBuilder();
-        for (String key : keys) {
-            keyBuilder.append(key).append(",");
-        }
-        editor.putString(PREF_FAV_KEYS, keyBuilder.toString());
-        StringBuilder valueBuilder = new StringBuilder();
-        for (Category[] value : values) {
-            for(Category c: value) {
-                if(c == null){
-                    valueBuilder.append("null").append(":");
-                }else {
-                    valueBuilder.append(c.getType()).append(":");
-                }
-            }
-            valueBuilder.append(",");
-        }
-        editor.putString(PREF_FAV_VALUES, valueBuilder.toString());
+        editor.putString(PREF_FAV_VALUES,gson.toJson(data));
+        editor.putInt(PREF_FAV_COUNT,data.size());
         editor.apply();
     }
 
-    public static void setFavorites(ArrayList<Map.Entry<String,Category[]>> data, Context context){
-        ArrayList<String> keys = new ArrayList<>();
-        ArrayList<Category[]> values = new ArrayList<>();
-        for(Map.Entry<String,Category[]> entry : data){
-            keys.add(entry.getKey());
-            values.add(entry.getValue());
-        }
-        setFavorites(keys,values,context);
-        setFavCount(data.size(),context);
-    }
-
     public static ArrayList<Map.Entry<String,Category[]>> getFavorites(Context context) {
-        SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(context);
-        ArrayList<Map.Entry<String, Category[]>> outputMap = new ArrayList<>();
-
-        String keyString = pref.getString(PREF_FAV_KEYS,DEFAULT_FAV_KEYS);
-        String valString = pref.getString(PREF_FAV_VALUES,DEFAULT_FAV_VALUES);
-        if(keyString.equals("") || valString.equals("")){
-            return outputMap;
+        String jsonString = PreferenceManager.getDefaultSharedPreferences(context).getString(PREF_FAV_VALUES,"");
+        if(jsonString.isEmpty()){
+            return new ArrayList<>();
         }
 
-        String[] keys = keyString.split(",");
-        String[] values = valString.split(",");
-        for(int i=0;i<values.length;i++){
-            String s = values[i];
-            String[] catStrings = s.split(":");
-            Category[] categories = new Category[3];
-            for(int j=0;j<catStrings.length;j++){
-                categories[j] = Category.Categories.valueOf(catStrings[j]);
-            }
-            outputMap.add(new AbstractMap.SimpleEntry<>(keys[i],categories));
-        }
-        return outputMap;
+        GsonBuilder builder = new GsonBuilder();
+        builder.registerTypeHierarchyAdapter(Map.Entry.class, new EntrySerializer());
+        java.lang.reflect.Type type = new TypeToken<ArrayList<Map.Entry<String,Category[]>>>(){}.getType();
+        return builder.create().fromJson(jsonString,type);
     }
 
     public static boolean isHangul(String korean){
