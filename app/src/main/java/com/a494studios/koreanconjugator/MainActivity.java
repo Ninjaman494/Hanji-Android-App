@@ -30,6 +30,7 @@ import com.a494studios.koreanconjugator.parsing.Tense;
 import com.a494studios.koreanconjugator.settings.SettingsActivity;
 import com.android.volley.NoConnectionError;
 import com.android.volley.ParseError;
+import com.crashlytics.android.Crashlytics;
 import com.eggheadgames.aboutbox.activity.AboutActivity;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
@@ -69,15 +70,23 @@ public class MainActivity extends AppCompatActivity {
         adView.loadAd(new AdRequest.Builder().build());
 
         if(getIntent().getExtras() != null) {
+            Crashlytics.log("Extra in Main");
             for(String s: getIntent().getExtras().keySet()){
-                System.out.println(s+": "+getIntent().getSerializableExtra(s));
+                Crashlytics.setString(s,getIntent().getSerializableExtra(s).toString());
             }
 
-            if(getIntent().getStringExtra("dialog").equals("true")){
+            String showDialog = getIntent().getStringExtra("dialog");
+            if(showDialog != null && showDialog.equals("true")){
+                Crashlytics.log("Dialog is not null and true");
                 AlertDialog.Builder builder = new AlertDialog.Builder(this);
-                builder.setTitle(getIntent().getStringExtra("title"));
-                builder.setMessage(getIntent().getStringExtra("message"));
-                builder.create().show();
+                String title = getIntent().getStringExtra("title");
+                String msg = getIntent().getStringExtra("message");
+                if(title != null && msg != null) {
+                    Crashlytics.log("Title and msg not null, building dialog");
+                    builder.setTitle(title);
+                    builder.setMessage(msg);
+                    builder.create().show();
+                }
             }
         }
 
