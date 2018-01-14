@@ -32,12 +32,8 @@ public class Utils {
     public static final String PREF_LUCKY_KOR = "pref_luckyKorean";
     public static final String PREF_LUCKY_ENG = "pref_luckyEnglish";
     public static final String PREF_FAV_COUNT = "pref_fav_count";
-    private static final String PREF_FAV_KEYS = "FAVORITES_KEYS";
     private static final String PREF_FAV_VALUES = "FAVORITES_VALUES";
     private static final String PREF_FIRST_BOOT = "FIRST_BOOT";
-
-    private static final String DEFAULT_FAV_KEYS = "Past,Present,Future,";
-    private static final String DEFAULT_FAV_VALUES = "INFORMAL_HIGH:DECLARATIVE:PAST:,INFORMAL_HIGH:DECLARATIVE:PRESENT:,INFORMAL_HIGH:DECLARATIVE:FUTURE:,";
 
     public static boolean isFirstBoot(Context context){
         return PreferenceManager.getDefaultSharedPreferences(context).getBoolean(PREF_FIRST_BOOT,true);
