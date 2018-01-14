@@ -15,6 +15,7 @@ import com.a494studios.koreanconjugator.parsing.Conjugation;
 import com.a494studios.koreanconjugator.parsing.Server;
 import com.android.volley.NoConnectionError;
 import com.android.volley.ParseError;
+import com.crashlytics.android.Crashlytics;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 
@@ -46,11 +47,13 @@ public class SearchActivity extends AppCompatActivity {
         progressBar.getProgressDrawable().setColorFilter(getResources().getColor(R.color.colorAccent), PorterDuff.Mode.SRC_IN);
 
         // Search
-        if (entry.equals("")) {
-            this.onBackPressed();
-        } else if (Utils.isHangul(entry)) {
+        if (Utils.isHangul(entry)) {
+            Crashlytics.log("Korean search: "+entry);
+            Crashlytics.setString("searchTerm",entry);
             doKoreanSearch(entry);
         } else if(entry.matches("[A-Za-z ]+")){ // Check if String in English
+            Crashlytics.log("English search: "+entry);
+            Crashlytics.setString("searchTerm",entry);
             Server.requestEngDefinition(entry, getApplicationContext(), new Server.ServerListener() {
                 @Override
                 public void onResultReceived(ArrayList<Conjugation> conjugations, HashMap<String, String> searchResults) {
@@ -87,6 +90,8 @@ public class SearchActivity extends AppCompatActivity {
                 }
             });
         }else{
+            Crashlytics.log("Invalid Search: "+entry);
+            Crashlytics.setString("searchTerm",entry);
             Toast.makeText(getBaseContext(),"Input not Valid",Toast.LENGTH_LONG).show();
             onBackPressed();
         }
