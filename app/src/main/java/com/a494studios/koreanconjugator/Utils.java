@@ -76,6 +76,10 @@ public class Utils {
     }
 
     public static boolean isHangul(String korean){
+        if(korean.isEmpty()){
+            return false;
+        }
+
         korean = korean.replace(" ","");
         for(int i=0;i<korean.length();i++){
             char c = korean.charAt(i);

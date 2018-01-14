@@ -125,13 +125,13 @@ public class MainActivity extends AppCompatActivity {
                     searchInProgress = true;
 
                     final String entry = editText.getText().toString().trim();
-                    if (entry.equals("")) {
-                        return false;
-                    }
-
                     if(Utils.isHangul(entry)) {
+                        Crashlytics.log("Korean search: "+entry);
+                        Crashlytics.setString("searchTerm",entry);
                         doKoreanSearch(entry);
                     }else if(entry.matches("[A-Za-z ]+")){ // Check if String in English
+                        Crashlytics.log("English search: "+entry);
+                        Crashlytics.setString("searchTerm",entry);
                         Server.requestEngDefinition(entry, getApplicationContext(), new Server.ServerListener() {
                             @Override
                             public void onResultReceived(ArrayList<Conjugation> conjugations, HashMap<String, String> searchResults) {
@@ -161,6 +161,8 @@ public class MainActivity extends AppCompatActivity {
                             }
                         });
                     }else{
+                        Crashlytics.log("Invalid Search: "+entry);
+                        Crashlytics.setString("searchTerm",entry);
                         showSearchCard();
                         Toast.makeText(getBaseContext(),"Input not Valid",Toast.LENGTH_LONG).show();
                     }
