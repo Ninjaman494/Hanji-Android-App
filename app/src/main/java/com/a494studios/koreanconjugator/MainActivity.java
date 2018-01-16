@@ -69,25 +69,38 @@ public class MainActivity extends AppCompatActivity {
 
         adView.loadAd(new AdRequest.Builder().build());
 
-        if(getIntent().getExtras() != null) {
-            Crashlytics.log("Extra in Main");
-            for(String s: getIntent().getExtras().keySet()){
-                Crashlytics.setString(s,getIntent().getSerializableExtra(s).toString());
-            }
+        try {
+            if (getIntent().getExtras() != null) {
+                Crashlytics.log("Extra in Main");
+                for (String s : getIntent().getExtras().keySet()) {
+                    Crashlytics.log("Key: " + s);
+                    if (getIntent().getStringExtra(s) != null) {
+                        Crashlytics.setString(s, getIntent().getStringExtra(s));
+                    } else if (getIntent().getSerializableExtra(s) != null) {
+                        Crashlytics.setString(s, getIntent().getSerializableExtra(s).toString());
+                    } else {
+                        Crashlytics.setString(s, "null");
+                    }
 
-            String showDialog = getIntent().getStringExtra("dialog");
-            if(showDialog != null && showDialog.equals("true")){
-                Crashlytics.log("Dialog is not null and true");
-                AlertDialog.Builder builder = new AlertDialog.Builder(this);
-                String title = getIntent().getStringExtra("title");
-                String msg = getIntent().getStringExtra("message");
-                if(title != null && msg != null) {
-                    Crashlytics.log("Title and msg not null, building dialog");
-                    builder.setTitle(title);
-                    builder.setMessage(msg);
-                    builder.create().show();
+                }
+
+                String showDialog = getIntent().getStringExtra("dialog");
+                if (showDialog != null && showDialog.equals("true")) {
+                    Crashlytics.log("Dialog is not null and true");
+                    AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                    String title = getIntent().getStringExtra("title");
+                    String msg = getIntent().getStringExtra("message");
+                    if (title != null && msg != null) {
+                        Crashlytics.log("Title and msg not null, building dialog");
+                        builder.setTitle(title);
+                        builder.setMessage(msg);
+                        builder.create().show();
+                    }
                 }
             }
+        } catch (Exception e) {
+            Crashlytics.log("Exception caught by try-catch block");
+            Crashlytics.logException(e);
         }
 
         if(Utils.isFirstBoot(this)){
@@ -255,7 +268,7 @@ public class MainActivity extends AppCompatActivity {
             builder.setMessage("Try again later or contact support")
                     .setTitle("Something went wrong");
             builder.create().show();
-            System.err.println(error.toString());
+            Crashlytics.log("Unrecognized Error: "+ error.toString());
         }
         showSearchCard();
     }
