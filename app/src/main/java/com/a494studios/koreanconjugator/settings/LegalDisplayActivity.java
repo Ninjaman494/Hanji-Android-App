@@ -1,11 +1,14 @@
 package com.a494studios.koreanconjugator.settings;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.webkit.WebView;
 
 import com.a494studios.koreanconjugator.R;
+import com.a494studios.koreanconjugator.utils.ErrorDialogFragment;
+import com.crashlytics.android.Crashlytics;
 
 
 public class LegalDisplayActivity extends AppCompatActivity {
@@ -22,15 +25,26 @@ public class LegalDisplayActivity extends AppCompatActivity {
         }
 
         WebView wv = findViewById(R.id.webview);
-        switch(getIntent().getStringExtra("type")){
-            case TYPE_PRIV_POLICY:
-                getSupportActionBar().setTitle("Privacy Policy");
-                wv.loadUrl("file:///android_asset/PrivacyPolicy.html");
-                break;
-            case TYPE_TERMS_COND:
-                getSupportActionBar().setTitle("Terms and Conditions of Use");
-                wv.loadUrl("file:///android_asset/TCU.html");
-                break;
+        String type = getIntent().getStringExtra("type");
+        if(type == null){ // Null check for extra
+            ErrorDialogFragment.newInstance().setOnPositiveListener(new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    onBackPressed();
+                }
+            }).show(getSupportFragmentManager(),"error_dialog");
+            Crashlytics.log("Type was null in LegalDisplayActivity");
+        }else {
+            switch (type) {
+                case TYPE_PRIV_POLICY:
+                    getSupportActionBar().setTitle("Privacy Policy");
+                    wv.loadUrl("file:///android_asset/PrivacyPolicy.html");
+                    break;
+                case TYPE_TERMS_COND:
+                    getSupportActionBar().setTitle("Terms and Conditions of Use");
+                    wv.loadUrl("file:///android_asset/TCU.html");
+                    break;
+            }
         }
     }
 

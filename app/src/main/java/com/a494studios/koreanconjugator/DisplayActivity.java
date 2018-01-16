@@ -1,6 +1,7 @@
 package com.a494studios.koreanconjugator;
 
 import android.app.SearchManager;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentTransaction;
@@ -22,7 +23,9 @@ import com.a494studios.koreanconjugator.parsing.Formality;
 import com.a494studios.koreanconjugator.parsing.Server;
 import com.a494studios.koreanconjugator.parsing.Tense;
 import com.a494studios.koreanconjugator.settings.SettingsActivity;
+import com.a494studios.koreanconjugator.utils.ErrorDialogFragment;
 import com.android.volley.NoConnectionError;
+import com.crashlytics.android.Crashlytics;
 import com.eggheadgames.aboutbox.activity.AboutActivity;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
@@ -56,6 +59,27 @@ public class DisplayActivity extends AppCompatActivity {
         }else{
             definition = getIntent().getStringExtra(EXTRA_DEF);
         }
+
+        if(conjugations == null){ // Null and empty check for extra
+            ErrorDialogFragment.newInstance().setOnPositiveListener(new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    onBackPressed();
+                }
+            }).show(getSupportFragmentManager(),"error_dialog");
+            Crashlytics.log("Conjugations was null in DisplayActivity");
+            return;
+        }else if(conjugations.isEmpty()){
+            ErrorDialogFragment.newInstance().setOnPositiveListener(new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    onBackPressed();
+                }
+            }).show(getSupportFragmentManager(),"error_dialog");
+            Crashlytics.log("Conjugations was empty in DisplayActivity");
+            return;
+        }
+
         infinitive = conjugations.get(0).getInfinitive();
         adView.loadAd(new AdRequest.Builder().build());
 
