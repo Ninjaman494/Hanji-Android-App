@@ -1,6 +1,7 @@
 package com.a494studios.koreanconjugator;
 
 import android.app.SearchManager;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.ActionBar;
@@ -22,7 +23,9 @@ import android.widget.TextView;
 import com.a494studios.koreanconjugator.parsing.Conjugation;
 import com.a494studios.koreanconjugator.parsing.Server;
 import com.a494studios.koreanconjugator.settings.SettingsActivity;
+import com.a494studios.koreanconjugator.utils.ErrorDialogFragment;
 import com.android.volley.NoConnectionError;
+import com.crashlytics.android.Crashlytics;
 import com.eggheadgames.aboutbox.activity.AboutActivity;
 import com.github.andkulikov.materialin.MaterialIn;
 import com.google.android.gms.ads.AdRequest;
@@ -57,10 +60,22 @@ public class SearchResultsActivity extends AppCompatActivity {
             results = (HashMap<String, String>) getIntent().getSerializableExtra(EXTRA_RESULTS);
             resultConjs = new HashMap<>();
         }
+
+        if(results == null){ // Null check for extra
+            ErrorDialogFragment.newInstance().setOnPositiveListener(new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    onBackPressed();
+                }
+            }).show(getSupportFragmentManager(),"error_dialog");
+            Crashlytics.log("Results was null in SearchResultsActivity");
+            return;
+        }
+
         adView.loadAd(new AdRequest.Builder().build());
 
         ActionBar actionBar = getSupportActionBar();
-        if(actionBar != null){
+        if(actionBar != null && getIntent().getStringExtra(EXTRA_SEARCHED) != null){
             actionBar.setTitle("Multiple results: "+getIntent().getStringExtra(EXTRA_SEARCHED));
         }
 

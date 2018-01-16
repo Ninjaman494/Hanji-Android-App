@@ -13,6 +13,7 @@ import android.widget.Toast;
 
 import com.a494studios.koreanconjugator.parsing.Conjugation;
 import com.a494studios.koreanconjugator.parsing.Server;
+import com.a494studios.koreanconjugator.utils.ErrorDialogFragment;
 import com.android.volley.NoConnectionError;
 import com.android.volley.ParseError;
 import com.crashlytics.android.Crashlytics;
@@ -41,7 +42,18 @@ public class SearchActivity extends AppCompatActivity {
             return;
         }
 
+        if(getIntent().getStringExtra(SearchManager.QUERY) == null){
+            ErrorDialogFragment.newInstance().setOnPositiveListener(new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    onBackPressed();
+                }
+            }).show(getSupportFragmentManager(),"error_dialog");
+            Crashlytics.log("Query was null in SearchActivity");
+            return;
+        }
         final String entry = getIntent().getStringExtra(SearchManager.QUERY).trim();
+
         if (getSupportActionBar() != null) getSupportActionBar().setTitle("Searching: " + entry);
         progressBar.getIndeterminateDrawable().setColorFilter(getResources().getColor(R.color.colorAccent), PorterDuff.Mode.SRC_IN);
         progressBar.getProgressDrawable().setColorFilter(getResources().getColor(R.color.colorAccent), PorterDuff.Mode.SRC_IN);
