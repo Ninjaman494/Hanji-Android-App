@@ -149,9 +149,7 @@ public class MainActivity extends AppCompatActivity {
                             @Override
                             public void onResultReceived(ArrayList<Conjugation> conjugations, HashMap<String, String> searchResults) {
                                 if(searchResults != null) {
-                                    if (searchResults.size() == 1 || Utils.getEnglishLuck(getBaseContext())) {
-                                        doKoreanSearch(searchResults.keySet().iterator().next()); // Get the first key in map
-                                    } else if(searchResults.isEmpty()) {
+                                    if(searchResults.isEmpty()) {
                                         showSearchCard();
                                         new AlertDialog.Builder(MainActivity.this)
                                                 .setTitle(R.string.no_results_title)
@@ -163,6 +161,8 @@ public class MainActivity extends AppCompatActivity {
                                                     }
                                                 })
                                                 .create().show();
+                                    }else if (searchResults.size() == 1 || Utils.getEnglishLuck(getBaseContext())) {
+                                        doKoreanSearch(searchResults.keySet().iterator().next()); // Get the first key in map
                                     }else{
                                         goToSearchResults(searchResults,entry);
                                     }
@@ -223,12 +223,23 @@ public class MainActivity extends AppCompatActivity {
             public void onResultReceived(final ArrayList<Conjugation> conjugations, HashMap<String, String> searchResults) {
                 if (conjugations != null) {
                     goToDisplay(conjugations);
-                } else if (searchResults != null) {
+                } else if (searchResults != null && !searchResults.isEmpty()) {
                     if(Utils.getKoreanLuck(getApplicationContext())){
                         requestConjugations(searchResults.keySet().iterator().next());
                     }else{
                         goToSearchResults(searchResults,entry);
                     }
+                } else{
+                    new AlertDialog.Builder(MainActivity.this)
+                            .setTitle(R.string.no_results_title)
+                            .setMessage(R.string.no_results_msg)
+                            .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+                                    dialogInterface.dismiss();
+                                }
+                            })
+                            .create().show();
                 }
             }
 
