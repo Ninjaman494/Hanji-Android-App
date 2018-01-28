@@ -27,8 +27,14 @@ public class EntrySerializer implements JsonDeserializer<Map.Entry<String,Catego
         Crashlytics.setString("value",value.toString());
         Category[] categories = new Category[3];
         for(int i =0;i<value.size();i++){
-            String catString = value.get(i).getAsString();
-            categories[i] = Category.Categories.valueOf(catString);
+            JsonElement element = value.get(i);
+            if(!element.isJsonNull()) {
+                String catString = element.getAsString();
+                categories[i] = Category.Categories.valueOf(catString);
+            }else{
+                categories[i] = null;
+            }
+
         }
         return new AbstractMap.SimpleEntry<>(key,categories);
     }
