@@ -61,7 +61,7 @@ public class DisplayActivity extends AppCompatActivity {
         }
 
         if(conjugations == null){ // Null and empty check for extra
-            ErrorDialogFragment.newInstance().setOnPositiveListener(new DialogInterface.OnClickListener() {
+            ErrorDialogFragment.newInstance().setListener(new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialogInterface, int i) {
                     onBackPressed();
@@ -70,7 +70,7 @@ public class DisplayActivity extends AppCompatActivity {
             Crashlytics.log("Conjugations was null in DisplayActivity");
             return;
         }else if(conjugations.isEmpty()){
-            ErrorDialogFragment.newInstance().setOnPositiveListener(new DialogInterface.OnClickListener() {
+            ErrorDialogFragment.newInstance().setListener(new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialogInterface, int i) {
                     onBackPressed();
