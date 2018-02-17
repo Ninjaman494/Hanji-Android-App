@@ -27,7 +27,7 @@ public class LegalDisplayActivity extends AppCompatActivity {
         WebView wv = findViewById(R.id.webview);
         String type = getIntent().getStringExtra("type");
         if(type == null){ // Null check for extra
-            ErrorDialogFragment.newInstance().setOnPositiveListener(new DialogInterface.OnClickListener() {
+            ErrorDialogFragment.newInstance().setListener(new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialogInterface, int i) {
                     onBackPressed();

@@ -14,8 +14,6 @@ import android.widget.Toast;
 import com.a494studios.koreanconjugator.parsing.Conjugation;
 import com.a494studios.koreanconjugator.parsing.Server;
 import com.a494studios.koreanconjugator.utils.ErrorDialogFragment;
-import com.android.volley.NoConnectionError;
-import com.android.volley.ParseError;
 import com.crashlytics.android.Crashlytics;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
@@ -43,7 +41,7 @@ public class SearchActivity extends AppCompatActivity {
         }
 
         if(getIntent().getStringExtra(SearchManager.QUERY) == null){
-            ErrorDialogFragment.newInstance().setOnPositiveListener(new DialogInterface.OnClickListener() {
+            ErrorDialogFragment.newInstance().setListener(new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialogInterface, int i) {
                     onBackPressed();
@@ -163,26 +161,12 @@ public class SearchActivity extends AppCompatActivity {
     }
 
     private void handleError(Exception error){
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        if(error instanceof NoConnectionError){
-            builder.setMessage("Check your network settings and try again")
-                    .setTitle("Can't load results");
-
-        } else if(error instanceof ParseError) {
-            builder.setMessage("A response was given that we couldn't understand")
-                    .setTitle("Can't read results");
-        }else{
-            builder.setMessage("Try again later or contact support")
-                    .setTitle("Something went wrong");
-            System.err.println(error.toString());
-        }
-        builder.setOnCancelListener(new DialogInterface.OnCancelListener() {
+        Utils.handleError(error, this, new DialogInterface.OnClickListener() {
             @Override
-            public void onCancel(DialogInterface dialogInterface) {
+            public void onClick(DialogInterface dialogInterface,int i) {
                 onBackPressed(); // Go back to previous activity
             }
         });
-        builder.create().show();
     }
 
     @Override
