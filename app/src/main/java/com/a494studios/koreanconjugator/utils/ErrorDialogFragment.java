@@ -14,7 +14,12 @@ public class ErrorDialogFragment extends DialogFragment implements DialogInterfa
 
     private static final String TITLE = "Error Occurred";
     private static final String MSG = "Something went wrong while loading this page, please contact support or try again later.";
-    private DialogInterface.OnClickListener positiveListener = null;
+    private static final String ARG_TITLE = "title";
+    private static final String ARG_MSG = "message";
+
+    private String title;
+    private String msg;
+    private DialogInterface.OnClickListener listener = null;
 
     public ErrorDialogFragment() {
         // Required empty public constructor
@@ -27,13 +32,25 @@ public class ErrorDialogFragment extends DialogFragment implements DialogInterfa
         return frag;
     }
 
+    public static ErrorDialogFragment newInstance(String title,String message) {
+        ErrorDialogFragment frag = new ErrorDialogFragment();
+        Bundle args = new Bundle();
+        args.putString(ARG_TITLE, title);
+        args.putString(ARG_MSG, message);
+        frag.setArguments(args);
+        return frag;
+    }
+
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setTitle(TITLE);
-        builder.setMessage(MSG);
-        if(positiveListener != null) {
-            builder.setPositiveButton(getResources().getString(android.R.string.ok), positiveListener);
+        title = getArguments().getString(ARG_TITLE,TITLE);
+        msg = getArguments().getString(ARG_MSG,MSG);
+
+        builder.setTitle(title);
+        builder.setMessage(msg);
+        if(listener != null) {
+            builder.setPositiveButton(getResources().getString(android.R.string.ok), listener);
         }else{
             builder.setPositiveButton(getResources().getString(android.R.string.ok),this);
         }
@@ -41,8 +58,8 @@ public class ErrorDialogFragment extends DialogFragment implements DialogInterfa
         return builder.create();
     }
 
-    public ErrorDialogFragment setOnPositiveListener(DialogInterface.OnClickListener listener){
-        this.positiveListener = listener;
+    public ErrorDialogFragment setListener(DialogInterface.OnClickListener listener){
+        this.listener = listener;
         return this;
     }
 
@@ -54,8 +71,8 @@ public class ErrorDialogFragment extends DialogFragment implements DialogInterfa
     @Override
     public void onDismiss(DialogInterface dialog){
         super.onDismiss(dialog);
-        if (positiveListener != null) {
-            positiveListener.onClick(dialog, -1);
+        if (listener != null) {
+            listener.onClick(dialog, -1);
         }
     }
 }
