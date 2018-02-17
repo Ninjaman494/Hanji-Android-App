@@ -2,6 +2,7 @@ package com.a494studios.koreanconjugator;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
@@ -13,6 +14,10 @@ import com.a494studios.koreanconjugator.parsing.Form;
 import com.a494studios.koreanconjugator.parsing.Formality;
 import com.a494studios.koreanconjugator.parsing.Tense;
 import com.a494studios.koreanconjugator.settings.LegalDisplayActivity;
+import com.a494studios.koreanconjugator.utils.ErrorDialogFragment;
+import com.android.volley.NoConnectionError;
+import com.android.volley.ParseError;
+import com.crashlytics.android.Crashlytics;
 import com.eggheadgames.aboutbox.AboutConfig;
 import com.eggheadgames.aboutbox.IDialog;
 import com.google.gson.Gson;
@@ -183,5 +188,32 @@ public class Utils {
                 }
             }
         };
+    }
+
+    public static void handleError(Exception error, AppCompatActivity context, DialogInterface.OnClickListener listener){
+        ErrorDialogFragment fragment;
+        if(error instanceof NoConnectionError){
+            fragment = ErrorDialogFragment.newInstance("Can't load results",
+                    "Check your network settings and try again");
+        } else if(error instanceof ParseError) {
+            fragment = ErrorDialogFragment.newInstance("Can't read results",
+                    "A response was given that we couldn't understand");
+        }else{
+            Crashlytics.log("Unrecognized Error: "+ error.toString());
+            fragment = ErrorDialogFragment.newInstance("Something went wrong",
+                    "Try again later or contact support");
+        }
+
+        if(listener != null){
+            fragment.setListener(listener);
+        }
+        context.getSupportFragmentManager()
+                .beginTransaction()
+                .add(fragment,"frag_alert")
+                .commitAllowingStateLoss();
+    }
+
+    public static void handleError(Exception error, AppCompatActivity context) {
+        handleError(error,context,null);
     }
 }

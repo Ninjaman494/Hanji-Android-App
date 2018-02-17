@@ -170,7 +170,8 @@ public class MainActivity extends AppCompatActivity {
                             }
                             @Override
                             public void onErrorOccurred(Exception error) {
-                                handleError(error);
+                                Utils.handleError(error,MainActivity.this);
+                                showSearchCard();
                             }
                         });
                     }else{
@@ -245,7 +246,8 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onErrorOccurred(Exception error) {
-               handleError(error);
+                Utils.handleError(error,MainActivity.this);
+                showSearchCard();
             }
         });
     }
@@ -258,30 +260,10 @@ public class MainActivity extends AppCompatActivity {
             }
             @Override
             public void onErrorOccurred(Exception error) {
-                handleError(error);
+                Utils.handleError(error,MainActivity.this);
+                showSearchCard();
             }
         });
-    }
-
-    private void handleError(Exception error){
-        if(error instanceof NoConnectionError){
-            AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setMessage("Check your network settings and try again")
-                    .setTitle("Can't load results");
-            builder.create().show();
-        } else if(error instanceof ParseError) {
-            AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setMessage("A response was given that we couldn't understand")
-                    .setTitle("Can't read results");
-            builder.create().show();
-        }else{
-            AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setMessage("Try again later or contact support")
-                    .setTitle("Something went wrong");
-            builder.create().show();
-            Crashlytics.log("Unrecognized Error: "+ error.toString());
-        }
-        showSearchCard();
     }
 
     private void showSearchCard(){
