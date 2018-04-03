@@ -69,7 +69,7 @@ public class SearchActivity extends AppCompatActivity {
                 public void onResultReceived(ArrayList<Conjugation> conjugations, HashMap<String, String> searchResults) {
                     if(searchResults != null) {
                         if(searchResults.isEmpty()){
-                            new AlertDialog.Builder(SearchActivity.this)
+                            AlertDialog dialog = new AlertDialog.Builder(SearchActivity.this)
                                     .setTitle(R.string.no_results_title)
                                     .setMessage(R.string.no_results_msg)
                                     .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
@@ -85,7 +85,10 @@ public class SearchActivity extends AppCompatActivity {
                                             onBackPressed();
                                         }
                                     })
-                                    .create().show();
+                                    .create();
+                            if(!SearchActivity.this.isFinishing()) {
+                                dialog.show();
+                            }
                         } else if (searchResults.size() == 1 || Utils.getEnglishLuck(getBaseContext())) {
                             doKoreanSearch(searchResults.keySet().iterator().next()); // Get the first key in map
                         } else {
@@ -120,7 +123,7 @@ public class SearchActivity extends AppCompatActivity {
                         goToSearchResults(searchResults,entry);
                     }
                 } else{
-                    new AlertDialog.Builder(SearchActivity.this)
+                    AlertDialog dialog = new AlertDialog.Builder(SearchActivity.this)
                             .setTitle(R.string.no_results_title)
                             .setMessage(R.string.no_results_msg)
                             .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
@@ -136,7 +139,10 @@ public class SearchActivity extends AppCompatActivity {
                                     onBackPressed();
                                 }
                             })
-                            .create().show();
+                            .create();
+                    if(!SearchActivity.this.isFinishing()) {
+                        dialog.show();
+                    }
                 }
             }
 
