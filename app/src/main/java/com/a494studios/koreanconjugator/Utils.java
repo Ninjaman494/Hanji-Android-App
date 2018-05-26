@@ -148,6 +148,8 @@ public class Utils {
             return Form.PAST_BASE;
         } else if (type.contains(Form.FUTURE_BASE.toString())) {
             return Form.FUTURE_BASE;
+        }else if (type.contains(Form.ADJ.toString())) {
+            return Form.ADJ;
         } else {
             return Form.UNKNOWN;
         }
