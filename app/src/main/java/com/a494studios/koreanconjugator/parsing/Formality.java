@@ -5,7 +5,7 @@ package com.a494studios.koreanconjugator.parsing;
  */
 
 public enum Formality implements Category{
-    INFORMAL_LOW, INFORMAL_HIGH, FORMAL_LOW, FORMAL_HIGH,NONE;
+    INFORMAL_LOW, INFORMAL_HIGH, FORMAL_LOW, FORMAL_HIGH,HONORIFIC_LOW,HONORIFIC_HIGH,NONE;
 
     @Override
     public String printName() {
@@ -14,6 +14,8 @@ public enum Formality implements Category{
             case INFORMAL_HIGH: return "informal high";
             case FORMAL_LOW:    return "formal low";
             case FORMAL_HIGH:   return "formal high";
+            case HONORIFIC_LOW: return "honorific low";
+            case HONORIFIC_HIGH:return "honorific high";
             case NONE:          return "none";
             default: throw new IllegalArgumentException();
         }

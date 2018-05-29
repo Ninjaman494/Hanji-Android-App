@@ -104,7 +104,11 @@ public class Utils {
             return Formality.FORMAL_LOW;
         } else if (type.contains(Formality.FORMAL_HIGH.toString())) {
             return Formality.FORMAL_HIGH;
-        } else {
+        } else if(type.contains(Formality.HONORIFIC_LOW.toString())) {
+            return Formality.HONORIFIC_LOW;
+        }else if(type.contains(Formality.HONORIFIC_HIGH.toString())){
+            return Formality.HONORIFIC_HIGH;
+        }else {
             return Formality.NONE;
         }
     }
@@ -136,14 +140,18 @@ public class Utils {
             return Form.CON_IF;
         } else if (type.contains(Form.CON_AND.toString())) {
             return Form.CON_AND;
+        } else if (type.contains(Form.CON_BUT.toString())){
+            return Form.CON_BUT;
         } else if (type.contains(Form.NOMINAL.toString())) {
             return Form.NOMINAL;
         } else if (type.contains(Form.PAST_BASE.toString())) {
             return Form.PAST_BASE;
         } else if (type.contains(Form.FUTURE_BASE.toString())) {
             return Form.FUTURE_BASE;
+        }else if (type.contains(Form.ADJ.toString())) {
+            return Form.ADJ;
         } else {
-            return null;
+            return Form.UNKNOWN;
         }
     }
 
