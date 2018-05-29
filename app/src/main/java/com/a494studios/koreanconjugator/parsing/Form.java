@@ -5,8 +5,8 @@ package com.a494studios.koreanconjugator.parsing;
  */
 
 public enum Form implements Category {
-    DECLARATIVE, INQUISITIVE, IMPERATIVE, PROPOSITIVE, CON_IF, CON_AND,
-    NOMINAL, PAST_BASE, FUTURE_BASE;
+    DECLARATIVE, INQUISITIVE, IMPERATIVE, PROPOSITIVE, CON_IF, CON_AND, CON_BUT,
+    NOMINAL, PAST_BASE, FUTURE_BASE, ADJ, UNKNOWN;
 
     @Override
     public String printName() {
@@ -17,9 +17,12 @@ public enum Form implements Category {
             case PROPOSITIVE:   return "propositive";
             case CON_IF:        return "connective if";
             case CON_AND:       return "connective and";
+            case CON_BUT:       return "connective but";
             case NOMINAL:       return "nominal";
             case PAST_BASE:     return "past base";
             case FUTURE_BASE:   return "future base";
+            case ADJ:           return "adjective";
+            case UNKNOWN:       return "unknown";
             default: throw new IllegalArgumentException();
         }
     }

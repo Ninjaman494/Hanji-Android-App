@@ -151,7 +151,7 @@ public class MainActivity extends AppCompatActivity {
                                 if(searchResults != null) {
                                     if(searchResults.isEmpty()) {
                                         showSearchCard();
-                                        new AlertDialog.Builder(MainActivity.this)
+                                        AlertDialog dialog = new AlertDialog.Builder(MainActivity.this)
                                                 .setTitle(R.string.no_results_title)
                                                 .setMessage(R.string.no_results_msg)
                                                 .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
@@ -160,7 +160,10 @@ public class MainActivity extends AppCompatActivity {
                                                         dialogInterface.dismiss();
                                                     }
                                                 })
-                                                .create().show();
+                                                .create();
+                                        if(!MainActivity.this.isFinishing()) {
+                                            dialog.show();
+                                        }
                                     }else if (searchResults.size() == 1 || Utils.getEnglishLuck(getBaseContext())) {
                                         doKoreanSearch(searchResults.keySet().iterator().next()); // Get the first key in map
                                     }else{
@@ -231,7 +234,7 @@ public class MainActivity extends AppCompatActivity {
                         goToSearchResults(searchResults,entry);
                     }
                 } else{
-                    new AlertDialog.Builder(MainActivity.this)
+                    AlertDialog dialog = new AlertDialog.Builder(MainActivity.this)
                             .setTitle(R.string.no_results_title)
                             .setMessage(R.string.no_results_msg)
                             .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
@@ -240,7 +243,10 @@ public class MainActivity extends AppCompatActivity {
                                     dialogInterface.dismiss();
                                 }
                             })
-                            .create().show();
+                            .create();
+                    if(!MainActivity.this.isFinishing()) {
+                        dialog.show();
+                    }
                 }
             }
 

@@ -107,7 +107,7 @@ public class DisplayActivity extends AppCompatActivity {
         // Propositive
         ArrayList<Conjugation> propPres = Category.Categories.getSubSet(conjugations,null, Form.PROPOSITIVE, Tense.PRESENT);
         // Other
-        ArrayList<Conjugation> other = Category.Categories.getSubSet(conjugations,Form.NOMINAL,Form.CON_AND,Form.CON_IF);
+        ArrayList<Conjugation> other = Category.Categories.getSubSet(conjugations,Form.NOMINAL,Form.CON_AND,Form.CON_IF,Form.CON_BUT,Form.ADJ);
         // Favorites
         ArrayList<Entry<String,Category[]>> map = Utils.getFavorites(this);
         ArrayList<Entry<String,Conjugation>> conjMap = new ArrayList<>();
