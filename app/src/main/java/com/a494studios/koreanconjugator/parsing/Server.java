@@ -24,7 +24,8 @@ import java.util.Iterator;
  */
 
 public class Server {
-    private static final String serverURL = "http://nodejs-ex-conjify.1d35.starter-us-east-1.openshiftapps.com/";
+    private static final String serverURL = "***REMOVED***";
+    //private static final String serverURL = "http://localhost:8080/";
     private static final String conjURL = serverURL + "conjugate=";
     private static final String searchKorURL = serverURL + "searchKor=";
     private static final String defKorURL = serverURL + "defineKor=";
