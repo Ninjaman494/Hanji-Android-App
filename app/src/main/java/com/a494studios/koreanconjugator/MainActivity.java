@@ -30,7 +30,10 @@ import com.a494studios.koreanconjugator.parsing.Tense;
 import com.a494studios.koreanconjugator.settings.SettingsActivity;
 import com.android.volley.NoConnectionError;
 import com.android.volley.ParseError;
+import com.codemybrainsout.ratingdialog.RatingDialog;
 import com.crashlytics.android.Crashlytics;
+import com.eggheadgames.aboutbox.AboutBoxUtils;
+import com.eggheadgames.aboutbox.AboutConfig;
 import com.eggheadgames.aboutbox.activity.AboutActivity;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
@@ -211,6 +214,51 @@ public class MainActivity extends AppCompatActivity {
                 popup.show();
             }
         });
+
+        // Setting up Feedback dialog
+        final RatingDialog ratingDialog = new RatingDialog.Builder(this)
+                .threshold(5) // Get feedback if less than 5 stars
+                .session(2)
+                .title(getString(R.string.feed_title))
+                .formTitle(getString(R.string.feed_form_title))
+                .formHint(getString(R.string.feed_form_hint))
+                .onThresholdCleared(new RatingDialog.Builder.RatingThresholdClearedListener() {
+                    @Override
+                    public void onThresholdCleared(final RatingDialog ratingDialog, final float rating, boolean thresholdCleared) {
+                        ratingDialog.dismiss();
+                        final AlertDialog dialog = new AlertDialog.Builder(MainActivity.this)
+                                .setTitle(R.string.feed_rate_title)
+                                .setMessage(R.string.feed_rate_msg)
+                                .setPositiveButton(R.string.feed_rate_sure, new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialogInterface, int i) {
+                                        AboutConfig config = AboutConfig.getInstance();
+                                        AboutBoxUtils.openApp(MainActivity.this, config.buildType,config.packageName);
+                                        //AboutBoxUtils.openApp(MainActivity.this, AboutConfig.BuildType.GOOGLE,"com.a494studios.koreanconjugator");
+                                    }
+                                })
+                                .setNegativeButton(R.string.feed_rate_never, new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialogInterface, int i) {
+                                        // Do nothing
+                                    }
+                                }).create();
+                        dialog.setOnShowListener( new DialogInterface.OnShowListener() {
+                            @Override
+                            public void onShow(DialogInterface arg0) {
+                                dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(getResources().getColor(R.color.grey_500));
+                            }
+                        });
+                        dialog.show();
+                    }
+                })
+                .onRatingBarFormSumbit(new RatingDialog.Builder.RatingDialogFormListener() {
+                    @Override
+                    public void onFormSubmitted(String feedback) {
+                        System.out.println("Thanks for your feedback!");
+                    }
+                }).build();
+        ratingDialog.show();
     }
 
     @Override
