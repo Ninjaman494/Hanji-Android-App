@@ -203,6 +203,7 @@ public class Utils {
                 .withLogsCapturingFeature(defaultSharedPreferences
                         .getBoolean("maoni_logs_capturing_enabled", true))
                 .withDefaultToEmailAddress("feedback@my.company.com")
+                .withHeader(R.drawable.feedback_header)
                 .withTheme(R.style.AppTheme_NoActionBar)
                 .build();
     }
