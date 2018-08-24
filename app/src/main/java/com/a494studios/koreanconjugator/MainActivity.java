@@ -207,6 +207,9 @@ public class MainActivity extends AppCompatActivity {
                             Utils.makeAboutBox(MainActivity.this);
                             AboutActivity.launch(MainActivity.this);
                             return true;
+                        }else if(item.getItemId() == R.id.overflow_bug){
+                            Utils.makeMaoniActivity(MainActivity.this).start(MainActivity.this);
+                            return true;
                         }
                         return false;
                     }

@@ -26,6 +26,8 @@ import com.google.gson.reflect.TypeToken;
 import com.mikepenz.aboutlibraries.Libs;
 import com.mikepenz.aboutlibraries.LibsBuilder;
 
+import org.rm3l.maoni.Maoni;
+
 import java.util.ArrayList;
 import java.util.Map;
 
@@ -190,6 +192,19 @@ public class Utils {
                 }
             }
         };
+    }
+
+    public static Maoni makeMaoniActivity(Context context){
+        SharedPreferences defaultSharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+
+        return new Maoni.Builder(context, null)
+                .withScreenCapturingFeature(defaultSharedPreferences
+                        .getBoolean("maoni_screen_capturing_enabled", true))
+                .withLogsCapturingFeature(defaultSharedPreferences
+                        .getBoolean("maoni_logs_capturing_enabled", true))
+                .withDefaultToEmailAddress("feedback@my.company.com")
+                .withTheme(R.style.AppTheme_NoActionBar)
+                .build();
     }
 
     public static void handleError(Exception error, AppCompatActivity context, DialogInterface.OnClickListener listener){
