@@ -1,0 +1,6 @@
+<paths>
+    <!-- By default, Maoni stores files captured (screenshots and logs) in the application cache directory.
+    So you must declare the path '.' as shareable. Specify something else if you are using a different path -->
+    <cache-path name="maoni-shares" path="." />
+    <!-- <files-path path="maoni-working-dir/" name="myCustomWorkingDirForMaoni" /> -->
+</paths>

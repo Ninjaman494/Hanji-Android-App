@@ -28,8 +28,6 @@ import com.a494studios.koreanconjugator.parsing.Formality;
 import com.a494studios.koreanconjugator.parsing.Server;
 import com.a494studios.koreanconjugator.parsing.Tense;
 import com.a494studios.koreanconjugator.settings.SettingsActivity;
-import com.android.volley.NoConnectionError;
-import com.android.volley.ParseError;
 import com.codemybrainsout.ratingdialog.RatingDialog;
 import com.crashlytics.android.Crashlytics;
 import com.eggheadgames.aboutbox.AboutBoxUtils;
