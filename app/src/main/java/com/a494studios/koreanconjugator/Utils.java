@@ -195,8 +195,8 @@ public class Utils {
         };
     }
 
-    public static Maoni makeMaoniActivity(Context context){
-        SlackListener listener = new SlackListener();
+    public static Maoni makeMaoniActivity(Activity context){
+        SlackListener listener = new SlackListener(context);
         return new Maoni.Builder(context, "com.a494studios.koreanconjugator.fileprovider")
                 .enableScreenCapturingFeature()
                 .withLogsCapturingFeature(false)
