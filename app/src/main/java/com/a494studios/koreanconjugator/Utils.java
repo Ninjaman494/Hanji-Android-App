@@ -15,6 +15,7 @@ import com.a494studios.koreanconjugator.parsing.Formality;
 import com.a494studios.koreanconjugator.parsing.Tense;
 import com.a494studios.koreanconjugator.settings.LegalDisplayActivity;
 import com.a494studios.koreanconjugator.utils.ErrorDialogFragment;
+import com.a494studios.koreanconjugator.utils.SlackListener;
 import com.android.volley.NoConnectionError;
 import com.android.volley.ParseError;
 import com.crashlytics.android.Crashlytics;
@@ -195,14 +196,11 @@ public class Utils {
     }
 
     public static Maoni makeMaoniActivity(Context context){
-        SharedPreferences defaultSharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
-
-        return new Maoni.Builder(context, null)
-                .withScreenCapturingFeature(defaultSharedPreferences
-                        .getBoolean("maoni_screen_capturing_enabled", true))
-                .withLogsCapturingFeature(defaultSharedPreferences
-                        .getBoolean("maoni_logs_capturing_enabled", true))
-                .withDefaultToEmailAddress("feedback@my.company.com")
+        SlackListener listener = new SlackListener();
+        return new Maoni.Builder(context, "com.a494studios.koreanconjugator.fileprovider")
+                .enableScreenCapturingFeature()
+                .withLogsCapturingFeature(false)
+                .withListener(listener)
                 .withHeader(R.drawable.feedback_header)
                 .withTheme(R.style.AppTheme_NoActionBar)
                 .build();
