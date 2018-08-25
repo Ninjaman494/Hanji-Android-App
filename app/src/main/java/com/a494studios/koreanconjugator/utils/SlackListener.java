@@ -1,5 +1,9 @@
 package com.a494studios.koreanconjugator.utils;
 
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.widget.Toast;
+
 import org.rm3l.maoni.common.contract.Listener;
 import org.rm3l.maoni.common.model.Feedback;
 import allbegray.slack.SlackClientFactory;
@@ -8,14 +12,16 @@ import allbegray.slack.webapi.SlackWebApiClient;
 
 public class SlackListener implements Listener {
 
+    Activity context;
     SlackWebApiClient webApiClient;
 
-    public SlackListener(){
+    public SlackListener(Activity context){
+        this.context  = context;
         webApiClient = SlackClientFactory.createWebApiClient("xoxb-423273386706-423066381252-fFNL8ZlJ0YQsKZg7Kd7cdyJx");
         new Thread() {
             @Override
             public void run() {
-                System.out.println(webApiClient.auth().getTeam());
+                System.out.println(webApiClient.auth());
             }
         }.start();
     }
@@ -49,7 +55,12 @@ public class SlackListener implements Listener {
 
                 body.append("\n------ Device ------\n");
                 if (feedback.deviceInfo != null) {
-                    body.append(feedback.deviceInfo.toString());
+                    body.append("- brand: ").append(feedback.deviceInfo.brand).append("\n");
+                    body.append("- isTablet: ").append(feedback.deviceInfo.isTablet).append("\n");
+                    body.append("- manufacturer: ").append(feedback.deviceInfo.manufacturer).append("\n");
+                    body.append("- model: ").append(feedback.deviceInfo.model).append("\n");
+                    body.append("- resolution: ").append(feedback.deviceInfo.resolution).append("\n");
+                    body.append("- sdkVersion: ").append(feedback.deviceInfo.sdkVersion).append("\n");
                 }
                 body.append("\n\n");
 
@@ -59,9 +70,22 @@ public class SlackListener implements Listener {
                     e.printStackTrace();
                 }finally {
                     webApiClient.shutdown();
+                    context.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Toast.makeText(context,"Feedback sent",Toast.LENGTH_LONG).show();
+                        }
+                    });
                 }
             }
         }.start();
+
+        new AlertDialog.Builder(context)
+                .setTitle("Thanks for Your Feedback")
+                .setMessage("We're sending your feedback now. You can continue using Hanji and we'll let you know when it's done.")
+                .setPositiveButton(android.R.string.ok,null)
+                .create()
+                .show();
         return true;
     }
 }
