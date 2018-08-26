@@ -3,27 +3,42 @@ package com.a494studios.koreanconjugator.utils;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
+import android.widget.RadioGroup;
 import android.widget.Toast;
 
+import com.a494studios.koreanconjugator.R;
 import com.a494studios.koreanconjugator.Utils;
 import com.crashlytics.android.Crashlytics;
 
-import org.rm3l.maoni.common.contract.Listener;
+import org.rm3l.maoni.common.contract.Handler;
 import org.rm3l.maoni.common.model.Feedback;
 import allbegray.slack.SlackClientFactory;
 import allbegray.slack.exception.SlackException;
 import allbegray.slack.exception.SlackResponseErrorException;
 import allbegray.slack.webapi.SlackWebApiClient;
 
-public class SlackListener implements Listener {
+public class SlackHandler implements Handler {
 
     private AppCompatActivity context;
     private SlackWebApiClient webApiClient;
+    private RadioGroup radioGroup;
 
-    public SlackListener(AppCompatActivity context){
+    public SlackHandler(AppCompatActivity context){
         this.context  = context;
         webApiClient = SlackClientFactory.createWebApiClient("xoxb-423273386706-423066381252-fFNL8ZlJ0YQsKZg7Kd7cdyJx");
+    }
+
+    @Override
+    public void onCreate(View view, Bundle bundle) {
+        radioGroup = view.findViewById(R.id.extra_radiogroup);
+    }
+
+    @Override
+    public boolean validateForm(View view) {
+        return radioGroup.getCheckedRadioButtonId() != -1; // An option needs to be selected
     }
 
     public boolean auth(){
@@ -100,7 +115,25 @@ public class SlackListener implements Listener {
                 body.append("\n\n");
 
                 try {
-                    webApiClient.uploadFile(feedback.screenshotFile, "screenshot", body.toString(), "bugs");
+                    int radioBtn = radioGroup.getCheckedRadioButtonId();
+                    String channel;
+                    switch (radioBtn){
+                        case R.id.extra_bug_btn:
+                            channel = "bugs";
+                            break;
+                        case R.id.extra_feature_btn:
+                            channel = "feature-ideas";
+                            break;
+                        default: // saying hi
+                            channel = "other-feedback";
+                            break;
+                    }
+
+                    if(feedback.screenshotFile != null) {
+                        webApiClient.uploadFile(feedback.screenshotFile, "screenshot", body.toString(), channel);
+                    }else { // User opted-out of sharing a screenshot
+                        webApiClient.postMessage(channel,body.toString());
+                    }
                 }catch (SlackException e){
                     e.printStackTrace();
                 }finally {

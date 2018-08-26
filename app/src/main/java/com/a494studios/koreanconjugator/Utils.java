@@ -15,7 +15,7 @@ import com.a494studios.koreanconjugator.parsing.Formality;
 import com.a494studios.koreanconjugator.parsing.Tense;
 import com.a494studios.koreanconjugator.settings.LegalDisplayActivity;
 import com.a494studios.koreanconjugator.utils.ErrorDialogFragment;
-import com.a494studios.koreanconjugator.utils.SlackListener;
+import com.a494studios.koreanconjugator.utils.SlackHandler;
 import com.android.volley.NoConnectionError;
 import com.android.volley.ParseError;
 import com.crashlytics.android.Crashlytics;
@@ -199,7 +199,7 @@ public class Utils {
 
     @Nullable
     public static Maoni makeMaoniActivity(AppCompatActivity context){
-        SlackListener listener = new SlackListener(context);
+        SlackHandler listener = new SlackHandler(context);
         if(!listener.auth()){
             displayErrorDialog(context,"Can't Connect to Server","Check your network settings and try again",null);
             return null;
@@ -207,7 +207,8 @@ public class Utils {
         return new Maoni.Builder(context, "com.a494studios.koreanconjugator.fileprovider")
                 .enableScreenCapturingFeature()
                 .withLogsCapturingFeature(false)
-                .withListener(listener)
+                .withHandler(listener)
+                .withExtraLayout(R.layout.activity_maoni_extra)
                 .withHeader(R.drawable.feedback_header)
                 .withTheme(R.style.AppTheme_NoActionBar)
                 .build();

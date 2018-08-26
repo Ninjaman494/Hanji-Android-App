@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Select Feedback Type"
+        android:textColor="@android:color/black"
+        android:paddingTop="8dp"
+        android:paddingBottom="16dp"/>
+
+    <RadioGroup
+        android:id="@+id/extra_radiogroup"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <RadioButton
+            android:id="@+id/extra_bug_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:checked="true"
+            android:text="Found a Bug"/>
+        <RadioButton
+            android:id="@+id/extra_feature_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:checked="false"
+            android:text="Suggesting a New Feature"/>
+        <RadioButton
+            android:id="@+id/extra_hi_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:checked="false"
+            android:text="Just Saying Hi"/>
+    </RadioGroup>
+</LinearLayout>
