@@ -37,6 +37,8 @@ import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.MobileAds;
 
+import org.rm3l.maoni.Maoni;
+
 import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -206,7 +208,10 @@ public class MainActivity extends AppCompatActivity {
                             AboutActivity.launch(MainActivity.this);
                             return true;
                         }else if(item.getItemId() == R.id.overflow_bug){
-                            Utils.makeMaoniActivity(MainActivity.this).start(MainActivity.this);
+                            Maoni maoni = Utils.makeMaoniActivity(MainActivity.this);
+                            if(maoni != null){
+                                maoni.start(MainActivity.this);
+                            }
                             return true;
                         }
                         return false;
