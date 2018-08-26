@@ -32,6 +32,8 @@ import org.rm3l.maoni.Maoni;
 import java.util.ArrayList;
 import java.util.Map;
 
+import javax.annotation.Nullable;
+
 /**
  * Created by akash on 1/9/2018.
  */
@@ -195,8 +197,13 @@ public class Utils {
         };
     }
 
-    public static Maoni makeMaoniActivity(Activity context){
+    @Nullable
+    public static Maoni makeMaoniActivity(AppCompatActivity context){
         SlackListener listener = new SlackListener(context);
+        if(!listener.auth()){
+            displayErrorDialog(context,"Can't Connect to Server","Check your network settings and try again",null);
+            return null;
+        }
         return new Maoni.Builder(context, "com.a494studios.koreanconjugator.fileprovider")
                 .enableScreenCapturingFeature()
                 .withLogsCapturingFeature(false)
@@ -231,5 +238,17 @@ public class Utils {
 
     public static void handleError(Exception error, AppCompatActivity context) {
         handleError(error,context,null);
+    }
+
+    public static void displayErrorDialog(AppCompatActivity context, String title, String msg,DialogInterface.OnClickListener listener){
+        ErrorDialogFragment fragment = ErrorDialogFragment.newInstance(title, msg);
+        if(listener != null){
+            fragment.setListener(listener);
+        }
+
+        context.getSupportFragmentManager()
+                .beginTransaction()
+                .add(fragment,"frag_alert")
+                .commitAllowingStateLoss();
     }
 }
