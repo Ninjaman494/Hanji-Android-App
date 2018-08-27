@@ -155,6 +155,20 @@ public class SlackHandler implements Handler {
         return true;
     }
 
+    public void sendFeedback(final String feedback){
+        new Thread() {
+            @Override
+            public void run() {
+                try {
+                    webApiClient.postMessage("reviews", feedback);
+                    webApiClient.shutdown();
+                } catch (SlackException e) {
+                    e.printStackTrace();
+                }
+            }
+        }.start();
+    }
+
     private boolean isConnected(){
         ConnectivityManager cm = (ConnectivityManager)context.getSystemService(Context.CONNECTIVITY_SERVICE);
 

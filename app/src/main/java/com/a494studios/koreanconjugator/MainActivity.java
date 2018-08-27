@@ -28,6 +28,7 @@ import com.a494studios.koreanconjugator.parsing.Formality;
 import com.a494studios.koreanconjugator.parsing.Server;
 import com.a494studios.koreanconjugator.parsing.Tense;
 import com.a494studios.koreanconjugator.settings.SettingsActivity;
+import com.a494studios.koreanconjugator.utils.SlackHandler;
 import com.codemybrainsout.ratingdialog.RatingDialog;
 import com.crashlytics.android.Crashlytics;
 import com.eggheadgames.aboutbox.AboutBoxUtils;
@@ -43,6 +44,8 @@ import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+
+import allbegray.slack.SlackClientFactory;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -224,7 +227,7 @@ public class MainActivity extends AppCompatActivity {
         // Setting up Feedback dialog
         final RatingDialog ratingDialog = new RatingDialog.Builder(this)
                 .threshold(5) // Get feedback if less than 5 stars
-                .session(2)
+                .session(5)
                 .title(getString(R.string.feed_title))
                 .formTitle(getString(R.string.feed_form_title))
                 .formHint(getString(R.string.feed_form_hint))
@@ -238,9 +241,9 @@ public class MainActivity extends AppCompatActivity {
                                 .setPositiveButton(R.string.feed_rate_sure, new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialogInterface, int i) {
-                                        AboutConfig config = AboutConfig.getInstance();
-                                        AboutBoxUtils.openApp(MainActivity.this, config.buildType,config.packageName);
-                                        //AboutBoxUtils.openApp(MainActivity.this, AboutConfig.BuildType.GOOGLE,"com.a494studios.koreanconjugator");
+                                        //AboutConfig config = AboutConfig.getInstance();
+                                        //AboutBoxUtils.openApp(MainActivity.this, config.buildType,config.packageName);
+                                        AboutBoxUtils.openApp(MainActivity.this, AboutConfig.BuildType.GOOGLE,"com.a494studios.koreanconjugator");
                                     }
                                 })
                                 .setNegativeButton(R.string.feed_rate_never, new DialogInterface.OnClickListener() {
@@ -261,7 +264,14 @@ public class MainActivity extends AppCompatActivity {
                 .onRatingBarFormSumbit(new RatingDialog.Builder.RatingDialogFormListener() {
                     @Override
                     public void onFormSubmitted(String feedback) {
-                        System.out.println("Thanks for your feedback!");
+                        SlackHandler handler = new SlackHandler(MainActivity.this);
+                        if(handler.auth()) {
+                            handler.sendFeedback(feedback);
+                            Toast.makeText(MainActivity.this,"Thanks for the feedback!",Toast.LENGTH_LONG).show();
+                        }else{
+                            Toast.makeText(MainActivity.this,"Couldn't connect to server",Toast.LENGTH_LONG).show();
+                        }
+
                     }
                 }).build();
         ratingDialog.show();
