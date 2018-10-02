@@ -22,6 +22,11 @@ import allbegray.slack.webapi.SlackWebApiClient;
 
 public class SlackHandler implements Handler {
 
+    private static final String SLACK_DIALOG_FEEDBACK = "reviews";
+    private static final String SLACK_REPORT_BUG = "bugs";
+    private static final String SLACK_FEATURE_IDEA = "feature-ideas";
+    private static final String SLACK_OTHER_FEEDBACK = "other-feedback";
+
     private AppCompatActivity context;
     private SlackWebApiClient webApiClient;
     private RadioGroup radioGroup;
@@ -73,6 +78,7 @@ public class SlackHandler implements Handler {
 
     }
 
+    // For Maoni Activity
     @Override
     public boolean onSendButtonClicked(final Feedback feedback) {
         if(!isConnected()){
@@ -119,13 +125,13 @@ public class SlackHandler implements Handler {
                     String channel;
                     switch (radioBtn){
                         case R.id.extra_bug_btn:
-                            channel = "bugs";
+                            channel = SLACK_REPORT_BUG;
                             break;
                         case R.id.extra_feature_btn:
-                            channel = "feature-ideas";
+                            channel = SLACK_FEATURE_IDEA;
                             break;
                         default: // saying hi
-                            channel = "other-feedback";
+                            channel = SLACK_OTHER_FEEDBACK;
                             break;
                     }
 
@@ -155,12 +161,13 @@ public class SlackHandler implements Handler {
         return true;
     }
 
+    // For Feedback Dialog
     public void sendFeedback(final String feedback){
         new Thread() {
             @Override
             public void run() {
                 try {
-                    webApiClient.postMessage("reviews", feedback);
+                    webApiClient.postMessage(SLACK_DIALOG_FEEDBACK, feedback);
                     webApiClient.shutdown();
                 } catch (SlackException e) {
                     e.printStackTrace();
