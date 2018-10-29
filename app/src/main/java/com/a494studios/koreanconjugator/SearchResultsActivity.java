@@ -31,6 +31,8 @@ import com.github.andkulikov.materialin.MaterialIn;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 
+import org.rm3l.maoni.Maoni;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -160,7 +162,13 @@ public class SearchResultsActivity extends AppCompatActivity {
             Utils.makeAboutBox(this);
             AboutActivity.launch(this);
             return true;
-        }else{
+        }else if(item.getItemId() == R.id.overflow_bug) {
+            Maoni maoni = Utils.makeMaoniActivity(SearchResultsActivity.this);
+            if(maoni != null){
+                maoni.start(SearchResultsActivity.this);
+            }
+            return true;
+        } else{
             return super.onOptionsItemSelected(item);
         }
     }
