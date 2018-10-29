@@ -15,6 +15,7 @@ import com.a494studios.koreanconjugator.parsing.Formality;
 import com.a494studios.koreanconjugator.parsing.Tense;
 import com.a494studios.koreanconjugator.settings.LegalDisplayActivity;
 import com.a494studios.koreanconjugator.utils.ErrorDialogFragment;
+import com.a494studios.koreanconjugator.utils.SlackHandler;
 import com.android.volley.NoConnectionError;
 import com.android.volley.ParseError;
 import com.crashlytics.android.Crashlytics;
@@ -26,8 +27,12 @@ import com.google.gson.reflect.TypeToken;
 import com.mikepenz.aboutlibraries.Libs;
 import com.mikepenz.aboutlibraries.LibsBuilder;
 
+import org.rm3l.maoni.Maoni;
+
 import java.util.ArrayList;
 import java.util.Map;
+
+import javax.annotation.Nullable;
 
 /**
  * Created by akash on 1/9/2018.
@@ -165,9 +170,6 @@ public class Utils {
         aboutConfig.packageName = activity.getPackageName();
         aboutConfig.buildType = AboutConfig.BuildType.GOOGLE;
         aboutConfig.appPublisher = "494 Studios"; // app publisher for "Try Other Apps" item
-        // Contact Support email details
-        aboutConfig.emailAddress = "494studios@gmail.com";
-        aboutConfig.emailSubject = "Hanji - Contact Us";
         aboutConfig.privacyHtmlPath = "file:///android_asset/PrivacyPolicy.html";
         aboutConfig.acknowledgmentHtmlPath = "www.google.com";
         // Custom handler for Acknowledgements and Privacy Policy options
@@ -190,6 +192,23 @@ public class Utils {
                 }
             }
         };
+    }
+
+    @Nullable
+    public static Maoni makeMaoniActivity(AppCompatActivity context){
+        SlackHandler listener = new SlackHandler(context);
+        if(!listener.auth()){
+            displayErrorDialog(context,"Can't Connect to Server","Check your network settings and try again",null);
+            return null;
+        }
+        return new Maoni.Builder(context, "com.a494studios.koreanconjugator.fileprovider")
+                .enableScreenCapturingFeature()
+                .withLogsCapturingFeature(false)
+                .withHandler(listener)
+                .withExtraLayout(R.layout.activity_maoni_extra)
+                .withHeader(R.drawable.feedback_header)
+                .withTheme(R.style.AppTheme_NoActionBar)
+                .build();
     }
 
     public static void handleError(Exception error, AppCompatActivity context, DialogInterface.OnClickListener listener){
@@ -217,5 +236,17 @@ public class Utils {
 
     public static void handleError(Exception error, AppCompatActivity context) {
         handleError(error,context,null);
+    }
+
+    public static void displayErrorDialog(AppCompatActivity context, String title, String msg,DialogInterface.OnClickListener listener){
+        ErrorDialogFragment fragment = ErrorDialogFragment.newInstance(title, msg);
+        if(listener != null){
+            fragment.setListener(listener);
+        }
+
+        context.getSupportFragmentManager()
+                .beginTransaction()
+                .add(fragment,"frag_alert")
+                .commitAllowingStateLoss();
     }
 }
