@@ -33,6 +33,8 @@ import com.transitionseverywhere.Fade;
 import com.transitionseverywhere.Transition;
 import com.transitionseverywhere.TransitionManager;
 
+import org.rm3l.maoni.Maoni;
+
 import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.Map.Entry;
@@ -158,7 +160,13 @@ public class DisplayActivity extends AppCompatActivity {
             Utils.makeAboutBox(this);
             AboutActivity.launch(this);
             return true;
-        }else{
+        }else if(item.getItemId() == R.id.overflow_bug) {
+            Maoni maoni = Utils.makeMaoniActivity(DisplayActivity.this);
+            if(maoni != null){
+                maoni.start(DisplayActivity.this);
+            }
+            return true;
+        } else{
             return super.onOptionsItemSelected(item);
         }
     }
