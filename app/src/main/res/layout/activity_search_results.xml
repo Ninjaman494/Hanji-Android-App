@@ -19,6 +19,6 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         app:adSize="BANNER"
-        app:adUnitId="***REMOVED***"/>
+        app:adUnitId="@string/SEARCH_RESULTS_AD_ID"/>
 
 </RelativeLayout>

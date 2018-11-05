@@ -17,9 +17,27 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+
+    buildTypes.each {
+        it.buildConfigField("String", "SERVER_URL", getApiKey("serverURL"))
+        it.buildConfigField("String", "ADMOB_KEY", getApiKey("adMobKey"))
+        it.buildConfigField("String", "SLACK_KEY", getApiKey("slackKey"))
+        it.resValue("string", "DISPLAY_AD_ID" , getApiKey("displayAdID"))
+        it.resValue("string", "MAIN_AD_ID" , getApiKey("mainAdID"))
+        it.resValue("string", "SEARCH_AD_ID" , getApiKey("searchAdID"))
+        it.resValue("string", "SEARCH_RESULTS_AD_ID" , getApiKey("searchResultsAdID"))
+    }
+
     configurations.all {
         resolutionStrategy.force 'com.google.code.findbugs:jsr305:1.3.9'
     }
+}
+
+//return a MY API KEY from a properties file.
+def getApiKey(String property){
+    Properties properties = new Properties()
+    properties.load(new FileInputStream("keys.txt"))
+    return "\"" + properties.getProperty(property) +"\""
 }
 
 dependencies {

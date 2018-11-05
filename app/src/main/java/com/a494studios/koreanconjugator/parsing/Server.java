@@ -24,7 +24,7 @@ import java.util.Iterator;
  */
 
 public class Server {
-    private static final String serverURL = "***REMOVED***";
+    private static final String serverURL = com.a494studios.koreanconjugator.BuildConfig.SERVER_URL;
     //private static final String serverURL = "http://localhost:8080/";
     private static final String conjURL = serverURL + "conjugate=";
     private static final String searchKorURL = serverURL + "searchKor=";

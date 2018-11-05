@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 
+import com.a494studios.koreanconjugator.BuildConfig;
 import com.a494studios.koreanconjugator.R;
 import com.a494studios.koreanconjugator.Utils;
 import com.crashlytics.android.Crashlytics;
@@ -33,7 +34,7 @@ public class SlackHandler implements Handler {
 
     public SlackHandler(AppCompatActivity context){
         this.context  = context;
-        webApiClient = SlackClientFactory.createWebApiClient("***REMOVED***");
+        webApiClient = SlackClientFactory.createWebApiClient(BuildConfig.SLACK_KEY);
     }
 
     @Override

@@ -49,7 +49,7 @@ import allbegray.slack.SlackClientFactory;
 
 public class MainActivity extends AppCompatActivity {
 
-    private static final String APP_ID = "***REMOVED***";
+    private static final String APP_ID = BuildConfig.ADMOB_KEY;
 
     private ProgressBar progressBar;
     private TextView loadingText;
