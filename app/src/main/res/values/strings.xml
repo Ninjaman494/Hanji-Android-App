@@ -26,4 +26,6 @@
     <string name="feed_rate_msg">"Glad to hear you're enjoying our app. Would you mind taking a moment to rate Hanji?"</string>
     <string name="feed_rate_sure">Sure</string>
     <string name="feed_rate_never">Never</string>
+    <string name="feedback_sent">Feedback sent</string>
+    <string name="feedback_sending">Sending feedback</string>
 </resources>

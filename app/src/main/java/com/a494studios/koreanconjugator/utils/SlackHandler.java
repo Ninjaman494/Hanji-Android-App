@@ -148,17 +148,13 @@ public class SlackHandler implements Handler {
                     context.runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            Toast.makeText(context,"Feedback sent",Toast.LENGTH_LONG).show();
+                            Toast.makeText(context, R.string.feedback_sent,Toast.LENGTH_LONG).show();
                         }
                     });
                 }
             }
         }.start();
-
-        Utils.displayErrorDialog(context,
-                "Thanks for Your Feedback",
-                "We're sending your feedback now. You can continue using Hanji and we'll let you know when it's done.",
-                null);
+        Toast.makeText(context, R.string.feedback_sending,Toast.LENGTH_SHORT).show();
         return true;
     }
 
