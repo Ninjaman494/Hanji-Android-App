@@ -4,7 +4,6 @@ import android.app.SearchManager;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.design.widget.Snackbar;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -14,17 +13,15 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
-import com.a494studios.koreanconjugator.parsing.Category;
-import com.a494studios.koreanconjugator.parsing.Conjugation;
-import com.a494studios.koreanconjugator.parsing.Form;
-import com.a494studios.koreanconjugator.parsing.Formality;
 import com.a494studios.koreanconjugator.parsing.Server;
-import com.a494studios.koreanconjugator.parsing.Tense;
 import com.a494studios.koreanconjugator.settings.SettingsActivity;
 import com.a494studios.koreanconjugator.utils.ErrorDialogFragment;
+import com.a494studios.koreanconjugator.utils.SimpleCardFragment;
 import com.android.volley.NoConnectionError;
+import com.apollographql.apollo.ApolloCall;
+import com.apollographql.apollo.api.Response;
+import com.apollographql.apollo.exception.ApolloException;
 import com.crashlytics.android.Crashlytics;
 import com.eggheadgames.aboutbox.activity.AboutActivity;
 import com.google.android.gms.ads.AdRequest;
@@ -33,85 +30,90 @@ import com.transitionseverywhere.Fade;
 import com.transitionseverywhere.Transition;
 import com.transitionseverywhere.TransitionManager;
 
+import org.jetbrains.annotations.NotNull;
 import org.rm3l.maoni.Maoni;
 
-import java.util.AbstractMap;
 import java.util.ArrayList;
-import java.util.Map.Entry;
 
 public class DisplayActivity extends AppCompatActivity {
 
     public static final String EXTRA_CONJ = "conj";
     public static final String EXTRA_DEF = "definition";
+    public static final String EXTRA_ID = "id";
+    public static final String EXTRA_TERM = "term";
 
     private String definition;
-    private String infinitive;
-    private TextView defView;
+    private String term;
+    private String id;
     private boolean overflowClicked;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_display);
-        defView = findViewById(R.id.defCard_content);
         AdView adView = findViewById(R.id.display_adView);
-        ArrayList<Conjugation> conjugations = (ArrayList<Conjugation>)getIntent().getSerializableExtra(EXTRA_CONJ);
+        term = getIntent().getStringExtra(EXTRA_TERM);
+        id = getIntent().getStringExtra(EXTRA_ID);
         if(savedInstanceState != null){
             definition = savedInstanceState.getString(EXTRA_DEF);
         }else{
             definition = getIntent().getStringExtra(EXTRA_DEF);
         }
 
-        if(conjugations == null){ // Null and empty check for extra
+        if(term == null){ // Null and empty check for extra
             ErrorDialogFragment.newInstance().setListener(new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialogInterface, int i) {
                     onBackPressed();
                 }
             }).show(getSupportFragmentManager(),"error_dialog");
-            Crashlytics.log("Conjugations was null in DisplayActivity");
+            Crashlytics.log("Infinitive was null in DisplayActivity");
             return;
-        }else if(conjugations.isEmpty()){
+        }
+        if(id == null){
             ErrorDialogFragment.newInstance().setListener(new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialogInterface, int i) {
                     onBackPressed();
                 }
             }).show(getSupportFragmentManager(),"error_dialog");
-            Crashlytics.log("Conjugations was empty in DisplayActivity");
+            Crashlytics.log("ID was null in DisplayActivity");
             return;
         }
 
-        infinitive = conjugations.get(0).getInfinitive();
         adView.loadAd(new AdRequest.Builder().build());
 
         ActionBar actionBar = getSupportActionBar();
         if(actionBar != null) {
-            actionBar.setTitle("Result: "+infinitive);
+            actionBar.setTitle("Result: "+ term);
         }
 
-        if(definition == null) {
-            requestDefinition();
-        }else{
-            defView.setText(definition);
-        }
+        final SimpleCardFragment defFrag = (SimpleCardFragment)getSupportFragmentManager().findFragmentById(R.id.disp_defFrag);
+        defFrag.setHeading("POS");
+        defFrag.setContent("Loading...");
 
-        // Declarative
-        ArrayList<Conjugation> decPast = Category.Categories.getSubSet(conjugations,null, Form.DECLARATIVE, Tense.PAST);
-        ArrayList<Conjugation> decPres = Category.Categories.getSubSet(conjugations,null, Form.DECLARATIVE, Tense.PRESENT);
-        ArrayList<Conjugation> decFut = Category.Categories.getSubSet(conjugations,null, Form.DECLARATIVE, Tense.FUTURE);
-        ArrayList<Conjugation> decFutC = Category.Categories.getSubSet(conjugations,null, Form.DECLARATIVE, Tense.FUT_COND);
-        // Inquisitive
-        ArrayList<Conjugation> inqPast = Category.Categories.getSubSet(conjugations, null, Form.INQUISITIVE, Tense.PAST);
-        ArrayList<Conjugation> inqPres = Category.Categories.getSubSet(conjugations,null, Form.INQUISITIVE, Tense.PRESENT);
-        // Imperative
-        ArrayList<Conjugation> imPres = Category.Categories.getSubSet(conjugations,null, Form.IMPERATIVE, Tense.PRESENT);
-        // Propositive
-        ArrayList<Conjugation> propPres = Category.Categories.getSubSet(conjugations,null, Form.PROPOSITIVE, Tense.PRESENT);
-        // Other
-        ArrayList<Conjugation> other = Category.Categories.getSubSet(conjugations,Form.NOMINAL,Form.CON_AND,Form.CON_IF,Form.CON_BUT,Form.ADJ);
+        Server.doEntryQuery(id, new ApolloCall.Callback<EntryQuery.Data>() {
+            @Override
+            public void onResponse(@NotNull Response<EntryQuery.Data> response) {
+                EntryQuery.Entry entry = response.data().entry();
+                System.out.println(entry);
+                defFrag.setHeading(entry.pos);
+                defFrag.setContent(entry.definitions.get(0));
+            }
+
+            @Override
+            public void onFailure(@NotNull ApolloException e) {
+                e.printStackTrace();
+                /*Utils.handleError(e,DisplayActivity.this,new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        onBackPressed();
+                    }
+                });*/
+            }
+        });
         // Favorites
-        ArrayList<Entry<String,Category[]>> map = Utils.getFavorites(this);
+       /* ArrayList<Entry<String,Category[]>> map = Utils.getFavorites(this);
         ArrayList<Entry<String,Conjugation>> conjMap = new ArrayList<>();
         for(Entry<String,Category[]> entry: map){
             Category[] categories = entry.getValue();
@@ -127,16 +129,7 @@ public class DisplayActivity extends AppCompatActivity {
         }else{
             findViewById(R.id.frag_1).setVisibility(View.GONE);
         }
-        transaction.replace(R.id.frag_2,ConjugationCardFragment.newInstance("Declarative Past", decPast));
-        transaction.replace(R.id.frag_3,ConjugationCardFragment.newInstance("Declarative Present", decPres));
-        transaction.replace(R.id.frag_4,ConjugationCardFragment.newInstance("Declarative Future", decFut));
-        transaction.replace(R.id.frag_5,ConjugationCardFragment.newInstance("Declarative Future Conditional", decFutC));
-        transaction.replace(R.id.frag_6,ConjugationCardFragment.newInstance("Inquisitive Past", inqPast));
-        transaction.replace(R.id.frag_7,ConjugationCardFragment.newInstance("Inquisitive Present", inqPres));
-        transaction.replace(R.id.frag_8,ConjugationCardFragment.newInstance("Imperative Present", imPres));
-        transaction.replace(R.id.frag_9,ConjugationCardFragment.newInstance("Propositive Present", propPres));
-        transaction.replace(R.id.frag_10,ConjugationCardFragment.newInstance("Other Forms", other));
-        transaction.commit();
+        transaction.commit();*/
     }
 
     @Override
@@ -221,24 +214,24 @@ public class DisplayActivity extends AppCompatActivity {
         snackbar.show();
     }
 
+    //TODO Implement
     private void requestDefinition(){
-        Server.requestKorDefinition(infinitive, this, new Server.DefinitionListener() {
+       /* Server.requestKorDefinition(term, this, new Server.DefinitionListener() {
             @Override
             public void onDefinitionReceived(String result) {
                 definition = result;
-                defView.setText(definition);
+                //defView.setText(definition);
             }
 
             @Override
             public void onErrorOccurred(Exception error) {
                 handleError(error);
             }
-        });
+        });*/
     }
 
     private ArrayList<ViewGroup> makeFragViewList(){
         ArrayList<ViewGroup> views = new ArrayList<>();
-        views.add((ViewGroup) findViewById(R.id.disp_defCard));
         views.add((ViewGroup) findViewById(R.id.frag_1));
         views.add((ViewGroup) findViewById(R.id.frag_2));
         views.add((ViewGroup) findViewById(R.id.frag_3));

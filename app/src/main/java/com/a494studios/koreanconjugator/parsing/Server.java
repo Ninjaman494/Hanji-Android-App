@@ -2,22 +2,30 @@ package com.a494studios.koreanconjugator.parsing;
 
 import android.content.Context;
 
+import com.a494studios.koreanconjugator.CustomApplication;
+import com.a494studios.koreanconjugator.EntriesQuery;
+import com.a494studios.koreanconjugator.EntryQuery;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.apollographql.apollo.ApolloCall;
+import com.apollographql.apollo.ApolloClient;
+import com.apollographql.apollo.exception.ApolloException;
 import com.crashlytics.android.Crashlytics;
 import com.google.common.net.UrlEscapers;
 
+import org.jetbrains.annotations.NotNull;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
+
+import okhttp3.OkHttpClient;
 
 /**
  * Created by akash on 12/31/2017.
@@ -39,6 +47,15 @@ public class Server {
     private static final String KEY_CONJ_ROMAN = "romanized";
     private static final String KEY_SEARCH_WORD = "key";
     private static final String KEY_SEARCH_DEF = "def";
+
+
+    public static void doEntriesQuery(final String term, ApolloCall.Callback<EntriesQuery.Data> callback){
+       CustomApplication.getApolloClient().query(new EntriesQuery(term)).enqueue(callback);
+    }
+
+    public static void doEntryQuery(final String id, ApolloCall.Callback<EntryQuery.Data> callback){
+        CustomApplication.getApolloClient().query(EntryQuery.builder().id(id).build()).enqueue(callback);
+    }
 
 
     public static void requestKoreanSearch(final String kword, final Context context, final ServerListener listener){

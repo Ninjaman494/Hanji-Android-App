@@ -29,6 +29,10 @@ import com.a494studios.koreanconjugator.parsing.Server;
 import com.a494studios.koreanconjugator.parsing.Tense;
 import com.a494studios.koreanconjugator.settings.SettingsActivity;
 import com.a494studios.koreanconjugator.utils.SlackHandler;
+import com.apollographql.apollo.ApolloCall;
+import com.apollographql.apollo.ApolloClient;
+import com.apollographql.apollo.api.Response;
+import com.apollographql.apollo.exception.ApolloException;
 import com.codemybrainsout.ratingdialog.RatingDialog;
 import com.crashlytics.android.Crashlytics;
 import com.eggheadgames.aboutbox.AboutBoxUtils;
@@ -38,14 +42,17 @@ import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.MobileAds;
 
+import org.jetbrains.annotations.NotNull;
 import org.rm3l.maoni.Maoni;
 
 import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import allbegray.slack.SlackClientFactory;
+import okhttp3.OkHttpClient;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -144,7 +151,34 @@ public class MainActivity extends AppCompatActivity {
                     searchInProgress = true;
 
                     final String entry = editText.getText().toString().trim();
-                    if(Utils.isHangul(entry)) {
+                    if(Utils.isHangul(entry)){
+                        goToDisplay("가다0","가다");
+
+
+                        /*Server.doEntriesQuery(entry, new ApolloCall.Callback<EntriesQuery.Data>() {
+                            @Override
+                            public void onResponse(@NotNull Response<EntriesQuery.Data> response) {
+                                HashMap<String,List<String>> entries = new HashMap<>();
+                                ArrayList<String> ids = new ArrayList<>();
+                                if(response.data() != null) {
+                                    for (EntriesQuery.Entry e : response.data().entries) {
+                                        entries.put(e.term,e.definitions);
+                                        ids.add(e.id);
+                                    }
+                                    goToSearchResults(entries,ids);
+                                }
+
+                            }
+
+                            @Override
+                            public void onFailure(@NotNull ApolloException e) {
+                                Utils.handleError(e,MainActivity.this);
+                                showSearchCard();
+                            }
+                        });*/
+                    }
+
+                    /*if(Utils.isHangul(entry)) {
                         Crashlytics.log("Korean search: "+entry);
                         Crashlytics.setString("searchTerm",entry);
                         doKoreanSearch(entry);
@@ -188,7 +222,7 @@ public class MainActivity extends AppCompatActivity {
                         Crashlytics.setString("searchTerm",entry);
                         showSearchCard();
                         Toast.makeText(getBaseContext(),"Input not Valid",Toast.LENGTH_LONG).show();
-                    }
+                    }*/
                 }
                 return false;
             }
@@ -290,7 +324,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onResultReceived(final ArrayList<Conjugation> conjugations, HashMap<String, String> searchResults) {
                 if (conjugations != null) {
-                    goToDisplay(conjugations);
+                    //goToDisplay(conjugations);
                 } else if (searchResults != null && !searchResults.isEmpty()) {
                     if(Utils.getKoreanLuck(getApplicationContext())){
                         requestConjugations(searchResults.keySet().iterator().next());
@@ -326,7 +360,7 @@ public class MainActivity extends AppCompatActivity {
         Server.requestConjugation(word, this, new Server.ServerListener() {
             @Override
             public void onResultReceived(ArrayList<Conjugation> conjugations, HashMap<String, String> searchResults) {
-                goToDisplay(conjugations);
+                //goToDisplay(conjugations);
             }
             @Override
             public void onErrorOccurred(Exception error) {
@@ -363,9 +397,19 @@ public class MainActivity extends AppCompatActivity {
         prepForIntent();
     }
 
-    private void goToDisplay(ArrayList<Conjugation> conjugations){
+    private void goToSearchResults(HashMap<String,List<String>> entries, ArrayList<String> ids){
+        Intent intent = new Intent(getApplicationContext(), SearchResultsActivity.class);
+        intent.putExtra(SearchResultsActivity.EXTRA_RESULTS, entries);
+        intent.putExtra(SearchResultsActivity.EXTRA_SEARCHED, ids);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+        startActivity(intent);
+        prepForIntent();
+    }
+
+    private void goToDisplay(String id, String term){
         Intent intent = new Intent(getApplicationContext(), DisplayActivity.class);
-        intent.putExtra(DisplayActivity.EXTRA_CONJ, conjugations);
+        intent.putExtra(DisplayActivity.EXTRA_ID, id);
+        intent.putExtra(DisplayActivity.EXTRA_TERM, term);
         intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
         startActivity(intent);
         prepForIntent();

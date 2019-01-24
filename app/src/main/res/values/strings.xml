@@ -1,5 +1,5 @@
-<resources>
-    <string name="app_name">Hanji</string>
+<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
+    <string name="app_name" >Hanji</string>
     <string name="main_results_found">Results Found!</string>
     <string name="loading">Loading…</string>
     <string name="main_search_hint">Search Korean or English…</string>
@@ -28,4 +28,7 @@
     <string name="feed_rate_never">Never</string>
     <string name="feedback_sent">Feedback sent</string>
     <string name="feedback_sending">Sending feedback</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

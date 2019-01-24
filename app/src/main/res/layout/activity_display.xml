@@ -17,47 +17,10 @@
             android:paddingBottom="50dp"
             android:orientation="vertical">
 
-            <android.support.v7.widget.CardView
-                android:id="@+id/disp_defCard"
+            <fragment android:name="com.a494studios.koreanconjugator.utils.SimpleCardFragment"
+                android:id="@+id/disp_defFrag"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/verticalMargin"
-                android:layout_marginLeft="@dimen/horizontalMargin"
-                android:layout_marginRight="@dimen/horizontalMargin"
-                android:layout_marginTop="@dimen/verticalMargin"
-                android:visibility="invisible">
-
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <TextView
-                        android:id="@+id/defCard_heading"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="10dp"
-                        android:layout_marginLeft="10dp"
-                        android:layout_marginRight="10dp"
-                        android:layout_marginStart="10dp"
-                        android:layout_marginTop="5dp"
-                        android:text="Definition"
-                        android:textColor="@color/colorPrimaryDark" />
-
-                    <TextView
-                        android:id="@+id/defCard_content"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_alignEnd="@id/defCard_heading"
-                        android:layout_alignLeft="@id/defCard_heading"
-                        android:layout_alignRight="@id/defCard_heading"
-                        android:layout_alignStart="@id/defCard_heading"
-                        android:layout_below="@id/defCard_heading"
-                        android:paddingBottom="20dp"
-                        android:text="@string/loading"
-                        android:textAlignment="center"
-                        android:textSize="32sp" />
-                </RelativeLayout>
-            </android.support.v7.widget.CardView>
+                android:layout_height="wrap_content"/>
 
             <FrameLayout
                 android:id="@+id/frag_1"
