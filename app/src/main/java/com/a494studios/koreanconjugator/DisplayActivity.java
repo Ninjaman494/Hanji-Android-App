@@ -4,6 +4,7 @@ import android.app.SearchManager;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -60,7 +61,8 @@ public class DisplayActivity extends AppCompatActivity {
             definition = getIntent().getStringExtra(EXTRA_DEF);
         }
 
-        if(term == null){ // Null and empty check for extra
+        // Make sure extras were passed
+        if(term == null){
             ErrorDialogFragment.newInstance().setListener(new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialogInterface, int i) {
@@ -88,17 +90,61 @@ public class DisplayActivity extends AppCompatActivity {
             actionBar.setTitle("Result: "+ term);
         }
 
-        final SimpleCardFragment defFrag = (SimpleCardFragment)getSupportFragmentManager().findFragmentById(R.id.disp_defFrag);
+        FragmentManager fm = getSupportFragmentManager();
+        // Definitions and POS
+        final SimpleCardFragment defFrag = (SimpleCardFragment)fm.findFragmentById(R.id.disp_defFrag);
         defFrag.setHeading("POS");
-        defFrag.setContent("Loading...");
+
+        // Note
+        final SimpleCardFragment noteFrag = (SimpleCardFragment) fm.findFragmentById(R.id.disp_noteFrag);
+        noteFrag.setHeading("Note");
+
+        // Examples
+        final SimpleCardFragment exampleFrag = (SimpleCardFragment) fm.findFragmentById(R.id.disp_exampleFrag);
+        exampleFrag.setHeading("Examples");
+
+        // Synonyms
+        final SimpleCardFragment synFrag = (SimpleCardFragment)fm.findFragmentById(R.id.disp_synFrag);
+        synFrag.setHeading("Synonyms");
+
+        // Antonyms
+        final SimpleCardFragment antFrag = (SimpleCardFragment)fm.findFragmentById(R.id.disp_antFrag);
+        antFrag.setHeading("Antonyms");
 
         Server.doEntryQuery(id, new ApolloCall.Callback<EntryQuery.Data>() {
             @Override
             public void onResponse(@NotNull Response<EntryQuery.Data> response) {
+                if(response.data() == null){
+                    return;
+                }
+
                 EntryQuery.Entry entry = response.data().entry();
                 System.out.println(entry);
-                defFrag.setHeading(entry.pos);
-                defFrag.setContent(entry.definitions.get(0));
+                if(entry != null) {
+                    FragmentManager fm = getSupportFragmentManager();
+
+                    // Definitions and POS
+                    defFrag.setHeading(entry.pos);
+                    defFrag.setContent(entry.definitions.get(0));
+
+                    // Note
+                    SimpleCardFragment noteFrag = (SimpleCardFragment) fm.findFragmentById(R.id.disp_noteFrag);
+                    if (entry.note() != null) {
+                        noteFrag.setContent(entry.note());
+                    }
+
+                    // Synonyms
+                    SimpleCardFragment synFrag = (SimpleCardFragment)fm.findFragmentById(R.id.disp_synFrag);
+                    if(entry.synonyms() != null && !entry.synonyms().isEmpty()){
+                        synFrag.setContent(entry.synonyms().get(0));
+                    }
+
+                    // Antonyms
+                    SimpleCardFragment antFrag = (SimpleCardFragment)fm.findFragmentById(R.id.disp_antFrag);
+                    if(entry.antonyms() != null && !entry.antonyms().isEmpty()){
+                        antFrag.setContent(entry.antonyms().get(0));
+                    }
+                }
             }
 
             @Override
@@ -232,7 +278,7 @@ public class DisplayActivity extends AppCompatActivity {
 
     private ArrayList<ViewGroup> makeFragViewList(){
         ArrayList<ViewGroup> views = new ArrayList<>();
-        views.add((ViewGroup) findViewById(R.id.frag_1));
+        /*views.add((ViewGroup) findViewById(R.id.frag_1));
         views.add((ViewGroup) findViewById(R.id.frag_2));
         views.add((ViewGroup) findViewById(R.id.frag_3));
         views.add((ViewGroup) findViewById(R.id.frag_4));
@@ -241,7 +287,7 @@ public class DisplayActivity extends AppCompatActivity {
         views.add((ViewGroup) findViewById(R.id.frag_7));
         views.add((ViewGroup) findViewById(R.id.frag_8));
         views.add((ViewGroup) findViewById(R.id.frag_9));
-        views.add((ViewGroup) findViewById(R.id.frag_10));
+        views.add((ViewGroup) findViewById(R.id.frag_10));*/
         return views;
     }
 }

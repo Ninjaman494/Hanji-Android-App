@@ -22,11 +22,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
 
-            <FrameLayout
-                android:id="@+id/frag_1"
+            <fragment android:name="com.a494studios.koreanconjugator.utils.SimpleCardFragment"
+                android:id="@+id/disp_noteFrag"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:visibility="invisible" />
+                android:layout_height="wrap_content"/>
 
             <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
                 xmlns:tools="http://schemas.android.com/tools"
@@ -64,59 +63,20 @@
                 </RelativeLayout>
             </android.support.v7.widget.CardView>
 
-            <FrameLayout
-                android:id="@+id/frag_2"
+            <fragment android:name="com.a494studios.koreanconjugator.utils.SimpleCardFragment"
+                android:id="@+id/disp_exampleFrag"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:visibility="invisible" />
+                android:layout_height="wrap_content"/>
 
-            <FrameLayout
-                android:id="@+id/frag_3"
+            <fragment android:name="com.a494studios.koreanconjugator.utils.SimpleCardFragment"
+                android:id="@+id/disp_synFrag"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:visibility="invisible" />
+                android:layout_height="wrap_content"/>
 
-            <FrameLayout
-                android:id="@+id/frag_4"
+            <fragment android:name="com.a494studios.koreanconjugator.utils.SimpleCardFragment"
+                android:id="@+id/disp_antFrag"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:visibility="invisible" />
-
-            <FrameLayout
-                android:id="@+id/frag_5"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:visibility="invisible" />
-
-            <FrameLayout
-                android:id="@+id/frag_6"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:visibility="invisible" />
-
-            <FrameLayout
-                android:id="@+id/frag_7"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:visibility="invisible" />
-
-            <FrameLayout
-                android:id="@+id/frag_8"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:visibility="invisible" />
-
-            <FrameLayout
-                android:id="@+id/frag_9"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:visibility="invisible" />
-
-            <FrameLayout
-                android:id="@+id/frag_10"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:visibility="invisible" />
+                android:layout_height="wrap_content"/>
         </LinearLayout>
     </ScrollView>
 </RelativeLayout>
