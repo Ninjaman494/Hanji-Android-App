@@ -125,7 +125,7 @@ public class DisplayActivity extends AppCompatActivity {
 
                     // Definitions and POS
                     defFrag.setHeading(entry.pos);
-                    defFrag.setContent(entry.definitions.get(0));
+                    defFrag.setContent(entry.definitions);
 
                     // Note
                     SimpleCardFragment noteFrag = (SimpleCardFragment) fm.findFragmentById(R.id.disp_noteFrag);
@@ -136,13 +136,13 @@ public class DisplayActivity extends AppCompatActivity {
                     // Synonyms
                     SimpleCardFragment synFrag = (SimpleCardFragment)fm.findFragmentById(R.id.disp_synFrag);
                     if(entry.synonyms() != null && !entry.synonyms().isEmpty()){
-                        synFrag.setContent(entry.synonyms().get(0));
+                        synFrag.setContent(entry.synonyms());
                     }
 
                     // Antonyms
                     SimpleCardFragment antFrag = (SimpleCardFragment)fm.findFragmentById(R.id.disp_antFrag);
                     if(entry.antonyms() != null && !entry.antonyms().isEmpty()){
-                        antFrag.setContent(entry.antonyms().get(0));
+                        antFrag.setContent(entry.antonyms());
                     }
                 }
             }
