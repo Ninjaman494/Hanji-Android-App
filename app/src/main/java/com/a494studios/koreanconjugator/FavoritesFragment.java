@@ -9,7 +9,6 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
-import com.a494studios.koreanconjugator.parsing.Conjugation;
 import com.linearlistview.LinearListView;
 
 import java.util.ArrayList;
@@ -22,10 +21,7 @@ import java.util.Map.Entry;
  * create an instance of this fragment.
  */
 public class FavoritesFragment extends Fragment {
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_ENTRIES = "PAST_CONJUGATION";
 
-    private ArrayList<Entry<String,ConjugationQuery.Conjugation>> entries;
     private LinearListView listView;
     public FavoritesFragment() {
         // Required empty public constructor
@@ -35,23 +31,10 @@ public class FavoritesFragment extends Fragment {
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
      *
-     * @param entries Parameter 1.
      * @return A new instance of fragment FavoritesFragment.
      */
-    public static FavoritesFragment newInstance(ArrayList<Entry<String,ConjugationQuery.Conjugation>> entries) {
-        FavoritesFragment fragment = new FavoritesFragment();
-        Bundle args = new Bundle();
-        args.putSerializable(ARG_ENTRIES, entries);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            entries = (ArrayList<Entry<String,ConjugationQuery.Conjugation>>)getArguments().getSerializable(ARG_ENTRIES);
-        }
+    public static FavoritesFragment newInstance() {
+        return new FavoritesFragment();
     }
 
     @Override
@@ -59,16 +42,11 @@ public class FavoritesFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_favorites, container, false);
-
         listView = view.findViewById(R.id.favCard_list);
-        if(entries != null) {
-            listView.setAdapter(new FavoritesAdapter(entries));
-        }
         return view;
     }
 
     public void setEntries(final ArrayList<Entry<String,ConjugationQuery.Conjugation>> entries){
-        this.entries = entries;
         getActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
@@ -120,6 +98,4 @@ public class FavoritesFragment extends Fragment {
             return true;
         }
     }
-
-
 }
