@@ -22,7 +22,8 @@ public class ConjugationCardFragment extends Fragment {
 
     private TextView textView;
     private LinearListView listView;
-
+    private String heading;
+    private List<ConjugationQuery.Conjugation> conjugations;
 
     public ConjugationCardFragment() {
         // Required empty public constructor
@@ -48,20 +49,34 @@ public class ConjugationCardFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_conjugation_card, container, false);
         textView = view.findViewById(R.id.conjCard_heading);
         listView = view.findViewById(R.id.conjCard_list);
+
+        if(heading != null){
+            textView.setText(heading);
+        }
+        if(conjugations != null){
+            listView.setAdapter(new ConjugationAdapter(conjugations));
+        }
+
         return view;
     }
 
     public void setHeading(String heading){
-        textView.setText(heading);
+        this.heading = heading;
+        if(textView != null) {
+            textView.setText(heading);
+        }
     }
 
-    public void setConjugations(List<ConjugationQuery.Conjugation> conjugations){
-        final ConjugationAdapter adapter = new ConjugationAdapter(conjugations);
-        getActivity().runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                listView.setAdapter(adapter);
-            }
-        });
+    public void setConjugations(List<ConjugationQuery.Conjugation> conjugations) {
+        this.conjugations = conjugations;
+        if (listView != null) {
+            final ConjugationAdapter adapter = new ConjugationAdapter(conjugations);
+            getActivity().runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    listView.setAdapter(adapter);
+                }
+            });
+        }
     }
 }

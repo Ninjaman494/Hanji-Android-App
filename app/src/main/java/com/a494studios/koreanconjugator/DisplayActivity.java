@@ -178,6 +178,8 @@ public class DisplayActivity extends AppCompatActivity {
                         }
                     }
                 }
+
+                conjFrag.setConjugationInfo(term,false,false);
                 conjFrag.setEntries(favConjugations);
             }
 

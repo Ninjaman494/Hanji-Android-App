@@ -1,12 +1,14 @@
 package com.a494studios.koreanconjugator;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.linearlistview.LinearListView;
@@ -23,6 +25,10 @@ import java.util.Map.Entry;
 public class FavoritesFragment extends Fragment {
 
     private LinearListView listView;
+    private String stem;
+    private boolean honorific;
+    private boolean isAdj;
+
     public FavoritesFragment() {
         // Required empty public constructor
     }
@@ -43,6 +49,19 @@ public class FavoritesFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_favorites, container, false);
         listView = view.findViewById(R.id.favCard_list);
+        Button moreBtn = view.findViewById(R.id.favCard_button);
+
+        moreBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getContext(),ConjugationActivity.class);
+                intent.putExtra(ConjugationActivity.EXTRA_STEM,stem);
+                intent.putExtra(ConjugationActivity.EXTRA_HONORIFIC,honorific);
+                intent.putExtra(ConjugationActivity.EXTRA_ISADJ,isAdj);
+                startActivity(intent);
+            }
+        });
+
         return view;
     }
 
@@ -53,6 +72,12 @@ public class FavoritesFragment extends Fragment {
                 listView.setAdapter(new FavoritesAdapter(entries));
             }
         });
+    }
+
+    public void setConjugationInfo(String stem, boolean honorific, boolean isAdj){
+        this.stem = stem;
+        this.honorific = honorific;
+        this.isAdj = isAdj;
     }
 
 
