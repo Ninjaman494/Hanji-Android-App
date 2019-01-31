@@ -6,17 +6,22 @@
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
-        android:name="com.a494studios.koreanconjugator.CustomApplication"
+        android:name=".CustomApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <meta-data android:name="firebase_crashlytics_collection_enabled" android:value="false" />
+        <activity android:name=".ConjugationActivity"></activity>
+
+        <meta-data
+            android:name="firebase_crashlytics_collection_enabled"
+            android:value="false" />
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"
-            android:value="ca-app-pub-7378286993062620~3014364162"/>
+            android:value="ca-app-pub-7378286993062620~3014364162" />
+
         <activity
             android:name=".MainActivity"
             android:theme="@style/AppTheme.NoActionBar"
@@ -49,25 +54,26 @@
                 android:resource="@xml/searchable" />
         </activity>
         <activity android:name=".settings.SettingsActivity" />
-        <activity android:name=".settings.FavoritesActivity"/>
+        <activity android:name=".settings.FavoritesActivity" />
         <activity android:name=".settings.LegalDisplayActivity" />
 
-        <service android:name=".MessagingService" >
+        <service android:name=".MessagingService">
             <intent-filter>
-                <action android:name="com.google.firebase.MESSAGING_EVENT"/>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
-        <meta-data android:name="com.google.firebase.messaging.default_notification_icon"
-            android:resource="@drawable/ic_status" />
-        <meta-data android:name="com.google.firebase.messaging.default_notification_color"
-            android:resource="@android:color/transparent" />
 
-        <!-- If not defined yet, declare a file provider to be able to share screenshots captured by Maoni -->
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_icon"
+            android:resource="@drawable/ic_status" />
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_color"
+            android:resource="@android:color/transparent" /> <!-- If not defined yet, declare a file provider to be able to share screenshots captured by Maoni -->
         <provider
             android:name="android.support.v4.content.FileProvider"
             android:authorities="com.a494studios.koreanconjugator.fileprovider"
-            android:grantUriPermissions="true"
-            android:exported="false">
+            android:exported="false"
+            android:grantUriPermissions="true">
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/filepaths" />

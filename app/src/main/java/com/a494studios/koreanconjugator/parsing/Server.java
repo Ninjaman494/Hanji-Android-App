@@ -14,6 +14,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.apollographql.apollo.ApolloCall;
 import com.apollographql.apollo.ApolloClient;
+import com.apollographql.apollo.api.cache.http.HttpCachePolicy;
 import com.apollographql.apollo.exception.ApolloException;
 import com.crashlytics.android.Crashlytics;
 import com.google.common.net.UrlEscapers;
@@ -59,7 +60,10 @@ public class Server {
     }
 
     public static void doConjugationQuery(String stem, boolean honorific, boolean isAdj, ApolloCall.Callback<ConjugationQuery.Data> callback){
-        CustomApplication.getApolloClient().query(new ConjugationQuery(stem,honorific,isAdj)).enqueue(callback);
+        CustomApplication.getApolloClient()
+                .query(new ConjugationQuery(stem,honorific,isAdj))
+                .httpCachePolicy(HttpCachePolicy.CACHE_FIRST)
+                .enqueue(callback);
     }
 
     public static void requestKoreanSearch(final String kword, final Context context, final ServerListener listener){
