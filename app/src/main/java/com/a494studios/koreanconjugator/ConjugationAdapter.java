@@ -30,7 +30,9 @@ public class ConjugationAdapter extends BaseAdapter {
         if(c.speechLevel == SpeechLevel.NONE){
             typeView.setText(c.name());
         }else {
-            typeView.setText(c.speechLevel().toString());
+            String speechLevel = c.speechLevel().toString();
+            speechLevel = speechLevel.replace('_', ' ').toLowerCase();
+            typeView.setText(speechLevel);
         }
         conjView.setText(c.conjugation());
         return view;
