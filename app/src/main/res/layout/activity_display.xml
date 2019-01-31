@@ -27,6 +27,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
 
+            <fragment android:name="com.a494studios.koreanconjugator.ConjugationCardFragment"
+                android:id="@+id/disp_conjFrag"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
             <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
                 xmlns:tools="http://schemas.android.com/tools"
                 android:id="@+id/conjCard"

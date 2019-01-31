@@ -111,6 +111,9 @@ public class DisplayActivity extends AppCompatActivity {
         final SimpleCardFragment antFrag = (SimpleCardFragment)fm.findFragmentById(R.id.disp_antFrag);
         antFrag.setHeading("Antonyms");
 
+        // Conjugations
+        final ConjugationCardFragment conjFrag = (ConjugationCardFragment)fm.findFragmentById(R.id.disp_conjFrag);
+
         Server.doEntryQuery(id, new ApolloCall.Callback<EntryQuery.Data>() {
             @Override
             public void onResponse(@NotNull Response<EntryQuery.Data> response) {
@@ -156,6 +159,19 @@ public class DisplayActivity extends AppCompatActivity {
                         onBackPressed();
                     }
                 });*/
+            }
+        });
+
+        Server.doConjugationQuery(term, false, false, new ApolloCall.Callback<ConjugationQuery.Data>() {
+            @Override
+            public void onResponse(@NotNull Response<ConjugationQuery.Data> response) {
+                conjFrag.setHeading("Conjugations");
+                conjFrag.setConjugations(response.data().conjugation());
+            }
+
+            @Override
+            public void onFailure(@NotNull ApolloException e) {
+                e.printStackTrace();
             }
         });
         // Favorites

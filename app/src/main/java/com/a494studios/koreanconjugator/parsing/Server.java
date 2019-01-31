@@ -2,6 +2,7 @@ package com.a494studios.koreanconjugator.parsing;
 
 import android.content.Context;
 
+import com.a494studios.koreanconjugator.ConjugationQuery;
 import com.a494studios.koreanconjugator.CustomApplication;
 import com.a494studios.koreanconjugator.EntriesQuery;
 import com.a494studios.koreanconjugator.EntryQuery;
@@ -57,6 +58,9 @@ public class Server {
         CustomApplication.getApolloClient().query(EntryQuery.builder().id(id).build()).enqueue(callback);
     }
 
+    public static void doConjugationQuery(String stem, boolean honorific, boolean isAdj, ApolloCall.Callback<ConjugationQuery.Data> callback){
+        CustomApplication.getApolloClient().query(new ConjugationQuery(stem,honorific,isAdj)).enqueue(callback);
+    }
 
     public static void requestKoreanSearch(final String kword, final Context context, final ServerListener listener){
         String encoded = UrlEscapers.urlFragmentEscaper().escape(searchKorURL + kword);// Convert to %-encoding

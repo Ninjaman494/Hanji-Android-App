@@ -6,17 +6,16 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
-import com.a494studios.koreanconjugator.parsing.Conjugation;
-import com.a494studios.koreanconjugator.parsing.Formality;
+import com.a494studios.koreanconjugator.type.SpeechLevel;
 
-import java.util.ArrayList;
+import java.util.List;
 
 public class ConjugationAdapter extends BaseAdapter {
 
-    private ArrayList<Conjugation> conjugations;
+    private List<ConjugationQuery.Conjugation> conjugations;
     private static final int RESOURCE_ID = R.layout.item_conjugation;
 
-    public ConjugationAdapter(ArrayList<Conjugation> conjugations) {
+    public ConjugationAdapter(List<ConjugationQuery.Conjugation> conjugations) {
         this.conjugations = conjugations;
     }
 
@@ -25,15 +24,15 @@ public class ConjugationAdapter extends BaseAdapter {
         if (view == null) {
             view = LayoutInflater.from(viewGroup.getContext()).inflate(RESOURCE_ID, viewGroup, false);
         }
-        Conjugation c = conjugations.get(i);
+        ConjugationQuery.Conjugation c = conjugations.get(i);
         TextView typeView = view.findViewById(R.id.conjFormal);
         TextView conjView = view.findViewById(R.id.conjText);
-        if(c.getFormality() == Formality.NONE){
-            typeView.setText(c.getForm().toString());
+        if(c.speechLevel == SpeechLevel.NONE){
+            typeView.setText(c.name());
         }else {
-            typeView.setText(c.getFormality().toString());
+            typeView.setText(c.speechLevel().toString());
         }
-        conjView.setText(c.getConjugated());
+        conjView.setText(c.conjugation());
         return view;
     }
 
