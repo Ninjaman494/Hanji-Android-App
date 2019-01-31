@@ -118,14 +118,11 @@ public class MainActivity extends AppCompatActivity {
 
         if(Utils.isFirstBoot(this)){
             // Make default favorites
-            Category[] past = {Formality.INFORMAL_HIGH, Form.DECLARATIVE, Tense.PAST};
-            Category[] present = {Formality.INFORMAL_HIGH, Form.DECLARATIVE, Tense.PRESENT};
-            Category[] future = {Formality.INFORMAL_HIGH, Form.DECLARATIVE, Tense.FUTURE};
-            ArrayList<Map.Entry<String,Category[]>> favorites = new ArrayList<>();
-            favorites.add(new AbstractMap.SimpleEntry<>("Past",past));
-            favorites.add(new AbstractMap.SimpleEntry<>("Present",present));
-            favorites.add(new AbstractMap.SimpleEntry<>("Future",future));
-            Utils.setFavorites(favorites,this);
+            ArrayList<Map.Entry<String,String>> favs = new ArrayList<>();
+            favs.add(new AbstractMap.SimpleEntry<>("Past","declarative past informal high"));
+            favs.add(new AbstractMap.SimpleEntry<>("Present","declarative present informal high"));
+            favs.add(new AbstractMap.SimpleEntry<>("Future","declarative future informal high"));
+            Utils.setFavorites(favs,this);
             Utils.setFirstBoot(this,false);
         }
 

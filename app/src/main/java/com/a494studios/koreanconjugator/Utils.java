@@ -65,7 +65,7 @@ public class Utils {
         return PreferenceManager.getDefaultSharedPreferences(context).getInt(PREF_FAV_COUNT, 3);
     }
 
-    public static void setFavorites(ArrayList<Map.Entry<String,Category[]>> data, Context context){
+    public static void setFavorites(ArrayList<Map.Entry<String,String>> data, Context context){
         Gson gson = new Gson();
         SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(context).edit();
         editor.putString(PREF_FAV_VALUES,gson.toJson(data));
@@ -73,7 +73,7 @@ public class Utils {
         editor.apply();
     }
 
-    public static ArrayList<Map.Entry<String,Category[]>> getFavorites(Context context) {
+    public static ArrayList<Map.Entry<String,String>> getFavorites(Context context) {
         String jsonString = PreferenceManager.getDefaultSharedPreferences(context).getString(PREF_FAV_VALUES,"");
         if(jsonString.isEmpty()){
             return new ArrayList<>();
@@ -81,7 +81,7 @@ public class Utils {
 
         GsonBuilder builder = new GsonBuilder();
         builder.registerTypeHierarchyAdapter(Map.Entry.class, new EntrySerializer());
-        java.lang.reflect.Type type = new TypeToken<ArrayList<Map.Entry<String,Category[]>>>(){}.getType();
+        java.lang.reflect.Type type = new TypeToken<ArrayList<Map.Entry<String,String>>>(){}.getType();
         return builder.create().fromJson(jsonString,type);
     }
 

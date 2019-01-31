@@ -25,7 +25,8 @@ public class FavoritesFragment extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_ENTRIES = "PAST_CONJUGATION";
 
-    private ArrayList<Entry<String,Conjugation>> entries;
+    private ArrayList<Entry<String,ConjugationQuery.Conjugation>> entries;
+    private LinearListView listView;
     public FavoritesFragment() {
         // Required empty public constructor
     }
@@ -37,7 +38,7 @@ public class FavoritesFragment extends Fragment {
      * @param entries Parameter 1.
      * @return A new instance of fragment FavoritesFragment.
      */
-    public static FavoritesFragment newInstance(ArrayList<Entry<String,Conjugation>> entries) {
+    public static FavoritesFragment newInstance(ArrayList<Entry<String,ConjugationQuery.Conjugation>> entries) {
         FavoritesFragment fragment = new FavoritesFragment();
         Bundle args = new Bundle();
         args.putSerializable(ARG_ENTRIES, entries);
@@ -49,7 +50,7 @@ public class FavoritesFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            entries = (ArrayList<Entry<String,Conjugation>>)getArguments().getSerializable(ARG_ENTRIES);
+            entries = (ArrayList<Entry<String,ConjugationQuery.Conjugation>>)getArguments().getSerializable(ARG_ENTRIES);
         }
     }
 
@@ -59,18 +60,30 @@ public class FavoritesFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_favorites, container, false);
 
-        LinearListView listView = view.findViewById(R.id.favCard_list);
-        listView.setAdapter(new FavoritesAdapter(entries));
+        listView = view.findViewById(R.id.favCard_list);
+        if(entries != null) {
+            listView.setAdapter(new FavoritesAdapter(entries));
+        }
         return view;
+    }
+
+    public void setEntries(final ArrayList<Entry<String,ConjugationQuery.Conjugation>> entries){
+        this.entries = entries;
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                listView.setAdapter(new FavoritesAdapter(entries));
+            }
+        });
     }
 
 
     private class FavoritesAdapter extends BaseAdapter {
 
-        private ArrayList<Entry<String,Conjugation>> entries;
+        private ArrayList<Entry<String,ConjugationQuery.Conjugation>> entries;
         private static final int RESOURCE_ID = R.layout.item_conjugation;
 
-        public FavoritesAdapter(ArrayList<Entry<String,Conjugation>> entries) {
+        public FavoritesAdapter(ArrayList<Entry<String,ConjugationQuery.Conjugation>> entries) {
             this.entries = entries;
         }
 
@@ -79,11 +92,11 @@ public class FavoritesFragment extends Fragment {
             if (view == null) {
                 view = LayoutInflater.from(viewGroup.getContext()).inflate(RESOURCE_ID, viewGroup, false);
             }
-            Entry<String,Conjugation> entry = entries.get(i);
+            Entry<String,ConjugationQuery.Conjugation> entry = entries.get(i);
             TextView typeView = view.findViewById(R.id.conjFormal);
             TextView conjView = view.findViewById(R.id.conjText);
             typeView.setText(entry.getKey());
-            conjView.setText(entry.getValue().getConjugated());
+            conjView.setText(entry.getValue().conjugation());
             return view;
         }
 

@@ -34,7 +34,9 @@ import com.transitionseverywhere.TransitionManager;
 import org.jetbrains.annotations.NotNull;
 import org.rm3l.maoni.Maoni;
 
+import java.util.AbstractMap;
 import java.util.ArrayList;
+import java.util.Map;
 
 public class DisplayActivity extends AppCompatActivity {
 
@@ -111,8 +113,8 @@ public class DisplayActivity extends AppCompatActivity {
         final SimpleCardFragment antFrag = (SimpleCardFragment)fm.findFragmentById(R.id.disp_antFrag);
         antFrag.setHeading("Antonyms");
 
-        // Conjugations
-        final ConjugationCardFragment conjFrag = (ConjugationCardFragment)fm.findFragmentById(R.id.disp_conjFrag);
+        // Conjugations / Favorites
+        final FavoritesFragment conjFrag = (FavoritesFragment) fm.findFragmentById(R.id.disp_conjFrag);
 
         Server.doEntryQuery(id, new ApolloCall.Callback<EntryQuery.Data>() {
             @Override
@@ -165,8 +167,18 @@ public class DisplayActivity extends AppCompatActivity {
         Server.doConjugationQuery(term, false, false, new ApolloCall.Callback<ConjugationQuery.Data>() {
             @Override
             public void onResponse(@NotNull Response<ConjugationQuery.Data> response) {
-                conjFrag.setHeading("Conjugations");
-                conjFrag.setConjugations(response.data().conjugation());
+                // Favorites
+                ArrayList<Map.Entry<String, String>> favs = Utils.getFavorites(DisplayActivity.this);
+                ArrayList<Map.Entry<String, ConjugationQuery.Conjugation>> favConjugations = new ArrayList<>();
+                for (Map.Entry<String, String> entry : favs) {
+                    for (ConjugationQuery.Conjugation conjugation : response.data().conjugation()) {
+                        if (conjugation.name().equals(entry.getValue())) {
+                            favConjugations.add(new AbstractMap.SimpleEntry<>(entry.getKey(), conjugation));
+                            break;
+                        }
+                    }
+                }
+                conjFrag.setEntries(favConjugations);
             }
 
             @Override
@@ -174,24 +186,6 @@ public class DisplayActivity extends AppCompatActivity {
                 e.printStackTrace();
             }
         });
-        // Favorites
-       /* ArrayList<Entry<String,Category[]>> map = Utils.getFavorites(this);
-        ArrayList<Entry<String,Conjugation>> conjMap = new ArrayList<>();
-        for(Entry<String,Category[]> entry: map){
-            Category[] categories = entry.getValue();
-            if(categories != null && categories.length == 3) {
-                Conjugation c = Category.Categories.getSubSet(conjugations, (Formality) categories[0], (Form) categories[1], (Tense) categories[2]).get(0);
-                conjMap.add(new AbstractMap.SimpleEntry<>(entry.getKey(), c));
-            }
-        }
-
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        if(!conjMap.isEmpty()) {
-            transaction.replace(R.id.frag_1, FavoritesFragment.newInstance(conjMap));
-        }else{
-            findViewById(R.id.frag_1).setVisibility(View.GONE);
-        }
-        transaction.commit();*/
     }
 
     @Override

@@ -38,7 +38,7 @@ public class FavoritesActivity extends AppCompatActivity implements AddFavoriteF
         }
 
         ListView listView = findViewById(R.id.fav_listView);
-        adapter = new FavoritesAdapter(Utils.getFavorites(this));
+        //adapter = new FavoritesAdapter(Utils.getFavorites(this));
         listView.setAdapter(adapter);
         registerForContextMenu(listView);
     }
@@ -55,7 +55,7 @@ public class FavoritesActivity extends AppCompatActivity implements AddFavoriteF
         AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
         if( item.getItemId() == R.id.context_delete) {
             ArrayList<Map.Entry<String,Category[]>> data = adapter.remove(adapter.getItem(info.position));
-            Utils.setFavorites(data,this);
+            //Utils.setFavorites(data,this);
             adapter.notifyDataSetChanged();
             return true;
         }else if(item.getItemId() == R.id.context_rename) {
@@ -90,7 +90,7 @@ public class FavoritesActivity extends AppCompatActivity implements AddFavoriteF
     @Override
     public void onFavoriteAdded(Map.Entry<String, Category[]> entry) {
         ArrayList<Map.Entry<String,Category[]>> data = adapter.add(entry);
-        Utils.setFavorites(data,this);
+        //Utils.setFavorites(data,this);
         adapter.notifyDataSetChanged();
     }
 
@@ -99,7 +99,7 @@ public class FavoritesActivity extends AppCompatActivity implements AddFavoriteF
         Map.Entry<String, Category[]> entry = adapter.getItem(position);
         Map.Entry<String, Category[]> newEntry = new AbstractMap.SimpleEntry<>(newName, entry.getValue());
         ArrayList<Map.Entry<String, Category[]>> data = adapter.replace(entry, newEntry);
-        Utils.setFavorites(data, this);
+        //Utils.setFavorites(data, this);
         adapter.notifyDataSetChanged();
     }
 

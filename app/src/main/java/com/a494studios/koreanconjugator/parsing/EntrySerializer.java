@@ -1,7 +1,6 @@
 package com.a494studios.koreanconjugator.parsing;
 
 import com.crashlytics.android.Crashlytics;
-import com.google.gson.JsonArray;
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonElement;
@@ -15,27 +14,16 @@ import java.util.Map;
 /**
  * Created by akash on 1/13/2018.
  */
-
-public class EntrySerializer implements JsonDeserializer<Map.Entry<String,Category[]>> {
+//TODO reimplement Crashlytics
+public class EntrySerializer implements JsonDeserializer<Map.Entry<String,String>> {
     @Override
-    public Map.Entry<String, Category[]> deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
+    public Map.Entry<String, String> deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
         JsonObject jsonObject = json.getAsJsonObject();
-        Crashlytics.log("Parsing Json Object: "+jsonObject.toString());
+        //Crashlytics.log("Parsing Json Object: "+jsonObject.toString());
         String key = jsonObject.get("key").getAsString();
-        Crashlytics.setString("Key",key);
-        JsonArray value = jsonObject.get("value").getAsJsonArray();
-        Crashlytics.setString("value",value.toString());
-        Category[] categories = new Category[3];
-        for(int i =0;i<value.size();i++){
-            JsonElement element = value.get(i);
-            if(!element.isJsonNull()) {
-                String catString = element.getAsString();
-                categories[i] = Category.Categories.valueOf(catString);
-            }else{
-                categories[i] = null;
-            }
-
-        }
-        return new AbstractMap.SimpleEntry<>(key,categories);
+        //Crashlytics.setString("Key",key);
+        String value = jsonObject.get("value").getAsString();
+        //Crashlytics.setString("value",value);
+        return new AbstractMap.SimpleEntry<>(key,value);
     }
 }
