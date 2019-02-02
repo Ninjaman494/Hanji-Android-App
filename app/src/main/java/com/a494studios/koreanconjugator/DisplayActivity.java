@@ -49,6 +49,7 @@ public class DisplayActivity extends AppCompatActivity {
     private String term;
     private String id;
     private boolean overflowClicked;
+    private FavoritesFragment conjFrag;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -114,7 +115,7 @@ public class DisplayActivity extends AppCompatActivity {
         antFrag.setHeading("Antonyms");
 
         // Conjugations / Favorites
-        final FavoritesFragment conjFrag = (FavoritesFragment) fm.findFragmentById(R.id.disp_conjFrag);
+        conjFrag = (FavoritesFragment) fm.findFragmentById(R.id.disp_conjFrag);
 
         Server.doEntryQuery(id, new ApolloCall.Callback<EntryQuery.Data>() {
             @Override
@@ -131,6 +132,9 @@ public class DisplayActivity extends AppCompatActivity {
                     // Definitions and POS
                     defFrag.setHeading(entry.pos);
                     defFrag.setContent(entry.definitions);
+
+                    // Conjugations
+                    fetchConjugations(term, false, entry.pos.equals("Adjective"));
 
                     // Note
                     SimpleCardFragment noteFrag = (SimpleCardFragment) fm.findFragmentById(R.id.disp_noteFrag);
@@ -164,7 +168,11 @@ public class DisplayActivity extends AppCompatActivity {
             }
         });
 
-        Server.doConjugationQuery(term, false, false, new ApolloCall.Callback<ConjugationQuery.Data>() {
+
+    }
+
+    public void fetchConjugations(final String term, final boolean honorific, final boolean isAdj){
+        Server.doConjugationQuery(term, honorific, isAdj, new ApolloCall.Callback<ConjugationQuery.Data>() {
             @Override
             public void onResponse(@NotNull Response<ConjugationQuery.Data> response) {
                 // Favorites
@@ -179,7 +187,7 @@ public class DisplayActivity extends AppCompatActivity {
                     }
                 }
 
-                conjFrag.setConjugationInfo(term,false,false);
+                conjFrag.setConjugationInfo(term, honorific, isAdj);
                 conjFrag.setEntries(favConjugations);
             }
 
