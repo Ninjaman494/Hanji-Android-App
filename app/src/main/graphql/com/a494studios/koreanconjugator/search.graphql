@@ -2,6 +2,7 @@ query SearchQuery($query: String!) {
   search(query: $query) {
     id,
     term,
+    pos,
     definitions
   }
 }

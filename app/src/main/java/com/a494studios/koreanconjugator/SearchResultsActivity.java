@@ -25,22 +25,29 @@ import com.a494studios.koreanconjugator.parsing.Server;
 import com.a494studios.koreanconjugator.settings.SettingsActivity;
 import com.a494studios.koreanconjugator.utils.ErrorDialogFragment;
 import com.android.volley.NoConnectionError;
+import com.apollographql.apollo.ApolloCall;
+import com.apollographql.apollo.api.Response;
+import com.apollographql.apollo.exception.ApolloException;
 import com.crashlytics.android.Crashlytics;
 import com.eggheadgames.aboutbox.activity.AboutActivity;
 import com.github.andkulikov.materialin.MaterialIn;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 
+import org.jetbrains.annotations.NotNull;
 import org.rm3l.maoni.Maoni;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 public class SearchResultsActivity extends AppCompatActivity {
 
     public static final String EXTRA_RESULTS = "RESULTS";
     public static final String EXTRA_SEARCHED = "SEARCHED";
     private static final String SAVED_RESULT_CONJS = "RESULT_CONJS";
+
+    public static final String EXTRA_QUERY = "query";
 
     private HashMap<String, String> results;
     private HashMap<String, ArrayList<Conjugation>> resultConjs;
@@ -52,59 +59,53 @@ public class SearchResultsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search_results);
-        ListView listView = findViewById(R.id.search_listView);
+        final ListView listView = findViewById(R.id.search_listView);
         AdView adView = findViewById(R.id.search_results_adView);
         snackbarShown = false;
-        if(savedInstanceState != null){
-            results = (HashMap<String,String>)savedInstanceState.getSerializable(EXTRA_RESULTS);
-            resultConjs = (HashMap<String,ArrayList<Conjugation>>)savedInstanceState.getSerializable(SAVED_RESULT_CONJS);
-        }else {
-            results = (HashMap<String, String>) getIntent().getSerializableExtra(EXTRA_RESULTS);
-            resultConjs = new HashMap<>();
-        }
+        String query = getIntent().getStringExtra(EXTRA_QUERY);
 
-        if(results == null){ // Null check for extra
+        if(query == null){ // Null check for extra
             ErrorDialogFragment.newInstance().setListener(new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialogInterface, int i) {
                     onBackPressed();
                 }
             }).show(getSupportFragmentManager(),"error_dialog");
-            Crashlytics.log("Results was null in SearchResultsActivity");
+            //Crashlytics.log("Query was null in SearchResultsActivity");
             return;
         }
 
         adView.loadAd(new AdRequest.Builder().build());
 
         ActionBar actionBar = getSupportActionBar();
-        if(actionBar != null && getIntent().getStringExtra(EXTRA_SEARCHED) != null){
-            actionBar.setTitle("Multiple results: "+getIntent().getStringExtra(EXTRA_SEARCHED));
+        if(actionBar != null){
+            actionBar.setTitle("Multiple results: "+ query);
         }
 
-        adapter = new SearchAdapter(results);
-        listView.setAdapter(adapter);
-        requestData();
+        Server.doSearchQuery(query, new ApolloCall.Callback<SearchQuery.Data>() {
+            @Override
+            public void onResponse(@NotNull Response<SearchQuery.Data> response) {
+                adapter = new SearchAdapter(response.data().search());
+                SearchResultsActivity.this.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        listView.setAdapter(adapter);
+                    }
+                });
+            }
+
+            @Override
+            public void onFailure(@NotNull ApolloException e) {
+                e.printStackTrace();
+            }
+        });
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                final String term = adapter.getKey(i);
-                ArrayList<Conjugation> conjugations = resultConjs.get(term);
-                if(conjugations == null){
-                    Server.requestConjugation(term, getBaseContext(), new Server.ServerListener() {
-                        @Override
-                        public void onResultReceived(ArrayList<Conjugation> conjugations, HashMap<String, String> searchResults) {
-                            sendIntent(conjugations,results.get(term));
-                        }
-
-                        @Override
-                        public void onErrorOccurred(Exception error) {
-                            handleError(error);
-                        }
-                    });
-                }else {
-                    sendIntent(conjugations,results.get(term));
-                }
+                String id = adapter.getItem(i).id();
+                String term = adapter.getItem(i).term();
+                sendIntent(id,term);
             }
         });
     }
@@ -214,14 +215,10 @@ public class SearchResultsActivity extends AppCompatActivity {
         }
     }
 
-    private void sendIntent(ArrayList<Conjugation> conjugations,String definition){
+    private void sendIntent(String id, String term){
         Intent intent = new Intent(this,DisplayActivity.class);
-        if(definition.equals(getString(R.string.loading))){
-            intent.putExtra(DisplayActivity.EXTRA_DEF,(String)null);
-        }else {
-            intent.putExtra(DisplayActivity.EXTRA_DEF, definition);
-        }
-        intent.putExtra(DisplayActivity.EXTRA_CONJ,conjugations);
+        intent.putExtra(DisplayActivity.EXTRA_ID,id);
+        intent.putExtra(DisplayActivity.EXTRA_TERM,term);
         intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
         startActivity(intent);
     }
@@ -229,13 +226,11 @@ public class SearchResultsActivity extends AppCompatActivity {
 
 class SearchAdapter extends BaseAdapter {
 
-    private HashMap<String,String> results;
-    private ArrayList<String> keyList;
-    private static final int RESOURCE_ID = R.layout.item_conjugation;
+    private List<SearchQuery.Search> results;
+    private static final int RESOURCE_ID = R.layout.item_search_result;
 
-    public SearchAdapter(HashMap<String,String> results) {
+    public SearchAdapter(List<SearchQuery.Search> results) {
         this.results = results;
-        keyList = new ArrayList<>(results.keySet());
     }
 
     @Override
@@ -244,12 +239,22 @@ class SearchAdapter extends BaseAdapter {
             view = LayoutInflater.from(viewGroup.getContext()).inflate(RESOURCE_ID, viewGroup, false);
         }
 
-        String key = keyList.get(i);
-        String value = results.get(key);
-        TextView typeView = view.findViewById(R.id.conjFormal);
-        TextView conjView = view.findViewById(R.id.conjText);
-        typeView.setText(key);
-        conjView.setText(value);
+        TextView termView = view.findViewById(R.id.item_search_result_term);
+        TextView posView = view.findViewById(R.id.item_search_result_pos);
+        TextView def1View = view.findViewById(R.id.item_search_result_def1);
+        TextView def2View = view.findViewById(R.id.item_search_result_def2);
+        TextView def3View = view.findViewById(R.id.item_search_result_def3);
+
+        SearchQuery.Search result = results.get(i);
+        List<String> definitions = result.definitions();
+        termView.setText(result.term());
+        posView.setText(result.pos());
+        def1View.setText(definitions.get(0));
+        if(definitions.size() >= 2)
+            def2View.setText(definitions.get(1));
+        if(definitions.size() >= 3)
+            def3View.setText(definitions.get(2));
+
         return view;
     }
 
@@ -259,12 +264,8 @@ class SearchAdapter extends BaseAdapter {
     }
 
     @Override
-    public Object getItem(int i) {
-        return results.get(keyList.get(i));
-    }
-
-    public String getKey(int i){
-        return keyList.get(i);
+    public SearchQuery.Search getItem(int i) {
+        return results.get(i);
     }
 
     @Override

@@ -155,7 +155,7 @@ public class MainActivity extends AppCompatActivity {
                             if(results.size() == 1){
                                 goToDisplay(results.get(0).id,results.get(0).term);
                             }else{
-                                goToDisplay(results.get(0).id,results.get(0).term);
+                                goToSearchResults(entry);
                             }
                         }
 
@@ -343,10 +343,9 @@ public class MainActivity extends AppCompatActivity {
         prepForIntent();
     }
 
-    private void goToSearchResults(HashMap<String,List<String>> entries, ArrayList<String> ids){
+    private void goToSearchResults(String query){
         Intent intent = new Intent(getApplicationContext(), SearchResultsActivity.class);
-        intent.putExtra(SearchResultsActivity.EXTRA_RESULTS, entries);
-        intent.putExtra(SearchResultsActivity.EXTRA_SEARCHED, ids);
+        intent.putExtra(SearchResultsActivity.EXTRA_QUERY,query);
         intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
         startActivity(intent);
         prepForIntent();

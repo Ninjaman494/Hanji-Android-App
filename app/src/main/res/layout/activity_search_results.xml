@@ -10,8 +10,7 @@
         android:id="@+id/search_listView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:paddingBottom="50dp"
-        android:divider="@null" />
+        android:paddingBottom="50dp" />
 
     <com.google.android.gms.ads.AdView
         android:id="@+id/search_results_adView"

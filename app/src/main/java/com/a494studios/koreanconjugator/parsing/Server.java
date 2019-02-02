@@ -47,7 +47,10 @@ public class Server {
 
 
     public static void doSearchQuery(final String query, ApolloCall.Callback<SearchQuery.Data> callback){
-        CustomApplication.getApolloClient().query(new SearchQuery(query)).enqueue(callback);
+        CustomApplication.getApolloClient()
+                .query(new SearchQuery(query))
+                .httpCachePolicy(HttpCachePolicy.CACHE_FIRST)
+                .enqueue(callback);
     }
 
     public static void doEntryQuery(final String id, ApolloCall.Callback<EntryQuery.Data> callback){
