@@ -48,15 +48,30 @@ public class SimpleCardFragment extends Fragment {
         return view;
     }
 
-    public void setHeading(String heading){
-        headingView.setText(heading);
+    public void setHeading(final String heading){
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                headingView.setText(heading);
+            }
+        });
     }
 
-    public void setContent(String content){
-        contentView.setText(content);
+    public void setContent(final String content){
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                contentView.setText(content);
+            }
+        });
     }
 
-    public void setContent(List<String> contentList){
-        contentView.setText(contentList.get(0));
+    public void setContent(final List<String> contentList){
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                contentView.setText(contentList.get(0));
+            }
+        });
     }
 }

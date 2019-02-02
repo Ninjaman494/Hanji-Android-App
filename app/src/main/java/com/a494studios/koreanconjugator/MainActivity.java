@@ -148,78 +148,22 @@ public class MainActivity extends AppCompatActivity {
                     searchInProgress = true;
 
                     final String entry = editText.getText().toString().trim();
-                    if(Utils.isHangul(entry)){
-                        goToDisplay("가다0","가다");
-
-
-                        /*Server.doEntriesQuery(entry, new ApolloCall.Callback<EntriesQuery.Data>() {
-                            @Override
-                            public void onResponse(@NotNull Response<EntriesQuery.Data> response) {
-                                HashMap<String,List<String>> entries = new HashMap<>();
-                                ArrayList<String> ids = new ArrayList<>();
-                                if(response.data() != null) {
-                                    for (EntriesQuery.Entry e : response.data().entries) {
-                                        entries.put(e.term,e.definitions);
-                                        ids.add(e.id);
-                                    }
-                                    goToSearchResults(entries,ids);
-                                }
-
+                    Server.doSearchQuery(entry, new ApolloCall.Callback<SearchQuery.Data>() {
+                        @Override
+                        public void onResponse(@NotNull Response<SearchQuery.Data> response) {
+                            List<SearchQuery.Search> results = response.data().search();
+                            if(results.size() == 1){
+                                goToDisplay(results.get(0).id,results.get(0).term);
+                            }else{
+                                goToDisplay(results.get(0).id,results.get(0).term);
                             }
+                        }
 
-                            @Override
-                            public void onFailure(@NotNull ApolloException e) {
-                                Utils.handleError(e,MainActivity.this);
-                                showSearchCard();
-                            }
-                        });*/
-                    }
-
-                    /*if(Utils.isHangul(entry)) {
-                        Crashlytics.log("Korean search: "+entry);
-                        Crashlytics.setString("searchTerm",entry);
-                        doKoreanSearch(entry);
-                    }else if(entry.matches("[A-Za-z ]+")){ // Check if String in English
-                        Crashlytics.log("English search: "+entry);
-                        Crashlytics.setString("searchTerm",entry);
-                        Server.requestEngDefinition(entry, getApplicationContext(), new Server.ServerListener() {
-                            @Override
-                            public void onResultReceived(ArrayList<Conjugation> conjugations, HashMap<String, String> searchResults) {
-                                if(searchResults != null) {
-                                    if(searchResults.isEmpty()) {
-                                        showSearchCard();
-                                        AlertDialog dialog = new AlertDialog.Builder(MainActivity.this)
-                                                .setTitle(R.string.no_results_title)
-                                                .setMessage(R.string.no_results_msg)
-                                                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                                                    @Override
-                                                    public void onClick(DialogInterface dialogInterface, int i) {
-                                                        dialogInterface.dismiss();
-                                                    }
-                                                })
-                                                .create();
-                                        if(!MainActivity.this.isFinishing()) {
-                                            dialog.show();
-                                        }
-                                    }else if (searchResults.size() == 1 || Utils.getEnglishLuck(getBaseContext())) {
-                                        doKoreanSearch(searchResults.keySet().iterator().next()); // Get the first key in map
-                                    }else{
-                                        goToSearchResults(searchResults,entry);
-                                    }
-                                }
-                            }
-                            @Override
-                            public void onErrorOccurred(Exception error) {
-                                Utils.handleError(error,MainActivity.this);
-                                showSearchCard();
-                            }
-                        });
-                    }else{
-                        Crashlytics.log("Invalid Search: "+entry);
-                        Crashlytics.setString("searchTerm",entry);
-                        showSearchCard();
-                        Toast.makeText(getBaseContext(),"Input not Valid",Toast.LENGTH_LONG).show();
-                    }*/
+                        @Override
+                        public void onFailure(@NotNull ApolloException e) {
+                            e.printStackTrace();
+                        }
+                    });
                 }
                 return false;
             }
@@ -379,10 +323,15 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void prepForIntent(){
-        progressBar.setIndeterminate(false);
-        progressBar.setProgress(100);
-        loadingText.setText(R.string.main_results_found);
-        searchInProgress = false;
+        this.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                progressBar.setIndeterminate(false);
+                progressBar.setProgress(100);
+                loadingText.setText(R.string.main_results_found);
+                searchInProgress = false;
+            }
+        });
     }
 
     private void goToSearchResults(HashMap<String,String> searchResults, String entry){

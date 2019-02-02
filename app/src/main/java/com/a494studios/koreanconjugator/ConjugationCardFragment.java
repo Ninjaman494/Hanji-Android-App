@@ -60,10 +60,15 @@ public class ConjugationCardFragment extends Fragment {
         return view;
     }
 
-    public void setHeading(String heading){
+    public void setHeading(final String heading){
         this.heading = heading;
         if(textView != null) {
-            textView.setText(heading);
+            getActivity().runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    textView.setText(heading);
+                }
+            });
         }
     }
 

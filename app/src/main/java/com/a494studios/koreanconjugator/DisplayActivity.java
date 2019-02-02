@@ -134,7 +134,9 @@ public class DisplayActivity extends AppCompatActivity {
                     defFrag.setContent(entry.definitions);
 
                     // Conjugations
-                    fetchConjugations(term, false, entry.pos.equals("Adjective"));
+                    if(entry.pos.equals("Adjective") || entry.pos.equals("Verb")) {
+                        fetchConjugations(term, false, entry.pos.equals("Adjective"));
+                    }
 
                     // Note
                     SimpleCardFragment noteFrag = (SimpleCardFragment) fm.findFragmentById(R.id.disp_noteFrag);
