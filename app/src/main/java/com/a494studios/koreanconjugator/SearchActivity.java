@@ -4,22 +4,23 @@ import android.app.SearchManager;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.PorterDuff;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.a494studios.koreanconjugator.parsing.Conjugation;
 import com.a494studios.koreanconjugator.parsing.Server;
 import com.a494studios.koreanconjugator.utils.ErrorDialogFragment;
+import com.apollographql.apollo.ApolloCall;
+import com.apollographql.apollo.api.Response;
+import com.apollographql.apollo.exception.ApolloException;
 import com.crashlytics.android.Crashlytics;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 
-import java.util.ArrayList;
-import java.util.HashMap;
+import org.jetbrains.annotations.NotNull;
+
+import java.util.List;
 
 public class SearchActivity extends AppCompatActivity {
 
@@ -47,7 +48,7 @@ public class SearchActivity extends AppCompatActivity {
                     onBackPressed();
                 }
             }).show(getSupportFragmentManager(),"error_dialog");
-            Crashlytics.log("Query was null in SearchActivity");
+            //Crashlytics.log("Query was null in SearchActivity");
             return;
         }
         final String entry = getIntent().getStringExtra(SearchManager.QUERY).trim();
@@ -57,111 +58,22 @@ public class SearchActivity extends AppCompatActivity {
         progressBar.getProgressDrawable().setColorFilter(getResources().getColor(R.color.colorAccent), PorterDuff.Mode.SRC_IN);
 
         // Search
-        if (Utils.isHangul(entry)) {
-            Crashlytics.log("Korean search: "+entry);
-            Crashlytics.setString("searchTerm",entry);
-            doKoreanSearch(entry);
-        } else if(entry.matches("[A-Za-z ]+")){ // Check if String in English
-            Crashlytics.log("English search: "+entry);
-            Crashlytics.setString("searchTerm",entry);
-            Server.requestEngDefinition(entry, getApplicationContext(), new Server.ServerListener() {
-                @Override
-                public void onResultReceived(ArrayList<Conjugation> conjugations, HashMap<String, String> searchResults) {
-                    if(searchResults != null) {
-                        if(searchResults.isEmpty()){
-                            AlertDialog dialog = new AlertDialog.Builder(SearchActivity.this)
-                                    .setTitle(R.string.no_results_title)
-                                    .setMessage(R.string.no_results_msg)
-                                    .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                                        @Override
-                                        public void onClick(DialogInterface dialogInterface, int i) {
-                                            dialogInterface.dismiss();
-                                            onBackPressed();
-                                        }
-                                    })
-                                    .setOnCancelListener(new DialogInterface.OnCancelListener() {
-                                        @Override
-                                        public void onCancel(DialogInterface dialogInterface) {
-                                            onBackPressed();
-                                        }
-                                    })
-                                    .create();
-                            if(!SearchActivity.this.isFinishing()) {
-                                dialog.show();
-                            }
-                        } else if (searchResults.size() == 1 || Utils.getEnglishLuck(getBaseContext())) {
-                            doKoreanSearch(searchResults.keySet().iterator().next()); // Get the first key in map
-                        } else {
-                            goToSearchResults(searchResults,entry);
-                        }
-                    }
-                }
-
-                @Override
-                public void onErrorOccurred(Exception error) {
-                    handleError(error);
-                }
-            });
-        }else{
-            Crashlytics.log("Invalid Search: "+entry);
-            Crashlytics.setString("searchTerm",entry);
-            Toast.makeText(getBaseContext(),"Input not Valid",Toast.LENGTH_LONG).show();
-            onBackPressed();
-        }
-    }
-
-    private void doKoreanSearch(final String entry) {
-        Server.requestKoreanSearch(entry, getApplicationContext(), new Server.ServerListener() {
+        Server.doSearchQuery(entry, new ApolloCall.Callback<SearchQuery.Data>() {
             @Override
-            public void onResultReceived(final ArrayList<Conjugation> conjugations, HashMap<String, String> searchResults) {
-                if (conjugations != null) {
-                    goToDisplay(conjugations);
-                } else if (searchResults != null && !searchResults.isEmpty()) {
-                    if(Utils.getKoreanLuck(getApplicationContext())){
-                        requestConjugations(searchResults.keySet().iterator().next());
-                    }else{
-                        goToSearchResults(searchResults,entry);
-                    }
-                } else{
-                    AlertDialog dialog = new AlertDialog.Builder(SearchActivity.this)
-                            .setTitle(R.string.no_results_title)
-                            .setMessage(R.string.no_results_msg)
-                            .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialogInterface, int i) {
-                                    dialogInterface.dismiss();
-                                    onBackPressed();
-                                }
-                            })
-                            .setOnCancelListener(new DialogInterface.OnCancelListener() {
-                                @Override
-                                public void onCancel(DialogInterface dialogInterface) {
-                                    onBackPressed();
-                                }
-                            })
-                            .create();
-                    if(!SearchActivity.this.isFinishing()) {
-                        dialog.show();
-                    }
+            public void onResponse(@NotNull Response<SearchQuery.Data> response) {
+                List<SearchQuery.Search> results = response.data().search();
+                if(results.isEmpty()) {
+                    onBackPressed();
+                } else if(results.size() == 1){
+                    goToDisplay(results.get(0).id,results.get(0).term);
+                } else {
+                    goToSearchResults(entry);
                 }
             }
 
             @Override
-            public void onErrorOccurred(Exception error) {
-                handleError(error);
-            }
-        });
-    }
-
-    private void requestConjugations(String word){
-        Server.requestConjugation(word, this, new Server.ServerListener() {
-            @Override
-            public void onResultReceived(ArrayList<Conjugation> conjugations, HashMap<String, String> searchResults) {
-                goToDisplay(conjugations);
-            }
-            @Override
-            public void onErrorOccurred(Exception error) {
-                handleError(error);
+            public void onFailure(@NotNull ApolloException e) {
+                e.printStackTrace();
             }
         });
     }
@@ -182,23 +94,28 @@ public class SearchActivity extends AppCompatActivity {
     }
 
     private void prepForIntent(){
-        progressBar.setIndeterminate(false);
-        progressBar.setProgress(100);
-        loadingText.setText(R.string.main_results_found);
+        this.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                progressBar.setIndeterminate(false);
+                progressBar.setProgress(100);
+                loadingText.setText(R.string.main_results_found);
+            }
+        });
     }
 
-    private void goToSearchResults(HashMap<String,String> searchResults, String entry){
+    private void goToSearchResults(String query){
         Intent intent = new Intent(getApplicationContext(), SearchResultsActivity.class);
-        intent.putExtra(SearchResultsActivity.EXTRA_RESULTS, searchResults);
-        intent.putExtra(SearchResultsActivity.EXTRA_SEARCHED,entry);
+        intent.putExtra(SearchResultsActivity.EXTRA_QUERY,query);
         intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
         startActivity(intent);
         prepForIntent();
     }
 
-    private void goToDisplay(ArrayList<Conjugation> conjugations){
+    private void goToDisplay(String id, String term){
         Intent intent = new Intent(getApplicationContext(), DisplayActivity.class);
-        intent.putExtra(DisplayActivity.EXTRA_CONJ, conjugations);
+        intent.putExtra(DisplayActivity.EXTRA_ID, id);
+        intent.putExtra(DisplayActivity.EXTRA_TERM, term);
         intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
         startActivity(intent);
         prepForIntent();

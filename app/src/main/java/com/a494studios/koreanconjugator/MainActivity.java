@@ -1,6 +1,6 @@
 package com.a494studios.koreanconjugator;
 
-import android.content.Context;
+import android.app.SearchManager;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.PorterDuff;
@@ -9,24 +9,17 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.PopupMenu;
+import android.support.v7.widget.SearchView;
 import android.view.Gravity;
-import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.inputmethod.EditorInfo;
-import android.view.inputmethod.InputMethodManager;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.a494studios.koreanconjugator.parsing.Server;
 import com.a494studios.koreanconjugator.settings.SettingsActivity;
 import com.a494studios.koreanconjugator.utils.SlackHandler;
-import com.apollographql.apollo.ApolloCall;
-import com.apollographql.apollo.api.Response;
-import com.apollographql.apollo.exception.ApolloException;
 import com.codemybrainsout.ratingdialog.RatingDialog;
 import com.crashlytics.android.Crashlytics;
 import com.eggheadgames.aboutbox.AboutBoxUtils;
@@ -36,12 +29,10 @@ import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.MobileAds;
 
-import org.jetbrains.annotations.NotNull;
 import org.rm3l.maoni.Maoni;
 
 import java.util.AbstractMap;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
@@ -51,7 +42,7 @@ public class MainActivity extends AppCompatActivity {
     private ProgressBar progressBar;
     private TextView loadingText;
     private CardView searchCard;
-    private EditText editText;
+    private SearchView editText;
     private TextView logo;
     private ImageView overflowMenu;
     private boolean searchInProgress;
@@ -120,44 +111,8 @@ public class MainActivity extends AppCompatActivity {
         progressBar.getProgressDrawable().setColorFilter(getResources().getColor(R.color.colorAccent), PorterDuff.Mode.SRC_IN);
 
         // Handle Search
-        editText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-                    View view = MainActivity.this.getCurrentFocus();
-                    InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
-                    if (view != null && imm != null) {
-                        imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
-                    }
-
-                    progressBar.setVisibility(View.VISIBLE);
-                    loadingText.setVisibility(View.VISIBLE);
-                    searchCard.setVisibility(View.INVISIBLE);
-                    overflowMenu.setVisibility(View.INVISIBLE);
-                    logo.setVisibility(View.INVISIBLE);
-                    searchInProgress = true;
-
-                    final String entry = editText.getText().toString().trim();
-                    Server.doSearchQuery(entry, new ApolloCall.Callback<SearchQuery.Data>() {
-                        @Override
-                        public void onResponse(@NotNull Response<SearchQuery.Data> response) {
-                            List<SearchQuery.Search> results = response.data().search();
-                            if(results.size() == 1){
-                                goToDisplay(results.get(0).id,results.get(0).term);
-                            }else{
-                                goToSearchResults(entry);
-                            }
-                        }
-
-                        @Override
-                        public void onFailure(@NotNull ApolloException e) {
-                            e.printStackTrace();
-                        }
-                    });
-                }
-                return false;
-            }
-        });
+        SearchManager searchManager = (SearchManager) getSystemService(SEARCH_SERVICE);;
+        editText.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
 
         // Setting up Overflow Menu
         overflowMenu.setOnClickListener(new View.OnClickListener() {
@@ -251,7 +206,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void showSearchCard(){
-        editText.getText().clear();
+        //editText.getText().clear();
         logo.setVisibility(View.VISIBLE);
         searchCard.setVisibility(View.VISIBLE);
         overflowMenu.setVisibility(View.VISIBLE);
@@ -259,34 +214,5 @@ public class MainActivity extends AppCompatActivity {
         loadingText.setVisibility(View.INVISIBLE);
         loadingText.setText(R.string.loading);
         progressBar.setIndeterminate(true);
-    }
-
-    private void prepForIntent(){
-        this.runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                progressBar.setIndeterminate(false);
-                progressBar.setProgress(100);
-                loadingText.setText(R.string.main_results_found);
-                searchInProgress = false;
-            }
-        });
-    }
-
-    private void goToSearchResults(String query){
-        Intent intent = new Intent(getApplicationContext(), SearchResultsActivity.class);
-        intent.putExtra(SearchResultsActivity.EXTRA_QUERY,query);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-        startActivity(intent);
-        prepForIntent();
-    }
-
-    private void goToDisplay(String id, String term){
-        Intent intent = new Intent(getApplicationContext(), DisplayActivity.class);
-        intent.putExtra(DisplayActivity.EXTRA_ID, id);
-        intent.putExtra(DisplayActivity.EXTRA_TERM, term);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-        startActivity(intent);
-        prepForIntent();
     }
 }
