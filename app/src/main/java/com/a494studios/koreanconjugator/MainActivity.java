@@ -21,16 +21,10 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.a494studios.koreanconjugator.parsing.Category;
-import com.a494studios.koreanconjugator.parsing.Conjugation;
-import com.a494studios.koreanconjugator.parsing.Form;
-import com.a494studios.koreanconjugator.parsing.Formality;
 import com.a494studios.koreanconjugator.parsing.Server;
-import com.a494studios.koreanconjugator.parsing.Tense;
 import com.a494studios.koreanconjugator.settings.SettingsActivity;
 import com.a494studios.koreanconjugator.utils.SlackHandler;
 import com.apollographql.apollo.ApolloCall;
-import com.apollographql.apollo.ApolloClient;
 import com.apollographql.apollo.api.Response;
 import com.apollographql.apollo.exception.ApolloException;
 import com.codemybrainsout.ratingdialog.RatingDialog;
@@ -47,12 +41,8 @@ import org.rm3l.maoni.Maoni;
 
 import java.util.AbstractMap;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import allbegray.slack.SlackClientFactory;
-import okhttp3.OkHttpClient;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -260,57 +250,6 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void doKoreanSearch(final String entry){
-        Server.requestKoreanSearch(entry, getApplicationContext(), new Server.ServerListener() {
-            @Override
-            public void onResultReceived(final ArrayList<Conjugation> conjugations, HashMap<String, String> searchResults) {
-                if (conjugations != null) {
-                    //goToDisplay(conjugations);
-                } else if (searchResults != null && !searchResults.isEmpty()) {
-                    if(Utils.getKoreanLuck(getApplicationContext())){
-                        requestConjugations(searchResults.keySet().iterator().next());
-                    }else{
-                        goToSearchResults(searchResults,entry);
-                    }
-                } else{
-                    AlertDialog dialog = new AlertDialog.Builder(MainActivity.this)
-                            .setTitle(R.string.no_results_title)
-                            .setMessage(R.string.no_results_msg)
-                            .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialogInterface, int i) {
-                                    dialogInterface.dismiss();
-                                }
-                            })
-                            .create();
-                    if(!MainActivity.this.isFinishing()) {
-                        dialog.show();
-                    }
-                }
-            }
-
-            @Override
-            public void onErrorOccurred(Exception error) {
-                Utils.handleError(error,MainActivity.this);
-                showSearchCard();
-            }
-        });
-    }
-
-    private void requestConjugations(String word){
-        Server.requestConjugation(word, this, new Server.ServerListener() {
-            @Override
-            public void onResultReceived(ArrayList<Conjugation> conjugations, HashMap<String, String> searchResults) {
-                //goToDisplay(conjugations);
-            }
-            @Override
-            public void onErrorOccurred(Exception error) {
-                Utils.handleError(error,MainActivity.this);
-                showSearchCard();
-            }
-        });
-    }
-
     private void showSearchCard(){
         editText.getText().clear();
         logo.setVisibility(View.VISIBLE);
@@ -332,15 +271,6 @@ public class MainActivity extends AppCompatActivity {
                 searchInProgress = false;
             }
         });
-    }
-
-    private void goToSearchResults(HashMap<String,String> searchResults, String entry){
-        Intent intent = new Intent(getApplicationContext(), SearchResultsActivity.class);
-        intent.putExtra(SearchResultsActivity.EXTRA_RESULTS, searchResults);
-        intent.putExtra(SearchResultsActivity.EXTRA_SEARCHED,entry);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-        startActivity(intent);
-        prepForIntent();
     }
 
     private void goToSearchResults(String query){

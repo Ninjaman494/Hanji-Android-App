@@ -20,7 +20,6 @@ import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.a494studios.koreanconjugator.parsing.Conjugation;
 import com.a494studios.koreanconjugator.parsing.Server;
 import com.a494studios.koreanconjugator.settings.SettingsActivity;
 import com.a494studios.koreanconjugator.utils.ErrorDialogFragment;
@@ -37,33 +36,29 @@ import com.google.android.gms.ads.AdView;
 import org.jetbrains.annotations.NotNull;
 import org.rm3l.maoni.Maoni;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 public class SearchResultsActivity extends AppCompatActivity {
 
     public static final String EXTRA_RESULTS = "RESULTS";
     public static final String EXTRA_SEARCHED = "SEARCHED";
-    private static final String SAVED_RESULT_CONJS = "RESULT_CONJS";
 
     public static final String EXTRA_QUERY = "query";
 
-    private HashMap<String, String> results;
-    private HashMap<String, ArrayList<Conjugation>> resultConjs;
     private SearchAdapter adapter;
+    private ListView listView;
     private boolean snackbarShown;
     private boolean overflowClicked;
+    private String query;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search_results);
-        final ListView listView = findViewById(R.id.search_listView);
         AdView adView = findViewById(R.id.search_results_adView);
+        listView = findViewById(R.id.search_listView);
         snackbarShown = false;
-        String query = getIntent().getStringExtra(EXTRA_QUERY);
-
+        query = getIntent().getStringExtra(EXTRA_QUERY);
         if(query == null){ // Null check for extra
             ErrorDialogFragment.newInstance().setListener(new DialogInterface.OnClickListener() {
                 @Override
@@ -82,66 +77,18 @@ public class SearchResultsActivity extends AppCompatActivity {
             actionBar.setTitle("Multiple results: "+ query);
         }
 
-        Server.doSearchQuery(query, new ApolloCall.Callback<SearchQuery.Data>() {
-            @Override
-            public void onResponse(@NotNull Response<SearchQuery.Data> response) {
-                adapter = new SearchAdapter(response.data().search());
-                SearchResultsActivity.this.runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        listView.setAdapter(adapter);
-                    }
-                });
-            }
-
-            @Override
-            public void onFailure(@NotNull ApolloException e) {
-                e.printStackTrace();
-            }
-        });
+        fetchSearchResponse();
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                String id = adapter.getItem(i).id();
-                String term = adapter.getItem(i).term();
-                sendIntent(id,term);
+                if(adapter != null) {
+                    String id = adapter.getItem(i).id();
+                    String term = adapter.getItem(i).term();
+                    sendIntent(id, term);
+                }
             }
         });
-    }
-
-    private void requestData(){
-        for(final String key : results.keySet()){
-            if(resultConjs.get(key) == null) { // No conjugation, so we have to request one.
-                Server.requestConjugation(key, this, new Server.ServerListener() {
-                    @Override
-                    public void onResultReceived(ArrayList<Conjugation> conjugations, HashMap<String, String> searchResults) {
-                        resultConjs.put(key, conjugations);
-                    }
-
-                    @Override
-                    public void onErrorOccurred(Exception error) {
-                        handleError(error);
-                    }
-                });
-            }
-
-            if(results.get(key) == null || results.get(key).equals(getString(R.string.loading))){ // No definition, so we have to send a request for one.
-                results.put(key,getString(R.string.loading));
-                Server.requestKorDefinition(key, this, new Server.DefinitionListener() {
-                    @Override
-                    public void onDefinitionReceived(String definition) {
-                        results.put(key,definition);
-                        adapter.notifyDataSetChanged();
-                    }
-
-                    @Override
-                    public void onErrorOccurred(Exception error) {
-                        handleError(error);
-                    }
-                });
-            }
-        }
     }
 
     @Override
@@ -175,13 +122,6 @@ public class SearchResultsActivity extends AppCompatActivity {
     }
 
     @Override
-    public void onSaveInstanceState(Bundle savedInstanceState) {
-        savedInstanceState.putSerializable(EXTRA_RESULTS, results);
-        savedInstanceState.putSerializable(SAVED_RESULT_CONJS,resultConjs);
-        super.onSaveInstanceState(savedInstanceState);
-    }
-
-    @Override
     public void onPause(){
         super.onPause();
         if(!overflowClicked) overridePendingTransition(0,0);
@@ -192,6 +132,29 @@ public class SearchResultsActivity extends AppCompatActivity {
         super.onResume();
         overflowClicked = false;
         MaterialIn.animate(findViewById(R.id.search_listView), Gravity.BOTTOM, Gravity.BOTTOM);
+    }
+
+    private void fetchSearchResponse(){
+        Server.doSearchQuery(query, new ApolloCall.Callback<SearchQuery.Data>() {
+            @Override
+            public void onResponse(@NotNull Response<SearchQuery.Data> response) {
+                if(response.data() != null) {
+                    adapter = new SearchAdapter(response.data().search());
+                    SearchResultsActivity.this.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            listView.setAdapter(adapter);
+                        }
+                    });
+                }
+            }
+
+            @Override
+            public void onFailure(@NotNull ApolloException e) {
+                e.printStackTrace();
+                handleError(e);
+            }
+        });
     }
 
     private void handleError(Exception error){
@@ -206,7 +169,7 @@ public class SearchResultsActivity extends AppCompatActivity {
             snackbar.setAction("Retry", new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    requestData();
+                    fetchSearchResponse();
                     snackbarShown = false;
                 }
             });
