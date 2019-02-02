@@ -1,0 +1,12 @@
+query EntryQuery($id: ID!) {
+  entry(id: $id){
+    id,
+    term,
+    pos,
+    definitions,
+    antonyms,
+    synonyms,
+    regular,
+    note
+  }
+}

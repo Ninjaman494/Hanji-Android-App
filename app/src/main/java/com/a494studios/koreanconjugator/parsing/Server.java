@@ -4,8 +4,8 @@ import android.content.Context;
 
 import com.a494studios.koreanconjugator.ConjugationQuery;
 import com.a494studios.koreanconjugator.CustomApplication;
-import com.a494studios.koreanconjugator.EntriesQuery;
 import com.a494studios.koreanconjugator.EntryQuery;
+import com.a494studios.koreanconjugator.SearchQuery;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -13,21 +13,16 @@ import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.apollographql.apollo.ApolloCall;
-import com.apollographql.apollo.ApolloClient;
 import com.apollographql.apollo.api.cache.http.HttpCachePolicy;
-import com.apollographql.apollo.exception.ApolloException;
 import com.crashlytics.android.Crashlytics;
 import com.google.common.net.UrlEscapers;
 
-import org.jetbrains.annotations.NotNull;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-
-import okhttp3.OkHttpClient;
 
 /**
  * Created by akash on 12/31/2017.
@@ -51,8 +46,8 @@ public class Server {
     private static final String KEY_SEARCH_DEF = "def";
 
 
-    public static void doEntriesQuery(final String term, ApolloCall.Callback<EntriesQuery.Data> callback){
-       CustomApplication.getApolloClient().query(new EntriesQuery(term)).enqueue(callback);
+    public static void doSearchQuery(final String query, ApolloCall.Callback<SearchQuery.Data> callback){
+        CustomApplication.getApolloClient().query(new SearchQuery(query)).enqueue(callback);
     }
 
     public static void doEntryQuery(final String id, ApolloCall.Callback<EntryQuery.Data> callback){
