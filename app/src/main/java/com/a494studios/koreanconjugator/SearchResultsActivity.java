@@ -17,6 +17,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -204,19 +205,16 @@ class SearchAdapter extends BaseAdapter {
 
         TextView termView = view.findViewById(R.id.item_search_result_term);
         TextView posView = view.findViewById(R.id.item_search_result_pos);
-        TextView def1View = view.findViewById(R.id.item_search_result_def1);
-        TextView def2View = view.findViewById(R.id.item_search_result_def2);
-        TextView def3View = view.findViewById(R.id.item_search_result_def3);
+        LinearLayout list = view.findViewById(R.id.item_search_result_recycler);
 
         SearchQuery.Search result = results.get(i);
-        List<String> definitions = result.definitions();
         termView.setText(result.term());
         posView.setText(result.pos());
-        def1View.setText(definitions.get(0));
-        if(definitions.size() >= 2)
-            def2View.setText(definitions.get(1));
-        if(definitions.size() >= 3)
-            def3View.setText(definitions.get(2));
+        for(String def : result.definitions()) {
+            View vi = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.fragment_item,null);
+            ((TextView)vi.findViewById(R.id.content)).setText(def);
+            list.addView(vi);
+        }
 
         return view;
     }
