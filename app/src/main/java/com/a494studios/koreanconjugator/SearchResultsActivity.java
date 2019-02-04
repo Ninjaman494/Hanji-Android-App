@@ -9,7 +9,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.SearchView;
 import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -17,13 +16,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
-import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.TextView;
 
 import com.a494studios.koreanconjugator.parsing.Server;
 import com.a494studios.koreanconjugator.settings.SettingsActivity;
 import com.a494studios.koreanconjugator.utils.ErrorDialogFragment;
+import com.a494studios.koreanconjugator.utils.WordInfoView;
 import com.android.volley.NoConnectionError;
 import com.apollographql.apollo.ApolloCall;
 import com.apollographql.apollo.api.Response;
@@ -40,9 +38,6 @@ import org.rm3l.maoni.Maoni;
 import java.util.List;
 
 public class SearchResultsActivity extends AppCompatActivity {
-
-    public static final String EXTRA_RESULTS = "RESULTS";
-    public static final String EXTRA_SEARCHED = "SEARCHED";
 
     public static final String EXTRA_QUERY = "query";
 
@@ -191,7 +186,6 @@ public class SearchResultsActivity extends AppCompatActivity {
 class SearchAdapter extends BaseAdapter {
 
     private List<SearchQuery.Search> results;
-    private static final int RESOURCE_ID = R.layout.item_search_result;
 
     public SearchAdapter(List<SearchQuery.Search> results) {
         this.results = results;
@@ -200,22 +194,10 @@ class SearchAdapter extends BaseAdapter {
     @Override
     public View getView(int i, View view, ViewGroup viewGroup) {
         if (view == null) {
-            view = LayoutInflater.from(viewGroup.getContext()).inflate(RESOURCE_ID, viewGroup, false);
+            SearchQuery.Search result = results.get(i);
+            view = new WordInfoView(viewGroup.getContext(),result.term(),result.pos(),result.definitions());
+            view.setPadding(8,16,8,16);
         }
-
-        TextView termView = view.findViewById(R.id.item_search_result_term);
-        TextView posView = view.findViewById(R.id.item_search_result_pos);
-        LinearLayout list = view.findViewById(R.id.item_search_result_recycler);
-
-        SearchQuery.Search result = results.get(i);
-        termView.setText(result.term());
-        posView.setText(result.pos());
-        for(String def : result.definitions()) {
-            View vi = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.fragment_item,null);
-            ((TextView)vi.findViewById(R.id.content)).setText(def);
-            list.addView(vi);
-        }
-
         return view;
     }
 
