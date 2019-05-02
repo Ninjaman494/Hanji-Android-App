@@ -67,8 +67,8 @@ dependencies {
     implementation('org.rm3l:maoni:6.0.0@aar') { transitive = true }
     implementation 'com.github.pschroen:slack-api-android:c66cc8d997'
     implementation 'com.github.daniel-stoneuk:material-about-library:2.3.0'
-    implementation 'com.apollographql.apollo:apollo-runtime:1.0.0-alpha3'
-    implementation 'com.apollographql.apollo:apollo-http-cache:1.0.0-alpha3'
+    implementation 'com.apollographql.apollo:apollo-runtime:1.0.0-alpha5'
+    implementation 'com.apollographql.apollo:apollo-http-cache:1.0.0-alpha5'
 }
 apply plugin: 'com.google.gms.google-services'
 apply plugin: 'com.apollographql.android'

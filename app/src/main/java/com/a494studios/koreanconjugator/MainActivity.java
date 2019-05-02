@@ -99,6 +99,7 @@ public class MainActivity extends AppCompatActivity {
 
         if(Utils.isFirstBoot(this)){
             // Make default favorites
+            // TODO Clear old favorites, or at least find a way to handle old favorite form
             ArrayList<Map.Entry<String,String>> favs = new ArrayList<>();
             favs.add(new AbstractMap.SimpleEntry<>("Past","declarative past informal high"));
             favs.add(new AbstractMap.SimpleEntry<>("Present","declarative present informal high"));
