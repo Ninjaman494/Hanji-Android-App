@@ -17,20 +17,28 @@
             android:paddingBottom="50dp"
             android:orientation="vertical">
 
+            <com.a494studios.koreanconjugator.display.DisplayCardView
+                android:id="@+id/disp_dcv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
             <fragment android:name="com.a494studios.koreanconjugator.utils.SimpleCardFragment"
                 android:id="@+id/disp_defFrag"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"
+                tools:layout="@layout/fragment_simple_card" />
 
             <fragment android:name="com.a494studios.koreanconjugator.utils.SimpleCardFragment"
                 android:id="@+id/disp_noteFrag"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"
+                tools:layout="@layout/fragment_simple_card" />
 
             <fragment android:name="com.a494studios.koreanconjugator.FavoritesFragment"
                 android:id="@+id/disp_conjFrag"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"
+                tools:layout="@layout/fragment_favorites" />
 
             <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
                 xmlns:tools="http://schemas.android.com/tools"
@@ -68,20 +76,23 @@
                 </RelativeLayout>
             </android.support.v7.widget.CardView>
 
-            <fragment android:name="com.a494studios.koreanconjugator.utils.SimpleCardFragment"
+            <fragment android:name="com.a494studios.koreanconjugator.utils.ExamplesFragment"
                 android:id="@+id/disp_exampleFrag"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"
+                tools:layout="@layout/fragment_examples" />
 
             <fragment android:name="com.a494studios.koreanconjugator.utils.SimpleCardFragment"
                 android:id="@+id/disp_synFrag"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"
+                tools:layout="@layout/fragment_simple_card" />
 
             <fragment android:name="com.a494studios.koreanconjugator.utils.SimpleCardFragment"
                 android:id="@+id/disp_antFrag"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"
+                tools:layout="@layout/fragment_simple_card" />
         </LinearLayout>
     </ScrollView>
 </RelativeLayout>

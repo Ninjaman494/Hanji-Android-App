@@ -5,6 +5,7 @@ import android.content.Context;
 import com.a494studios.koreanconjugator.ConjugationQuery;
 import com.a494studios.koreanconjugator.CustomApplication;
 import com.a494studios.koreanconjugator.EntryQuery;
+import com.a494studios.koreanconjugator.ExamplesQuery;
 import com.a494studios.koreanconjugator.SearchQuery;
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -60,6 +61,13 @@ public class Server {
     public static void doConjugationQuery(String stem, boolean honorific, boolean isAdj, ApolloCall.Callback<ConjugationQuery.Data> callback){
         CustomApplication.getApolloClient()
                 .query(new ConjugationQuery(stem,honorific,isAdj))
+                .httpCachePolicy(HttpCachePolicy.CACHE_FIRST)
+                .enqueue(callback);
+    }
+
+    public static void doExamplesQuery(final String id, ApolloCall.Callback<ExamplesQuery.Data> callback) {
+        CustomApplication.getApolloClient()
+                .query(new ExamplesQuery(id))
                 .httpCachePolicy(HttpCachePolicy.CACHE_FIRST)
                 .enqueue(callback);
     }

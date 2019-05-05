@@ -17,7 +17,10 @@ import android.view.ViewGroup;
 
 import com.a494studios.koreanconjugator.parsing.Server;
 import com.a494studios.koreanconjugator.settings.SettingsActivity;
+import com.a494studios.koreanconjugator.display.DefPOSCard;
+import com.a494studios.koreanconjugator.display.DisplayCardView;
 import com.a494studios.koreanconjugator.utils.ErrorDialogFragment;
+import com.a494studios.koreanconjugator.utils.ExamplesFragment;
 import com.a494studios.koreanconjugator.utils.SimpleCardFragment;
 import com.android.volley.NoConnectionError;
 import com.apollographql.apollo.ApolloCall;
@@ -93,6 +96,9 @@ public class DisplayActivity extends AppCompatActivity {
             actionBar.setTitle("Result: "+ term);
         }
 
+        // Setting up display cards
+        final DisplayCardView displayCardView = findViewById(R.id.disp_dcv);
+
         FragmentManager fm = getSupportFragmentManager();
         // Definitions and POS
         final SimpleCardFragment defFrag = (SimpleCardFragment)fm.findFragmentById(R.id.disp_defFrag);
@@ -103,8 +109,7 @@ public class DisplayActivity extends AppCompatActivity {
         noteFrag.setHeading("Note");
 
         // Examples
-        final SimpleCardFragment exampleFrag = (SimpleCardFragment) fm.findFragmentById(R.id.disp_exampleFrag);
-        exampleFrag.setHeading("Examples");
+        final ExamplesFragment exampleFrag = (ExamplesFragment) fm.findFragmentById(R.id.disp_exampleFrag);
 
         // Synonyms
         final SimpleCardFragment synFrag = (SimpleCardFragment)fm.findFragmentById(R.id.disp_synFrag);
@@ -124,7 +129,7 @@ public class DisplayActivity extends AppCompatActivity {
                     return;
                 }
 
-                EntryQuery.Entry entry = response.data().entry();
+                final EntryQuery.Entry entry = response.data().entry();
                 System.out.println(entry);
                 if(entry != null) {
                     FragmentManager fm = getSupportFragmentManager();
@@ -132,6 +137,12 @@ public class DisplayActivity extends AppCompatActivity {
                     // Definitions and POS
                     defFrag.setHeading(entry.pos);
                     defFrag.setContent(entry.definitions);
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            displayCardView.setCardBody(new DefPOSCard(entry.term,entry.pos,entry.definitions));
+                        }
+                    });
 
                     // Conjugations
                     if(entry.pos.equals("Adjective") || entry.pos.equals("Verb")) {
@@ -170,6 +181,20 @@ public class DisplayActivity extends AppCompatActivity {
             }
         });
 
+        // Get Examples
+        Server.doExamplesQuery(id, new ApolloCall.Callback<ExamplesQuery.Data>() {
+            @Override
+            public void onResponse(@NotNull Response<ExamplesQuery.Data> response) {
+                if(response.data() != null){
+                    exampleFrag.setExamples(response.data().examples);
+                }
+            }
+
+            @Override
+            public void onFailure(@NotNull ApolloException e) {
+                e.printStackTrace();
+            }
+        });
 
     }
 
