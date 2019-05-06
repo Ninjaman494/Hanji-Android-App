@@ -31,7 +31,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:layout_below="@id/displayCard_heading"/>
+                android:layout_below="@id/displayCard_heading"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginTop="8dp" />
 
             <Button
                 android:id="@+id/displayCard_button"

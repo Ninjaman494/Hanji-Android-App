@@ -33,7 +33,7 @@ public class DefPOSCard implements DisplayCardBody {
     @Override
     public View getBodyView(Context context) {
         if(view == null) {
-            view = new WordInfoView(context, term, pos, definitions);
+            view = new WordInfoView(context, term, pos, definitions, false);
         }
         return view;
     }
