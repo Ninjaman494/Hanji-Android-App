@@ -48,10 +48,15 @@ public class DisplayCardView extends RelativeLayout {
 
     // pre: cardBody is not null
     private void cardBodyUpdates() {
-        linearLayout.addView(cardBody.getBodyView(context));
+        cardBody.addBodyView(context,linearLayout); // Add body view to linear layout
         hideButton(cardBody.shouldHideButton());
-        hideHeading(cardBody.shouldHideHeading());
         button.setText(cardBody.getButtonText());
+        String heading = cardBody.getHeading();
+        if(heading != null) {
+            headingView.setText(heading);
+        } else {
+            headingView.setVisibility(GONE);
+        }
     }
 
     public void setButtonListener(OnClickListener listener) {
@@ -68,14 +73,6 @@ public class DisplayCardView extends RelativeLayout {
             button.setVisibility(GONE);
         } else {
             button.setVisibility(VISIBLE);
-        }
-    }
-
-    private void hideHeading(boolean shouldHide){
-        if(shouldHide){
-            headingView.setVisibility(GONE);
-        } else {
-            headingView.setVisibility(VISIBLE);
         }
     }
 }

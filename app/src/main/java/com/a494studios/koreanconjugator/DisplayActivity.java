@@ -15,6 +15,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.a494studios.koreanconjugator.display.ConjugationCard;
 import com.a494studios.koreanconjugator.parsing.Server;
 import com.a494studios.koreanconjugator.settings.SettingsActivity;
 import com.a494studios.koreanconjugator.display.DefPOSCard;
@@ -52,7 +53,7 @@ public class DisplayActivity extends AppCompatActivity {
     private String term;
     private String id;
     private boolean overflowClicked;
-    private FavoritesFragment conjFrag;
+    private DisplayCardView conjCardView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -98,12 +99,9 @@ public class DisplayActivity extends AppCompatActivity {
 
         // Setting up display cards
         final DisplayCardView displayCardView = findViewById(R.id.disp_dcv);
+        conjCardView = findViewById(R.id.disp_conjCard);
 
         FragmentManager fm = getSupportFragmentManager();
-        // Definitions and POS
-        final SimpleCardFragment defFrag = (SimpleCardFragment)fm.findFragmentById(R.id.disp_defFrag);
-        defFrag.setHeading("POS");
-
         // Note
         final SimpleCardFragment noteFrag = (SimpleCardFragment) fm.findFragmentById(R.id.disp_noteFrag);
         noteFrag.setHeading("Note");
@@ -119,9 +117,6 @@ public class DisplayActivity extends AppCompatActivity {
         final SimpleCardFragment antFrag = (SimpleCardFragment)fm.findFragmentById(R.id.disp_antFrag);
         antFrag.setHeading("Antonyms");
 
-        // Conjugations / Favorites
-        conjFrag = (FavoritesFragment) fm.findFragmentById(R.id.disp_conjFrag);
-
         Server.doEntryQuery(id, new ApolloCall.Callback<EntryQuery.Data>() {
             @Override
             public void onResponse(@NotNull Response<EntryQuery.Data> response) {
@@ -135,8 +130,6 @@ public class DisplayActivity extends AppCompatActivity {
                     FragmentManager fm = getSupportFragmentManager();
 
                     // Definitions and POS
-                    defFrag.setHeading(entry.pos);
-                    defFrag.setContent(entry.definitions);
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
@@ -204,7 +197,7 @@ public class DisplayActivity extends AppCompatActivity {
             public void onResponse(@NotNull Response<ConjugationQuery.Data> response) {
                 // Favorites
                 ArrayList<Map.Entry<String, String>> favs = Utils.getFavorites(DisplayActivity.this);
-                ArrayList<Map.Entry<String, ConjugationQuery.Conjugation>> favConjugations = new ArrayList<>();
+                final ArrayList<Map.Entry<String, ConjugationQuery.Conjugation>> favConjugations = new ArrayList<>();
                 for (Map.Entry<String, String> entry : favs) {
                     for (ConjugationQuery.Conjugation conjugation : response.data().conjugation()) {
                         if (conjugation.name().equals(entry.getValue())) {
@@ -214,8 +207,12 @@ public class DisplayActivity extends AppCompatActivity {
                     }
                 }
 
-                conjFrag.setConjugationInfo(term, honorific, isAdj);
-                conjFrag.setEntries(favConjugations);
+                DisplayActivity.this.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        conjCardView.setCardBody(new ConjugationCard(favConjugations));
+                    }
+                });
             }
 
             @Override

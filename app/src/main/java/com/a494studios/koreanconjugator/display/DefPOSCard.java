@@ -2,6 +2,7 @@ package com.a494studios.koreanconjugator.display;
 
 import android.content.Context;
 import android.view.View;
+import android.view.ViewGroup;
 
 import com.a494studios.koreanconjugator.utils.WordInfoView;
 
@@ -26,15 +27,12 @@ public class DefPOSCard implements DisplayCardBody {
     }
 
     @Override
-    public boolean shouldHideHeading() {
-        return true;
-    }
-
-    @Override
-    public View getBodyView(Context context) {
+    public View addBodyView(Context context, ViewGroup parentView) {
         if(view == null) {
             view = new WordInfoView(context, term, pos, definitions, false);
         }
+
+        parentView.addView(view);
         return view;
     }
 
@@ -46,5 +44,10 @@ public class DefPOSCard implements DisplayCardBody {
     @Override
     public String getButtonText() {
         return (definitions.size() - 3) + " MORE";
+    }
+
+    @Override
+    public String getHeading() {
+        return null;
     }
 }
