@@ -108,69 +108,38 @@ public class DisplayActivity extends AppCompatActivity {
         final SimpleCardFragment noteFrag = (SimpleCardFragment) fm.findFragmentById(R.id.disp_noteFrag);
         noteFrag.setHeading("Note");
 
-        // Synonyms
-        final SimpleCardFragment synFrag = (SimpleCardFragment)fm.findFragmentById(R.id.disp_synFrag);
-        synFrag.setHeading("Synonyms");
-
-        // Antonyms
-        final SimpleCardFragment antFrag = (SimpleCardFragment)fm.findFragmentById(R.id.disp_antFrag);
-        antFrag.setHeading("Antonyms");
-
         Server.doEntryQuery(id, new ApolloCall.Callback<EntryQuery.Data>() {
             @Override
             public void onResponse(@NotNull Response<EntryQuery.Data> response) {
-                if(response.data() == null){
+                if(response.data() == null || response.data().entry() == null){
                     return;
                 }
 
                 final EntryQuery.Entry entry = response.data().entry();
                 System.out.println(entry);
-                if(entry != null) {
-                    FragmentManager fm = getSupportFragmentManager();
+                assert entry != null;
+                fetchConjugations(entry.term(), false, entry.pos());
 
-                    // Definitions and POS
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            displayCardView.setCardBody(new DefPOSCard(entry.term,entry.pos,entry.definitions));
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        // Definitions and POS
+                        displayCardView.setCardBody(new DefPOSCard(entry.term,entry.pos,entry.definitions));
+
+                        // Note
+                        if(entry.note() != null ) {
+                            noteFrag.setContent(entry.note());
                         }
-                    });
 
-                    // Conjugations
-                    if(entry.pos.equals("Adjective") || entry.pos.equals("Verb")) {
-                        fetchConjugations(term, false, entry.pos.equals("Adjective"));
+                        // Synonyms and Antonyms
+                        if(entry.synonyms() != null) {
+                            synCardView.setCardBody(new SynAntCard(entry.synonyms(),true));
+                        }
+                        if(entry.antonyms() != null ) {
+                            antCardView.setCardBody(new SynAntCard(entry.antonyms(),false));
+                        }
                     }
-
-                    // Note
-                    SimpleCardFragment noteFrag = (SimpleCardFragment) fm.findFragmentById(R.id.disp_noteFrag);
-                    if (entry.note() != null) {
-                        noteFrag.setContent(entry.note());
-                    }
-
-                    // Synonyms
-                    SimpleCardFragment synFrag = (SimpleCardFragment)fm.findFragmentById(R.id.disp_synFrag);
-                    if(entry.synonyms() != null && !entry.synonyms().isEmpty()){
-                        synFrag.setContent(entry.synonyms());
-                        DisplayActivity.this.runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                synCardView.setCardBody(new SynAntCard(entry.synonyms(),true));
-                            }
-                        });
-                    }
-
-                    // Antonyms
-                    SimpleCardFragment antFrag = (SimpleCardFragment)fm.findFragmentById(R.id.disp_antFrag);
-                    if(entry.antonyms() != null && !entry.antonyms().isEmpty()){
-                        antFrag.setContent(entry.antonyms());
-                        DisplayActivity.this.runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                antCardView.setCardBody(new SynAntCard(entry.antonyms(),false));
-                            }
-                        });
-                    }
-                }
+                });
             }
 
             @Override
@@ -188,9 +157,14 @@ public class DisplayActivity extends AppCompatActivity {
         // Get Examples
         Server.doExamplesQuery(id, new ApolloCall.Callback<ExamplesQuery.Data>() {
             @Override
-            public void onResponse(@NotNull Response<ExamplesQuery.Data> response) {
+            public void onResponse(@NotNull final Response<ExamplesQuery.Data> response) {
                 if(response.data() != null){
-                    examplesCardView.setCardBody(new ExamplesCard(response.data().examples));
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            examplesCardView.setCardBody(new ExamplesCard(response.data().examples()));
+                        }
+                    });
                 }
             }
 
@@ -202,10 +176,18 @@ public class DisplayActivity extends AppCompatActivity {
 
     }
 
-    public void fetchConjugations(final String term, final boolean honorific, final boolean isAdj){
-        Server.doConjugationQuery(term, honorific, isAdj, new ApolloCall.Callback<ConjugationQuery.Data>() {
+    public void fetchConjugations(String term, boolean honorific, String pos){
+        if(!pos.equals("Adjective") && !pos.equals("Verb")) {
+            return;
+        }
+
+        Server.doConjugationQuery(term, honorific, pos.equals("Adjective"), new ApolloCall.Callback<ConjugationQuery.Data>() {
             @Override
             public void onResponse(@NotNull Response<ConjugationQuery.Data> response) {
+                if(response.data() == null){
+                    return;
+                }
+
                 // Favorites
                 ArrayList<Map.Entry<String, String>> favs = Utils.getFavorites(DisplayActivity.this);
                 final ArrayList<Map.Entry<String, ConjugationQuery.Conjugation>> favConjugations = new ArrayList<>();
@@ -218,7 +200,7 @@ public class DisplayActivity extends AppCompatActivity {
                     }
                 }
 
-                DisplayActivity.this.runOnUiThread(new Runnable() {
+                runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
                         conjCardView.setCardBody(new ConjugationCard(favConjugations));
