@@ -71,8 +71,10 @@ public class DisplayCardView extends RelativeLayout {
     private void hideButton(boolean shouldHide){
         if(shouldHide){
             button.setVisibility(GONE);
+            linearLayout.setPadding(0,0,0,32);
         } else {
             button.setVisibility(VISIBLE);
+            linearLayout.setPadding(0,0,0,0);
         }
     }
 }

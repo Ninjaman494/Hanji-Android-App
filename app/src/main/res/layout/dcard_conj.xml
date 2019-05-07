@@ -5,7 +5,5 @@
         android:id="@+id/conjCard_list"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/favCard_heading"
-        android:layout_alignStart="@id/favCard_heading"
         android:orientation="vertical" />
 </RelativeLayout>

@@ -17,6 +17,7 @@ import android.view.ViewGroup;
 
 import com.a494studios.koreanconjugator.display.AdCard;
 import com.a494studios.koreanconjugator.display.ConjugationCard;
+import com.a494studios.koreanconjugator.display.ExamplesCard;
 import com.a494studios.koreanconjugator.parsing.Server;
 import com.a494studios.koreanconjugator.settings.SettingsActivity;
 import com.a494studios.koreanconjugator.display.DefPOSCard;
@@ -97,6 +98,7 @@ public class DisplayActivity extends AppCompatActivity {
 
         // Setting up display cards
         final DisplayCardView displayCardView = findViewById(R.id.disp_dcv);
+        final DisplayCardView examplesCardView = findViewById(R.id.disp_examplesCard);
         conjCardView = findViewById(R.id.disp_conjCard);
         DisplayCardView adCardView = findViewById(R.id.disp_adCard);
         adCardView.setCardBody(new AdCard());
@@ -180,6 +182,7 @@ public class DisplayActivity extends AppCompatActivity {
             public void onResponse(@NotNull Response<ExamplesQuery.Data> response) {
                 if(response.data() != null){
                     exampleFrag.setExamples(response.data().examples);
+                    examplesCardView.setCardBody(new ExamplesCard(response.data().examples));
                 }
             }
 

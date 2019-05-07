@@ -31,6 +31,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
 
+            <com.a494studios.koreanconjugator.display.DisplayCardView
+                android:id="@+id/disp_examplesCard"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
             <fragment android:name="com.a494studios.koreanconjugator.utils.SimpleCardFragment"
                 android:id="@+id/disp_noteFrag"
                 android:layout_width="match_parent"
