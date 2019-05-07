@@ -23,7 +23,6 @@ import com.a494studios.koreanconjugator.settings.SettingsActivity;
 import com.a494studios.koreanconjugator.display.DefPOSCard;
 import com.a494studios.koreanconjugator.display.DisplayCardView;
 import com.a494studios.koreanconjugator.utils.ErrorDialogFragment;
-import com.a494studios.koreanconjugator.utils.ExamplesFragment;
 import com.a494studios.koreanconjugator.utils.SimpleCardFragment;
 import com.android.volley.NoConnectionError;
 import com.apollographql.apollo.ApolloCall;
@@ -31,8 +30,6 @@ import com.apollographql.apollo.api.Response;
 import com.apollographql.apollo.exception.ApolloException;
 import com.crashlytics.android.Crashlytics;
 import com.eggheadgames.aboutbox.activity.AboutActivity;
-import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.AdView;
 import com.transitionseverywhere.Fade;
 import com.transitionseverywhere.Transition;
 import com.transitionseverywhere.TransitionManager;
@@ -108,9 +105,6 @@ public class DisplayActivity extends AppCompatActivity {
         final SimpleCardFragment noteFrag = (SimpleCardFragment) fm.findFragmentById(R.id.disp_noteFrag);
         noteFrag.setHeading("Note");
 
-        // Examples
-        final ExamplesFragment exampleFrag = (ExamplesFragment) fm.findFragmentById(R.id.disp_exampleFrag);
-
         // Synonyms
         final SimpleCardFragment synFrag = (SimpleCardFragment)fm.findFragmentById(R.id.disp_synFrag);
         synFrag.setHeading("Synonyms");
@@ -181,7 +175,6 @@ public class DisplayActivity extends AppCompatActivity {
             @Override
             public void onResponse(@NotNull Response<ExamplesQuery.Data> response) {
                 if(response.data() != null){
-                    exampleFrag.setExamples(response.data().examples);
                     examplesCardView.setCardBody(new ExamplesCard(response.data().examples));
                 }
             }

@@ -22,7 +22,7 @@ public class ExamplesCard implements DisplayCardBody{
     @Override
     public View addBodyView(Context context, ViewGroup parentView) {
         if(view == null) {
-            view = View.inflate(context, R.layout.dcard_conj,parentView);
+            view = View.inflate(context, R.layout.dcard_list,parentView);
         }
 
         LinearListView listView = view.findViewById(R.id.conjCard_list);

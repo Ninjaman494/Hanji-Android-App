@@ -42,12 +42,6 @@
                 android:layout_height="wrap_content"
                 tools:layout="@layout/fragment_simple_card" />
 
-            <fragment android:name="com.a494studios.koreanconjugator.utils.ExamplesFragment"
-                android:id="@+id/disp_exampleFrag"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                tools:layout="@layout/fragment_examples" />
-
             <fragment android:name="com.a494studios.koreanconjugator.utils.SimpleCardFragment"
                 android:id="@+id/disp_synFrag"
                 android:layout_width="match_parent"
