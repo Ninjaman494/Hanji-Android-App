@@ -13,13 +13,19 @@
             android:id="@+id/disp_root"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:paddingBottom="50dp"
+            android:layout_marginBottom="50dp"
             android:orientation="vertical">
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:background="@color/colorPrimary"/>
 
             <com.a494studios.koreanconjugator.display.DisplayCardView
                 android:id="@+id/disp_dcv"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"
+                android:layout_marginTop="-56dp"/>
 
             <com.a494studios.koreanconjugator.display.DisplayCardView
                 android:id="@+id/disp_noteCard"

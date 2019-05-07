@@ -88,7 +88,8 @@ public class DisplayActivity extends AppCompatActivity {
 
         ActionBar actionBar = getSupportActionBar();
         if(actionBar != null) {
-            actionBar.setTitle("Result: "+ term);
+            actionBar.setTitle("");
+            actionBar.setElevation(0);
         }
 
         // Setting up display cards
