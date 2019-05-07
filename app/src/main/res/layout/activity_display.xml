@@ -22,6 +22,11 @@
                 android:layout_height="wrap_content"/>
 
             <com.a494studios.koreanconjugator.display.DisplayCardView
+                android:id="@+id/disp_noteCard"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+            <com.a494studios.koreanconjugator.display.DisplayCardView
                 android:id="@+id/disp_conjCard"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
@@ -45,12 +50,6 @@
                 android:id="@+id/disp_antCard"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
-
-            <fragment android:name="com.a494studios.koreanconjugator.utils.SimpleCardFragment"
-                android:id="@+id/disp_noteFrag"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                tools:layout="@layout/fragment_simple_card" />
         </LinearLayout>
     </ScrollView>
 </RelativeLayout>

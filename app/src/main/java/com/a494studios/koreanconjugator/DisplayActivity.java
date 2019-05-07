@@ -4,7 +4,6 @@ import android.app.SearchManager;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.design.widget.Snackbar;
-import android.support.v4.app.FragmentManager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -18,13 +17,13 @@ import android.view.ViewGroup;
 import com.a494studios.koreanconjugator.display.AdCard;
 import com.a494studios.koreanconjugator.display.ConjugationCard;
 import com.a494studios.koreanconjugator.display.ExamplesCard;
+import com.a494studios.koreanconjugator.display.NoteCard;
 import com.a494studios.koreanconjugator.display.SynAntCard;
 import com.a494studios.koreanconjugator.parsing.Server;
 import com.a494studios.koreanconjugator.settings.SettingsActivity;
 import com.a494studios.koreanconjugator.display.DefPOSCard;
 import com.a494studios.koreanconjugator.display.DisplayCardView;
 import com.a494studios.koreanconjugator.utils.ErrorDialogFragment;
-import com.a494studios.koreanconjugator.utils.SimpleCardFragment;
 import com.android.volley.NoConnectionError;
 import com.apollographql.apollo.ApolloCall;
 import com.apollographql.apollo.api.Response;
@@ -50,8 +49,6 @@ public class DisplayActivity extends AppCompatActivity {
     public static final String EXTRA_TERM = "term";
 
     private String definition;
-    private String term;
-    private String id;
     private boolean overflowClicked;
     private DisplayCardView conjCardView;
 
@@ -59,8 +56,8 @@ public class DisplayActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_display);
-        term = getIntent().getStringExtra(EXTRA_TERM);
-        id = getIntent().getStringExtra(EXTRA_ID);
+        String term = getIntent().getStringExtra(EXTRA_TERM);
+        String id = getIntent().getStringExtra(EXTRA_ID);
         if(savedInstanceState != null){
             definition = savedInstanceState.getString(EXTRA_DEF);
         }else{
@@ -96,18 +93,17 @@ public class DisplayActivity extends AppCompatActivity {
 
         // Setting up display cards
         final DisplayCardView displayCardView = findViewById(R.id.disp_dcv);
+        final DisplayCardView noteCardView = findViewById(R.id.disp_noteCard);
         final DisplayCardView examplesCardView = findViewById(R.id.disp_examplesCard);
         final DisplayCardView synCardView = findViewById(R.id.disp_synCard);
         final DisplayCardView antCardView = findViewById(R.id.disp_antCard);
         conjCardView = findViewById(R.id.disp_conjCard);
+
+        // Setting up Ad Card
         DisplayCardView adCardView = findViewById(R.id.disp_adCard);
         adCardView.setCardBody(new AdCard());
 
-        FragmentManager fm = getSupportFragmentManager();
-        // Note
-        final SimpleCardFragment noteFrag = (SimpleCardFragment) fm.findFragmentById(R.id.disp_noteFrag);
-        noteFrag.setHeading("Note");
-
+        // Get Entry and Conjugations
         Server.doEntryQuery(id, new ApolloCall.Callback<EntryQuery.Data>() {
             @Override
             public void onResponse(@NotNull Response<EntryQuery.Data> response) {
@@ -128,7 +124,7 @@ public class DisplayActivity extends AppCompatActivity {
 
                         // Note
                         if(entry.note() != null ) {
-                            noteFrag.setContent(entry.note());
+                            noteCardView.setCardBody(new NoteCard(entry.note()));
                         }
 
                         // Synonyms and Antonyms
