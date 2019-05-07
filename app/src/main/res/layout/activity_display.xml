@@ -3,7 +3,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context="com.a494studios.koreanconjugator.DisplayActivity">
 
     <ScrollView
@@ -27,47 +26,16 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
 
+            <com.a494studios.koreanconjugator.display.DisplayCardView
+                android:id="@+id/disp_adCard"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
             <fragment android:name="com.a494studios.koreanconjugator.utils.SimpleCardFragment"
                 android:id="@+id/disp_noteFrag"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 tools:layout="@layout/fragment_simple_card" />
-
-            <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:tools="http://schemas.android.com/tools"
-                android:id="@+id/conjCard"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/verticalMargin"
-                android:layout_marginLeft="@dimen/horizontalMargin"
-                android:layout_marginRight="@dimen/horizontalMargin">
-
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <TextView
-                        android:id="@+id/conjCard_heading"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="10dp"
-                        android:layout_marginStart="10dp"
-                        android:layout_marginTop="5dp"
-                        android:text="Ad"
-                        android:textColor="@color/colorPrimaryDark" />
-
-                    <com.google.android.gms.ads.AdView
-                        android:id="@+id/display_adView"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_marginBottom="10dp"
-                        android:layout_marginTop="10dp"
-                        android:layout_below="@id/conjCard_heading"
-                        app:adSize="MEDIUM_RECTANGLE"
-                        app:adUnitId= "@string/DISPLAY_AD_ID" />
-                </RelativeLayout>
-            </android.support.v7.widget.CardView>
 
             <fragment android:name="com.a494studios.koreanconjugator.utils.ExamplesFragment"
                 android:id="@+id/disp_exampleFrag"

@@ -15,6 +15,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.a494studios.koreanconjugator.display.AdCard;
 import com.a494studios.koreanconjugator.display.ConjugationCard;
 import com.a494studios.koreanconjugator.parsing.Server;
 import com.a494studios.koreanconjugator.settings.SettingsActivity;
@@ -59,7 +60,6 @@ public class DisplayActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_display);
-        AdView adView = findViewById(R.id.display_adView);
         term = getIntent().getStringExtra(EXTRA_TERM);
         id = getIntent().getStringExtra(EXTRA_ID);
         if(savedInstanceState != null){
@@ -90,8 +90,6 @@ public class DisplayActivity extends AppCompatActivity {
             return;
         }
 
-        adView.loadAd(new AdRequest.Builder().build());
-
         ActionBar actionBar = getSupportActionBar();
         if(actionBar != null) {
             actionBar.setTitle("Result: "+ term);
@@ -100,6 +98,8 @@ public class DisplayActivity extends AppCompatActivity {
         // Setting up display cards
         final DisplayCardView displayCardView = findViewById(R.id.disp_dcv);
         conjCardView = findViewById(R.id.disp_conjCard);
+        DisplayCardView adCardView = findViewById(R.id.disp_adCard);
+        adCardView.setCardBody(new AdCard());
 
         FragmentManager fm = getSupportFragmentManager();
         // Note
