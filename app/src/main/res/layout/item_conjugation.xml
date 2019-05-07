@@ -11,12 +11,12 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="0.5"
-        android:textSize="20sp"
+        android:textSize="24sp"
         android:text="Informal low"/>
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="20sp"
+        android:textSize="24sp"
         android:text=":"/>
     <TextView
         android:id="@+id/conjText"
@@ -25,7 +25,7 @@
         android:layout_marginStart="10dp"
         android:layout_marginLeft="10dp"
         android:layout_weight="0.5"
-        android:textSize="20sp"
+        android:textSize="24sp"
         android:text="갈 가예요" />
 
 </LinearLayout>

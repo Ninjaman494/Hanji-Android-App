@@ -18,6 +18,7 @@ import android.view.ViewGroup;
 import com.a494studios.koreanconjugator.display.AdCard;
 import com.a494studios.koreanconjugator.display.ConjugationCard;
 import com.a494studios.koreanconjugator.display.ExamplesCard;
+import com.a494studios.koreanconjugator.display.SynAntCard;
 import com.a494studios.koreanconjugator.parsing.Server;
 import com.a494studios.koreanconjugator.settings.SettingsActivity;
 import com.a494studios.koreanconjugator.display.DefPOSCard;
@@ -96,6 +97,8 @@ public class DisplayActivity extends AppCompatActivity {
         // Setting up display cards
         final DisplayCardView displayCardView = findViewById(R.id.disp_dcv);
         final DisplayCardView examplesCardView = findViewById(R.id.disp_examplesCard);
+        final DisplayCardView synCardView = findViewById(R.id.disp_synCard);
+        final DisplayCardView antCardView = findViewById(R.id.disp_antCard);
         conjCardView = findViewById(R.id.disp_conjCard);
         DisplayCardView adCardView = findViewById(R.id.disp_adCard);
         adCardView.setCardBody(new AdCard());
@@ -148,12 +151,24 @@ public class DisplayActivity extends AppCompatActivity {
                     SimpleCardFragment synFrag = (SimpleCardFragment)fm.findFragmentById(R.id.disp_synFrag);
                     if(entry.synonyms() != null && !entry.synonyms().isEmpty()){
                         synFrag.setContent(entry.synonyms());
+                        DisplayActivity.this.runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                synCardView.setCardBody(new SynAntCard(entry.synonyms(),true));
+                            }
+                        });
                     }
 
                     // Antonyms
                     SimpleCardFragment antFrag = (SimpleCardFragment)fm.findFragmentById(R.id.disp_antFrag);
                     if(entry.antonyms() != null && !entry.antonyms().isEmpty()){
                         antFrag.setContent(entry.antonyms());
+                        DisplayActivity.this.runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                antCardView.setCardBody(new SynAntCard(entry.antonyms(),false));
+                            }
+                        });
                     }
                 }
             }
