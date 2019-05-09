@@ -92,6 +92,10 @@ public class DisplayActivity extends AppCompatActivity {
             actionBar.setElevation(0);
         }
 
+        // Show progress bar and hide cards
+        findViewById(R.id.disp_progress).setVisibility(View.VISIBLE);
+        findViewById(R.id.disp_root).setVisibility(View.GONE);
+
         // Setting up display cards
         final DisplayCardView displayCardView = findViewById(R.id.disp_dcv);
         final DisplayCardView noteCardView = findViewById(R.id.disp_noteCard);
@@ -201,6 +205,10 @@ public class DisplayActivity extends AppCompatActivity {
                     @Override
                     public void run() {
                         conjCardView.setCardBody(new ConjugationCard(favConjugations));
+
+                        // Hide progress bar and show cards
+                        findViewById(R.id.disp_root).setVisibility(View.VISIBLE);
+                        findViewById(R.id.disp_progress).setVisibility(View.GONE);
                     }
                 });
             }

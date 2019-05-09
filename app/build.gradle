@@ -64,7 +64,8 @@ dependencies {
     implementation 'com.codemybrainsout.rating:ratingdialog:1.0.8'
     implementation project(':about-box')
     implementation('com.mikepenz:aboutlibraries:6.1.1@aar') { transitive = true }
-    implementation('org.rm3l:maoni:6.0.0@aar') { transitive = true }
+    implementation 'org.rm3l:maoni:6.0.0'
+    implementation 'org.rm3l:maoni-common:6.0.0'
     implementation 'com.github.pschroen:slack-api-android:c66cc8d997'
     implementation 'com.github.daniel-stoneuk:material-about-library:2.3.0'
     implementation 'com.apollographql.apollo:apollo-runtime:1.0.0-alpha5'
