@@ -1,12 +1,14 @@
 package com.a494studios.koreanconjugator.display;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
+import com.a494studios.koreanconjugator.ConjugationActivity;
 import com.a494studios.koreanconjugator.ConjugationQuery;
 import com.a494studios.koreanconjugator.R;
 import com.linearlistview.LinearListView;
@@ -17,10 +19,20 @@ import java.util.Map;
 public class ConjugationCard implements DisplayCardBody {
 
     private View view;
+    private Context context;
+
+    private String stem;
+    private boolean honorific;
+    private boolean isAdj;
+    private boolean isFavorites;
     private ConjugationAdapter adapter;
 
-    public ConjugationCard(ArrayList<Map.Entry<String,ConjugationQuery.Conjugation>> entries) {
+    public ConjugationCard(ArrayList<Map.Entry<String,ConjugationQuery.Conjugation>> entries, String stem, boolean honorific, boolean isAdj, boolean isFavorites) {
         this.adapter = new ConjugationAdapter(entries);
+        this.stem = stem;
+        this.honorific = honorific;
+        this.isAdj = isAdj;
+        this.isFavorites = isFavorites;
     }
 
     @Override
@@ -28,14 +40,29 @@ public class ConjugationCard implements DisplayCardBody {
         if(view == null) {
             view = View.inflate(context, R.layout.dcard_list, parentView);
         }
+        this.context = context;
         LinearListView listView = view.findViewById(R.id.conjCard_list);
         listView.setAdapter(adapter);
         return parentView;
     }
 
     @Override
+    public View.OnClickListener getButtonListener() {
+        return new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(view.getContext(), ConjugationActivity.class);
+                i.putExtra(ConjugationActivity.EXTRA_STEM,stem);
+                i.putExtra(ConjugationActivity.EXTRA_HONORIFIC,honorific);
+                i.putExtra(ConjugationActivity.EXTRA_ISADJ, isAdj);
+                view.getContext().startActivity(i);
+            }
+        };
+    }
+
+    @Override
     public boolean shouldHideButton() {
-        return false;
+        return !isFavorites;
     }
 
     @Override

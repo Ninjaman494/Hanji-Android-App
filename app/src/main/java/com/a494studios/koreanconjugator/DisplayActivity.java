@@ -177,12 +177,13 @@ public class DisplayActivity extends AppCompatActivity {
 
     }
 
-    public void fetchConjugations(String term, boolean honorific, String pos){
+    public void fetchConjugations(final String term, final boolean honorific, final String pos){
         if(!pos.equals("Adjective") && !pos.equals("Verb")) {
             return;
         }
 
-        Server.doConjugationQuery(term, honorific, pos.equals("Adjective"), new ApolloCall.Callback<ConjugationQuery.Data>() {
+        final boolean isAdj = pos.equals("Adjective");
+        Server.doConjugationQuery(term, honorific, isAdj, new ApolloCall.Callback<ConjugationQuery.Data>() {
             @Override
             public void onResponse(@NotNull Response<ConjugationQuery.Data> response) {
                 if(response.data() == null){
@@ -204,7 +205,7 @@ public class DisplayActivity extends AppCompatActivity {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        conjCardView.setCardBody(new ConjugationCard(favConjugations));
+                        conjCardView.setCardBody(new ConjugationCard(favConjugations,term, honorific, isAdj,true));
 
                         // Hide progress bar and show cards
                         findViewById(R.id.disp_root).setVisibility(View.VISIBLE);

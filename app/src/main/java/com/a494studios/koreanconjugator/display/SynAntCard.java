@@ -32,6 +32,11 @@ public class SynAntCard implements DisplayCardBody {
     }
 
     @Override
+    public View.OnClickListener getButtonListener() {
+        return null;
+    }
+
+    @Override
     public boolean shouldHideButton() {
         return true;
     }

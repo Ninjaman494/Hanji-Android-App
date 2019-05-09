@@ -37,6 +37,11 @@ public class DefPOSCard implements DisplayCardBody {
     }
 
     @Override
+    public View.OnClickListener getButtonListener() {
+        return null;
+    }
+
+    @Override
     public int getCount() {
         return definitions.size();
     }
