@@ -15,7 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.a494studios.koreanconjugator.display.AdCard;
-import com.a494studios.koreanconjugator.display.ConjugationCard;
+import com.a494studios.koreanconjugator.display.FavoritesCard;
 import com.a494studios.koreanconjugator.display.ExamplesCard;
 import com.a494studios.koreanconjugator.display.NoteCard;
 import com.a494studios.koreanconjugator.display.SynAntCard;
@@ -205,7 +205,7 @@ public class DisplayActivity extends AppCompatActivity {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        conjCardView.setCardBody(new ConjugationCard(favConjugations,term, honorific, isAdj,true));
+                        conjCardView.setCardBody(new FavoritesCard(favConjugations,term, honorific, isAdj));
 
                         // Hide progress bar and show cards
                         findViewById(R.id.disp_root).setVisibility(View.VISIBLE);
