@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/conjInfo_conjugated"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="가셨어요"
+        android:textColor="@android:color/primary_text_light"
+        android:textSize="30sp" />
+
+    <TextView
+        android:id="@+id/conjInfo_pheading"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/conjInfo_conjugated"
+        android:layout_marginTop="16dp"
+        android:gravity="center_vertical"
+        android:text="Pronunciation"
+        android:textColor="@color/colorPrimaryDark"
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium"/>
+
+    <TextView
+        android:id="@+id/conjInfo_hpronc"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/conjInfo_pheading"
+        android:layout_marginTop="8dp"
+        android:text="가셔써요"
+        android:textColor="@android:color/primary_text_light"
+        android:textSize="24sp" />
+
+    <TextView
+        android:id="@+id/conjInfo_roman"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/conjInfo_hpronc"
+        android:text="gah-syuh-ssuh-yoh"
+        android:textSize="22sp" />
+
+    <TextView
+        android:id="@+id/conjInfo_eheading"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/conjInfo_roman"
+        android:layout_marginTop="16dp"
+        android:gravity="center_vertical"
+        android:text="Explanation"
+        android:textColor="@color/colorPrimaryDark"
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium"/>
+
+    <com.linearlistview.LinearListView
+        android:id="@+id/conjInfo_explainList"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/conjInfo_eheading"
+        android:layout_marginTop="8dp"
+        android:orientation="vertical"/>
+
+</RelativeLayout>

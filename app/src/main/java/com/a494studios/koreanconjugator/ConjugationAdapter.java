@@ -1,13 +1,16 @@
 package com.a494studios.koreanconjugator;
 
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
+import com.a494studios.koreanconjugator.display.ConjInfoActivity;
 import com.a494studios.koreanconjugator.type.SpeechLevel;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ConjugationAdapter extends BaseAdapter {
@@ -20,7 +23,7 @@ public class ConjugationAdapter extends BaseAdapter {
     }
 
     @Override
-    public View getView(int i, View view, ViewGroup viewGroup) {
+    public View getView(final int i, View view, ViewGroup viewGroup) {
         if (view == null) {
             view = LayoutInflater.from(viewGroup.getContext()).inflate(RESOURCE_ID, viewGroup, false);
         }
@@ -35,6 +38,21 @@ public class ConjugationAdapter extends BaseAdapter {
             typeView.setText(speechLevel);
         }
         conjView.setText(c.conjugation());
+
+        conjView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ConjugationQuery.Conjugation conjugation = conjugations.get(i);
+                Intent i = new Intent(view.getContext(), ConjInfoActivity.class);
+                i.putExtra(ConjInfoActivity.EXTRA_NAME, conjugation.name());
+                i.putExtra(ConjInfoActivity.EXTRA_CONJ,conjugation.conjugation());
+                i.putExtra(ConjInfoActivity.EXTRA_PRON,conjugation.pronunciation());
+                i.putExtra(ConjInfoActivity.EXTRA_ROME,conjugation.romanization());
+                i.putExtra(ConjInfoActivity.EXTRA_EXPL,new ArrayList<>(conjugation.reasons()));
+                view.getContext().startActivity(i);
+            }
+        });
+
         return view;
     }
 
