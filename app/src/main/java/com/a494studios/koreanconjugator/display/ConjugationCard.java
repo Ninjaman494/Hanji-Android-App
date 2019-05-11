@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import com.a494studios.koreanconjugator.ConjugationAdapter;
 import com.a494studios.koreanconjugator.ConjugationQuery;
 import com.a494studios.koreanconjugator.R;
+import com.a494studios.koreanconjugator.Utils;
 import com.linearlistview.LinearListView;
 
 import java.util.List;
@@ -19,7 +20,7 @@ public class ConjugationCard implements DisplayCardBody {
 
     public ConjugationCard(List<ConjugationQuery.Conjugation> conjugations) {
         this.adapter = new ConjugationAdapter(conjugations);
-        heading  = conjugations.get(0).type();
+        heading  = Utils.toTitleCase(conjugations.get(0).type());
     }
 
     @Override

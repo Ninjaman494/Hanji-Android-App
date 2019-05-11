@@ -100,6 +100,18 @@ public class Utils {
         return true;
     }
 
+    public static String toTitleCase(String string) {
+        StringBuilder titleCase = new StringBuilder();
+        String[] words = string.split("\\s+");
+        for(String word: words) {
+            String newWord = Character.toTitleCase(word.charAt(0)) + word.substring(1);
+            titleCase.append(newWord);
+            titleCase.append(" ");
+        }
+
+        return titleCase.toString();
+    }
+
     public static Formality generateFormality(String type) {
         if (type.contains(Formality.INFORMAL_LOW.toString())) {
             return Formality.INFORMAL_LOW;
