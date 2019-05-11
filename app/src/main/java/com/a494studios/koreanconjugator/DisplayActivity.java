@@ -130,14 +130,20 @@ public class DisplayActivity extends AppCompatActivity {
                         // Note
                         if(entry.note() != null ) {
                             noteCardView.setCardBody(new NoteCard(entry.note()));
+                        } else {
+                            noteCardView.setVisibility(View.GONE);
                         }
 
                         // Synonyms and Antonyms
                         if(entry.synonyms() != null) {
                             synCardView.setCardBody(new SynAntCard(entry.synonyms(),true));
+                        } else {
+                            synCardView.setVisibility(View.GONE);
                         }
                         if(entry.antonyms() != null ) {
                             antCardView.setCardBody(new SynAntCard(entry.antonyms(),false));
+                        } else {
+                            antCardView.setVisibility(View.GONE);
                         }
                     }
                 });
@@ -159,14 +165,16 @@ public class DisplayActivity extends AppCompatActivity {
         Server.doExamplesQuery(id, new ApolloCall.Callback<ExamplesQuery.Data>() {
             @Override
             public void onResponse(@NotNull final Response<ExamplesQuery.Data> response) {
-                if(response.data() != null){
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        if(response.data() != null && !response.data().examples().isEmpty()){
                             examplesCardView.setCardBody(new ExamplesCard(response.data().examples()));
+                        } else {
+                            examplesCardView.setVisibility(View.GONE);
                         }
-                    });
-                }
+                    }
+                });
             }
 
             @Override
@@ -182,9 +190,10 @@ public class DisplayActivity extends AppCompatActivity {
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    // Hide progress bar and show cards
+                    // Hide progress bar and conj card and show other cards
                     findViewById(R.id.disp_root).setVisibility(View.VISIBLE);
                     findViewById(R.id.disp_progress).setVisibility(View.GONE);
+                    conjCardView.setVisibility(View.GONE);
                 }
             });
             return;
