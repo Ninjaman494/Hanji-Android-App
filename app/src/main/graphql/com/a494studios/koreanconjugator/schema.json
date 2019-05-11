@@ -649,25 +649,25 @@
         "interfaces": null,
         "enumValues": [
           {
-            "name": "FORMAL_NON_POLITE",
+            "name": "FORMAL_LOW",
             "description": "",
             "isDeprecated": false,
             "deprecationReason": null
           },
           {
-            "name": "INFORMAL_NON_POLITE",
+            "name": "INFORMAL_LOW",
             "description": "",
             "isDeprecated": false,
             "deprecationReason": null
           },
           {
-            "name": "INFORMAL_POLITE",
+            "name": "INFORMAL_HIGH",
             "description": "",
             "isDeprecated": false,
             "deprecationReason": null
           },
           {
-            "name": "FORMAL_POLITE",
+            "name": "FORMAL_HIGH",
             "description": "",
             "isDeprecated": false,
             "deprecationReason": null

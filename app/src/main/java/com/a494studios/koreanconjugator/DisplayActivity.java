@@ -179,6 +179,14 @@ public class DisplayActivity extends AppCompatActivity {
 
     public void fetchConjugations(final String term, final boolean honorific, final String pos){
         if(!pos.equals("Adjective") && !pos.equals("Verb")) {
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    // Hide progress bar and show cards
+                    findViewById(R.id.disp_root).setVisibility(View.VISIBLE);
+                    findViewById(R.id.disp_progress).setVisibility(View.GONE);
+                }
+            });
             return;
         }
 
