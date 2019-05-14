@@ -11,14 +11,40 @@
         android:indeterminate="true" />
 
     <ScrollView
+        android:id="@+id/conj_root"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingTop="16dp">
 
-        <LinearLayout
-            android:id="@+id/conj_root"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:paddingTop ="16dp" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toStartOf="@id/conj_switch"
+                    android:layout_alignBottom="@id/conj_switch"
+                    android:layout_alignTop="@id/conj_switch"
+                    android:paddingEnd="8dp"
+                    android:text="Honorifics"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                    android:textSize="20sp"
+                    android:textColor="@color/colorAccent"
+                    android:gravity="center"/>
+                <Switch
+                    android:id="@+id/conj_switch"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:paddingEnd="8dp"/>
+
+                <com.linearlistview.LinearListView
+                    android:id="@+id/conj_list"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/conj_switch"
+                    android:orientation="vertical"
+                    android:paddingTop="8dp"/>
+            </RelativeLayout>
     </ScrollView>
 </RelativeLayout>

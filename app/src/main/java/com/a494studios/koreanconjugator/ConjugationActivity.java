@@ -1,10 +1,12 @@
 package com.a494studios.koreanconjugator;
 
-import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.LinearLayout;
+import android.view.ViewGroup;
+import android.widget.BaseAdapter;
+import android.widget.CompoundButton;
+import android.widget.Switch;
 
 import com.a494studios.koreanconjugator.display.ConjugationCard;
 import com.a494studios.koreanconjugator.display.DisplayCardView;
@@ -12,6 +14,7 @@ import com.a494studios.koreanconjugator.parsing.Server;
 import com.apollographql.apollo.ApolloCall;
 import com.apollographql.apollo.api.Response;
 import com.apollographql.apollo.exception.ApolloException;
+import com.linearlistview.LinearListView;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -33,9 +36,23 @@ public class ConjugationActivity extends AppCompatActivity {
         final String stem = getIntent().getStringExtra(EXTRA_STEM);
         final boolean honorific = getIntent().getBooleanExtra(EXTRA_HONORIFIC,false);
         final boolean isAdj = getIntent().getBooleanExtra(EXTRA_ISADJ,false);
-        findViewById(R.id.conj_progress).setVisibility(View.VISIBLE);
-        findViewById(R.id.conj_root).setVisibility(View.GONE);
 
+        setLoading(true);
+        getConjugations(stem, honorific, isAdj);
+        ((Switch)findViewById(R.id.conj_switch)).setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean checked) {
+                setLoading(true);
+                if(checked) {
+                    getConjugations(stem,true,isAdj);
+                } else {
+                    getConjugations(stem,false,isAdj);
+                }
+            }
+        });
+    }
+
+    private void getConjugations(String stem, boolean honorific, boolean isAdj) {
         Server.doConjugationQuery(stem, honorific, isAdj, new ApolloCall.Callback<ConjugationQuery.Data>() {
                     @Override
                     public void onResponse(@NotNull Response<ConjugationQuery.Data> response) {
@@ -59,15 +76,9 @@ public class ConjugationActivity extends AppCompatActivity {
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                for(TreeMap.Entry<String, List<ConjugationQuery.Conjugation>> entry : conjMap.entrySet()){
-                                    ConjugationCard conjBody = new ConjugationCard(entry.getValue());
-                                    DisplayCardView conjView = new DisplayCardView(getApplicationContext());
-                                    ((LinearLayout)findViewById(R.id.conj_root)).addView(conjView);
-
-                                    conjView.setCardBody(conjBody);
-                                    findViewById(R.id.conj_root).setVisibility(View.VISIBLE);
-                                    findViewById(R.id.conj_progress).setVisibility(View.GONE);
-                                }
+                                List<List<ConjugationQuery.Conjugation>> conjugations = new ArrayList<>(conjMap.values());
+                                ((LinearListView)findViewById(R.id.conj_list)).setAdapter(new ConjugationsAdapter(conjugations));
+                                setLoading(false);
                             }
                         });
                     }
@@ -77,5 +88,51 @@ public class ConjugationActivity extends AppCompatActivity {
                         e.printStackTrace();
                     }
                 });
+    }
+
+    private void setLoading(boolean loading){
+        if(loading) {
+            findViewById(R.id.conj_progress).setVisibility(View.VISIBLE);
+            findViewById(R.id.conj_list).setVisibility(View.GONE);
+        } else {
+            findViewById(R.id.conj_progress).setVisibility(View.GONE);
+            findViewById(R.id.conj_list).setVisibility(View.VISIBLE);
+        }
+    }
+
+    private class ConjugationsAdapter extends BaseAdapter {
+        List<List<ConjugationQuery.Conjugation>> conjugations;
+
+        ConjugationsAdapter(List<List<ConjugationQuery.Conjugation>> conjugations){
+            this.conjugations = conjugations;
+        }
+
+        @Override
+        public View getView(int i, View view, ViewGroup viewGroup) {
+            if(view != null){
+                return view;
+            }
+            DisplayCardView conjView = new DisplayCardView(viewGroup.getContext());
+            conjView.setCardBody(new ConjugationCard(conjugations.get(i)));
+
+            view = conjView;
+            view.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+            return view;
+        }
+
+        @Override
+        public int getCount() {
+            return conjugations.size();
+        }
+
+        @Override
+        public Object getItem(int i) {
+            return conjugations.get(i);
+        }
+
+        @Override
+        public long getItemId(int i) {
+            return i;
+        }
     }
 }
