@@ -6,7 +6,7 @@ import android.view.ViewGroup;
 
 public interface DisplayCardBody {
     View addBodyView(Context context, ViewGroup parentView);
-    View.OnClickListener getButtonListener();
+    void onButtonClick();
     boolean shouldHideButton();
     int getCount();
     String getButtonText();

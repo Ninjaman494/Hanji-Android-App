@@ -14,11 +14,13 @@ public class DefPOSCard implements DisplayCardBody {
     private String pos;
     private List<String> definitions;
     private WordInfoView view;
+    private String buttonText;
 
     public DefPOSCard(String term, String pos, List<String> definitions) {
         this.term = term;
         this.pos = pos;
         this.definitions = definitions;
+        this.buttonText = (definitions.size() - 3) + " MORE";
     }
 
     @Override
@@ -37,8 +39,14 @@ public class DefPOSCard implements DisplayCardBody {
     }
 
     @Override
-    public View.OnClickListener getButtonListener() {
-        return null;
+    public void onButtonClick() {
+        boolean showingAll = view.getShowAll();
+        if(showingAll) {
+            buttonText = (definitions.size() - 3) + " MORE";
+        } else {
+            buttonText = "COLLAPSE";
+        }
+        view.setShowAll(!showingAll);
     }
 
     @Override
@@ -48,7 +56,7 @@ public class DefPOSCard implements DisplayCardBody {
 
     @Override
     public String getButtonText() {
-        return (definitions.size() - 3) + " MORE";
+        return buttonText;
     }
 
     @Override

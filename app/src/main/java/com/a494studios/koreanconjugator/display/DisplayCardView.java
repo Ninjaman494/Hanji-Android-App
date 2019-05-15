@@ -51,7 +51,13 @@ public class DisplayCardView extends RelativeLayout {
         cardBody.addBodyView(context,linearLayout); // Add body view to linear layout
         hideButton(cardBody.shouldHideButton());
         button.setText(cardBody.getButtonText());
-        button.setOnClickListener(cardBody.getButtonListener());
+        button.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                cardBody.onButtonClick();
+                button.setText(cardBody.getButtonText());
+            }
+        });
 
         String heading = cardBody.getHeading();
         if(heading != null) {

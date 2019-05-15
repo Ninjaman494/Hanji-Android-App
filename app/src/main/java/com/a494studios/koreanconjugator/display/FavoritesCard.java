@@ -43,17 +43,12 @@ public class FavoritesCard implements DisplayCardBody {
     }
 
     @Override
-    public View.OnClickListener getButtonListener() {
-        return new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent i = new Intent(view.getContext(), ConjugationActivity.class);
-                i.putExtra(ConjugationActivity.EXTRA_STEM,stem);
-                i.putExtra(ConjugationActivity.EXTRA_HONORIFIC,honorific);
-                i.putExtra(ConjugationActivity.EXTRA_ISADJ, isAdj);
-                view.getContext().startActivity(i);
-            }
-        };
+    public void onButtonClick() {
+        Intent i = new Intent(view.getContext(), ConjugationActivity.class);
+        i.putExtra(ConjugationActivity.EXTRA_STEM,stem);
+        i.putExtra(ConjugationActivity.EXTRA_HONORIFIC,honorific);
+        i.putExtra(ConjugationActivity.EXTRA_ISADJ, isAdj);
+        view.getContext().startActivity(i);
     }
 
     @Override

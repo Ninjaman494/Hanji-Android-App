@@ -46,8 +46,8 @@ public class ConjInfoCard implements DisplayCardBody {
     }
 
     @Override
-    public View.OnClickListener getButtonListener() {
-        return null;
+    public void onButtonClick(){
+        // Empty on purpose
     }
 
     @Override

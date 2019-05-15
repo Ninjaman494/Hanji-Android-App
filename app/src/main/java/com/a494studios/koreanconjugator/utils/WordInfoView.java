@@ -16,6 +16,8 @@ public class WordInfoView extends RelativeLayout {
     private TextView posView;
     private LinearLayout defsView;
     private boolean showMore = true;
+    private boolean showAll = false;
+    private List<String> definitions;
 
     public WordInfoView(Context context) {
         super(context);
@@ -31,6 +33,7 @@ public class WordInfoView extends RelativeLayout {
         super(context);
         init(context);
         this.showMore = showMore;
+        this.definitions = definitions;
 
         this.setTerm(term);
         this.setPos(pos);
@@ -52,6 +55,20 @@ public class WordInfoView extends RelativeLayout {
         posView.setText(pos);
     }
 
+    public void setShowAll(boolean showAll) {
+        this.showAll = showAll;
+        defsView.removeAllViews();
+        if(showAll) {
+            for(int i = 0;i<definitions.size();i++) {
+                View vi = inflate(getContext(), R.layout.item_word_info,null);
+                ((TextView)vi.findViewById(R.id.content)).setText(definitions.get(i));
+                defsView.addView(vi);
+            }
+        } else {
+            this.setDefinitions(definitions);
+        }
+    }
+
     public void setDefinitions(List<String> definitions) {
         for(int i = 0;i<definitions.size() && i<2;i++) {
             View vi = inflate(getContext(), R.layout.item_word_info,null);
@@ -68,5 +85,9 @@ public class WordInfoView extends RelativeLayout {
             ((TextView) vi.findViewById(R.id.content)).setText(thirdText);
             defsView.addView(vi);
         }
+    }
+
+    public boolean getShowAll() {
+        return showAll;
     }
 }
