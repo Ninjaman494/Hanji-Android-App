@@ -12,8 +12,8 @@ import com.linearlistview.LinearListView;
 import java.util.List;
 
 public class ExamplesCard implements DisplayCardBody{
-    View view;
-    ExampleAdapter adapter;
+    private View view;
+    private ExampleAdapter adapter;
 
     public ExamplesCard(List<ExamplesQuery.Example> examples) {
         adapter = new ExampleAdapter(examples);
@@ -37,7 +37,7 @@ public class ExamplesCard implements DisplayCardBody{
 
     @Override
     public boolean shouldHideButton() {
-        return adapter.getCount() <= 3;
+        return true;
     }
 
     @Override
@@ -47,7 +47,7 @@ public class ExamplesCard implements DisplayCardBody{
 
     @Override
     public String getButtonText() {
-        return (adapter.getCount() - 3) + " MORE";
+        return "Button";
     }
 
     @Override
