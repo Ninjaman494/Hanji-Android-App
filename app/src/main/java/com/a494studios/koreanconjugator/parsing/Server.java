@@ -26,8 +26,13 @@ public class Server {
     }
 
     public static void doConjugationQuery(String stem, boolean honorific, boolean isAdj, ApolloCall.Callback<ConjugationQuery.Data> callback){
+        ConjugationQuery query = ConjugationQuery.builder()
+                .stem(stem)
+                .honorific(honorific)
+                .isAdj(isAdj)
+                .build();
         CustomApplication.getApolloClient()
-                .query(new ConjugationQuery(stem,honorific,isAdj))
+                .query(query)
                 .httpCachePolicy(HttpCachePolicy.CACHE_FIRST)
                 .enqueue(callback);
     }

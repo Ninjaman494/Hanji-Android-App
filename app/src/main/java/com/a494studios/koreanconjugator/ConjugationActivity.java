@@ -60,7 +60,7 @@ public class ConjugationActivity extends AppCompatActivity {
                             return;
                         }
 
-                        List<ConjugationQuery.Conjugation> conjugations = response.data().conjugation();
+                        List<ConjugationQuery.Conjugation> conjugations = response.data().conjugations();
                         final TreeMap<String,List<ConjugationQuery.Conjugation>> conjMap = new TreeMap<>();
                         for(ConjugationQuery.Conjugation conjugation : conjugations){
                             String type = conjugation.type;

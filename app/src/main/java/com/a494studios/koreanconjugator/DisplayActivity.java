@@ -211,7 +211,7 @@ public class DisplayActivity extends AppCompatActivity {
                 ArrayList<Map.Entry<String, String>> favs = Utils.getFavorites(DisplayActivity.this);
                 final ArrayList<Map.Entry<String, ConjugationQuery.Conjugation>> favConjugations = new ArrayList<>();
                 for (Map.Entry<String, String> entry : favs) {
-                    for (ConjugationQuery.Conjugation conjugation : response.data().conjugation()) {
+                    for (ConjugationQuery.Conjugation conjugation : response.data().conjugations()) {
                         if (conjugation.name().equals(entry.getValue())) {
                             favConjugations.add(new AbstractMap.SimpleEntry<>(entry.getKey(), conjugation));
                             break;

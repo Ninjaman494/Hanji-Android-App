@@ -1,5 +1,5 @@
-query ConjugationQuery($stem: String!, $honorific: Boolean!, $isAdj: Boolean!) {
-  conjugation(stem: $stem, honorific: $honorific, isAdj: $isAdj) {
+query ConjugationQuery($stem: String!, $honorific: Boolean!, $isAdj: Boolean!, $conjugations:[String]) {
+  conjugations(stem: $stem, honorific: $honorific, isAdj: $isAdj, conjugations: $conjugations) {
     name,
     conjugation,
     type,
