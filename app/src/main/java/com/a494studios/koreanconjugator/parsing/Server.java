@@ -1,5 +1,6 @@
 package com.a494studios.koreanconjugator.parsing;
 
+import com.a494studios.koreanconjugator.ConjugationNamesQuery;
 import com.a494studios.koreanconjugator.ConjugationQuery;
 import com.a494studios.koreanconjugator.CustomApplication;
 import com.a494studios.koreanconjugator.EntryQuery;
@@ -46,11 +47,16 @@ public class Server {
                 .enqueue(callback);
     }
 
-
     public static void doExamplesQuery(final String id, ApolloCall.Callback<ExamplesQuery.Data> callback) {
         CustomApplication.getApolloClient()
                 .query(new ExamplesQuery(id))
                 .httpCachePolicy(HttpCachePolicy.CACHE_FIRST)
+                .enqueue(callback);
+    }
+
+    public static void doConjugationNamesQuery(ApolloCall.Callback<ConjugationNamesQuery.Data> callback) {
+        CustomApplication.getApolloClient()
+                .query(new ConjugationNamesQuery())
                 .enqueue(callback);
     }
 }
