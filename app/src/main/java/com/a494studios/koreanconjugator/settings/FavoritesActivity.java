@@ -25,9 +25,7 @@ import com.apollographql.apollo.api.Response;
 import com.apollographql.apollo.exception.ApolloException;
 
 import org.jetbrains.annotations.NotNull;
-import org.w3c.dom.Text;
 
-import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -38,6 +36,7 @@ public class FavoritesActivity extends AppCompatActivity implements AddFavoriteF
         ,RenameFavoriteFragment.RenameFavoriteFragmentListener{
 
     FavoritesAdapter adapter;
+    AddFavoriteFragment addFavoriteFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,11 +77,10 @@ public class FavoritesActivity extends AppCompatActivity implements AddFavoriteF
                     }
 
                     if(!data.containsKey(name)) {
-                        data.put(name, showSpeechLevels);
+                        data.put(Utils.toTitleCase(name.trim()), showSpeechLevels);
                     }
                 }
-
-                System.out.println("Hi");
+                addFavoriteFragment = AddFavoriteFragment.newInstance(data);
             }
 
             @Override
@@ -91,7 +89,6 @@ public class FavoritesActivity extends AppCompatActivity implements AddFavoriteF
             }
         });
 
-        //adapter = new FavoritesAdapter(Utils.getFavorites(this));
         listView.setAdapter(adapter);
         registerForContextMenu(listView);
     }
@@ -130,7 +127,7 @@ public class FavoritesActivity extends AppCompatActivity implements AddFavoriteF
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if(item.getItemId() == R.id.menu_add) {
-            AddFavoriteFragment.newInstance().show(getSupportFragmentManager(),"add_fav_frag");
+            addFavoriteFragment.show(getSupportFragmentManager(),"add_fav_frag");
             return true;
         }else if(item.getItemId() == android.R.id.home) {
             this.onBackPressed();

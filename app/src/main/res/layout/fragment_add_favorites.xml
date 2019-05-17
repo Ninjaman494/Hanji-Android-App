@@ -15,27 +15,39 @@
         android:layout_height="wrap_content"
         android:hint="@string/add_fav_hint"
         android:layout_margin="10dp"
-        android:textSize="25sp"
+        android:textSize="22sp"
         android:imeOptions="actionDone"
         android:inputType="text"/>
 
     <Spinner
-        android:id="@+id/addFav_formSpinner"
+        android:id="@+id/addFav_conjSpinner"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/addFav_name"
-        android:layout_margin="10dp" />
+        android:layout_marginTop="@dimen/verticalMargin"
+        android:layout_marginStart="@dimen/horizontalMargin"/>
     <Spinner
-        android:id="@+id/addFav_formalitySpinner"
+        android:id="@+id/addFav_speechLevelSpinner"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/addFav_formSpinner"
-        android:layout_margin="10dp"/>
-    <Spinner
-        android:id="@+id/addFav_tenseSpinner"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/addFav_formalitySpinner"
-        android:layout_margin="10dp"/>
+        android:layout_below="@id/addFav_conjSpinner"
+        android:layout_marginTop="@dimen/verticalMargin"
+        android:layout_marginStart="@dimen/horizontalMargin"/>
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/addFav_speechLevelSpinner"
+        android:text="@string/honorific"
+        android:textSize="23sp"
+        android:layout_marginStart="@dimen/horizontalMargin"
+        android:layout_marginTop="@dimen/verticalMargin"/>
+    <android.support.v7.widget.AppCompatCheckBox
+        android:id="@+id/addFav_checkbox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/addFav_speechLevelSpinner"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="@dimen/horizontalMargin"
+        android:layout_marginTop="@dimen/verticalMargin"/>
 </RelativeLayout>
