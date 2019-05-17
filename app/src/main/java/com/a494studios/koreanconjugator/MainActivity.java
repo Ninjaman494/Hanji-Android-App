@@ -18,6 +18,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.a494studios.koreanconjugator.parsing.Favorite;
 import com.a494studios.koreanconjugator.settings.SettingsActivity;
 import com.a494studios.koreanconjugator.utils.SlackHandler;
 import com.codemybrainsout.ratingdialog.RatingDialog;
@@ -100,10 +101,10 @@ public class MainActivity extends AppCompatActivity {
         if(Utils.isFirstBoot(this)){
             // Make default favorites
             // TODO Clear old favorites, or at least find a way to handle old favorite form
-            ArrayList<Map.Entry<String,String>> favs = new ArrayList<>();
-            favs.add(new AbstractMap.SimpleEntry<>("Past","declarative past informal high"));
-            favs.add(new AbstractMap.SimpleEntry<>("Present","declarative present informal high"));
-            favs.add(new AbstractMap.SimpleEntry<>("Future","declarative future informal high"));
+            ArrayList<Favorite> favs = new ArrayList<>();
+            favs.add(new Favorite("Past","declarative past informal high",false));
+            favs.add(new Favorite("Present","declarative present informal high",true));
+            favs.add(new Favorite("Future","declarative future informal high",false));
             Utils.setFavorites(favs,this);
             Utils.setFirstBoot(this,false);
         }

@@ -10,6 +10,8 @@ import android.support.v7.app.AppCompatActivity;
 
 import com.a494studios.koreanconjugator.parsing.Category;
 import com.a494studios.koreanconjugator.parsing.EntrySerializer;
+import com.a494studios.koreanconjugator.parsing.Favorite;
+import com.a494studios.koreanconjugator.parsing.FavoriteSerializer;
 import com.a494studios.koreanconjugator.parsing.Form;
 import com.a494studios.koreanconjugator.parsing.Formality;
 import com.a494studios.koreanconjugator.parsing.Tense;
@@ -29,7 +31,9 @@ import com.mikepenz.aboutlibraries.LibsBuilder;
 
 import org.rm3l.maoni.Maoni;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Map;
 
 import javax.annotation.Nullable;
@@ -65,7 +69,7 @@ public class Utils {
         return PreferenceManager.getDefaultSharedPreferences(context).getInt(PREF_FAV_COUNT, 3);
     }
 
-    public static void setFavorites(ArrayList<Map.Entry<String,String>> data, Context context){
+    public static void setFavorites(ArrayList<Favorite> data, Context context){
         Gson gson = new Gson();
         SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(context).edit();
         editor.putString(PREF_FAV_VALUES,gson.toJson(data));
@@ -73,15 +77,15 @@ public class Utils {
         editor.apply();
     }
 
-    public static ArrayList<Map.Entry<String,String>> getFavorites(Context context) {
+    public static ArrayList<Favorite> getFavorites(Context context) {
         String jsonString = PreferenceManager.getDefaultSharedPreferences(context).getString(PREF_FAV_VALUES,"");
         if(jsonString.isEmpty()){
             return new ArrayList<>();
         }
 
         GsonBuilder builder = new GsonBuilder();
-        builder.registerTypeHierarchyAdapter(Map.Entry.class, new EntrySerializer());
-        java.lang.reflect.Type type = new TypeToken<ArrayList<Map.Entry<String,String>>>(){}.getType();
+        builder.registerTypeHierarchyAdapter(Favorite.class, new FavoriteSerializer());
+        java.lang.reflect.Type type = new TypeToken<ArrayList<Favorite>>(){}.getType();
         return builder.create().fromJson(jsonString,type);
     }
 

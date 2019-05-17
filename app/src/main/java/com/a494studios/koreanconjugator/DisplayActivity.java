@@ -19,6 +19,7 @@ import com.a494studios.koreanconjugator.display.FavoritesCard;
 import com.a494studios.koreanconjugator.display.ExamplesCard;
 import com.a494studios.koreanconjugator.display.NoteCard;
 import com.a494studios.koreanconjugator.display.SynAntCard;
+import com.a494studios.koreanconjugator.parsing.Favorite;
 import com.a494studios.koreanconjugator.parsing.Server;
 import com.a494studios.koreanconjugator.settings.SettingsActivity;
 import com.a494studios.koreanconjugator.display.DefPOSCard;
@@ -199,8 +200,15 @@ public class DisplayActivity extends AppCompatActivity {
             return;
         }
 
+        // Get list of conjugations from favorites
+        final ArrayList<Favorite> favorites = Utils.getFavorites(this);
+        ArrayList<String> conjugationNames = new ArrayList<>();
+        for(Favorite f : favorites) {
+            conjugationNames.add(f.getConjugationName());
+        }
+
         final boolean isAdj = pos.equals("Adjective");
-        Server.doConjugationQuery(term, honorific, isAdj, new ApolloCall.Callback<ConjugationQuery.Data>() {
+        Server.doConjugationQuery(term, honorific, isAdj,conjugationNames, new ApolloCall.Callback<ConjugationQuery.Data>() {
             @Override
             public void onResponse(@NotNull Response<ConjugationQuery.Data> response) {
                 if(response.data() == null){
@@ -208,12 +216,11 @@ public class DisplayActivity extends AppCompatActivity {
                 }
 
                 // Favorites
-                ArrayList<Map.Entry<String, String>> favs = Utils.getFavorites(DisplayActivity.this);
                 final ArrayList<Map.Entry<String, ConjugationQuery.Conjugation>> favConjugations = new ArrayList<>();
-                for (Map.Entry<String, String> entry : favs) {
+                for (Favorite entry : favorites) {
                     for (ConjugationQuery.Conjugation conjugation : response.data().conjugations()) {
-                        if (conjugation.name().equals(entry.getValue())) {
-                            favConjugations.add(new AbstractMap.SimpleEntry<>(entry.getKey(), conjugation));
+                        if (conjugation.name().equals(entry.getConjugationName())) {
+                            favConjugations.add(new AbstractMap.SimpleEntry<>(entry.getName(), conjugation));
                             break;
                         }
                     }
