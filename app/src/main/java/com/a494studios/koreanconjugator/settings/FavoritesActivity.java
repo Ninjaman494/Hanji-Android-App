@@ -17,7 +17,6 @@ import android.widget.TextView;
 import com.a494studios.koreanconjugator.ConjugationNamesQuery;
 import com.a494studios.koreanconjugator.R;
 import com.a494studios.koreanconjugator.Utils;
-import com.a494studios.koreanconjugator.parsing.Category;
 import com.a494studios.koreanconjugator.parsing.Favorite;
 import com.a494studios.koreanconjugator.parsing.Server;
 import com.apollographql.apollo.ApolloCall;
@@ -29,11 +28,9 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 
-public class FavoritesActivity extends AppCompatActivity implements AddFavoriteFragment.AddFavoriteFragmentListener
-        ,RenameFavoriteFragment.RenameFavoriteFragmentListener{
+public class FavoritesActivity extends AppCompatActivity implements AddFavoriteFragment.AddFavoriteFragmentListener {
 
     FavoritesAdapter adapter;
     AddFavoriteFragment addFavoriteFragment;
@@ -105,13 +102,9 @@ public class FavoritesActivity extends AppCompatActivity implements AddFavoriteF
     public boolean onContextItemSelected(MenuItem item) {
         AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
         if( item.getItemId() == R.id.context_delete) {
-            ArrayList<Favorite> data = adapter.remove(adapter.getItem(info.position));
-            //Utils.setFavorites(data,this);
+            ArrayList<Favorite> favorites = adapter.remove(adapter.getItem(info.position));
+            Utils.setFavorites(favorites,this);
             adapter.notifyDataSetChanged();
-            return true;
-        }else if(item.getItemId() == R.id.context_rename) {
-            RenameFavoriteFragment frag = RenameFavoriteFragment.newInstance(info.position);
-            frag.show(getSupportFragmentManager(),"rename_frag");
             return true;
         }else{
             return super.onContextItemSelected(item);
@@ -142,15 +135,6 @@ public class FavoritesActivity extends AppCompatActivity implements AddFavoriteF
     public void onFavoriteAdded(Favorite entry) {
         ArrayList<Favorite> favorites = adapter.add(entry);
         Utils.setFavorites(favorites,this);
-        adapter.notifyDataSetChanged();
-    }
-
-    @Override
-    public void onRenameSelected(String newName, int position) {
-        /*Map.Entry<String, Category[]> entry = adapter.getItem(position);
-        Map.Entry<String, Category[]> newEntry = new AbstractMap.SimpleEntry<>(newName, entry.getValue());
-        ArrayList<Map.Entry<String, Category[]>> data = adapter.replace(entry, newEntry);*/
-        //Utils.setFavorites(data, this);
         adapter.notifyDataSetChanged();
     }
 
@@ -207,11 +191,6 @@ public class FavoritesActivity extends AppCompatActivity implements AddFavoriteF
 
         public ArrayList<Favorite> add(Favorite entry){
             entries.add(entry);
-            return entries;
-        }
-
-        public ArrayList<Favorite> replace(Favorite old, Favorite newEntry){
-            entries.set(entries.indexOf(old),newEntry);
             return entries;
         }
     }
