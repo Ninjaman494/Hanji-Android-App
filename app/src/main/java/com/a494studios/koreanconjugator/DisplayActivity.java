@@ -200,49 +200,43 @@ public class DisplayActivity extends AppCompatActivity {
             return;
         }
 
-        // Get list of conjugations from favorites
+        // Set up Favorites card
+        boolean isAdj = pos.equals("Adjective");
+        final FavoritesCard favoritesCard = new FavoritesCard(new ArrayList<Map.Entry<String, ConjugationQuery.Conjugation>>(),term,honorific,isAdj);
+        conjCardView.setCardBody(favoritesCard);
+
         final ArrayList<Favorite> favorites = Utils.getFavorites(this);
-        ArrayList<String> conjugationNames = new ArrayList<>();
-        for(Favorite f : favorites) {
+        for(final Favorite f : favorites) {
+            ArrayList<String> conjugationNames = new ArrayList<>();
             conjugationNames.add(f.getConjugationName());
-        }
 
-        final boolean isAdj = pos.equals("Adjective");
-        Server.doConjugationQuery(term, honorific, isAdj,conjugationNames, new ApolloCall.Callback<ConjugationQuery.Data>() {
-            @Override
-            public void onResponse(@NotNull Response<ConjugationQuery.Data> response) {
-                if(response.data() == null){
-                    return;
-                }
+            Server.doConjugationQuery(term, f.isHonorific(), isAdj, conjugationNames, new ApolloCall.Callback<ConjugationQuery.Data>() {
+                @Override
+                public void onResponse(@NotNull Response<ConjugationQuery.Data> response) {
+                    if (response.data() == null) {
+                        return;
+                    }
 
-                // Favorites
-                final ArrayList<Map.Entry<String, ConjugationQuery.Conjugation>> favConjugations = new ArrayList<>();
-                for (Favorite entry : favorites) {
-                    for (ConjugationQuery.Conjugation conjugation : response.data().conjugations()) {
-                        if (conjugation.name().equals(entry.getConjugationName())) {
-                            favConjugations.add(new AbstractMap.SimpleEntry<>(entry.getName(), conjugation));
-                            break;
+                    final ConjugationQuery.Conjugation conjugation = response.data().conjugations().get(0);
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            favoritesCard.addConjugation(new AbstractMap.SimpleEntry<>(f.getName(), conjugation), favorites.indexOf(f));
+
+                            // Hide progress bar and show cards. Technically should be done after all
+                            // conjugations have been received but it makes no noticeable difference
+                            findViewById(R.id.disp_root).setVisibility(View.VISIBLE);
+                            findViewById(R.id.disp_progress).setVisibility(View.GONE);
                         }
-                    }
+                    });
                 }
 
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        conjCardView.setCardBody(new FavoritesCard(favConjugations,term, honorific, isAdj));
-
-                        // Hide progress bar and show cards
-                        findViewById(R.id.disp_root).setVisibility(View.VISIBLE);
-                        findViewById(R.id.disp_progress).setVisibility(View.GONE);
-                    }
-                });
-            }
-
-            @Override
-            public void onFailure(@NotNull ApolloException e) {
-                e.printStackTrace();
-            }
-        });
+                @Override
+                public void onFailure(@NotNull ApolloException e) {
+                    e.printStackTrace();
+                }
+            });
+        }
     }
 
     @Override

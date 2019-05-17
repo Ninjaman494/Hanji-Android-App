@@ -71,6 +71,11 @@ public class FavoritesCard implements DisplayCardBody {
         return "Conjugations";
     }
 
+    public void addConjugation(Map.Entry<String, ConjugationQuery.Conjugation> conjugation, int index) {
+        adapter.addConjugation(conjugation, index);
+        adapter.notifyDataSetChanged();
+    }
+
     private class ConjugationAdapter extends BaseAdapter {
 
         private ArrayList<Map.Entry<String,ConjugationQuery.Conjugation>> entries;
@@ -91,6 +96,15 @@ public class FavoritesCard implements DisplayCardBody {
             typeView.setText(entry.getKey());
             conjView.setText(entry.getValue().conjugation());
             return view;
+        }
+
+        public void addConjugation(Map.Entry<String, ConjugationQuery.Conjugation> entry, int index) {
+            if(index < entries.size()) {
+                entries.add(index, entry);
+            } else {
+                entries.add(entry);
+            }
+            this.notifyDataSetChanged();
         }
 
         @Override
