@@ -12,17 +12,17 @@ import android.text.TextWatcher;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.a494studios.koreanconjugator.R;
-import com.a494studios.koreanconjugator.parsing.Category;
+import com.a494studios.koreanconjugator.parsing.Favorite;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.Map;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -39,6 +39,7 @@ public class AddFavoriteFragment extends DialogFragment implements DialogInterfa
     private EditText nameEditText;
     private Spinner conjSpinner;
     private Spinner speechLevelSpinner;
+    private CheckBox honorificBox;
     private AddFavoriteFragmentListener mListener;
     private HashMap<String,Boolean> conjData;
 
@@ -83,6 +84,7 @@ public class AddFavoriteFragment extends DialogFragment implements DialogInterfa
         speechLevelSpinner = dialog.findViewById(R.id.addFav_speechLevelSpinner);
         conjSpinner = dialog.findViewById(R.id.addFav_conjSpinner);
         nameEditText = dialog.findViewById(R.id.addFav_name);
+        honorificBox = dialog.findViewById(R.id.addFav_checkbox);
 
         // Set up speechLevel spinner
         speechLevelSpinner.setAdapter(ArrayAdapter.createFromResource(getContext(), R.array.formality, ITEM_LAYOUT));
@@ -165,27 +167,19 @@ public class AddFavoriteFragment extends DialogFragment implements DialogInterfa
     public void onClick(DialogInterface dialog, int which) {
         if(which == DialogInterface.BUTTON_NEGATIVE){
             dialog.dismiss();
-            return;
-        }
-
-        if(nameEditText.getText().toString().isEmpty() || conjSpinner.getSelectedItem().toString().equals("Select a Form…")){
-            Toast.makeText(getContext(),"Invalid input",Toast.LENGTH_LONG).show();
-            return;
         } else {
-            Toast.makeText(getContext(),"TODO",Toast.LENGTH_LONG).show();
+            if (nameEditText.getText().toString().isEmpty()) {
+                Toast.makeText(getContext(), "Invalid input", Toast.LENGTH_LONG).show();
+            } else {
+                String name = nameEditText.getText().toString();
+                String conjName = conjSpinner.getSelectedItem().toString().trim();
+                if(conjData.get(conjName)) {
+                    conjName += " " + speechLevelSpinner.getSelectedItem().toString().trim();
+                }
+                boolean honorific = honorificBox.isChecked();
+                mListener.onFavoriteAdded(new Favorite(name,conjName.toLowerCase(),honorific));
+            }
         }
-/*
-
-        String name = nameEditText.getText().toString();
-        Form form = Utils.generateForm(conjSpinner.getSelectedItem().toString().toLowerCase());
-        Formality formality = null;
-        Tense tense = null;
-        if(!(form == Form.NOMINAL || form == Form.CON_AND || form == Form.CON_IF)){
-            tense = Utils.generateTense(tenseSpinner.getSelectedItem().toString().toLowerCase());
-            formality = Utils.generateFormality(speechLevelSpinner.getSelectedItem().toString().toLowerCase());
-        }
-        Category[] categories = {formality,form,tense};
-        mListener.onFavoriteAdded(new AbstractMap.SimpleEntry<>(name,categories));*/
     }
 
 
@@ -200,6 +194,6 @@ public class AddFavoriteFragment extends DialogFragment implements DialogInterfa
      * >Communicating with Other Fragments</a> for more information.
      */
     public interface AddFavoriteFragmentListener {
-        void onFavoriteAdded(Map.Entry<String,Category[]> entry);
+        void onFavoriteAdded(Favorite entry);
     }
 }

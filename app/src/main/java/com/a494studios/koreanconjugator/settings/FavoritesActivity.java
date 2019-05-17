@@ -61,6 +61,7 @@ public class FavoritesActivity extends AppCompatActivity implements AddFavoriteF
                 List<String> names = response.data().conjugationNames();
                 HashMap<String,Boolean> data = new HashMap<>();
                 for(String name : names) {
+                    name = Utils.toTitleCase(name).trim();
                     boolean showSpeechLevels = false;
                     if(name.contains("informal low")){
                         showSpeechLevels = true;
@@ -77,7 +78,7 @@ public class FavoritesActivity extends AppCompatActivity implements AddFavoriteF
                     }
 
                     if(!data.containsKey(name)) {
-                        data.put(Utils.toTitleCase(name.trim()), showSpeechLevels);
+                        data.put(name, showSpeechLevels);
                     }
                 }
                 addFavoriteFragment = AddFavoriteFragment.newInstance(data);
@@ -138,9 +139,9 @@ public class FavoritesActivity extends AppCompatActivity implements AddFavoriteF
     }
 
     @Override
-    public void onFavoriteAdded(Map.Entry<String, Category[]> entry) {
-        //ArrayList<Map.Entry<String,Category[]>> data = adapter.add(entry);
-        //Utils.setFavorites(data,this);
+    public void onFavoriteAdded(Favorite entry) {
+        ArrayList<Favorite> favorites = adapter.add(entry);
+        Utils.setFavorites(favorites,this);
         adapter.notifyDataSetChanged();
     }
 
