@@ -112,18 +112,8 @@ public class FavoritesActivity extends AppCompatActivity implements AddFavoriteF
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.fav_menu, menu);
-        return true;
-    }
-
-    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if(item.getItemId() == R.id.menu_add) {
-            addFavoriteFragment.show(getSupportFragmentManager(),"add_fav_frag");
-            return true;
-        }else if(item.getItemId() == android.R.id.home) {
+       if(item.getItemId() == android.R.id.home) {
             this.onBackPressed();
             return true;
         }else{
@@ -136,6 +126,11 @@ public class FavoritesActivity extends AppCompatActivity implements AddFavoriteF
         ArrayList<Favorite> favorites = adapter.add(entry);
         Utils.setFavorites(favorites,this);
         adapter.notifyDataSetChanged();
+    }
+
+    // FAB's onClick listener
+    public void onAddFavorite(View view) {
+        addFavoriteFragment.show(getSupportFragmentManager(),"add_fav_frag");
     }
 
     private class FavoritesAdapter extends BaseAdapter {
