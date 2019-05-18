@@ -9,6 +9,7 @@ import android.widget.TextView;
 import com.a494studios.koreanconjugator.R;
 
 import java.util.List;
+import java.util.Objects;
 
 public class SynAntCard implements DisplayCardBody {
     private View view;
@@ -16,7 +17,7 @@ public class SynAntCard implements DisplayCardBody {
     private boolean isSyn;
 
     public SynAntCard(List<String> wordList, boolean isSyn) {
-        this.wordList = wordList;
+        this.wordList = Objects.requireNonNull(wordList);
         this.isSyn = isSyn;
     }
 

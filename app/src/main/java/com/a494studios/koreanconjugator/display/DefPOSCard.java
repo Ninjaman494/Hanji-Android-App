@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import com.a494studios.koreanconjugator.utils.WordInfoView;
 
 import java.util.List;
+import java.util.Objects;
 
 public class DefPOSCard implements DisplayCardBody {
 
@@ -17,9 +18,9 @@ public class DefPOSCard implements DisplayCardBody {
     private String buttonText;
 
     public DefPOSCard(String term, String pos, List<String> definitions) {
-        this.term = term;
-        this.pos = pos;
-        this.definitions = definitions;
+        this.term = Objects.requireNonNull(term);
+        this.pos = Objects.requireNonNull(pos);
+        this.definitions = Objects.requireNonNull(definitions);
         this.buttonText = (definitions.size() - 3) + " MORE";
     }
 

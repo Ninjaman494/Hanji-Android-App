@@ -33,7 +33,7 @@ public class NoteCardUnitTest {
     }
 
     @Test
-    public void test_getBodyView() {
+    public void test_addBodyView() {
         ViewGroup group = new LinearLayout(context);
         card.addBodyView(context,group);
         TextView note = group.findViewById(R.id.simpleCard_text);
