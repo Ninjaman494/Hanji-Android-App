@@ -8,13 +8,8 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 
-import com.a494studios.koreanconjugator.parsing.Category;
-import com.a494studios.koreanconjugator.parsing.EntrySerializer;
 import com.a494studios.koreanconjugator.parsing.Favorite;
 import com.a494studios.koreanconjugator.parsing.FavoriteSerializer;
-import com.a494studios.koreanconjugator.parsing.Form;
-import com.a494studios.koreanconjugator.parsing.Formality;
-import com.a494studios.koreanconjugator.parsing.Tense;
 import com.a494studios.koreanconjugator.settings.LegalDisplayActivity;
 import com.a494studios.koreanconjugator.utils.ErrorDialogFragment;
 import com.a494studios.koreanconjugator.utils.SlackHandler;
@@ -31,10 +26,7 @@ import com.mikepenz.aboutlibraries.LibsBuilder;
 
 import org.rm3l.maoni.Maoni;
 
-import java.lang.reflect.Type;
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Map;
 
 import javax.annotation.Nullable;
 
@@ -114,66 +106,6 @@ public class Utils {
         }
 
         return titleCase.toString();
-    }
-
-    public static Formality generateFormality(String type) {
-        if (type.contains(Formality.INFORMAL_LOW.toString())) {
-            return Formality.INFORMAL_LOW;
-        } else if (type.contains(Formality.INFORMAL_HIGH.toString())) {
-            return Formality.INFORMAL_HIGH;
-        } else if (type.contains(Formality.FORMAL_LOW.toString())) {
-            return Formality.FORMAL_LOW;
-        } else if (type.contains(Formality.FORMAL_HIGH.toString())) {
-            return Formality.FORMAL_HIGH;
-        } else if(type.contains(Formality.HONORIFIC_LOW.toString())) {
-            return Formality.HONORIFIC_LOW;
-        }else if(type.contains(Formality.HONORIFIC_HIGH.toString())){
-            return Formality.HONORIFIC_HIGH;
-        }else {
-            return Formality.NONE;
-        }
-    }
-
-    public static Tense generateTense(String type){
-        if(type.contains(Tense.FUT_COND.toString())){
-            return Tense.FUT_COND;
-        }else if(type.contains(Tense.FUTURE.toString())){
-            return Tense.FUTURE;
-        }else if(type.contains(Tense.PRESENT.toString())){
-            return Tense.PRESENT;
-        }else if(type.contains(Tense.PAST.toString())){
-            return Tense.PAST;
-        }else{
-            return Tense.NONE;
-        }
-    }
-
-    public static Form generateForm(String type) {
-        if (type.contains(Form.DECLARATIVE.toString())) {
-            return Form.DECLARATIVE;
-        } else if (type.contains(Form.INQUISITIVE.toString())) {
-            return Form.INQUISITIVE;
-        } else if (type.contains(Form.IMPERATIVE.toString())) {
-            return Form.IMPERATIVE;
-        } else if (type.contains(Form.PROPOSITIVE.toString())) {
-            return Form.PROPOSITIVE;
-        } else if (type.contains(Form.CON_IF.toString())) {
-            return Form.CON_IF;
-        } else if (type.contains(Form.CON_AND.toString())) {
-            return Form.CON_AND;
-        } else if (type.contains(Form.CON_BUT.toString())){
-            return Form.CON_BUT;
-        } else if (type.contains(Form.NOMINAL.toString())) {
-            return Form.NOMINAL;
-        } else if (type.contains(Form.PAST_BASE.toString())) {
-            return Form.PAST_BASE;
-        } else if (type.contains(Form.FUTURE_BASE.toString())) {
-            return Form.FUTURE_BASE;
-        }else if (type.contains(Form.ADJ.toString())) {
-            return Form.ADJ;
-        } else {
-            return Form.UNKNOWN;
-        }
     }
 
     public static void makeAboutBox(final Activity activity){
