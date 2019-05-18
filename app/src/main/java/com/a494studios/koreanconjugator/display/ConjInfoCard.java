@@ -12,6 +12,7 @@ import com.a494studios.koreanconjugator.Utils;
 import com.linearlistview.LinearListView;
 
 import java.util.List;
+import java.util.Objects;
 
 public class ConjInfoCard implements DisplayCardBody {
 
@@ -23,11 +24,11 @@ public class ConjInfoCard implements DisplayCardBody {
     private List<String> explanations;
 
     public ConjInfoCard(String name, String conjugated, String pronunciation, String romanization, List<String> explanations) {
-        this.name = Utils.toTitleCase(name);
-        this.conjugated = conjugated;
-        this.pronunciation = pronunciation;
-        this.romanization = romanization;
-        this.explanations = explanations;
+        this.name = Utils.toTitleCase(Objects.requireNonNull(name));
+        this.conjugated = Objects.requireNonNull(conjugated);
+        this.pronunciation = Objects.requireNonNull(pronunciation);
+        this.romanization = Objects.requireNonNull(romanization);
+        this.explanations = Objects.requireNonNull(explanations);
     }
 
     @Override
