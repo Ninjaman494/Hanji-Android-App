@@ -25,16 +25,15 @@ import com.codemybrainsout.ratingdialog.RatingDialog;
 import com.crashlytics.android.Crashlytics;
 import com.eggheadgames.aboutbox.AboutBoxUtils;
 import com.eggheadgames.aboutbox.AboutConfig;
-import com.eggheadgames.aboutbox.activity.AboutActivity;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.MobileAds;
 
 import org.rm3l.maoni.Maoni;
 
-import java.util.AbstractMap;
 import java.util.ArrayList;
-import java.util.Map;
+
+import static com.eggheadgames.aboutbox.activity.AboutActivity.*;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -130,7 +129,7 @@ public class MainActivity extends AppCompatActivity {
                             return true;
                         }else if(item.getItemId() == R.id.overflow_about){
                             Utils.makeAboutBox(MainActivity.this);
-                            AboutActivity.launch(MainActivity.this);
+                            launch(MainActivity.this);
                             return true;
                         }else if(item.getItemId() == R.id.overflow_bug){
                             Maoni maoni = Utils.makeMaoniActivity(MainActivity.this);

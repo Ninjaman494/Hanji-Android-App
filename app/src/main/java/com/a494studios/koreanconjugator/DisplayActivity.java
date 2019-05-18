@@ -25,12 +25,10 @@ import com.a494studios.koreanconjugator.settings.SettingsActivity;
 import com.a494studios.koreanconjugator.display.DefPOSCard;
 import com.a494studios.koreanconjugator.display.DisplayCardView;
 import com.a494studios.koreanconjugator.utils.ErrorDialogFragment;
-import com.android.volley.NoConnectionError;
 import com.apollographql.apollo.ApolloCall;
 import com.apollographql.apollo.api.Response;
 import com.apollographql.apollo.exception.ApolloException;
 import com.crashlytics.android.Crashlytics;
-import com.eggheadgames.aboutbox.activity.AboutActivity;
 import com.transitionseverywhere.Fade;
 import com.transitionseverywhere.Transition;
 import com.transitionseverywhere.TransitionManager;
@@ -41,6 +39,8 @@ import org.rm3l.maoni.Maoni;
 import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.Map;
+
+import static com.eggheadgames.aboutbox.activity.AboutActivity.*;
 
 public class DisplayActivity extends AppCompatActivity {
 
@@ -258,7 +258,7 @@ public class DisplayActivity extends AppCompatActivity {
         }else if(item.getItemId() == R.id.overflow_about){
             overflowClicked = true;
             Utils.makeAboutBox(this);
-            AboutActivity.launch(this);
+            launch(this);
             return true;
         }else if(item.getItemId() == R.id.overflow_bug) {
             Maoni maoni = Utils.makeMaoniActivity(DisplayActivity.this);
@@ -305,7 +305,7 @@ public class DisplayActivity extends AppCompatActivity {
     }
 
     private void handleError(Exception error) {
-        Snackbar snackbar;
+        /*Snackbar snackbar;
         if (error instanceof NoConnectionError) {
             snackbar = Snackbar.make(findViewById(R.id.disp_root), "Lost connection", Snackbar.LENGTH_INDEFINITE);
         }else{
@@ -318,7 +318,7 @@ public class DisplayActivity extends AppCompatActivity {
                 requestDefinition();
             }
         });
-        snackbar.show();
+        snackbar.show();*/
     }
 
     //TODO Implement

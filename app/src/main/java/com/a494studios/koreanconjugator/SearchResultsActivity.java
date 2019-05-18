@@ -22,12 +22,10 @@ import com.a494studios.koreanconjugator.parsing.Server;
 import com.a494studios.koreanconjugator.settings.SettingsActivity;
 import com.a494studios.koreanconjugator.utils.ErrorDialogFragment;
 import com.a494studios.koreanconjugator.utils.WordInfoView;
-import com.android.volley.NoConnectionError;
 import com.apollographql.apollo.ApolloCall;
 import com.apollographql.apollo.api.Response;
 import com.apollographql.apollo.exception.ApolloException;
 import com.crashlytics.android.Crashlytics;
-import com.eggheadgames.aboutbox.activity.AboutActivity;
 import com.github.andkulikov.materialin.MaterialIn;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
@@ -36,6 +34,8 @@ import org.jetbrains.annotations.NotNull;
 import org.rm3l.maoni.Maoni;
 
 import java.util.List;
+
+import static com.eggheadgames.aboutbox.activity.AboutActivity.*;
 
 public class SearchResultsActivity extends AppCompatActivity {
 
@@ -104,7 +104,7 @@ public class SearchResultsActivity extends AppCompatActivity {
             return true;
         }else if(item.getItemId() == R.id.overflow_about){
             Utils.makeAboutBox(this);
-            AboutActivity.launch(this);
+            launch(this);
             return true;
         }else if(item.getItemId() == R.id.overflow_bug) {
             Maoni maoni = Utils.makeMaoniActivity(SearchResultsActivity.this);
@@ -155,7 +155,7 @@ public class SearchResultsActivity extends AppCompatActivity {
 
     private void handleError(Exception error){
         if (!snackbarShown) {
-            Snackbar snackbar;
+           /* Snackbar snackbar;
             if (error instanceof NoConnectionError) {
                 snackbar = Snackbar.make(findViewById(R.id.search_listView), "Lost connection", Snackbar.LENGTH_INDEFINITE);
             } else {
@@ -170,7 +170,7 @@ public class SearchResultsActivity extends AppCompatActivity {
                 }
             });
             snackbar.show();
-            snackbarShown = true;
+            snackbarShown = true;*/
         }
     }
 

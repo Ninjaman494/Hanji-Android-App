@@ -13,8 +13,6 @@ import com.a494studios.koreanconjugator.parsing.FavoriteSerializer;
 import com.a494studios.koreanconjugator.settings.LegalDisplayActivity;
 import com.a494studios.koreanconjugator.utils.ErrorDialogFragment;
 import com.a494studios.koreanconjugator.utils.SlackHandler;
-import com.android.volley.NoConnectionError;
-import com.android.volley.ParseError;
 import com.crashlytics.android.Crashlytics;
 import com.eggheadgames.aboutbox.AboutConfig;
 import com.eggheadgames.aboutbox.IDialog;
@@ -161,7 +159,7 @@ public class Utils {
 
     public static void handleError(Exception error, AppCompatActivity context, DialogInterface.OnClickListener listener){
         ErrorDialogFragment fragment;
-        if(error instanceof NoConnectionError){
+       /* if(error instanceof NoConnectionError){
             fragment = ErrorDialogFragment.newInstance("Can't load results",
                     "Check your network settings and try again");
         } else if(error instanceof ParseError) {
@@ -179,7 +177,7 @@ public class Utils {
         context.getSupportFragmentManager()
                 .beginTransaction()
                 .add(fragment,"frag_alert")
-                .commitAllowingStateLoss();
+                .commitAllowingStateLoss();*/
     }
 
     public static void handleError(Exception error, AppCompatActivity context) {
