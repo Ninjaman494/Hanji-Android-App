@@ -11,6 +11,7 @@ import com.a494studios.koreanconjugator.Utils;
 import com.linearlistview.LinearListView;
 
 import java.util.List;
+import java.util.Objects;
 
 public class ConjugationCard implements DisplayCardBody {
 
@@ -19,8 +20,12 @@ public class ConjugationCard implements DisplayCardBody {
     private ConjugationAdapter adapter;
 
     public ConjugationCard(List<ConjugationQuery.Conjugation> conjugations) {
-        this.adapter = new ConjugationAdapter(conjugations);
-        heading  = Utils.toTitleCase(conjugations.get(0).type());
+        this.adapter = new ConjugationAdapter(Objects.requireNonNull(conjugations));
+        if (conjugations.isEmpty()) {
+            heading = "Conjugations";
+        } else {
+            heading = Utils.toTitleCase(conjugations.get(0).type());
+        }
     }
 
     @Override

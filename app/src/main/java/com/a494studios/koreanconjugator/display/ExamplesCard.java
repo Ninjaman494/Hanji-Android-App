@@ -10,13 +10,14 @@ import com.a494studios.koreanconjugator.R;
 import com.linearlistview.LinearListView;
 
 import java.util.List;
+import java.util.Objects;
 
 public class ExamplesCard implements DisplayCardBody{
     private View view;
     private ExampleAdapter adapter;
 
     public ExamplesCard(List<ExamplesQuery.Example> examples) {
-        adapter = new ExampleAdapter(examples);
+        adapter = new ExampleAdapter(Objects.requireNonNull(examples));
     }
 
     @Override
