@@ -100,12 +100,12 @@ public class Utils {
         StringBuilder titleCase = new StringBuilder();
         String[] words = string.split("\\s+");
         for(String word: words) {
-            String newWord = Character.toTitleCase(word.charAt(0)) + word.substring(1);
+            String newWord = Character.toTitleCase(word.charAt(0)) + word.substring(1).toLowerCase();
             titleCase.append(newWord);
             titleCase.append(" ");
         }
 
-        return titleCase.toString();
+        return titleCase.toString().trim();
     }
 
     public static void makeAboutBox(final Activity activity){
