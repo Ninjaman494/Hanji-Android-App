@@ -7,12 +7,14 @@ import android.widget.TextView;
 
 import com.a494studios.koreanconjugator.R;
 
+import java.util.Objects;
+
 public class NoteCard implements DisplayCardBody {
     private View view;
     private String note;
 
     public NoteCard(String note) {
-        this.note = note;
+        this.note = Objects.requireNonNull(note);
     }
 
     @Override
