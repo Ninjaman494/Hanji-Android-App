@@ -15,6 +15,7 @@ import com.linearlistview.LinearListView;
 
 import java.util.ArrayList;
 import java.util.Map;
+import java.util.Objects;
 
 public class FavoritesCard implements DisplayCardBody {
 
@@ -26,8 +27,8 @@ public class FavoritesCard implements DisplayCardBody {
     private ConjugationAdapter adapter;
 
     public FavoritesCard(ArrayList<Map.Entry<String,ConjugationQuery.Conjugation>> entries, String stem, boolean honorific, boolean isAdj) {
-        this.adapter = new ConjugationAdapter(entries);
-        this.stem = stem;
+        this.adapter = new ConjugationAdapter(Objects.requireNonNull(entries));
+        this.stem = Objects.requireNonNull(stem);
         this.honorific = honorific;
         this.isAdj = isAdj;
     }
@@ -37,7 +38,7 @@ public class FavoritesCard implements DisplayCardBody {
         if(view == null) {
             view = View.inflate(context, R.layout.dcard_list, parentView);
         }
-        LinearListView listView = view.findViewById(R.id.conjCard_list);
+        LinearListView listView = view.findViewById(R.id.listCard_list);
         listView.setAdapter(adapter);
         return view;
     }

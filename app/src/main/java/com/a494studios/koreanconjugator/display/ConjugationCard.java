@@ -28,7 +28,7 @@ public class ConjugationCard implements DisplayCardBody {
         if(view == null) {
             view = View.inflate(context, R.layout.dcard_list,parentView);
         }
-        LinearListView listView = view.findViewById(R.id.conjCard_list);
+        LinearListView listView = view.findViewById(R.id.listCard_list);
         listView.setAdapter(adapter);
         return view;
     }
