@@ -8,7 +8,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
-import com.a494studios.koreanconjugator.ConjugationActivity;
+import com.a494studios.koreanconjugator.display.ConjugationActivity;
 import com.a494studios.koreanconjugator.ConjugationQuery;
 import com.a494studios.koreanconjugator.R;
 import com.linearlistview.LinearListView;

@@ -1,4 +1,4 @@
-package com.a494studios.koreanconjugator;
+package com.a494studios.koreanconjugator.display;
 
 import android.app.SearchManager;
 import android.content.DialogInterface;
@@ -13,6 +13,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.a494studios.koreanconjugator.ConjugationQuery;
+import com.a494studios.koreanconjugator.EntryQuery;
+import com.a494studios.koreanconjugator.ExamplesQuery;
+import com.a494studios.koreanconjugator.R;
+import com.a494studios.koreanconjugator.Utils;
 import com.a494studios.koreanconjugator.display.cards.AdCard;
 import com.a494studios.koreanconjugator.display.cards.FavoritesCard;
 import com.a494studios.koreanconjugator.display.cards.ExamplesCard;
@@ -22,7 +27,6 @@ import com.a494studios.koreanconjugator.parsing.Favorite;
 import com.a494studios.koreanconjugator.parsing.Server;
 import com.a494studios.koreanconjugator.settings.SettingsActivity;
 import com.a494studios.koreanconjugator.display.cards.DefPOSCard;
-import com.a494studios.koreanconjugator.display.DisplayCardView;
 import com.a494studios.koreanconjugator.utils.ErrorDialogFragment;
 import com.apollographql.apollo.ApolloCall;
 import com.apollographql.apollo.api.Response;
@@ -125,7 +129,7 @@ public class DisplayActivity extends AppCompatActivity {
                     @Override
                     public void run() {
                         // Definitions and POS
-                        displayCardView.setCardBody(new DefPOSCard(entry.term,entry.pos,entry.definitions));
+                        displayCardView.setCardBody(new DefPOSCard(entry.term(),entry.pos(),entry.definitions()));
 
                         // Note
                         if(entry.note() != null ) {

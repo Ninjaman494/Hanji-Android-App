@@ -1,4 +1,4 @@
-package com.a494studios.koreanconjugator;
+package com.a494studios.koreanconjugator.display;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -8,8 +8,9 @@ import android.widget.BaseAdapter;
 import android.widget.CompoundButton;
 import android.widget.Switch;
 
+import com.a494studios.koreanconjugator.ConjugationQuery;
+import com.a494studios.koreanconjugator.R;
 import com.a494studios.koreanconjugator.display.cards.ConjugationCard;
-import com.a494studios.koreanconjugator.display.DisplayCardView;
 import com.a494studios.koreanconjugator.parsing.Server;
 import com.apollographql.apollo.ApolloCall;
 import com.apollographql.apollo.api.Response;
@@ -63,7 +64,7 @@ public class ConjugationActivity extends AppCompatActivity {
                         List<ConjugationQuery.Conjugation> conjugations = response.data().conjugations();
                         final TreeMap<String,List<ConjugationQuery.Conjugation>> conjMap = new TreeMap<>();
                         for(ConjugationQuery.Conjugation conjugation : conjugations){
-                            String type = conjugation.type;
+                            String type = conjugation.type();
                             if(conjMap.keySet().contains(type)){
                                 conjMap.get(type).add(conjugation);
                             }else{

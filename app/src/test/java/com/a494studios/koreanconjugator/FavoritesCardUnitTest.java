@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
+import com.a494studios.koreanconjugator.display.ConjugationActivity;
 import com.a494studios.koreanconjugator.display.cards.FavoritesCard;
 
 import org.junit.Before;
@@ -63,7 +64,7 @@ public class FavoritesCardUnitTest {
         card.onButtonClick();
 
         Intent intent = Shadows.shadowOf(activity).peekNextStartedActivityForResult().intent;
-        assertEquals(intent.getComponent(),new ComponentName(activity,ConjugationActivity.class));
+        assertEquals(intent.getComponent(),new ComponentName(activity, ConjugationActivity.class));
         assertEquals(intent.getStringExtra(ConjugationActivity.EXTRA_STEM),STEM);
         assertEquals(intent.getBooleanExtra(ConjugationActivity.EXTRA_HONORIFIC,!HONORIFIC),HONORIFIC);
         assertEquals(intent.getBooleanExtra(ConjugationActivity.EXTRA_ISADJ,!IS_ADJ),IS_ADJ);

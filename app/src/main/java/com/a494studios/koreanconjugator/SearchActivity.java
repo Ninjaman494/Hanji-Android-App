@@ -9,12 +9,12 @@ import android.os.Bundle;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.a494studios.koreanconjugator.display.DisplayActivity;
 import com.a494studios.koreanconjugator.parsing.Server;
 import com.a494studios.koreanconjugator.utils.ErrorDialogFragment;
 import com.apollographql.apollo.ApolloCall;
 import com.apollographql.apollo.api.Response;
 import com.apollographql.apollo.exception.ApolloException;
-import com.crashlytics.android.Crashlytics;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 
