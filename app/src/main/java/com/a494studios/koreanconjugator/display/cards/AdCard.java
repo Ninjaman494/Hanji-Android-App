@@ -1,30 +1,24 @@
-package com.a494studios.koreanconjugator.display;
+package com.a494studios.koreanconjugator.display.cards;
 
 import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import com.a494studios.koreanconjugator.R;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
 
-import java.util.Objects;
-
-public class NoteCard implements DisplayCardBody {
+public class AdCard implements DisplayCardBody {
     private View view;
-    private String note;
-
-    public NoteCard(String note) {
-        this.note = Objects.requireNonNull(note);
-    }
 
     @Override
     public View addBodyView(Context context, ViewGroup parentView) {
-        if(view == null){
-            view = View.inflate(context, R.layout.dcard_simpletext,parentView);
+        if(view == null) {
+            view = View.inflate(context, R.layout.dcard_ad,parentView);
         }
 
-        TextView textView = view.findViewById(R.id.simpleCard_text);
-        textView.setText(note);
+        AdView adView = view.findViewById(R.id.adCard_ad);
+        adView.loadAd(new AdRequest.Builder().build());
         return view;
     }
 
@@ -50,6 +44,6 @@ public class NoteCard implements DisplayCardBody {
 
     @Override
     public String getHeading() {
-        return "Note";
+        return "Ad";
     }
 }

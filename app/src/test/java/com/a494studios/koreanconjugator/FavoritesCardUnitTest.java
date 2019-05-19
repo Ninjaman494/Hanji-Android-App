@@ -6,7 +6,7 @@ import android.content.Intent;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
-import com.a494studios.koreanconjugator.display.FavoritesCard;
+import com.a494studios.koreanconjugator.display.cards.FavoritesCard;
 
 import org.junit.Before;
 import org.junit.Test;

@@ -21,7 +21,7 @@ public class UtilsUnitTest {
     private Context context;
 
     @Before
-    public void setup() throws Exception {
+    public void setup() {
         context = RuntimeEnvironment.application.getApplicationContext();
     }
 

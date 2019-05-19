@@ -5,7 +5,7 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.a494studios.koreanconjugator.display.ConjInfoCard;
+import com.a494studios.koreanconjugator.display.cards.ConjInfoCard;
 
 import org.junit.Before;
 import org.junit.Test;

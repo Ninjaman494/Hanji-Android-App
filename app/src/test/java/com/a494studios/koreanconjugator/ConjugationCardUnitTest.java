@@ -4,7 +4,7 @@ import android.content.Context;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
-import com.a494studios.koreanconjugator.display.ConjugationCard;
+import com.a494studios.koreanconjugator.display.cards.ConjugationCard;
 import com.a494studios.koreanconjugator.type.SpeechLevel;
 import com.a494studios.koreanconjugator.type.Tense;
 

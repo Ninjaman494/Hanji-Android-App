@@ -4,6 +4,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
 import com.a494studios.koreanconjugator.R;
+import com.a494studios.koreanconjugator.display.cards.ConjInfoCard;
 
 import java.util.List;
 

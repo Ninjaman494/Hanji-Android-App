@@ -1,23 +1,31 @@
-package com.a494studios.koreanconjugator.display;
+package com.a494studios.koreanconjugator.display.cards;
 
 import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.a494studios.koreanconjugator.ExampleAdapter;
-import com.a494studios.koreanconjugator.ExamplesQuery;
+import com.a494studios.koreanconjugator.ConjugationAdapter;
+import com.a494studios.koreanconjugator.ConjugationQuery;
 import com.a494studios.koreanconjugator.R;
+import com.a494studios.koreanconjugator.Utils;
 import com.linearlistview.LinearListView;
 
 import java.util.List;
 import java.util.Objects;
 
-public class ExamplesCard implements DisplayCardBody{
-    private View view;
-    private ExampleAdapter adapter;
+public class ConjugationCard implements DisplayCardBody {
 
-    public ExamplesCard(List<ExamplesQuery.Example> examples) {
-        adapter = new ExampleAdapter(Objects.requireNonNull(examples));
+    private View view;
+    private String heading;
+    private ConjugationAdapter adapter;
+
+    public ConjugationCard(List<ConjugationQuery.Conjugation> conjugations) {
+        this.adapter = new ConjugationAdapter(Objects.requireNonNull(conjugations));
+        if (conjugations.isEmpty()) {
+            heading = "Conjugations";
+        } else {
+            heading = Utils.toTitleCase(conjugations.get(0).type());
+        }
     }
 
     @Override
@@ -25,7 +33,6 @@ public class ExamplesCard implements DisplayCardBody{
         if(view == null) {
             view = View.inflate(context, R.layout.dcard_list,parentView);
         }
-
         LinearListView listView = view.findViewById(R.id.listCard_list);
         listView.setAdapter(adapter);
         return view;
@@ -33,7 +40,7 @@ public class ExamplesCard implements DisplayCardBody{
 
     @Override
     public void onButtonClick() {
-        //Empty on purpose
+        // Empty on purpose
     }
 
     @Override
@@ -53,6 +60,6 @@ public class ExamplesCard implements DisplayCardBody{
 
     @Override
     public String getHeading() {
-        return "Examples";
+        return heading;
     }
 }

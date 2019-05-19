@@ -5,7 +5,7 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.a494studios.koreanconjugator.display.SynAntCard;
+import com.a494studios.koreanconjugator.display.cards.SynAntCard;
 
 import org.junit.Before;
 import org.junit.Test;

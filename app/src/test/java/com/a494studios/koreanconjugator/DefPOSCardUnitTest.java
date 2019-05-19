@@ -4,7 +4,7 @@ import android.content.Context;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
-import com.a494studios.koreanconjugator.display.DefPOSCard;
+import com.a494studios.koreanconjugator.display.cards.DefPOSCard;
 import com.a494studios.koreanconjugator.utils.WordInfoView;
 
 import org.junit.Before;

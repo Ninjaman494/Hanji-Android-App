@@ -9,6 +9,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.a494studios.koreanconjugator.R;
+import com.a494studios.koreanconjugator.display.cards.DisplayCardBody;
 
 public class DisplayCardView extends RelativeLayout {
     TextView headingView;

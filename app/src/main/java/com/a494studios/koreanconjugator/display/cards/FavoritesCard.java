@@ -1,4 +1,4 @@
-package com.a494studios.koreanconjugator.display;
+package com.a494studios.koreanconjugator.display.cards;
 
 import android.content.Context;
 import android.content.Intent;

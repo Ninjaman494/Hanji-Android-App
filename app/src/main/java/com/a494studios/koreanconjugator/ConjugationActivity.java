@@ -8,7 +8,7 @@ import android.widget.BaseAdapter;
 import android.widget.CompoundButton;
 import android.widget.Switch;
 
-import com.a494studios.koreanconjugator.display.ConjugationCard;
+import com.a494studios.koreanconjugator.display.cards.ConjugationCard;
 import com.a494studios.koreanconjugator.display.DisplayCardView;
 import com.a494studios.koreanconjugator.parsing.Server;
 import com.apollographql.apollo.ApolloCall;

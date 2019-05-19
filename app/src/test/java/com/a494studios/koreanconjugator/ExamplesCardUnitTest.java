@@ -4,7 +4,7 @@ import android.content.Context;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
-import com.a494studios.koreanconjugator.display.ExamplesCard;
+import com.a494studios.koreanconjugator.display.cards.ExamplesCard;
 
 import org.junit.Before;
 import org.junit.Test;
