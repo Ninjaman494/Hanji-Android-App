@@ -4,7 +4,7 @@ import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.a494studios.koreanconjugator.ExampleAdapter;
+import com.a494studios.koreanconjugator.display.adapters.ExampleAdapter;
 import com.a494studios.koreanconjugator.ExamplesQuery;
 import com.a494studios.koreanconjugator.R;
 import com.linearlistview.LinearListView;

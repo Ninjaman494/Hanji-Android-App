@@ -1,10 +1,13 @@
-package com.a494studios.koreanconjugator;
+package com.a494studios.koreanconjugator.display.adapters;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
+
+import com.a494studios.koreanconjugator.ExamplesQuery;
+import com.a494studios.koreanconjugator.R;
 
 import java.util.List;
 
@@ -25,8 +28,8 @@ public class ExampleAdapter extends BaseAdapter {
         ExamplesQuery.Example example = examples.get(i);
         TextView sentenceView = view.findViewById(R.id.item_example_sentence);
         TextView transView = view.findViewById(R.id.item_example_translation);
-        sentenceView.setText(example.sentence);
-        transView.setText(example.translation);
+        sentenceView.setText(example.sentence());
+        transView.setText(example.translation());
         return view;
     }
 

@@ -2,15 +2,13 @@ package com.a494studios.koreanconjugator.display.cards;
 
 import android.content.Context;
 import android.content.Intent;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
-import android.widget.TextView;
 
 import com.a494studios.koreanconjugator.display.ConjugationActivity;
 import com.a494studios.koreanconjugator.ConjugationQuery;
 import com.a494studios.koreanconjugator.R;
+import com.a494studios.koreanconjugator.display.adapters.FavoritesAdapter;
 import com.linearlistview.LinearListView;
 
 import java.util.ArrayList;
@@ -24,10 +22,10 @@ public class FavoritesCard implements DisplayCardBody {
     private String stem;
     private boolean honorific;
     private boolean isAdj;
-    private ConjugationAdapter adapter;
+    private FavoritesAdapter adapter;
 
     public FavoritesCard(ArrayList<Map.Entry<String,ConjugationQuery.Conjugation>> entries, String stem, boolean honorific, boolean isAdj) {
-        this.adapter = new ConjugationAdapter(Objects.requireNonNull(entries));
+        this.adapter = new FavoritesAdapter(Objects.requireNonNull(entries));
         this.stem = Objects.requireNonNull(stem);
         this.honorific = honorific;
         this.isAdj = isAdj;
@@ -77,55 +75,4 @@ public class FavoritesCard implements DisplayCardBody {
         adapter.notifyDataSetChanged();
     }
 
-    private class ConjugationAdapter extends BaseAdapter {
-
-        private ArrayList<Map.Entry<String,ConjugationQuery.Conjugation>> entries;
-        private static final int RESOURCE_ID = R.layout.item_conjugation;
-
-        public ConjugationAdapter(ArrayList<Map.Entry<String,ConjugationQuery.Conjugation>> entries) {
-            this.entries = entries;
-        }
-
-        @Override
-        public View getView(int i, View view, ViewGroup viewGroup) {
-            if (view == null) {
-                view = LayoutInflater.from(viewGroup.getContext()).inflate(RESOURCE_ID, viewGroup, false);
-            }
-            Map.Entry<String,ConjugationQuery.Conjugation> entry = entries.get(i);
-            TextView typeView = view.findViewById(R.id.conjFormal);
-            TextView conjView = view.findViewById(R.id.conjText);
-            typeView.setText(entry.getKey());
-            conjView.setText(entry.getValue().conjugation());
-            return view;
-        }
-
-        public void addConjugation(Map.Entry<String, ConjugationQuery.Conjugation> entry, int index) {
-            if(index < entries.size()) {
-                entries.add(index, entry);
-            } else {
-                entries.add(entry);
-            }
-            this.notifyDataSetChanged();
-        }
-
-        @Override
-        public int getCount() {
-            return entries.size();
-        }
-
-        @Override
-        public Object getItem(int i) {
-            return entries.get(i);
-        }
-
-        @Override
-        public long getItemId(int position) {
-            return position;
-        }
-
-        @Override
-        public boolean hasStableIds() {
-            return true;
-        }
-    }
 }

@@ -1,4 +1,4 @@
-package com.a494studios.koreanconjugator;
+package com.a494studios.koreanconjugator.display.adapters;
 
 import android.content.Intent;
 import android.view.LayoutInflater;
@@ -7,6 +7,8 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
+import com.a494studios.koreanconjugator.ConjugationQuery;
+import com.a494studios.koreanconjugator.R;
 import com.a494studios.koreanconjugator.display.ConjInfoActivity;
 import com.a494studios.koreanconjugator.type.SpeechLevel;
 
@@ -30,7 +32,7 @@ public class ConjugationAdapter extends BaseAdapter {
         ConjugationQuery.Conjugation c = conjugations.get(i);
         TextView typeView = view.findViewById(R.id.conjFormal);
         TextView conjView = view.findViewById(R.id.conjText);
-        if(c.speechLevel == SpeechLevel.NONE){
+        if(c.speechLevel() == SpeechLevel.NONE){
             typeView.setText(c.name());
         }else {
             String speechLevel = c.speechLevel().toString();
