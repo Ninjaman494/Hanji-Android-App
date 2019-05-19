@@ -93,6 +93,18 @@ public class DefPOSCardUnitTest {
         card3.addBodyView(context,new LinearLayout(context));
         card3.onButtonClick();
         assertEquals(card3.getButtonText(),"COLLAPSE");
+
+        // Click again
+        card4.onButtonClick();
+        assertEquals(card4.getButtonText(),"1 MORE");
+        card3.onButtonClick();
+        assertEquals(card3.getButtonText(),"0 MORE");
+    }
+
+    @Test
+    public void test_getCount() {
+        assertEquals(definitions4.size(),card4.getCount());
+        assertEquals(definitions3.size(),card3.getCount());
     }
 
     @Test

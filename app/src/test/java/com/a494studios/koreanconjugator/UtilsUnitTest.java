@@ -2,29 +2,27 @@ package com.a494studios.koreanconjugator;
 
 
 import android.content.Context;
-import android.support.test.InstrumentationRegistry;
-import android.support.test.runner.AndroidJUnit4;
-import android.test.suitebuilder.annotation.SmallTest;
 
 import com.a494studios.koreanconjugator.parsing.Favorite;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.robolectric.RobolectricTestRunner;
+import org.robolectric.RuntimeEnvironment;
 
 import java.util.ArrayList;
 
+import static org.hamcrest.Matchers.samePropertyValuesAs;
 import static org.junit.Assert.*;
 
-@RunWith(AndroidJUnit4.class)
-@SmallTest
+@RunWith(RobolectricTestRunner.class)
 public class UtilsUnitTest {
     private Context context;
 
     @Before
     public void setup() throws Exception {
-        // Context of the app under test.
-        context = InstrumentationRegistry.getTargetContext();
+        context = RuntimeEnvironment.application.getApplicationContext();
     }
 
     @Test
@@ -44,16 +42,14 @@ public class UtilsUnitTest {
         favorites.add(fav3);
 
         Utils.setFavorites(favorites,context);
+        assertThat(favorites, samePropertyValuesAs(Utils.getFavorites(context)));
         assertEquals(favorites.size(),Utils.getFavCount(context));
+    }
 
-        ArrayList<Favorite> returnedFavs = Utils.getFavorites(context);
-        for(int i = 0;i<favorites.size();i++) {
-            Favorite actualFav = favorites.get(i);
-            Favorite returnedFav = returnedFavs.get(i);
-            assertEquals(actualFav.getName(),returnedFav.getName());
-            assertEquals(actualFav.getConjugationName(),returnedFav.getConjugationName());
-            assertEquals(actualFav.isHonorific(),returnedFav.isHonorific());
-        }
+    @Test
+    public void test_FavoritesEmpty() {
+        ArrayList<Favorite> favorites = Utils.getFavorites(context);
+        assertTrue(favorites.isEmpty());
     }
 
     @Test
