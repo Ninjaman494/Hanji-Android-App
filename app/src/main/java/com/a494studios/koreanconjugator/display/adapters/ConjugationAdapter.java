@@ -14,6 +14,7 @@ import com.a494studios.koreanconjugator.type.SpeechLevel;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class ConjugationAdapter extends BaseAdapter {
 
@@ -21,7 +22,7 @@ public class ConjugationAdapter extends BaseAdapter {
     private static final int RESOURCE_ID = R.layout.item_conjugation;
 
     public ConjugationAdapter(List<ConjugationQuery.Conjugation> conjugations) {
-        this.conjugations = conjugations;
+        this.conjugations = Objects.requireNonNull(conjugations);
     }
 
     @Override

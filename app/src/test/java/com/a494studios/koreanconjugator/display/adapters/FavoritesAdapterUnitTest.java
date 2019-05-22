@@ -25,9 +25,6 @@ import static org.junit.Assert.assertTrue;
 
 @RunWith(RobolectricTestRunner.class)
 public class FavoritesAdapterUnitTest {
-    private final int NAME_VIEW_ID = R.id.conjFormal;
-    private final int CONJ_VIEW_ID = R.id.conjText;
-
     private ArrayList<Map.Entry<String, ConjugationQuery.Conjugation>> entries;
     private FavoritesAdapter adapter;
 
@@ -59,22 +56,14 @@ public class FavoritesAdapterUnitTest {
     @Test
     public void test_getView() {
         ViewGroup group = new LinearLayout(RuntimeEnvironment.application.getApplicationContext());
-
-        View view1 = adapter.getView(0,null,group);
-        View view2 = adapter.getView(1,null,group);
-        View view3 = adapter.getView(2,null,group);
-        Map.Entry<String, ConjugationQuery.Conjugation> e1 = entries.get(0);
-        Map.Entry<String, ConjugationQuery.Conjugation> e2 = entries.get(1);
-        Map.Entry<String, ConjugationQuery.Conjugation> e3 = entries.get(2);
-
-        assertEquals(e1.getKey(),((TextView)view1.findViewById(NAME_VIEW_ID)).getText());
-        assertEquals(e1.getValue().conjugation(),((TextView)view1.findViewById(CONJ_VIEW_ID)).getText());
-
-        assertEquals(e2.getKey(),((TextView)view2.findViewById(NAME_VIEW_ID)).getText());
-        assertEquals(e2.getValue().conjugation(),((TextView)view2.findViewById(CONJ_VIEW_ID)).getText());
-
-        assertEquals(e3.getKey(),((TextView)view3.findViewById(NAME_VIEW_ID)).getText());
-        assertEquals(e3.getValue().conjugation(),((TextView)view3.findViewById(CONJ_VIEW_ID)).getText());
+        int NAME_VIEW_ID = R.id.conjFormal;
+        int CONJ_VIEW_ID = R.id.conjText;
+        for(int i = 0;i<entries.size();i++) {
+            View view = adapter.getView(i,null,group);
+            Map.Entry<String, ConjugationQuery.Conjugation> e = entries.get(i);
+            assertEquals(e.getKey(),((TextView)view.findViewById(NAME_VIEW_ID)).getText());
+            assertEquals(e.getValue().conjugation(),((TextView)view.findViewById(CONJ_VIEW_ID)).getText());
+        }
     }
 
     @Test
