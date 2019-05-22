@@ -10,13 +10,14 @@ import com.a494studios.koreanconjugator.ExamplesQuery;
 import com.a494studios.koreanconjugator.R;
 
 import java.util.List;
+import java.util.Objects;
 
 public class ExampleAdapter extends BaseAdapter {
     private static final int RESOURCE_ID = R.layout.item_example;
     private List<ExamplesQuery.Example> examples;
 
     public ExampleAdapter(List<ExamplesQuery.Example> examples){
-        this.examples = examples;
+        this.examples = Objects.requireNonNull(examples);
     }
 
     @Override
