@@ -1,4 +1,4 @@
-package com.a494studios.koreanconjugator;
+package com.a494studios.koreanconjugator.display.cards;
 
 import android.content.ComponentName;
 import android.content.Context;
@@ -6,9 +6,13 @@ import android.content.Intent;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
+import com.a494studios.koreanconjugator.ConjugationQuery;
+import com.a494studios.koreanconjugator.MainActivity;
+import com.a494studios.koreanconjugator.R;
 import com.a494studios.koreanconjugator.display.ConjugationActivity;
 import com.a494studios.koreanconjugator.display.cards.FavoritesCard;
 
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -54,7 +58,7 @@ public class FavoritesCardUnitTest {
     public void test_addBodyView() {
         ViewGroup group = new LinearLayout(context);
         card.addBodyView(context,group);
-        assertEquals(group.getChildAt(0).getId(),R.id.listCard);
+        Assert.assertEquals(group.getChildAt(0).getId(), R.id.listCard);
     }
 
     @Test

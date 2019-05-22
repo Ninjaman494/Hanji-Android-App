@@ -1,6 +1,4 @@
-package com.a494studios.koreanconjugator;
-
-import com.a494studios.koreanconjugator.parsing.Favorite;
+package com.a494studios.koreanconjugator.parsing;
 
 import org.junit.Test;
 

@@ -1,10 +1,11 @@
-package com.a494studios.koreanconjugator;
+package com.a494studios.koreanconjugator.display.cards;
 
 import android.content.Context;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.a494studios.koreanconjugator.R;
 import com.a494studios.koreanconjugator.display.cards.ConjInfoCard;
 
 import org.junit.Before;

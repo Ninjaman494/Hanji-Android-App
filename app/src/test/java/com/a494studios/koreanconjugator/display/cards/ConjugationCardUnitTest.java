@@ -1,13 +1,16 @@
-package com.a494studios.koreanconjugator;
+package com.a494studios.koreanconjugator.display.cards;
 
 import android.content.Context;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
+import com.a494studios.koreanconjugator.ConjugationQuery;
+import com.a494studios.koreanconjugator.R;
 import com.a494studios.koreanconjugator.display.cards.ConjugationCard;
 import com.a494studios.koreanconjugator.type.SpeechLevel;
 import com.a494studios.koreanconjugator.type.Tense;
 
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -47,7 +50,7 @@ public class ConjugationCardUnitTest {
     public void test_addBodyView() {
         ViewGroup group = new LinearLayout(context);
         card.addBodyView(context,group);
-        assertEquals(group.getChildAt(0).getId(),R.id.listCard);
+        Assert.assertEquals(group.getChildAt(0).getId(), R.id.listCard);
     }
 
     @Test

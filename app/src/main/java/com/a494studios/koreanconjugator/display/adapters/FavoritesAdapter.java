@@ -11,6 +11,7 @@ import com.a494studios.koreanconjugator.R;
 
 import java.util.ArrayList;
 import java.util.Map;
+import java.util.Objects;
 
 public class FavoritesAdapter extends BaseAdapter {
 
@@ -18,7 +19,7 @@ public class FavoritesAdapter extends BaseAdapter {
     private static final int RESOURCE_ID = R.layout.item_conjugation;
 
     public FavoritesAdapter(ArrayList<Map.Entry<String,ConjugationQuery.Conjugation>> entries) {
-        this.entries = entries;
+        this.entries = Objects.requireNonNull(entries);
     }
 
     @Override
@@ -35,7 +36,7 @@ public class FavoritesAdapter extends BaseAdapter {
     }
 
     public void addConjugation(Map.Entry<String, ConjugationQuery.Conjugation> entry, int index) {
-        if(index < entries.size()) {
+        if(index < entries.size() && index > 0) {
             entries.add(index, entry);
         } else {
             entries.add(entry);
