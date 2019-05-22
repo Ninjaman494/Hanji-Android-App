@@ -1,14 +1,13 @@
 package com.a494studios.koreanconjugator.display.cards;
 
 import android.content.Context;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.a494studios.koreanconjugator.R;
 import com.a494studios.koreanconjugator.Utils;
+import com.a494studios.koreanconjugator.display.adapters.ExplanationsAdapter;
 import com.linearlistview.LinearListView;
 
 import java.util.List;
@@ -69,48 +68,6 @@ public class ConjInfoCard implements DisplayCardBody {
     @Override
     public String getHeading() {
         return name;
-    }
-
-    private class ExplanationsAdapter extends BaseAdapter {
-        private static final int RESOURCE_ID = R.layout.item_example;
-        private List<String> explanations;
-
-        public ExplanationsAdapter(List<String> explanations){
-            this.explanations = explanations;
-        }
-
-        @Override
-        public View getView(int i, View view, ViewGroup viewGroup) {
-            if (view == null) {
-                view = LayoutInflater.from(viewGroup.getContext()).inflate(RESOURCE_ID, viewGroup, false);
-            }
-
-            String explanation = explanations.get(i);
-            int index = explanation.indexOf('(');
-            String header = explanation.substring(0,index);
-            String sub = explanation.substring(index);
-
-            TextView sentenceView = view.findViewById(R.id.item_example_sentence);
-            TextView transView = view.findViewById(R.id.item_example_translation);
-            sentenceView.setText(header);
-            transView.setText(sub);
-            return view;
-        }
-
-        @Override
-        public int getCount() {
-            return explanations.size();
-        }
-
-        @Override
-        public String getItem(int i) {
-            return explanations.get(i);
-        }
-
-        @Override
-        public long getItemId(int i) {
-            return i;
-        }
     }
 
 }
