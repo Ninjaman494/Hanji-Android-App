@@ -11,6 +11,8 @@ import android.widget.TextView;
 import com.a494studios.koreanconjugator.R;
 import com.a494studios.koreanconjugator.display.cards.DisplayCardBody;
 
+import java.util.Objects;
+
 public class DisplayCardView extends RelativeLayout {
     TextView headingView;
     Button button;
@@ -30,8 +32,8 @@ public class DisplayCardView extends RelativeLayout {
 
     public DisplayCardView(Context context, DisplayCardBody cardBody){
         super(context);
+        this.cardBody = Objects.requireNonNull(cardBody);
         init(context);
-        this.cardBody = cardBody;
     }
 
     private void init(Context context){
@@ -52,24 +54,28 @@ public class DisplayCardView extends RelativeLayout {
         cardBody.addBodyView(context,linearLayout); // Add body view to linear layout
         hideButton(cardBody.shouldHideButton());
         button.setText(cardBody.getButtonText());
-        button.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                cardBody.onButtonClick();
-                button.setText(cardBody.getButtonText());
-            }
-        });
-
         String heading = cardBody.getHeading();
         if(heading != null) {
+            headingView.setVisibility(VISIBLE);
             headingView.setText(heading);
         } else {
             headingView.setVisibility(GONE);
         }
+        setButtonListener();
+    }
+
+    private void setButtonListener() {
+        button.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                cardBody.onButtonClick();
+                cardBodyUpdates();
+            }
+        });
     }
 
     public void setCardBody(DisplayCardBody cardBody) {
-        this.cardBody = cardBody;
+        this.cardBody = Objects.requireNonNull(cardBody);
         cardBodyUpdates();
     }
 
