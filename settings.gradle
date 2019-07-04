@@ -1,2 +1,2 @@
 include ':app',':about-box'
-project (':about-box').projectDir = new File("C:\\Users\\akash\\AndroidStudioProjects\\android-about-box\\library")
+project (':about-box').projectDir = new File("C:\\Users\\akash\\StudioProjects\\android-about-box\\library")

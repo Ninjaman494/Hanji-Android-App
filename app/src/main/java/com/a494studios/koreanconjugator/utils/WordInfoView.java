@@ -70,6 +70,9 @@ public class WordInfoView extends RelativeLayout {
     }
 
     public void setDefinitions(List<String> definitions) {
+        this.definitions = definitions;
+        defsView.removeAllViews();
+
         for(int i = 0;i<definitions.size() && i<2;i++) {
             View vi = inflate(getContext(), R.layout.item_word_info,null);
             ((TextView)vi.findViewById(R.id.content)).setText(definitions.get(i));

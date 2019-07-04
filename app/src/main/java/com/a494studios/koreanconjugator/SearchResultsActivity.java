@@ -192,10 +192,15 @@ class SearchAdapter extends BaseAdapter {
 
     @Override
     public View getView(int i, View view, ViewGroup viewGroup) {
+        SearchQuery.Search result = results.get(i);
         if (view == null) {
-            SearchQuery.Search result = results.get(i);
             view = new WordInfoView(viewGroup.getContext(),result.term(),result.pos(),result.definitions(),true);
             view.setPadding(8,16,8,16);
+        } else {
+            WordInfoView infoView = (WordInfoView) view;
+            infoView.setTerm(result.term());
+            infoView.setPos(result.pos());
+            infoView.setDefinitions(result.definitions());
         }
         return view;
     }
