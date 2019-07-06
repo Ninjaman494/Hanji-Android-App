@@ -75,7 +75,7 @@
             android:name="com.google.firebase.messaging.default_notification_color"
             android:resource="@android:color/transparent" /> <!-- If not defined yet, declare a file provider to be able to share screenshots captured by Maoni -->
         <provider
-            android:name="android.support.v4.content.FileProvider"
+            android:name="androidx.core.content.FileProvider"
             android:authorities="com.a494studios.koreanconjugator.fileprovider"
             android:exported="false"
             android:grantUriPermissions="true">

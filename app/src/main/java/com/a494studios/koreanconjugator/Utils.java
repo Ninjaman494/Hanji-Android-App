@@ -6,14 +6,13 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
-import android.support.v7.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.a494studios.koreanconjugator.parsing.Favorite;
 import com.a494studios.koreanconjugator.parsing.FavoriteSerializer;
 import com.a494studios.koreanconjugator.settings.LegalDisplayActivity;
 import com.a494studios.koreanconjugator.utils.ErrorDialogFragment;
 import com.a494studios.koreanconjugator.utils.SlackHandler;
-import com.crashlytics.android.Crashlytics;
 import com.eggheadgames.aboutbox.AboutConfig;
 import com.eggheadgames.aboutbox.IDialog;
 import com.google.gson.Gson;

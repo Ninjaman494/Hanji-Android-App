@@ -42,7 +42,7 @@
         android:textSize="23sp"
         android:layout_marginStart="@dimen/horizontalMargin"
         android:layout_marginTop="@dimen/verticalMargin"/>
-    <android.support.v7.widget.AppCompatCheckBox
+    <androidx.appcompat.widget.AppCompatCheckBox
         android:id="@+id/addFav_checkbox"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
