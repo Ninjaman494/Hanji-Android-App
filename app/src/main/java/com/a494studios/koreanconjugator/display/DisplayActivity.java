@@ -12,6 +12,9 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.LinearLayout;
 
 import com.a494studios.koreanconjugator.ConjugationQuery;
 import com.a494studios.koreanconjugator.EntryQuery;
@@ -96,9 +99,8 @@ public class DisplayActivity extends AppCompatActivity {
             actionBar.setElevation(0);
         }
 
-        // Show progress bar and hide cards
-        findViewById(R.id.disp_progress).setVisibility(View.VISIBLE);
-        findViewById(R.id.disp_root).setVisibility(View.GONE);
+        // Display progress bar until data is loaded
+        displayLoading(true);
 
         // Setting up display cards
         final DisplayCardView displayCardView = findViewById(R.id.disp_dcv);
@@ -194,9 +196,8 @@ public class DisplayActivity extends AppCompatActivity {
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    // Hide progress bar and conj card and show other cards
-                    findViewById(R.id.disp_root).setVisibility(View.VISIBLE);
-                    findViewById(R.id.disp_progress).setVisibility(View.GONE);
+                    // Hide conj card, but show the other cards
+                    displayLoading(false);
                     conjCardView.setVisibility(View.GONE);
                 }
             });
@@ -228,8 +229,7 @@ public class DisplayActivity extends AppCompatActivity {
 
                             // Hide progress bar and show cards. Technically should be done after all
                             // conjugations have been received but it makes no noticeable difference
-                            findViewById(R.id.disp_root).setVisibility(View.VISIBLE);
-                            findViewById(R.id.disp_progress).setVisibility(View.GONE);
+                            displayLoading(false);
                         }
                     });
                 }
@@ -305,6 +305,28 @@ public class DisplayActivity extends AppCompatActivity {
     public void onResume(){
         super.onResume();
         overflowClicked = false;
+    }
+
+    private void displayLoading(boolean isLoading){
+        View progressBar = findViewById(R.id.disp_progress);
+        View extendedBar = findViewById(R.id.disp_extendedBar);
+        View rootLinearLayout = findViewById(R.id.disp_root);
+        if(isLoading){
+            progressBar.setVisibility(View.VISIBLE);
+            extendedBar.setVisibility(View.INVISIBLE);
+            rootLinearLayout.setVisibility(View.GONE);
+        } else {
+            progressBar.setVisibility(View.GONE);
+            extendedBar.setVisibility(View.VISIBLE);
+            rootLinearLayout.setVisibility(View.VISIBLE);
+
+            // Animations
+            LinearLayout layout = (LinearLayout) rootLinearLayout;
+            Animation topBot = AnimationUtils.loadAnimation(DisplayActivity.this,R.anim.slide_top_to_bot);
+            Animation botTop = AnimationUtils.loadAnimation(DisplayActivity.this, R.anim.slide_bot_to_top);
+            extendedBar.startAnimation(topBot);
+            layout.startAnimation(botTop);
+        }
     }
 
     private void handleError(Exception error) {
