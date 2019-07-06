@@ -35,7 +35,9 @@ public class DefPOSCard implements DisplayCardBody {
             view = new WordInfoView(context, term, pos, definitions, false);
         }
 
-        parentView.addView(view);
+        if(view.getParent() == null) {
+            parentView.addView(view);
+        }
         return view;
     }
 

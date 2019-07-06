@@ -35,9 +35,6 @@ import com.apollographql.apollo.ApolloCall;
 import com.apollographql.apollo.api.Response;
 import com.apollographql.apollo.exception.ApolloException;
 import com.crashlytics.android.Crashlytics;
-import com.transitionseverywhere.Fade;
-import com.transitionseverywhere.Transition;
-import com.transitionseverywhere.TransitionManager;
 
 import org.jetbrains.annotations.NotNull;
 import org.rm3l.maoni.Maoni;
@@ -284,14 +281,7 @@ public class DisplayActivity extends AppCompatActivity {
     public void onWindowFocusChanged (boolean hasFocus) {
         super.onWindowFocusChanged(hasFocus);
         if(hasFocus){
-            ArrayList<ViewGroup> fragViews = makeFragViewList();
-            for (int i = 0; i < fragViews.size(); i++) {
-                ViewGroup v = fragViews.get(i);
-                Transition t = new Fade(Fade.IN);
-                t.setStartDelay(((i + 1) * 80));
-                TransitionManager.beginDelayedTransition(v, t);
-                v.setVisibility(View.VISIBLE);
-            }
+            //TODO Animations when user returns to activity
         }
     }
 
@@ -360,20 +350,5 @@ public class DisplayActivity extends AppCompatActivity {
                 handleError(error);
             }
         });*/
-    }
-
-    private ArrayList<ViewGroup> makeFragViewList(){
-        ArrayList<ViewGroup> views = new ArrayList<>();
-        /*views.add((ViewGroup) findViewById(R.id.frag_1));
-        views.add((ViewGroup) findViewById(R.id.frag_2));
-        views.add((ViewGroup) findViewById(R.id.frag_3));
-        views.add((ViewGroup) findViewById(R.id.frag_4));
-        views.add((ViewGroup) findViewById(R.id.frag_5));
-        views.add((ViewGroup) findViewById(R.id.frag_6));
-        views.add((ViewGroup) findViewById(R.id.frag_7));
-        views.add((ViewGroup) findViewById(R.id.frag_8));
-        views.add((ViewGroup) findViewById(R.id.frag_9));
-        views.add((ViewGroup) findViewById(R.id.frag_10));*/
-        return views;
     }
 }

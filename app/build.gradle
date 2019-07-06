@@ -82,27 +82,26 @@ def getApiKey(String property) {
 
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
-    implementation 'androidx.appcompat:appcompat:1.0.0'
+    implementation 'androidx.appcompat:appcompat:1.0.2'
     implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
-    implementation 'androidx.multidex:multidex:2.0.0'
-    testImplementation 'junit:junit:4.12'
-    testImplementation 'org.mockito:mockito-core:1.10.19'
-    testImplementation 'org.robolectric:robolectric:4.2'
-    androidTestImplementation 'androidx.test:runner:1.1.0'
-    androidTestImplementation 'androidx.test:rules:1.1.1'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.0'
-    androidTestUtil 'androidx.test:orchestrator:1.1.0'
+    implementation 'androidx.multidex:multidex:2.0.1'
     implementation 'androidx.cardview:cardview:1.0.0'
     implementation 'com.google.android.material:material:1.0.0'
+    implementation 'org.jetbrains:annotations:16.0.2'
+    implementation 'com.github.frankiesardo:linearlistview:1.0.1@aar'
+
+    // Firebase
     implementation 'com.google.firebase:firebase-core:17.0.0'
     implementation 'com.google.firebase:firebase-ads:18.0.0'
     implementation 'com.google.firebase:firebase-messaging:19.0.1'
     implementation('com.crashlytics.sdk.android:crashlytics:2.9.0@aar') { transitive = true }
-    implementation 'com.github.frankiesardo:linearlistview:1.0.1@aar'
-    implementation 'com.google.code.gson:gson:2.8.2'
-    implementation 'com.google.guava:guava:23.0-android'
-    implementation 'com.andkulikov:transitionseverywhere:1.7.8'
+
+    // Favorites parsing
+    implementation 'com.google.code.gson:gson:2.8.5'
+    api 'com.google.guava:guava:28.0-android'
+
+    // Settings, About, Feedback
     implementation 'com.codemybrainsout.rating:ratingdialog:1.0.8'
     implementation project(':about-box')
     implementation('com.mikepenz:aboutlibraries:6.1.1@aar') { transitive = true }
@@ -110,9 +109,19 @@ dependencies {
     implementation 'org.rm3l:maoni-common:6.0.0'
     implementation 'com.github.pschroen:slack-api-android:c66cc8d997'
     implementation 'com.github.daniel-stoneuk:material-about-library:2.3.0'
+
+    // Apollo
     implementation 'com.apollographql.apollo:apollo-runtime:1.0.1'
     implementation 'com.apollographql.apollo:apollo-http-cache:1.0.1'
-    implementation 'org.jetbrains:annotations:16.0.2'
+
+    // Testing dependencies
+    testImplementation 'junit:junit:4.12'
+    testImplementation 'org.mockito:mockito-core:1.10.19'
+    testImplementation 'org.robolectric:robolectric:4.2'
+    androidTestImplementation 'androidx.test:runner:1.2.0'
+    androidTestImplementation 'androidx.test:rules:1.2.0'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
+    androidTestUtil 'androidx.test:orchestrator:1.2.0'
 }
 apply plugin: 'com.google.gms.google-services'
 apply plugin: 'com.apollographql.android'
