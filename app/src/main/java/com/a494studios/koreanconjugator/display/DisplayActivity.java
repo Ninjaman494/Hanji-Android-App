@@ -11,7 +11,6 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.LinearLayout;
@@ -55,6 +54,7 @@ public class DisplayActivity extends AppCompatActivity {
     private String definition;
     private boolean overflowClicked;
     private DisplayCardView conjCardView;
+    private boolean isLoading;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -278,14 +278,6 @@ public class DisplayActivity extends AppCompatActivity {
     }
 
     @Override
-    public void onWindowFocusChanged (boolean hasFocus) {
-        super.onWindowFocusChanged(hasFocus);
-        if(hasFocus){
-            //TODO Animations when user returns to activity
-        }
-    }
-
-    @Override
     public void onPause(){
         super.onPause();
         if(!overflowClicked) overridePendingTransition(0,0);
@@ -295,9 +287,11 @@ public class DisplayActivity extends AppCompatActivity {
     public void onResume(){
         super.onResume();
         overflowClicked = false;
+        displayLoading(isLoading);
     }
 
     private void displayLoading(boolean isLoading){
+        this.isLoading = isLoading;
         View progressBar = findViewById(R.id.disp_progress);
         View extendedBar = findViewById(R.id.disp_extendedBar);
         View rootLinearLayout = findViewById(R.id.disp_root);

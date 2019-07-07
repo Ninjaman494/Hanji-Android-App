@@ -126,7 +126,7 @@ public class SearchResultsActivity extends AppCompatActivity {
     public void onResume(){
         super.onResume();
         overflowClicked = false;
-        MaterialIn.animate(findViewById(R.id.search_listView), Gravity.BOTTOM, Gravity.BOTTOM);
+        animateListView();
     }
 
     private void fetchSearchResponse(){
@@ -139,6 +139,7 @@ public class SearchResultsActivity extends AppCompatActivity {
                         @Override
                         public void run() {
                             listView.setAdapter(adapter);
+                            animateListView();
                         }
                     });
                 }
@@ -179,6 +180,10 @@ public class SearchResultsActivity extends AppCompatActivity {
         intent.putExtra(DisplayActivity.EXTRA_TERM,term);
         intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
         startActivity(intent);
+    }
+
+    private void animateListView() {
+        MaterialIn.animate(findViewById(R.id.search_listView), Gravity.BOTTOM, Gravity.BOTTOM);
     }
 }
 
