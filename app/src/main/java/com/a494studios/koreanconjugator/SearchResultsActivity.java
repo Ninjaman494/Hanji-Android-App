@@ -7,15 +7,15 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import androidx.appcompat.widget.SearchView;
-import android.view.Gravity;
+
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.BaseAdapter;
-import android.widget.ListView;
 
 import com.a494studios.koreanconjugator.display.DisplayActivity;
 import com.a494studios.koreanconjugator.parsing.Server;
@@ -25,9 +25,9 @@ import com.a494studios.koreanconjugator.utils.WordInfoView;
 import com.apollographql.apollo.ApolloCall;
 import com.apollographql.apollo.api.Response;
 import com.apollographql.apollo.exception.ApolloException;
-import com.github.andkulikov.materialin.MaterialIn;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
+import com.linearlistview.LinearListView;
 
 import org.jetbrains.annotations.NotNull;
 import org.rm3l.maoni.Maoni;
@@ -41,7 +41,7 @@ public class SearchResultsActivity extends AppCompatActivity {
     public static final String EXTRA_QUERY = "query";
 
     private SearchAdapter adapter;
-    private ListView listView;
+    private LinearListView listView;
     private boolean snackbarShown;
     private boolean overflowClicked;
     private String query;
@@ -70,13 +70,14 @@ public class SearchResultsActivity extends AppCompatActivity {
         ActionBar actionBar = getSupportActionBar();
         if(actionBar != null){
             actionBar.setTitle("Multiple results: "+ query);
+            actionBar.setElevation(0);
         }
 
         fetchSearchResponse();
 
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        listView.setOnItemClickListener(new LinearListView.OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+            public void onItemClick(LinearListView parent, View view, int i, long itemId) {
                 if(adapter != null) {
                     String id = adapter.getItem(i).id();
                     String term = adapter.getItem(i).term();
@@ -183,50 +184,58 @@ public class SearchResultsActivity extends AppCompatActivity {
     }
 
     private void animateListView() {
-        MaterialIn.animate(findViewById(R.id.search_listView), Gravity.BOTTOM, Gravity.BOTTOM);
-    }
-}
-
-class SearchAdapter extends BaseAdapter {
-
-    private List<SearchQuery.Search> results;
-
-    public SearchAdapter(List<SearchQuery.Search> results) {
-        this.results = results;
+        Animation topBot = AnimationUtils.loadAnimation(this,R.anim.slide_top_to_bot);
+        Animation botTop = AnimationUtils.loadAnimation(this, R.anim.slide_bot_to_top);
+        findViewById(R.id.search_results_extendedBar).startAnimation(topBot);
+        findViewById(R.id.search_results_card).startAnimation(botTop);
     }
 
-    @Override
-    public View getView(int i, View view, ViewGroup viewGroup) {
-        SearchQuery.Search result = results.get(i);
-        if (view == null) {
-            view = new WordInfoView(viewGroup.getContext(),result.term(),result.pos(),result.definitions(),true);
-            view.setPadding(8,16,8,16);
-        } else {
-            WordInfoView infoView = (WordInfoView) view;
+    private class SearchAdapter extends BaseAdapter {
+
+        private List<SearchQuery.Search> results;
+
+        SearchAdapter(List<SearchQuery.Search> results) {
+            this.results = results;
+        }
+
+        @Override
+        public View getView(int i, View view, ViewGroup viewGroup) {
+            final SearchQuery.Search result = results.get(i);
+            if (view == null) {
+                view = getLayoutInflater().inflate(R.layout.item_search_result, viewGroup, false);
+            }
+            WordInfoView infoView = view.findViewById(R.id.item_search_result_word_info);
             infoView.setTerm(result.term());
             infoView.setPos(result.pos());
             infoView.setDefinitions(result.definitions());
+
+            view.findViewById(R.id.item_search_result_button).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    sendIntent(result.id(),result.term());
+                }
+            });
+            return view;
         }
-        return view;
-    }
 
-    @Override
-    public int getCount() {
-        return results.size();
-    }
+        @Override
+        public int getCount() {
+            return results.size();
+        }
 
-    @Override
-    public SearchQuery.Search getItem(int i) {
-        return results.get(i);
-    }
+        @Override
+        public SearchQuery.Search getItem(int i) {
+            return results.get(i);
+        }
 
-    @Override
-    public long getItemId(int position) {
-        return position;
-    }
+        @Override
+        public long getItemId(int position) {
+            return position;
+        }
 
-    @Override
-    public boolean hasStableIds() {
-        return true;
+        @Override
+        public boolean hasStableIds() {
+            return true;
+        }
     }
 }

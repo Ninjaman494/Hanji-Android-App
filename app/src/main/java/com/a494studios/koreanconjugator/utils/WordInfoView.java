@@ -42,9 +42,9 @@ public class WordInfoView extends RelativeLayout {
 
     private void init(Context context){
         View rootView = inflate(context, R.layout.view_word_info, this);
-        termView = rootView.findViewById(R.id.item_search_result_term);
-        posView = rootView.findViewById(R.id.item_search_result_pos);
-        defsView = rootView.findViewById(R.id.item_search_result_recycler);
+        termView = rootView.findViewById(R.id.word_info_term);
+        posView = rootView.findViewById(R.id.word_info_pos);
+        defsView = rootView.findViewById(R.id.word_info_recycler);
     }
 
     public void setTerm(String term) {

@@ -6,7 +6,7 @@
         android:layout_height="wrap_content">
 
         <TextView
-            android:id="@+id/item_search_result_term"
+            android:id="@+id/word_info_term"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="가깝다"
@@ -14,19 +14,19 @@
             android:textSize="30sp" />
 
         <TextView
-            android:id="@+id/item_search_result_pos"
+            android:id="@+id/word_info_pos"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/item_search_result_term"
+            android:layout_below="@id/word_info_term"
             android:layout_marginBottom="8dp"
             android:text="Adjective"
             android:textSize="16sp" />
 
         <LinearLayout
-            android:id="@+id/item_search_result_recycler"
+            android:id="@+id/word_info_recycler"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/item_search_result_pos"
+            android:layout_below="@id/word_info_pos"
             android:orientation="vertical" />
     </RelativeLayout>
 
