@@ -49,7 +49,8 @@
         </activity>
         <activity
             android:name=".SearchActivity"
-            android:noHistory="true">
+            android:noHistory="true"
+            android:theme="@style/AppTheme.NoTransition">
             <intent-filter>
                 <action android:name="android.intent.action.SEARCH" />
             </intent-filter>

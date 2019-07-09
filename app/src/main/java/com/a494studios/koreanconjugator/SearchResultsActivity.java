@@ -16,6 +16,7 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 
 import com.a494studios.koreanconjugator.display.DisplayActivity;
 import com.a494studios.koreanconjugator.parsing.Server;
@@ -69,7 +70,7 @@ public class SearchResultsActivity extends AppCompatActivity {
 
         ActionBar actionBar = getSupportActionBar();
         if(actionBar != null){
-            actionBar.setTitle("Multiple results: "+ query);
+            actionBar.setTitle("Results: "+ query);
             actionBar.setElevation(0);
         }
 
@@ -209,7 +210,9 @@ public class SearchResultsActivity extends AppCompatActivity {
             infoView.setPos(result.pos());
             infoView.setDefinitions(result.definitions());
 
-            view.findViewById(R.id.item_search_result_button).setOnClickListener(new View.OnClickListener() {
+            Button btn = view.findViewById(R.id.item_search_result_button);
+            btn.setText(getString(R.string.see_entry));
+            btn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     sendIntent(result.id(),result.term());

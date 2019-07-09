@@ -31,4 +31,5 @@
     <string name="feedback_sending">Sending feedback</string>
     <!--Other-->
     <string name="honorific">Honorific</string>
+    <string name="see_entry">See Entry</string>
 </resources>

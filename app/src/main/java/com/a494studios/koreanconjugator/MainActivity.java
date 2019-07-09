@@ -112,7 +112,7 @@ public class MainActivity extends AppCompatActivity {
         progressBar.getProgressDrawable().setColorFilter(getResources().getColor(R.color.colorAccent), PorterDuff.Mode.SRC_IN);
 
         // Handle Search
-        SearchManager searchManager = (SearchManager) getSystemService(SEARCH_SERVICE);;
+        SearchManager searchManager = (SearchManager) getSystemService(SEARCH_SERVICE);
         editText.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
 
         // Setting up Overflow Menu
