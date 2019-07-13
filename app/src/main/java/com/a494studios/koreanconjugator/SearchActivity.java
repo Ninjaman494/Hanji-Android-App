@@ -37,7 +37,7 @@ public class SearchActivity extends AppCompatActivity {
         adView.loadAd(new AdRequest.Builder().build());
 
         if (!Intent.ACTION_SEARCH.equals(getIntent().getAction())) {
-            this.onBackPressed();
+            finish();
             return;
         }
 
@@ -45,7 +45,7 @@ public class SearchActivity extends AppCompatActivity {
             ErrorDialogFragment.newInstance().setListener(new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialogInterface, int i) {
-                    onBackPressed();
+                    finish();
                 }
             }).show(getSupportFragmentManager(),"error_dialog");
             //Crashlytics.log("Query was null in SearchActivity");
@@ -63,7 +63,14 @@ public class SearchActivity extends AppCompatActivity {
             public void onResponse(@NotNull Response<SearchQuery.Data> response) {
                 List<SearchQuery.Search> results = response.data().search();
                 if(results.isEmpty()) {
-                    onBackPressed();
+                    String title = getString(R.string.no_results_title);
+                    String msg = getString(R.string.no_results_msg);
+                    ErrorDialogFragment.newInstance(title, msg).setListener(new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            finish();
+                        }
+                    }).show(getSupportFragmentManager(),"error_dialog");
                 } else if(results.size() == 1){
                     goToDisplay(results.get(0).id,results.get(0).term);
                 } else {
@@ -82,7 +89,7 @@ public class SearchActivity extends AppCompatActivity {
         Utils.handleError(error, this, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface,int i) {
-                onBackPressed(); // Go back to previous activity
+                finish(); // Exit this activity
             }
         });
     }
