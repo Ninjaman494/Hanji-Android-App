@@ -1,9 +1,12 @@
 package com.a494studios.koreanconjugator.display;
 
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.BaseAdapter;
 import android.widget.CompoundButton;
 import android.widget.Switch;
@@ -37,6 +40,11 @@ public class ConjugationActivity extends AppCompatActivity {
         final String stem = getIntent().getStringExtra(EXTRA_STEM);
         final boolean honorific = getIntent().getBooleanExtra(EXTRA_HONORIFIC,false);
         final boolean isAdj = getIntent().getBooleanExtra(EXTRA_ISADJ,false);
+
+        ActionBar actionBar = getSupportActionBar();
+        if(actionBar != null) {
+            actionBar.setTitle("");
+        }
 
         setLoading(true);
         getConjugations(stem, honorific, isAdj);
@@ -91,6 +99,12 @@ public class ConjugationActivity extends AppCompatActivity {
                 });
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        animateList();
+    }
+
     private void setLoading(boolean loading){
         if(loading) {
             findViewById(R.id.conj_progress).setVisibility(View.VISIBLE);
@@ -98,7 +112,13 @@ public class ConjugationActivity extends AppCompatActivity {
         } else {
             findViewById(R.id.conj_progress).setVisibility(View.GONE);
             findViewById(R.id.conj_list).setVisibility(View.VISIBLE);
+            animateList();
         }
+    }
+
+    private void animateList(){
+        Animation botTop = AnimationUtils.loadAnimation(this, R.anim.slide_bot_to_top);
+        findViewById(R.id.conj_list).startAnimation(botTop);
     }
 
     private class ConjugationsAdapter extends BaseAdapter {
