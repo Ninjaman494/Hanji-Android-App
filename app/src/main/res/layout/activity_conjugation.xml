@@ -44,7 +44,10 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@id/conj_switch"
                     android:orientation="vertical"
-                    android:paddingTop="8dp"/>
+                    android:paddingTop="16dp"
+                    android:paddingBottom="16dp"
+                    android:clipToPadding="false"
+                    android:clipChildren="false"/>
             </RelativeLayout>
     </ScrollView>
 </RelativeLayout>

@@ -12,7 +12,9 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:clipToPadding="false"
+            android:paddingBottom="50dp">
 
             <View
                 android:id="@+id/search_results_extendedBar"
