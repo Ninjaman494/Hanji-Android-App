@@ -42,10 +42,9 @@ public class MainActivity extends AppCompatActivity {
     private ProgressBar progressBar;
     private TextView loadingText;
     private CardView searchCard;
-    private SearchView editText;
+    private SearchView searchView;
     private TextView logo;
     private ImageView overflowMenu;
-    private boolean searchInProgress;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,10 +55,9 @@ public class MainActivity extends AppCompatActivity {
         loadingText = findViewById(R.id.main_loadingText);
         overflowMenu = findViewById(R.id.main_menu_icon);
         searchCard = findViewById(R.id.main_searchCard);
-        editText = findViewById(R.id.main_editText);
+        searchView = findViewById(R.id.main_editText);
         logo = findViewById(R.id.main_logo);
         AdView adView = findViewById(R.id.main_adView);
-        searchInProgress = false;
 
         adView.loadAd(new AdRequest.Builder().build());
 
@@ -113,7 +111,7 @@ public class MainActivity extends AppCompatActivity {
 
         // Handle Search
         SearchManager searchManager = (SearchManager) getSystemService(SEARCH_SERVICE);
-        editText.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
+        searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
 
         // Setting up Overflow Menu
         overflowMenu.setOnClickListener(new View.OnClickListener() {
@@ -201,9 +199,9 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onResume(){
         super.onResume();
-        if(!searchInProgress) {
-            showSearchCard();
-        }
+        searchView.setQuery("", false);
+        searchView.clearFocus();
+        showSearchCard();
     }
 
     private void showSearchCard(){

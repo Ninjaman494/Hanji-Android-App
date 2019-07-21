@@ -55,6 +55,7 @@ public class DisplayActivity extends AppCompatActivity {
     private boolean overflowClicked;
     private DisplayCardView conjCardView;
     private boolean isLoading;
+    private SearchView searchView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -244,7 +245,7 @@ public class DisplayActivity extends AppCompatActivity {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.search_menu, menu);
         SearchManager searchManager = (SearchManager) getSystemService(SEARCH_SERVICE);
-        SearchView searchView = (SearchView) menu.findItem(R.id.menu_search).getActionView();
+        searchView = (SearchView) menu.findItem(R.id.menu_search).getActionView();
         searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
         return true;
     }
@@ -288,6 +289,12 @@ public class DisplayActivity extends AppCompatActivity {
         super.onResume();
         overflowClicked = false;
         displayLoading(isLoading);
+
+        if(searchView != null) {
+            searchView.setQuery("", false);
+            searchView.setIconified(true);
+            searchView.clearFocus();
+        }
     }
 
     private void displayLoading(boolean isLoading){

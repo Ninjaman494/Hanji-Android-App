@@ -46,6 +46,7 @@ public class SearchResultsActivity extends AppCompatActivity {
     private boolean snackbarShown;
     private boolean overflowClicked;
     private String query;
+    private SearchView searchView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -93,7 +94,7 @@ public class SearchResultsActivity extends AppCompatActivity {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.search_menu, menu);
         SearchManager searchManager = (SearchManager) getSystemService(SEARCH_SERVICE);
-        SearchView searchView = (SearchView) menu.findItem(R.id.menu_search).getActionView();
+        searchView = (SearchView) menu.findItem(R.id.menu_search).getActionView();
         searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
         return true;
     }
@@ -128,6 +129,11 @@ public class SearchResultsActivity extends AppCompatActivity {
     public void onResume(){
         super.onResume();
         overflowClicked = false;
+        if(searchView != null) {
+            searchView.setQuery("", false);
+            searchView.setIconified(true);
+            searchView.clearFocus();
+        }
         animateListView();
     }
 
