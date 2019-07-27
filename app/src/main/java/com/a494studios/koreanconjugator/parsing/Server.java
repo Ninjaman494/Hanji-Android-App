@@ -18,8 +18,18 @@ import java.util.List;
 public class Server {
 
     public static void doSearchQuery(final String query, ApolloCall.Callback<SearchQuery.Data> callback){
+        doSearchQuery(query, null, callback);
+    }
+
+    public static void doSearchQuery(String query, String cursor, ApolloCall.Callback<SearchQuery.Data> callback) {
+        SearchQuery.Builder queryBuilder = SearchQuery.builder()
+                .query(query);
+        if(cursor != null) {
+            queryBuilder.cursor(cursor);
+        }
+
         CustomApplication.getApolloClient()
-                .query(new SearchQuery(query))
+                .query(queryBuilder.build())
                 .httpCachePolicy(HttpCachePolicy.CACHE_FIRST)
                 .enqueue(callback);
     }

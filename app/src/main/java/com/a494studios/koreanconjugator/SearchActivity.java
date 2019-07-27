@@ -61,7 +61,7 @@ public class SearchActivity extends AppCompatActivity {
         Server.doSearchQuery(entry, new ApolloCall.Callback<SearchQuery.Data>() {
             @Override
             public void onResponse(@NotNull Response<SearchQuery.Data> response) {
-                List<SearchQuery.Search> results = response.data().search();
+                List<SearchQuery.Result> results = response.data().search().results();
                 if(results.isEmpty()) {
                     String title = getString(R.string.no_results_title);
                     String msg = getString(R.string.no_results_msg);

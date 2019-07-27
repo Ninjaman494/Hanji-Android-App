@@ -199,15 +199,15 @@ public class SearchResultsActivity extends AppCompatActivity {
 
     private class SearchAdapter extends BaseAdapter {
 
-        private List<SearchQuery.Search> results;
+        private List<SearchQuery.Result> results;
 
-        SearchAdapter(List<SearchQuery.Search> results) {
-            this.results = results;
+        SearchAdapter(SearchQuery.Search search) {
+            this.results = search.results();
         }
 
         @Override
         public View getView(int i, View view, ViewGroup viewGroup) {
-            final SearchQuery.Search result = results.get(i);
+            final SearchQuery.Result result = results.get(i);
             if (view == null) {
                 view = getLayoutInflater().inflate(R.layout.item_search_result, viewGroup, false);
             }
@@ -233,7 +233,7 @@ public class SearchResultsActivity extends AppCompatActivity {
         }
 
         @Override
-        public SearchQuery.Search getItem(int i) {
+        public SearchQuery.Result getItem(int i) {
             return results.get(i);
         }
 

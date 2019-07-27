@@ -1,8 +1,11 @@
-query SearchQuery($query: String!) {
-  search(query: $query) {
-    id,
-    term,
-    pos,
-    definitions
+query SearchQuery($query: String!, $cursor: String) {
+  search(query: $query, cursor: $cursor) {
+    results {
+        id,
+        term,
+        pos,
+        definitions
+    },
+    cursor
   }
 }
