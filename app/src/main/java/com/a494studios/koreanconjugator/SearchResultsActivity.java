@@ -193,8 +193,8 @@ public class SearchResultsActivity extends AppCompatActivity {
     private void animateListView() {
         Animation topBot = AnimationUtils.loadAnimation(this,R.anim.slide_top_to_bot);
         Animation botTop = AnimationUtils.loadAnimation(this, R.anim.slide_bot_to_top);
-        findViewById(R.id.search_results_extendedBar).startAnimation(topBot);
-        findViewById(R.id.search_results_card).startAnimation(botTop);
+        //findViewById(R.id.search_results_extendedBar).startAnimation(topBot);
+        listView.startAnimation(botTop);
     }
 
     private class SearchAdapter extends BaseAdapter {

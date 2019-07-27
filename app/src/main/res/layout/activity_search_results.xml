@@ -1,55 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context="com.a494studios.koreanconjugator.SearchResultsActivity">
 
-    <ScrollView
+    <com.linearlistview.LinearListView
+        android:id="@+id/search_listView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:clipToPadding="false"
-            android:paddingBottom="50dp">
-
-            <View
-                android:id="@+id/search_results_extendedBar"
-                android:layout_width="match_parent"
-                android:layout_height="56dp"
-                android:background="@color/colorPrimary" />
-
-            <androidx.cardview.widget.CardView
-                android:id="@+id/search_results_card"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="16dp"
-                android:layout_marginRight="16dp"
-                android:layout_marginBottom="8dp"
-                app:cardCornerRadius="10dp"
-                app:cardElevation="10dp">
-
-                <com.linearlistview.LinearListView
-                    android:id="@+id/search_listView"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:divider="@color/grey_400"
-                    android:orientation="vertical"
-                    android:showDividers="middle"
-                    app:dividerThickness="2dp" />
-            </androidx.cardview.widget.CardView>
-        </RelativeLayout>
-    </ScrollView>
+        android:layout_height="wrap_content"
+        android:divider="@color/grey_400"
+        android:orientation="vertical"
+        android:showDividers="middle"
+        app:dividerThickness="2dp" />
 
     <com.google.android.gms.ads.AdView
         android:id="@+id/search_results_adView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
         app:adSize="BANNER"
-        app:adUnitId="@string/SEARCH_RESULTS_AD_ID"/>
+        app:adUnitId="@string/SEARCH_RESULTS_AD_ID"
+        app:layout_anchor="@id/search_listView"
+        app:layout_anchorGravity="bottom" />
 
-</RelativeLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
