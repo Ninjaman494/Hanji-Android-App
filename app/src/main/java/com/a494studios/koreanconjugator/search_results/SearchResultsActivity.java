@@ -1,4 +1,4 @@
-package com.a494studios.koreanconjugator;
+package com.a494studios.koreanconjugator.search_results;
 
 import android.app.SearchManager;
 import android.content.DialogInterface;
@@ -7,6 +7,9 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import androidx.appcompat.widget.SearchView;
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -18,6 +21,9 @@ import android.view.animation.AnimationUtils;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 
+import com.a494studios.koreanconjugator.R;
+import com.a494studios.koreanconjugator.SearchQuery;
+import com.a494studios.koreanconjugator.Utils;
 import com.a494studios.koreanconjugator.display.DisplayActivity;
 import com.a494studios.koreanconjugator.parsing.Server;
 import com.a494studios.koreanconjugator.settings.SettingsActivity;
@@ -41,8 +47,8 @@ public class SearchResultsActivity extends AppCompatActivity {
 
     public static final String EXTRA_QUERY = "query";
 
-    private SearchAdapter adapter;
-    private LinearListView listView;
+    private SearchResultsAdapter adapter;
+    private RecyclerView listView;
     private boolean snackbarShown;
     private boolean overflowClicked;
     private String query;
@@ -75,9 +81,14 @@ public class SearchResultsActivity extends AppCompatActivity {
             actionBar.setElevation(0);
         }
 
+        // use a linear layout manager
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+        listView.setLayoutManager(layoutManager);
+        listView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
+
         fetchSearchResponse();
 
-        listView.setOnItemClickListener(new LinearListView.OnItemClickListener() {
+        /*listView.setOnItemClickListener(new LinearListView.OnItemClickListener() {
             @Override
             public void onItemClick(LinearListView parent, View view, int i, long itemId) {
                 if(adapter != null) {
@@ -86,7 +97,7 @@ public class SearchResultsActivity extends AppCompatActivity {
                     sendIntent(id, term);
                 }
             }
-        });
+        });*/
     }
 
     @Override
@@ -142,7 +153,7 @@ public class SearchResultsActivity extends AppCompatActivity {
             @Override
             public void onResponse(@NotNull Response<SearchQuery.Data> response) {
                 if(response.data() != null) {
-                    adapter = new SearchAdapter(response.data().search());
+                    adapter = new SearchResultsAdapter(response.data().search(),SearchResultsActivity.this);//new SearchAdapter(response.data().search());
                     SearchResultsActivity.this.runOnUiThread(new Runnable() {
                         @Override
                         public void run() {

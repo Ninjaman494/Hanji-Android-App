@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.a494studios.koreanconjugator.display.DisplayActivity;
 import com.a494studios.koreanconjugator.parsing.Server;
+import com.a494studios.koreanconjugator.search_results.SearchResultsActivity;
 import com.a494studios.koreanconjugator.utils.ErrorDialogFragment;
 import com.apollographql.apollo.ApolloCall;
 import com.apollographql.apollo.api.Response;
