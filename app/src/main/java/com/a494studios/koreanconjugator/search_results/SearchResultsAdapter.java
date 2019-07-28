@@ -2,6 +2,8 @@ package com.a494studios.koreanconjugator.search_results;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
+import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -56,6 +58,18 @@ public class SearchResultsAdapter extends RecyclerView.Adapter<RecyclerView.View
                 context.startActivity(intent);
             }
         });
+
+        Resources resources = context.getResources();
+        if(position == 0) {
+            Drawable drawable = resources.getDrawable(R.drawable.search_results_item_top);
+            viewHolder.itemView.setBackground(drawable);
+        } else if(position == getItemCount() - 1) {
+            Drawable drawable = resources.getDrawable(R.drawable.search_results_item_bottom);
+            viewHolder.itemView.setBackground(drawable);
+        } else {
+            Drawable drawable = resources.getDrawable(R.drawable.search_results_item_middle);
+            viewHolder.itemView.setBackground(drawable);
+        }
     }
 
     @Override

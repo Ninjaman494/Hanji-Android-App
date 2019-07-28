@@ -7,7 +7,6 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import androidx.appcompat.widget.SearchView;
-import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -34,7 +33,6 @@ import com.apollographql.apollo.api.Response;
 import com.apollographql.apollo.exception.ApolloException;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
-import com.linearlistview.LinearListView;
 
 import org.jetbrains.annotations.NotNull;
 import org.rm3l.maoni.Maoni;
@@ -81,10 +79,8 @@ public class SearchResultsActivity extends AppCompatActivity {
             actionBar.setElevation(0);
         }
 
-        // use a linear layout manager
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         listView.setLayoutManager(layoutManager);
-        listView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
 
         fetchSearchResponse();
 
@@ -204,7 +200,7 @@ public class SearchResultsActivity extends AppCompatActivity {
     private void animateListView() {
         Animation topBot = AnimationUtils.loadAnimation(this,R.anim.slide_top_to_bot);
         Animation botTop = AnimationUtils.loadAnimation(this, R.anim.slide_bot_to_top);
-        //findViewById(R.id.search_results_extendedBar).startAnimation(topBot);
+        findViewById(R.id.search_results_extendedBar).startAnimation(topBot);
         listView.startAnimation(botTop);
     }
 

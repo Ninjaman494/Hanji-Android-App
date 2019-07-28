@@ -6,4 +6,5 @@
     <dimen name="material_in_delay_denominator">1dp</dimen>
     <dimen name="chip_padding_horizontal">8dp</dimen>
     <dimen name="chip_padding_vertical">4dp</dimen>
+    <dimen name="cardRadius">10dp</dimen>
 </resources>
