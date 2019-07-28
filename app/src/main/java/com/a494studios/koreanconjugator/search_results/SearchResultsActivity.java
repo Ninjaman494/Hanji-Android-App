@@ -87,10 +87,14 @@ public class SearchResultsActivity extends AppCompatActivity {
             @Override
             public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
+                if(dx == 0 && dy == 0) {
+                    return; // Bad event
+                }
+
                 int pos = layoutManager.findLastVisibleItemPosition();
                 int lastItemIndex = adapter.getItemCount() - 1;
 
-                // Don't make a new request is the previous one is still loading
+                // Don't make a new request if the previous one is still loading
                 if(pos >= lastItemIndex && cursor != null && !loading) {
                     loading = true;
                     adapter.loadMore();
@@ -121,6 +125,10 @@ public class SearchResultsActivity extends AppCompatActivity {
             @Override
             public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
+                if(dx == 0 && dy == 0){
+                    return; // Bad event
+                }
+
 
                 View view = findViewById(R.id.search_results_extendedBar);
                 int pos = layoutManager.findFirstCompletelyVisibleItemPosition();
