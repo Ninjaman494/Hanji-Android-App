@@ -26,12 +26,7 @@ public abstract class SearchResultsAdapter extends RecyclerView.Adapter<Recycler
     private ArrayList<SearchQuery.Result> results;
     private Context context;
 
-    public SearchResultsAdapter(SearchQuery.Search searchResult, Context context) {
-        this.results = new ArrayList<>(searchResult.results());
-        this.context = context;
-    }
-
-    public SearchResultsAdapter(Context context) {
+    SearchResultsAdapter(Context context) {
         this.results = new ArrayList<>();
         this.context = context;
     }
@@ -51,21 +46,21 @@ public abstract class SearchResultsAdapter extends RecyclerView.Adapter<Recycler
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         ViewHolder viewHolder = (ViewHolder) holder;
         final SearchQuery.Result result = results.get(position);
+        View.OnClickListener listener = view -> {
+            Intent intent = new Intent(context, DisplayActivity.class);
+            intent.putExtra(DisplayActivity.EXTRA_ID, result.id());
+            intent.putExtra(DisplayActivity.EXTRA_TERM, result.term());
+            intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+            context.startActivity(intent);
+        };
+
 
         viewHolder.wordInfoView.setTerm(result.term());
         viewHolder.wordInfoView.setPos(result.pos());
         viewHolder.wordInfoView.setDefinitions(result.definitions());
         viewHolder.button.setText(R.string.see_entry);
-        viewHolder.button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(context, DisplayActivity.class);
-                intent.putExtra(DisplayActivity.EXTRA_ID, result.id());
-                intent.putExtra(DisplayActivity.EXTRA_TERM, result.term());
-                intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-                context.startActivity(intent);
-            }
-        });
+        viewHolder.button.setOnClickListener(listener);
+        viewHolder.itemView.setOnClickListener(listener);
 
         Resources resources = context.getResources();
         if(position == 0) {
@@ -85,10 +80,10 @@ public abstract class SearchResultsAdapter extends RecyclerView.Adapter<Recycler
         return results.size();
     }
 
-    public void addAll(List<SearchQuery.Result> results) {
+    void addAll(List<SearchQuery.Result> results) {
         int insertIndex = this.results.size() - 1;
         this.results.addAll(results);
-        notifyItemRangeInserted(insertIndex ,results.size());
+        notifyItemRangeChanged(insertIndex ,results.size());
     }
 
     public abstract void loadMore();
