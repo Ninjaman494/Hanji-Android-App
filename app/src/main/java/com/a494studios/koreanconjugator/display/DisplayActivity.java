@@ -2,7 +2,6 @@ package com.a494studios.koreanconjugator.display;
 
 import android.annotation.SuppressLint;
 import android.app.SearchManager;
-import android.content.DialogInterface;
 import android.content.Intent;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
@@ -37,7 +36,6 @@ import java.util.List;
 
 import io.reactivex.Observable;
 import io.reactivex.ObservableSource;
-import io.reactivex.functions.Function;
 
 import static com.eggheadgames.aboutbox.activity.AboutActivity.*;
 
@@ -111,13 +109,17 @@ public class DisplayActivity extends AppCompatActivity {
 
         // Create Entry and Conjugations Observable
         final ArrayList<Favorite> favorites = Utils.getFavorites(this);
-        ObservableSource<Response<ConjugationQuery.Data>> observable = Server
+        ObservableSource<Object> observable = Server
                 .doEntryQuery(id)
-                .flatMap((Function<Response<EntryQuery.Data>, ObservableSource<Response<ConjugationQuery.Data>>>) dataResponse -> {
+                .flatMap(dataResponse -> {
                     assert dataResponse.data() != null;
                     entry = dataResponse.data().entry();
                     boolean isAdj = entry.pos().equals("Adjective");
                     observer.setEntry(entry);
+
+                    if (!entry.pos().equals("Verb") && !isAdj) {
+                        return Observable.just("");
+                    }
 
                     // Get favorite conjugation names and fetch them
                     List<String> conjugations = Observable.fromIterable(favorites)
@@ -129,7 +131,14 @@ public class DisplayActivity extends AppCompatActivity {
 
         // Combine with Examples Observable and execute
         Server.doExamplesQuery(id)
-                .zipWith(observable, (dataResponse, response) -> new Pair<>(response.data(), dataResponse.data()))
+                .zipWith(observable, (examplesResponse, conjResponse) -> {
+                    ConjugationQuery.Data conjData = null;
+                    if(conjResponse instanceof Response) {
+                        conjData = ((Response<ConjugationQuery.Data>) conjResponse).data();
+                    }
+
+                    return new Pair<>(conjData, examplesResponse.data());
+                })
                 .subscribeWith(observer);
     }
 

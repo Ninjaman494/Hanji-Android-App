@@ -55,30 +55,34 @@ public class DisplayObserver extends DisposableObserver<Pair<ConjugationQuery.Da
         ConjugationQuery.Data conjData = response.first;
         ExamplesQuery.Data examplesData = response.second;
 
-        List<ConjugationQuery.Conjugation> conjugations = conjData.conjugations();
-        boolean isAdj = entry.pos().equals("Adjective");
-        List<Favorite> favorites = Utils.getFavorites(displayCardView.getContext());
+        // Favorites, skip if not a Verb or Adjective
+        if (conjData == null) {
+            conjugations.setVisibility(View.GONE);
+        } else {
+            List<ConjugationQuery.Conjugation> conjugations = conjData.conjugations();
+            boolean isAdj = entry.pos().equals("Adjective");
+            List<Favorite> favorites = Utils.getFavorites(displayCardView.getContext());
 
-        // Favorites
-        FavoritesCard card = new FavoritesCard(new ArrayList<>(), entry.term(),false, isAdj);
-        this.conjugations.setCardBody(card);
-        Observable.fromIterable(favorites)
-                .map(favorite -> {
-                    // Pair up conjugations and favorites
-                    for(ConjugationQuery.Conjugation c : conjugations) {
-                        if(c.name().equals(favorite.getConjugationName())) {
-                            return new Pair<>(favorite,c);
+            FavoritesCard card = new FavoritesCard(new ArrayList<>(), entry.term(), false, isAdj);
+            this.conjugations.setCardBody(card);
+            Observable.fromIterable(favorites)
+                    .map(favorite -> {
+                        // Pair up conjugations and favorites
+                        for (ConjugationQuery.Conjugation c : conjugations) {
+                            if (c.name().equals(favorite.getConjugationName())) {
+                                return new Pair<>(favorite, c);
+                            }
                         }
-                    }
-                    return null;
-                })
-                .subscribe(pair -> {
-                    Favorite f = pair.first;
-                    ConjugationQuery.Conjugation conjugation = pair.second;
-                    Map.Entry<String, ConjugationQuery.Conjugation> entry =
-                            new AbstractMap.SimpleEntry<>(f.getName(), conjugation);
-                    card.addConjugation(entry, favorites.indexOf(f));
-                });
+                        return null;
+                    })
+                    .subscribe(pair -> {
+                        Favorite f = pair.first;
+                        ConjugationQuery.Conjugation conjugation = pair.second;
+                        Map.Entry<String, ConjugationQuery.Conjugation> entry =
+                                new AbstractMap.SimpleEntry<>(f.getName(), conjugation);
+                        card.addConjugation(entry, favorites.indexOf(f));
+                    });
+        }
 
         // Definitions and POS
         displayCardView.setCardBody(new DefPOSCard(entry.term(),entry.pos(),entry.definitions()));
