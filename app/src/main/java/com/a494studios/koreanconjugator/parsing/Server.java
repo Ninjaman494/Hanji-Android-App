@@ -45,10 +45,6 @@ public class Server {
                 .filter((dataResponse) -> dataResponse.data() != null);
     }
 
-    public static void doEntryQuery(final String id, ApolloCall.Callback<EntryQuery.Data> callback){
-        CustomApplication.getApolloClient().query(EntryQuery.builder().id(id).build()).enqueue(callback);
-    }
-
     public static Observable<Response<EntryQuery.Data>> doEntryQuery(final String id) {
         EntryQuery query = EntryQuery.builder().id(id).build();
         ApolloQueryCall<EntryQuery.Data> call = CustomApplication.getApolloClient().query(query);
@@ -100,6 +96,17 @@ public class Server {
                 .query(new ExamplesQuery(id))
                 .httpCachePolicy(HttpCachePolicy.CACHE_FIRST)
                 .enqueue(callback);
+    }
+
+    public static Observable<Response<ExamplesQuery.Data>> doExamplesQuery(final String id) {
+       ApolloQueryCall<ExamplesQuery.Data> call =  CustomApplication.getApolloClient()
+                .query(new ExamplesQuery(id))
+                .httpCachePolicy(HttpCachePolicy.CACHE_FIRST);
+       return Rx2Apollo.from(call)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .filter((dataResponse) -> dataResponse.data() != null);
+
     }
 
     public static void doConjugationNamesQuery(ApolloCall.Callback<ConjugationNamesQuery.Data> callback) {

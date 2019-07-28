@@ -48,6 +48,9 @@ import java.util.Map;
 
 import io.reactivex.Observable;
 import io.reactivex.ObservableSource;
+import io.reactivex.Observer;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.BiFunction;
 import io.reactivex.functions.Function;
 import io.reactivex.observers.DisposableObserver;
 
@@ -123,87 +126,44 @@ public class DisplayActivity extends AppCompatActivity {
         DisplayCardView adCardView = findViewById(R.id.disp_adCard);
         adCardView.setCardBody(new AdCard());
 
+        // Creating DisplayObserver
+        View rootView = findViewById(android.R.id.content);
+        DisplayObserver observer = new DisplayObserver(rootView, new DisplayObserver.DisplayObserverInterface() {
+            @Override
+            public void onError(Throwable t) {
+                t.printStackTrace();
+            }
+
+            @Override
+            public void onComplete() {
+                displayLoading(false);
+            }
+        });
+
         // Get Entry and Conjugations
         final ArrayList<Favorite> favorites = Utils.getFavorites(this);
 
-        Server.doEntryQuery(id)
+        ObservableSource<Response<ConjugationQuery.Data>> observable = Server.doEntryQuery(id)
                 .flatMap((Function<Response<EntryQuery.Data>, ObservableSource<Response<ConjugationQuery.Data>>>) dataResponse -> {
-                    // Fetch data for those conjugations
                     assert dataResponse.data() != null;
                     entry = dataResponse.data().entry();
                     boolean isAdj = entry.pos().equals("Adjective");
+                    observer.setEntry(entry);
+
+                    // Get favorite conjugations and fetch them
                     List<String> conjugations = Observable.fromIterable(favorites)
                             .map(Favorite::getConjugationName)
                             .toList()
                             .blockingGet();
-
                     return Server.doConjugationQuery(entry.term(), false, isAdj, conjugations);
-                })
-                .subscribeWith(new DisposableObserver<Response<ConjugationQuery.Data>>() {
-                    @Override
-                    public void onNext(Response<ConjugationQuery.Data> response) {
-                        List<ConjugationQuery.Conjugation> conjugations = response.data().conjugations();
-                        boolean isAdj = entry.pos().equals("Adjective");
-
-                        // Favorites
-                        FavoritesCard card = new FavoritesCard(new ArrayList<>(), entry.term(),false, isAdj);
-                        conjCardView.setCardBody(card);
-                        Observable.fromIterable(favorites)
-                                .map(favorite -> {
-                                    // Pair up conjugations and favorites
-                                    for(ConjugationQuery.Conjugation c : conjugations) {
-                                        if(c.name().equals(favorite.getConjugationName())) {
-                                            return new Pair<>(favorite,c);
-                                        }
-                                    }
-                                    return null;
-                                })
-                                .subscribe(pair -> {
-                                    Favorite f = pair.first;
-                                    ConjugationQuery.Conjugation conjugation = pair.second;
-                                    Map.Entry<String, ConjugationQuery.Conjugation> entry =
-                                            new AbstractMap.SimpleEntry<>(f.getName(), conjugation);
-                                    card.addConjugation(entry, favorites.indexOf(f));
-                                });
-
-                        // Definitions and POS
-                        displayCardView.setCardBody(new DefPOSCard(entry.term(),entry.pos(),entry.definitions()));
-
-                        // Note
-                        if(entry.note() != null ) {
-                            noteCardView.setCardBody(new NoteCard(entry.note()));
-                        } else {
-                            noteCardView.setVisibility(View.GONE);
-                        }
-
-                        // Synonyms and Antonyms
-                        if(entry.synonyms() != null) {
-                            synCardView.setCardBody(new SynAntCard(entry.synonyms(),true));
-                        } else {
-                            synCardView.setVisibility(View.GONE);
-                        }
-                        if(entry.antonyms() != null ) {
-                            antCardView.setCardBody(new SynAntCard(entry.antonyms(),false));
-                        } else {
-                            antCardView.setVisibility(View.GONE);
-                        }
-
-                        displayLoading(false);
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        e.printStackTrace();
-                    }
-
-                    @Override
-                    public void onComplete() {
-                        this.dispose();
-                    }
                 });
 
         // Get Examples
-        Server.doExamplesQuery(id, new ApolloCall.Callback<ExamplesQuery.Data>() {
+        Server.doExamplesQuery(id)
+                .zipWith(observable, (dataResponse, response) -> new Pair<>(response.data(), dataResponse.data()))
+                .subscribeWith(observer);
+
+        /*Server.doExamplesQuery(id, new ApolloCall.Callback<ExamplesQuery.Data>() {
             @Override
             public void onResponse(@NotNull final Response<ExamplesQuery.Data> response) {
                 runOnUiThread(new Runnable() {
@@ -222,59 +182,8 @@ public class DisplayActivity extends AppCompatActivity {
             public void onFailure(@NotNull ApolloException e) {
                 e.printStackTrace();
             }
-        });
+        });*/
 
-    }
-
-    public void fetchConjugations(final String term, final boolean honorific, final String pos){
-        if(!pos.equals("Adjective") && !pos.equals("Verb")) {
-            runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    // Hide conj card, but show the other cards
-                    displayLoading(false);
-                    conjCardView.setVisibility(View.GONE);
-                }
-            });
-            return;
-        }
-
-        // Set up Favorites card
-        boolean isAdj = pos.equals("Adjective");
-        final FavoritesCard favoritesCard = new FavoritesCard(new ArrayList<Map.Entry<String, ConjugationQuery.Conjugation>>(),term,honorific,isAdj);
-        conjCardView.setCardBody(favoritesCard);
-
-        final ArrayList<Favorite> favorites = Utils.getFavorites(this);
-        for(final Favorite f : favorites) {
-            ArrayList<String> conjugationNames = new ArrayList<>();
-            conjugationNames.add(f.getConjugationName());
-
-            Server.doConjugationQuery(term, f.isHonorific(), isAdj, conjugationNames, new ApolloCall.Callback<ConjugationQuery.Data>() {
-                @Override
-                public void onResponse(@NotNull Response<ConjugationQuery.Data> response) {
-                    if (response.data() == null) {
-                        return;
-                    }
-
-                    final ConjugationQuery.Conjugation conjugation = response.data().conjugations().get(0);
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            favoritesCard.addConjugation(new AbstractMap.SimpleEntry<>(f.getName(), conjugation), favorites.indexOf(f));
-
-                            // Hide progress bar and show cards. Technically should be done after all
-                            // conjugations have been received but it makes no noticeable difference
-                            displayLoading(false);
-                        }
-                    });
-                }
-
-                @Override
-                public void onFailure(@NotNull ApolloException e) {
-                    e.printStackTrace();
-                }
-            });
-        }
     }
 
     @Override
