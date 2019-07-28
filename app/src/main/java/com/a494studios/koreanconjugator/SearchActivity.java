@@ -1,5 +1,6 @@
 package com.a494studios.koreanconjugator;
 
+import android.annotation.SuppressLint;
 import android.app.SearchManager;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -11,22 +12,22 @@ import android.widget.TextView;
 
 import com.a494studios.koreanconjugator.display.DisplayActivity;
 import com.a494studios.koreanconjugator.parsing.Server;
+import com.a494studios.koreanconjugator.search_results.SearchResultsActivity;
 import com.a494studios.koreanconjugator.utils.ErrorDialogFragment;
-import com.apollographql.apollo.ApolloCall;
 import com.apollographql.apollo.api.Response;
-import com.apollographql.apollo.exception.ApolloException;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 
-import org.jetbrains.annotations.NotNull;
-
 import java.util.List;
+
+import io.reactivex.observers.DisposableObserver;
 
 public class SearchActivity extends AppCompatActivity {
 
     ProgressBar progressBar;
     TextView loadingText;
 
+    @SuppressLint("CheckResult")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,31 +59,37 @@ public class SearchActivity extends AppCompatActivity {
         progressBar.getProgressDrawable().setColorFilter(getResources().getColor(R.color.colorAccent), PorterDuff.Mode.SRC_IN);
 
         // Search
-        Server.doSearchQuery(entry, new ApolloCall.Callback<SearchQuery.Data>() {
-            @Override
-            public void onResponse(@NotNull Response<SearchQuery.Data> response) {
-                List<SearchQuery.Result> results = response.data().search().results();
-                if(results.isEmpty()) {
-                    String title = getString(R.string.no_results_title);
-                    String msg = getString(R.string.no_results_msg);
-                    ErrorDialogFragment.newInstance(title, msg).setListener(new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
-                            finish();
+        Server.doSearchQuery(entry)
+                .subscribeWith(new DisposableObserver<Response<SearchQuery.Data>>() {
+                    @Override
+                    public void onNext(Response<SearchQuery.Data> dataResponse) {
+                        List<SearchQuery.Result> results = dataResponse.data().search().results();
+                        if(results.isEmpty()) {
+                            String title = getString(R.string.no_results_title);
+                            String msg = getString(R.string.no_results_msg);
+                            ErrorDialogFragment.newInstance(title, msg).setListener(new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+                                    finish();
+                                }
+                            }).show(getSupportFragmentManager(),"error_dialog");
+                        } else if(results.size() == 1){
+                            goToDisplay(results.get(0).id,results.get(0).term);
+                        } else {
+                            goToSearchResults(entry);
                         }
-                    }).show(getSupportFragmentManager(),"error_dialog");
-                } else if(results.size() == 1){
-                    goToDisplay(results.get(0).id,results.get(0).term);
-                } else {
-                    goToSearchResults(entry);
-                }
-            }
+                    }
 
-            @Override
-            public void onFailure(@NotNull ApolloException e) {
-                e.printStackTrace();
-            }
-        });
+                    @Override
+                    public void onError(Throwable e) {
+                        e.printStackTrace();
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        this.dispose();
+                    }
+                });
     }
 
     private void handleError(Exception error){
