@@ -98,6 +98,46 @@ public class SearchResultsActivity extends AppCompatActivity {
             }
         });
 
+
+        // Extended Bar animations
+        final boolean[] isAnimating = {false};
+        Animation.AnimationListener listener = new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+                isAnimating[0] = true;
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                isAnimating[0] = false;
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+
+            }
+        };
+        listView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+
+                View view = findViewById(R.id.search_results_extendedBar);
+                int pos = layoutManager.findFirstCompletelyVisibleItemPosition();
+                if(pos == 0) {
+                    Animation anim = AnimationUtils.loadAnimation(SearchResultsActivity.this, R.anim.slide_in);
+                    anim.setAnimationListener(listener);
+                    view.startAnimation(anim);
+                    view.setVisibility(View.VISIBLE);
+                } else if(!isAnimating[0] && view.getVisibility() == View.VISIBLE) {
+                    Animation anim = AnimationUtils.loadAnimation(SearchResultsActivity.this, R.anim.slide_out);
+                    anim.setAnimationListener(listener);
+                    view.startAnimation(anim);
+                    view.setVisibility(View.INVISIBLE);
+                }
+            }
+        });
+
         fetchSearchResponse(query, null);
     }
 
@@ -200,14 +240,6 @@ public class SearchResultsActivity extends AppCompatActivity {
             snackbar.show();
             snackbarShown = true;*/
         }
-    }
-
-    private void sendIntent(String id, String term){
-        Intent intent = new Intent(this,DisplayActivity.class);
-        intent.putExtra(DisplayActivity.EXTRA_ID,id);
-        intent.putExtra(DisplayActivity.EXTRA_TERM,term);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-        startActivity(intent);
     }
 
     private void animateListView() {
