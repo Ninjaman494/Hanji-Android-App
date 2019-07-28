@@ -20,52 +20,35 @@ import android.widget.LinearLayout;
 
 import com.a494studios.koreanconjugator.ConjugationQuery;
 import com.a494studios.koreanconjugator.EntryQuery;
-import com.a494studios.koreanconjugator.ExamplesQuery;
 import com.a494studios.koreanconjugator.R;
 import com.a494studios.koreanconjugator.Utils;
 import com.a494studios.koreanconjugator.display.cards.AdCard;
-import com.a494studios.koreanconjugator.display.cards.FavoritesCard;
-import com.a494studios.koreanconjugator.display.cards.ExamplesCard;
-import com.a494studios.koreanconjugator.display.cards.NoteCard;
-import com.a494studios.koreanconjugator.display.cards.SynAntCard;
 import com.a494studios.koreanconjugator.parsing.Favorite;
 import com.a494studios.koreanconjugator.parsing.Server;
 import com.a494studios.koreanconjugator.settings.SettingsActivity;
-import com.a494studios.koreanconjugator.display.cards.DefPOSCard;
 import com.a494studios.koreanconjugator.utils.ErrorDialogFragment;
-import com.apollographql.apollo.ApolloCall;
 import com.apollographql.apollo.api.Response;
-import com.apollographql.apollo.exception.ApolloException;
 import com.crashlytics.android.Crashlytics;
 
-import org.jetbrains.annotations.NotNull;
 import org.rm3l.maoni.Maoni;
 
-import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import io.reactivex.Observable;
 import io.reactivex.ObservableSource;
-import io.reactivex.Observer;
-import io.reactivex.disposables.Disposable;
-import io.reactivex.functions.BiFunction;
 import io.reactivex.functions.Function;
-import io.reactivex.observers.DisposableObserver;
 
 import static com.eggheadgames.aboutbox.activity.AboutActivity.*;
 
 public class DisplayActivity extends AppCompatActivity {
 
-    public static final String EXTRA_CONJ = "conj";
     public static final String EXTRA_DEF = "definition";
     public static final String EXTRA_ID = "id";
     public static final String EXTRA_TERM = "term";
 
     private String definition;
     private boolean overflowClicked;
-    private DisplayCardView conjCardView;
     private boolean isLoading;
     private SearchView searchView;
     private EntryQuery.Entry entry;
@@ -85,22 +68,16 @@ public class DisplayActivity extends AppCompatActivity {
 
         // Make sure extras were passed
         if(term == null){
-            ErrorDialogFragment.newInstance().setListener(new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialogInterface, int i) {
-                    onBackPressed();
-                }
-            }).show(getSupportFragmentManager(),"error_dialog");
+            ErrorDialogFragment.newInstance()
+                    .setListener((dialogInterface, i) -> onBackPressed())
+                    .show(getSupportFragmentManager(),"error_dialog");
             Crashlytics.log("Infinitive was null in DisplayActivity");
             return;
         }
         if(id == null){
-            ErrorDialogFragment.newInstance().setListener(new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialogInterface, int i) {
-                    onBackPressed();
-                }
-            }).show(getSupportFragmentManager(),"error_dialog");
+            ErrorDialogFragment.newInstance()
+                    .setListener((dialogInterface, i) -> onBackPressed())
+                    .show(getSupportFragmentManager(),"error_dialog");
             Crashlytics.log("ID was null in DisplayActivity");
             return;
         }
@@ -113,14 +90,6 @@ public class DisplayActivity extends AppCompatActivity {
 
         // Display progress bar until data is loaded
         displayLoading(true);
-
-        // Setting up display cards
-        final DisplayCardView displayCardView = findViewById(R.id.disp_dcv);
-        final DisplayCardView noteCardView = findViewById(R.id.disp_noteCard);
-        final DisplayCardView examplesCardView = findViewById(R.id.disp_examplesCard);
-        final DisplayCardView synCardView = findViewById(R.id.disp_synCard);
-        final DisplayCardView antCardView = findViewById(R.id.disp_antCard);
-        conjCardView = findViewById(R.id.disp_conjCard);
 
         // Setting up Ad Card
         DisplayCardView adCardView = findViewById(R.id.disp_adCard);
@@ -140,17 +109,17 @@ public class DisplayActivity extends AppCompatActivity {
             }
         });
 
-        // Get Entry and Conjugations
+        // Create Entry and Conjugations Observable
         final ArrayList<Favorite> favorites = Utils.getFavorites(this);
-
-        ObservableSource<Response<ConjugationQuery.Data>> observable = Server.doEntryQuery(id)
+        ObservableSource<Response<ConjugationQuery.Data>> observable = Server
+                .doEntryQuery(id)
                 .flatMap((Function<Response<EntryQuery.Data>, ObservableSource<Response<ConjugationQuery.Data>>>) dataResponse -> {
                     assert dataResponse.data() != null;
                     entry = dataResponse.data().entry();
                     boolean isAdj = entry.pos().equals("Adjective");
                     observer.setEntry(entry);
 
-                    // Get favorite conjugations and fetch them
+                    // Get favorite conjugation names and fetch them
                     List<String> conjugations = Observable.fromIterable(favorites)
                             .map(Favorite::getConjugationName)
                             .toList()
@@ -158,32 +127,10 @@ public class DisplayActivity extends AppCompatActivity {
                     return Server.doConjugationQuery(entry.term(), false, isAdj, conjugations);
                 });
 
-        // Get Examples
+        // Combine with Examples Observable and execute
         Server.doExamplesQuery(id)
                 .zipWith(observable, (dataResponse, response) -> new Pair<>(response.data(), dataResponse.data()))
                 .subscribeWith(observer);
-
-        /*Server.doExamplesQuery(id, new ApolloCall.Callback<ExamplesQuery.Data>() {
-            @Override
-            public void onResponse(@NotNull final Response<ExamplesQuery.Data> response) {
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        if(response.data() != null && !response.data().examples().isEmpty()){
-                            examplesCardView.setCardBody(new ExamplesCard(response.data().examples()));
-                        } else {
-                            examplesCardView.setVisibility(View.GONE);
-                        }
-                    }
-                });
-            }
-
-            @Override
-            public void onFailure(@NotNull ApolloException e) {
-                e.printStackTrace();
-            }
-        });*/
-
     }
 
     @Override
