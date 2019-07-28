@@ -1,5 +1,6 @@
 package com.a494studios.koreanconjugator.display;
 
+import android.annotation.SuppressLint;
 import android.app.SearchManager;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -7,6 +8,8 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import androidx.appcompat.widget.SearchView;
+
+import android.util.Pair;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -40,7 +43,13 @@ import org.rm3l.maoni.Maoni;
 
 import java.util.AbstractMap;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
+
+import io.reactivex.Observable;
+import io.reactivex.ObservableSource;
+import io.reactivex.functions.Function;
+import io.reactivex.observers.DisposableObserver;
 
 import static com.eggheadgames.aboutbox.activity.AboutActivity.*;
 
@@ -56,7 +65,9 @@ public class DisplayActivity extends AppCompatActivity {
     private DisplayCardView conjCardView;
     private boolean isLoading;
     private SearchView searchView;
+    private EntryQuery.Entry entry;
 
+    @SuppressLint("CheckResult")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -113,21 +124,48 @@ public class DisplayActivity extends AppCompatActivity {
         adCardView.setCardBody(new AdCard());
 
         // Get Entry and Conjugations
-        Server.doEntryQuery(id, new ApolloCall.Callback<EntryQuery.Data>() {
-            @Override
-            public void onResponse(@NotNull Response<EntryQuery.Data> response) {
-                if(response.data() == null || response.data().entry() == null){
-                    return;
-                }
+        final ArrayList<Favorite> favorites = Utils.getFavorites(this);
 
-                final EntryQuery.Entry entry = response.data().entry();
-                System.out.println(entry);
-                assert entry != null;
-                fetchConjugations(entry.term(), false, entry.pos());
+        Server.doEntryQuery(id)
+                .flatMap((Function<Response<EntryQuery.Data>, ObservableSource<Response<ConjugationQuery.Data>>>) dataResponse -> {
+                    // Fetch data for those conjugations
+                    assert dataResponse.data() != null;
+                    entry = dataResponse.data().entry();
+                    boolean isAdj = entry.pos().equals("Adjective");
+                    List<String> conjugations = Observable.fromIterable(favorites)
+                            .map(Favorite::getConjugationName)
+                            .toList()
+                            .blockingGet();
 
-                runOnUiThread(new Runnable() {
+                    return Server.doConjugationQuery(entry.term(), false, isAdj, conjugations);
+                })
+                .subscribeWith(new DisposableObserver<Response<ConjugationQuery.Data>>() {
                     @Override
-                    public void run() {
+                    public void onNext(Response<ConjugationQuery.Data> response) {
+                        List<ConjugationQuery.Conjugation> conjugations = response.data().conjugations();
+                        boolean isAdj = entry.pos().equals("Adjective");
+
+                        // Favorites
+                        FavoritesCard card = new FavoritesCard(new ArrayList<>(), entry.term(),false, isAdj);
+                        conjCardView.setCardBody(card);
+                        Observable.fromIterable(favorites)
+                                .map(favorite -> {
+                                    // Pair up conjugations and favorites
+                                    for(ConjugationQuery.Conjugation c : conjugations) {
+                                        if(c.name().equals(favorite.getConjugationName())) {
+                                            return new Pair<>(favorite,c);
+                                        }
+                                    }
+                                    return null;
+                                })
+                                .subscribe(pair -> {
+                                    Favorite f = pair.first;
+                                    ConjugationQuery.Conjugation conjugation = pair.second;
+                                    Map.Entry<String, ConjugationQuery.Conjugation> entry =
+                                            new AbstractMap.SimpleEntry<>(f.getName(), conjugation);
+                                    card.addConjugation(entry, favorites.indexOf(f));
+                                });
+
                         // Definitions and POS
                         displayCardView.setCardBody(new DefPOSCard(entry.term(),entry.pos(),entry.definitions()));
 
@@ -149,21 +187,20 @@ public class DisplayActivity extends AppCompatActivity {
                         } else {
                             antCardView.setVisibility(View.GONE);
                         }
+
+                        displayLoading(false);
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        e.printStackTrace();
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        this.dispose();
                     }
                 });
-            }
-
-            @Override
-            public void onFailure(@NotNull ApolloException e) {
-                e.printStackTrace();
-                /*Utils.handleError(e,DisplayActivity.this,new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        onBackPressed();
-                    }
-                });*/
-            }
-        });
 
         // Get Examples
         Server.doExamplesQuery(id, new ApolloCall.Callback<ExamplesQuery.Data>() {

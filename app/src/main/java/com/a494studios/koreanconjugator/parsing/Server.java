@@ -49,6 +49,15 @@ public class Server {
         CustomApplication.getApolloClient().query(EntryQuery.builder().id(id).build()).enqueue(callback);
     }
 
+    public static Observable<Response<EntryQuery.Data>> doEntryQuery(final String id) {
+        EntryQuery query = EntryQuery.builder().id(id).build();
+        ApolloQueryCall<EntryQuery.Data> call = CustomApplication.getApolloClient().query(query);
+        return Rx2Apollo.from(call)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .filter((dataResponse) -> dataResponse.data() != null);
+    }
+
     public static void doConjugationQuery(String stem, boolean honorific, boolean isAdj, ApolloCall.Callback<ConjugationQuery.Data> callback){
         doConjugationQuery(stem,honorific,isAdj,null,callback);
     }
@@ -66,6 +75,24 @@ public class Server {
                 .query(queryBuilder.build())
                 .httpCachePolicy(HttpCachePolicy.CACHE_FIRST)
                 .enqueue(callback);
+    }
+
+    public static Observable<Response<ConjugationQuery.Data>> doConjugationQuery(String stem, boolean honorific, boolean isAdj, List<String> conjugations){
+        ConjugationQuery.Builder queryBuilder = ConjugationQuery.builder()
+                .stem(stem)
+                .honorific(honorific)
+                .isAdj(isAdj);
+        if(conjugations != null) {
+            queryBuilder.conjugations(conjugations);
+        }
+
+        ApolloQueryCall<ConjugationQuery.Data> call = CustomApplication.getApolloClient()
+                .query(queryBuilder.build())
+                .httpCachePolicy(HttpCachePolicy.CACHE_FIRST);
+        return Rx2Apollo.from(call)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .filter((dataResponse) -> dataResponse.data() != null);
     }
 
     public static void doExamplesQuery(final String id, ApolloCall.Callback<ExamplesQuery.Data> callback) {
