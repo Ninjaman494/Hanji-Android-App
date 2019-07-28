@@ -11,6 +11,7 @@
         android:id="@+id/search_results_extendedBar"
         android:layout_width="match_parent"
         android:layout_height="56dp"
+        android:visibility="invisible"
         android:background="@color/colorPrimary"/>
 
     <androidx.recyclerview.widget.RecyclerView

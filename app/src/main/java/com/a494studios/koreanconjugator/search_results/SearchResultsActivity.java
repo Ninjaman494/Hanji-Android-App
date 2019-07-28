@@ -2,7 +2,6 @@ package com.a494studios.koreanconjugator.search_results;
 
 import android.annotation.SuppressLint;
 import android.app.SearchManager;
-import android.content.DialogInterface;
 import android.content.Intent;
 
 import androidx.annotation.NonNull;
@@ -17,11 +16,8 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.BaseAdapter;
-import android.widget.Button;
 
 import com.a494studios.koreanconjugator.R;
 import com.a494studios.koreanconjugator.SearchQuery;
@@ -30,14 +26,11 @@ import com.a494studios.koreanconjugator.display.DisplayActivity;
 import com.a494studios.koreanconjugator.parsing.Server;
 import com.a494studios.koreanconjugator.settings.SettingsActivity;
 import com.a494studios.koreanconjugator.utils.ErrorDialogFragment;
-import com.a494studios.koreanconjugator.utils.WordInfoView;
 import com.apollographql.apollo.api.Response;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 
 import org.rm3l.maoni.Maoni;
-
-import java.util.List;
 
 import io.reactivex.observers.DisposableObserver;
 
@@ -51,9 +44,10 @@ public class SearchResultsActivity extends AppCompatActivity {
     private RecyclerView listView;
     private boolean snackbarShown;
     private boolean overflowClicked;
-    private String query;
     private SearchView searchView;
     private boolean dataLoaded = false;
+    private String cursor = null;
+    private boolean loading = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,14 +56,11 @@ public class SearchResultsActivity extends AppCompatActivity {
         AdView adView = findViewById(R.id.search_results_adView);
         listView = findViewById(R.id.search_listView);
         snackbarShown = false;
-        query = getIntent().getStringExtra(EXTRA_QUERY);
+        String query = getIntent().getStringExtra(EXTRA_QUERY);
         if(query == null){ // Null check for extra
-            ErrorDialogFragment.newInstance().setListener(new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialogInterface, int i) {
-                    onBackPressed();
-                }
-            }).show(getSupportFragmentManager(),"error_dialog");
+            ErrorDialogFragment.newInstance()
+                    .setListener((dialogInterface, i) -> onBackPressed())
+                    .show(getSupportFragmentManager(),"error_dialog");
             //Crashlytics.log("Query was null in SearchResultsActivity");
             return;
         }
@@ -87,36 +78,27 @@ public class SearchResultsActivity extends AppCompatActivity {
         adapter = new SearchResultsAdapter(this) {
             @Override
             public void loadMore() {
-                //fetchSearchResponse(cursor);
+                fetchSearchResponse(query, cursor);
             }
         };
         listView.setAdapter(adapter);
-
-        fetchSearchResponse(null);
 
         listView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
+                int pos = layoutManager.findLastVisibleItemPosition();
+                int lastItemIndex = adapter.getItemCount() - 1;
 
-                int pos = layoutManager.findLastCompletelyVisibleItemPosition();
-                int numItems = listView.getAdapter().getItemCount();
-                if(pos >= numItems) {
+                // Don't make a new request is the previous one is still loading
+                if(pos >= lastItemIndex && cursor != null && !loading) {
+                    loading = true;
                     adapter.loadMore();
                 }
             }
         });
 
-        /*listView.setOnItemClickListener(new LinearListView.OnItemClickListener() {
-            @Override
-            public void onItemClick(LinearListView parent, View view, int i, long itemId) {
-                if(adapter != null) {
-                    String id = adapter.getItem(i).id();
-                    String term = adapter.getItem(i).term();
-                    sendIntent(id, term);
-                }
-            }
-        });*/
+        fetchSearchResponse(query, null);
     }
 
     @Override
@@ -166,20 +148,23 @@ public class SearchResultsActivity extends AppCompatActivity {
         }
 
         if(dataLoaded) {
-            animateListView();
+            animateListView(); // Called when returning to this activity from another one
         }
     }
 
     @SuppressLint("CheckResult")
-    private void fetchSearchResponse(String cursor){
-        Server.doSearchQuery(query, cursor)
+    private void fetchSearchResponse(String query,String cur){
+        Server.doSearchQuery(query, cur)
                 .subscribeWith(new DisposableObserver<Response<SearchQuery.Data>>() {
                     @Override
                     public void onNext(Response<SearchQuery.Data> dataResponse) {
                         assert dataResponse.data() != null; // Check should be done in Server
                         adapter.addAll(dataResponse.data().search().results());
-                        dataLoaded = true;
-                        animateListView();
+                        cursor = dataResponse.data().search().cursor();
+                        if(!dataLoaded) {
+                            animateListView();
+                            dataLoaded = true;
+                        }
                     }
 
                     @Override
@@ -190,6 +175,7 @@ public class SearchResultsActivity extends AppCompatActivity {
 
                     @Override
                     public void onComplete() {
+                        loading = false; // Finished loading data for this request
                         this.dispose();
                     }
                 });
@@ -227,58 +213,10 @@ public class SearchResultsActivity extends AppCompatActivity {
     private void animateListView() {
         Animation topBot = AnimationUtils.loadAnimation(this,R.anim.slide_top_to_bot);
         Animation botTop = AnimationUtils.loadAnimation(this, R.anim.slide_bot_to_top);
-        findViewById(R.id.search_results_extendedBar).startAnimation(topBot);
+        View extendedBar = findViewById(R.id.search_results_extendedBar);
+
+        extendedBar.setVisibility(View.VISIBLE); // Prevents stuttering
+        extendedBar.startAnimation(topBot);
         listView.startAnimation(botTop);
-    }
-
-    private class SearchAdapter extends BaseAdapter {
-
-        private List<SearchQuery.Result> results;
-
-        SearchAdapter(SearchQuery.Search search) {
-            this.results = search.results();
-        }
-
-        @Override
-        public View getView(int i, View view, ViewGroup viewGroup) {
-            final SearchQuery.Result result = results.get(i);
-            if (view == null) {
-                view = getLayoutInflater().inflate(R.layout.item_search_result, viewGroup, false);
-            }
-            WordInfoView infoView = view.findViewById(R.id.item_search_result_word_info);
-            infoView.setTerm(result.term());
-            infoView.setPos(result.pos());
-            infoView.setDefinitions(result.definitions());
-
-            Button btn = view.findViewById(R.id.item_search_result_button);
-            btn.setText(getString(R.string.see_entry));
-            btn.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    sendIntent(result.id(),result.term());
-                }
-            });
-            return view;
-        }
-
-        @Override
-        public int getCount() {
-            return results.size();
-        }
-
-        @Override
-        public SearchQuery.Result getItem(int i) {
-            return results.get(i);
-        }
-
-        @Override
-        public long getItemId(int position) {
-            return position;
-        }
-
-        @Override
-        public boolean hasStableIds() {
-            return true;
-        }
     }
 }
