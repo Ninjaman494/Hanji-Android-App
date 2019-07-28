@@ -7,9 +7,16 @@ import com.a494studios.koreanconjugator.EntryQuery;
 import com.a494studios.koreanconjugator.ExamplesQuery;
 import com.a494studios.koreanconjugator.SearchQuery;
 import com.apollographql.apollo.ApolloCall;
+import com.apollographql.apollo.ApolloQueryCall;
+import com.apollographql.apollo.api.Response;
 import com.apollographql.apollo.api.cache.http.HttpCachePolicy;
+import com.apollographql.apollo.rx2.Rx2Apollo;
 
 import java.util.List;
+
+import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 
 /**
  * Created by akash on 12/31/2017.
@@ -17,21 +24,25 @@ import java.util.List;
 
 public class Server {
 
-    public static void doSearchQuery(final String query, ApolloCall.Callback<SearchQuery.Data> callback){
-        doSearchQuery(query, null, callback);
+    public static Observable<Response<SearchQuery.Data>> doSearchQuery(final String query){
+        return doSearchQuery(query, null);
     }
 
-    public static void doSearchQuery(String query, String cursor, ApolloCall.Callback<SearchQuery.Data> callback) {
+    public static Observable<Response<SearchQuery.Data>> doSearchQuery(String query, String cursor) {
         SearchQuery.Builder queryBuilder = SearchQuery.builder()
                 .query(query);
         if(cursor != null) {
             queryBuilder.cursor(cursor);
         }
 
-        CustomApplication.getApolloClient()
+        ApolloQueryCall<SearchQuery.Data> call = CustomApplication.getApolloClient()
                 .query(queryBuilder.build())
-                .httpCachePolicy(HttpCachePolicy.CACHE_FIRST)
-                .enqueue(callback);
+                .httpCachePolicy(HttpCachePolicy.CACHE_FIRST);
+
+        return Rx2Apollo.from(call)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .filter((dataResponse) -> dataResponse.data() != null);
     }
 
     public static void doEntryQuery(final String id, ApolloCall.Callback<EntryQuery.Data> callback){

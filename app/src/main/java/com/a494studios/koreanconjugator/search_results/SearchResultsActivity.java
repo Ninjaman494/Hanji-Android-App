@@ -1,8 +1,11 @@
 package com.a494studios.koreanconjugator.search_results;
 
+import android.annotation.SuppressLint;
 import android.app.SearchManager;
 import android.content.DialogInterface;
 import android.content.Intent;
+
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
@@ -28,16 +31,15 @@ import com.a494studios.koreanconjugator.parsing.Server;
 import com.a494studios.koreanconjugator.settings.SettingsActivity;
 import com.a494studios.koreanconjugator.utils.ErrorDialogFragment;
 import com.a494studios.koreanconjugator.utils.WordInfoView;
-import com.apollographql.apollo.ApolloCall;
 import com.apollographql.apollo.api.Response;
-import com.apollographql.apollo.exception.ApolloException;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 
-import org.jetbrains.annotations.NotNull;
 import org.rm3l.maoni.Maoni;
 
 import java.util.List;
+
+import io.reactivex.observers.DisposableObserver;
 
 import static com.eggheadgames.aboutbox.activity.AboutActivity.*;
 
@@ -51,6 +53,7 @@ public class SearchResultsActivity extends AppCompatActivity {
     private boolean overflowClicked;
     private String query;
     private SearchView searchView;
+    private boolean dataLoaded = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,10 +82,30 @@ public class SearchResultsActivity extends AppCompatActivity {
             actionBar.setElevation(0);
         }
 
-        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+        final LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         listView.setLayoutManager(layoutManager);
+        adapter = new SearchResultsAdapter(this) {
+            @Override
+            public void loadMore() {
+                //fetchSearchResponse(cursor);
+            }
+        };
+        listView.setAdapter(adapter);
 
-        fetchSearchResponse();
+        fetchSearchResponse(null);
+
+        listView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+
+                int pos = layoutManager.findLastCompletelyVisibleItemPosition();
+                int numItems = listView.getAdapter().getItemCount();
+                if(pos >= numItems) {
+                    adapter.loadMore();
+                }
+            }
+        });
 
         /*listView.setOnItemClickListener(new LinearListView.OnItemClickListener() {
             @Override
@@ -141,34 +164,38 @@ public class SearchResultsActivity extends AppCompatActivity {
             searchView.setIconified(true);
             searchView.clearFocus();
         }
-        animateListView();
+
+        if(dataLoaded) {
+            animateListView();
+        }
     }
 
-    private void fetchSearchResponse(){
-        Server.doSearchQuery(query, new ApolloCall.Callback<SearchQuery.Data>() {
-            @Override
-            public void onResponse(@NotNull Response<SearchQuery.Data> response) {
-                if(response.data() != null) {
-                    adapter = new SearchResultsAdapter(response.data().search(),SearchResultsActivity.this);//new SearchAdapter(response.data().search());
-                    SearchResultsActivity.this.runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            listView.setAdapter(adapter);
-                            animateListView();
-                        }
-                    });
-                }
-            }
+    @SuppressLint("CheckResult")
+    private void fetchSearchResponse(String cursor){
+        Server.doSearchQuery(query, cursor)
+                .subscribeWith(new DisposableObserver<Response<SearchQuery.Data>>() {
+                    @Override
+                    public void onNext(Response<SearchQuery.Data> dataResponse) {
+                        assert dataResponse.data() != null; // Check should be done in Server
+                        adapter.addAll(dataResponse.data().search().results());
+                        dataLoaded = true;
+                        animateListView();
+                    }
 
-            @Override
-            public void onFailure(@NotNull ApolloException e) {
-                e.printStackTrace();
-                handleError(e);
-            }
-        });
+                    @Override
+                    public void onError(Throwable e) {
+                        e.printStackTrace();
+                        handleError(e);
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        this.dispose();
+                    }
+                });
     }
 
-    private void handleError(Exception error){
+    private void handleError(Throwable t){
         if (!snackbarShown) {
            /* Snackbar snackbar;
             if (error instanceof NoConnectionError) {

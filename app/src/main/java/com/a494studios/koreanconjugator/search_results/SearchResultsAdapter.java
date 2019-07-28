@@ -19,16 +19,20 @@ import com.a494studios.koreanconjugator.display.DisplayActivity;
 import com.a494studios.koreanconjugator.utils.WordInfoView;
 
 import java.util.ArrayList;
+import java.util.List;
 
-public class SearchResultsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public abstract class SearchResultsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private ArrayList<SearchQuery.Result> results;
-    private String cursor;
     private Context context;
 
     public SearchResultsAdapter(SearchQuery.Search searchResult, Context context) {
         this.results = new ArrayList<>(searchResult.results());
-        this.cursor = searchResult.cursor();
+        this.context = context;
+    }
+
+    public SearchResultsAdapter(Context context) {
+        this.results = new ArrayList<>();
         this.context = context;
     }
 
@@ -80,6 +84,14 @@ public class SearchResultsAdapter extends RecyclerView.Adapter<RecyclerView.View
     public int getItemCount() {
         return results.size();
     }
+
+    public void addAll(List<SearchQuery.Result> results) {
+        int insertIndex = this.results.size() - 1;
+        this.results.addAll(results);
+        notifyItemRangeInserted(insertIndex ,results.size());
+    }
+
+    public abstract void loadMore();
 
     private class ViewHolder extends RecyclerView.ViewHolder {
         WordInfoView wordInfoView;
