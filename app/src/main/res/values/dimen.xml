@@ -7,4 +7,5 @@
     <dimen name="chip_padding_horizontal">8dp</dimen>
     <dimen name="chip_padding_vertical">4dp</dimen>
     <dimen name="cardRadius">10dp</dimen>
+    <dimen name="cardElevation">10dp</dimen>
 </resources>

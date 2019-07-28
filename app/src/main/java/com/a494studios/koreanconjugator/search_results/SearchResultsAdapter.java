@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import androidx.annotation.NonNull;
+import androidx.core.view.ViewCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.a494studios.koreanconjugator.R;
@@ -36,6 +37,9 @@ public class SearchResultsAdapter extends RecyclerView.Adapter<RecyclerView.View
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.item_search_result, parent, false);
+
+        float elevation = view.getResources().getDimension(R.dimen.cardElevation);
+        ViewCompat.setElevation(view, elevation);
         return new ViewHolder(view);
     }
 
