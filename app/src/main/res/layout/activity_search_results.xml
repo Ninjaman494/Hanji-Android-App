@@ -20,7 +20,7 @@
         android:layout_height="match_parent"
         android:paddingLeft="16dp"
         android:paddingRight="16dp"
-        android:paddingBottom="16dp"
+        android:paddingBottom="70dp"
         android:clipToPadding="false"
         app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
