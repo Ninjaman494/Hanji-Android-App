@@ -2,12 +2,14 @@ package com.a494studios.koreanconjugator;
 
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
+
+import androidx.recyclerview.widget.RecyclerView;
 import androidx.test.filters.LargeTest;
 import androidx.test.rule.ActivityTestRule;
 import androidx.test.runner.AndroidJUnit4;
 
 import com.a494studios.koreanconjugator.conjugations.ConjugationActivity;
-import com.linearlistview.LinearListView;
+import com.a494studios.koreanconjugator.conjugations.ConjugationCardsAdapter;
 
 import org.junit.Rule;
 import org.junit.Test;
@@ -49,8 +51,8 @@ public class ConjugationActivityTest {
             e.printStackTrace();
         }
 
-        LinearListView listView = activityRule.getActivity().findViewById(R.id.conj_list);
-        int numItem = listView.getAdapter().getCount();
+        RecyclerView recyclerView = activityRule.getActivity().findViewById(R.id.conj_list);
+        int numItem = recyclerView.getAdapter().getItemCount();
         assertTrue(numItem > 0);
     }
 
@@ -58,17 +60,17 @@ public class ConjugationActivityTest {
     public void test_displayAfterRotation() {
         try {
             Thread.sleep(100);
-            LinearListView listView = activityRule.getActivity().findViewById(R.id.conj_list);
-            int numItem = listView.getAdapter().getCount();
+            RecyclerView recyclerView = activityRule.getActivity().findViewById(R.id.conj_list);
+            int numItem = recyclerView.getAdapter().getItemCount();
             assertTrue(numItem > 0);
 
             activityRule.getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
             Thread.sleep(100);
-            assertEquals(numItem,listView.getAdapter().getCount());
+            assertEquals(numItem,recyclerView.getAdapter().getItemCount());
 
             activityRule.getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
             Thread.sleep(100);
-            assertEquals(numItem,listView.getAdapter().getCount());
+            assertEquals(numItem,recyclerView.getAdapter().getItemCount());
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -76,8 +78,8 @@ public class ConjugationActivityTest {
 
     @Test
     public void test_honorificSwitch() {
-        LinearListView listView = activityRule.getActivity().findViewById(R.id.conj_list);
-        int numItems = listView.getAdapter().getCount();
+        RecyclerView recyclerView = activityRule.getActivity().findViewById(R.id.conj_list);
+        int numItems = recyclerView.getAdapter().getItemCount();
 
         // Honorific
         onView(withId(R.id.conj_switch)).perform(click());
@@ -87,8 +89,9 @@ public class ConjugationActivityTest {
             e.printStackTrace();
         }
 
-        assertEquals(numItems,listView.getAdapter().getCount());
-        List<ConjugationQuery.Conjugation> conjugations = (List<ConjugationQuery.Conjugation>)listView.getAdapter().getItem(0);
+        ConjugationCardsAdapter adapter = (ConjugationCardsAdapter)recyclerView.getAdapter();
+        assertEquals(numItems,adapter.getItemCount());
+        List<ConjugationQuery.Conjugation> conjugations = adapter.getItem(0);
         assertTrue(conjugations.get(0).honorific);
 
         // Back to regular
@@ -99,8 +102,9 @@ public class ConjugationActivityTest {
             e.printStackTrace();
         }
 
-        assertEquals(numItems,listView.getAdapter().getCount());
-        conjugations = (List<ConjugationQuery.Conjugation>)listView.getAdapter().getItem(0);
+        adapter = (ConjugationCardsAdapter) recyclerView.getAdapter();
+        assertEquals(numItems, adapter.getItemCount());
+        conjugations = adapter.getItem(0);
         assertFalse(conjugations.get(0).honorific);
     }
 }

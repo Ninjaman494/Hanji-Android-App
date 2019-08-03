@@ -39,6 +39,10 @@ public class ConjugationCardsAdapter extends RecyclerView.Adapter<ConjugationCar
         return conjugations.size();
     }
 
+    public List<ConjugationQuery.Conjugation> getItem(int i) {
+        return conjugations.get(i);
+    }
+
     class ViewHolder extends RecyclerView.ViewHolder {
         DisplayCardView displayCardView;
 
