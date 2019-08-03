@@ -91,13 +91,6 @@ public class Server {
                 .filter((dataResponse) -> dataResponse.data() != null);
     }
 
-    public static void doExamplesQuery(final String id, ApolloCall.Callback<ExamplesQuery.Data> callback) {
-        CustomApplication.getApolloClient()
-                .query(new ExamplesQuery(id))
-                .httpCachePolicy(HttpCachePolicy.CACHE_FIRST)
-                .enqueue(callback);
-    }
-
     public static Observable<Response<ExamplesQuery.Data>> doExamplesQuery(final String id) {
        ApolloQueryCall<ExamplesQuery.Data> call =  CustomApplication.getApolloClient()
                 .query(new ExamplesQuery(id))
