@@ -8,13 +8,12 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
 import android.view.View;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.TextView;
 
 import com.a494studios.koreanconjugator.ConjugationQuery;
 import com.a494studios.koreanconjugator.R;
 import com.a494studios.koreanconjugator.parsing.Server;
+import com.a494studios.koreanconjugator.search_results.SearchResultsAnimationHandler;
 import com.apollographql.apollo.ApolloCall;
 import com.apollographql.apollo.api.Response;
 import com.apollographql.apollo.exception.ApolloException;
@@ -30,6 +29,9 @@ public class ConjugationActivity extends AppCompatActivity {
     public static final String EXTRA_STEM = "stem";
     public static final String EXTRA_HONORIFIC = "honorific";
     public static final String EXTRA_ISADJ = "isAdj";
+
+    private SearchResultsAnimationHandler animationHandler;
+    private RecyclerView recyclerView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,6 +61,14 @@ public class ConjugationActivity extends AppCompatActivity {
                 getConjugations(stem,false,isAdj);
             }
         });
+
+        View extendedBar = findViewById(R.id.conj_switchBar);
+        recyclerView = findViewById(R.id.conj_list);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+        recyclerView.setLayoutManager(layoutManager);
+
+        animationHandler = new SearchResultsAnimationHandler(extendedBar,recyclerView,this);
+        animationHandler.setupScrollAnimations(layoutManager);
     }
 
     private void getConjugations(String stem, boolean honorific, boolean isAdj) {
@@ -84,8 +94,6 @@ public class ConjugationActivity extends AppCompatActivity {
 
                         runOnUiThread(() -> {
                             List<List<ConjugationQuery.Conjugation>> conjugations1 = new ArrayList<>(conjMap.values());
-                            RecyclerView recyclerView = findViewById(R.id.conj_list);
-                            recyclerView.setLayoutManager(new LinearLayoutManager(ConjugationActivity.this));
                             recyclerView.setAdapter(new ConjugationCardsAdapter(conjugations1));
                             setLoading(false);
                         });
@@ -101,7 +109,7 @@ public class ConjugationActivity extends AppCompatActivity {
     @Override
     public void onResume() {
         super.onResume();
-        animateList();
+        animationHandler.animateListView();
     }
 
     private void setLoading(boolean loading){
@@ -111,12 +119,7 @@ public class ConjugationActivity extends AppCompatActivity {
         } else {
             findViewById(R.id.conj_progress).setVisibility(View.GONE);
             findViewById(R.id.conj_list).setVisibility(View.VISIBLE);
-            animateList();
+            animationHandler.animateListView();
         }
-    }
-
-    private void animateList(){
-        Animation botTop = AnimationUtils.loadAnimation(this, R.anim.slide_bot_to_top);
-        findViewById(R.id.conj_list).startAnimation(botTop);
     }
 }

@@ -12,18 +12,18 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.a494studios.koreanconjugator.R;
 import com.a494studios.koreanconjugator.utils.BaseAnimationHandler;
 
-class SearchResultsAnimationHandler extends BaseAnimationHandler {
+public class SearchResultsAnimationHandler extends BaseAnimationHandler {
 
     private View extendedBar;
     private RecyclerView recyclerView;
 
-    SearchResultsAnimationHandler(View extendedBar, RecyclerView recyclerView, Context context) {
+    public SearchResultsAnimationHandler(View extendedBar, RecyclerView recyclerView, Context context) {
         super(context);
         this.extendedBar = extendedBar;
         this.recyclerView = recyclerView;
     }
 
-    void setupScrollAnimations(LinearLayoutManager layoutManager) {
+    public void setupScrollAnimations(LinearLayoutManager layoutManager) {
         final boolean[] isAnimating = {false};
         Animation.AnimationListener listener = new Animation.AnimationListener() {
             @Override
@@ -66,7 +66,7 @@ class SearchResultsAnimationHandler extends BaseAnimationHandler {
         });
     }
 
-    void animateListView() {
+    public void animateListView() {
         this.slideInViews(extendedBar,recyclerView);
     }
 }
