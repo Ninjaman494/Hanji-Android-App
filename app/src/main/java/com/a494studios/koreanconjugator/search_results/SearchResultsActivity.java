@@ -16,13 +16,10 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 
 import com.a494studios.koreanconjugator.R;
 import com.a494studios.koreanconjugator.SearchQuery;
 import com.a494studios.koreanconjugator.Utils;
-import com.a494studios.koreanconjugator.display.DisplayActivity;
 import com.a494studios.koreanconjugator.parsing.Server;
 import com.a494studios.koreanconjugator.settings.SettingsActivity;
 import com.a494studios.koreanconjugator.utils.ErrorDialogFragment;
@@ -41,20 +38,20 @@ public class SearchResultsActivity extends AppCompatActivity {
     public static final String EXTRA_QUERY = "query";
 
     private SearchResultsAdapter adapter;
-    private RecyclerView listView;
     private boolean snackbarShown;
     private boolean overflowClicked;
     private SearchView searchView;
     private boolean dataLoaded = false;
     private String cursor = null;
     private boolean loading = false;
+    private AnimationHandler animationHandler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search_results);
         AdView adView = findViewById(R.id.search_results_adView);
-        listView = findViewById(R.id.search_listView);
+        RecyclerView recyclerView = findViewById(R.id.search_listView);
         snackbarShown = false;
         String query = getIntent().getStringExtra(EXTRA_QUERY);
         if(query == null){ // Null check for extra
@@ -74,16 +71,17 @@ public class SearchResultsActivity extends AppCompatActivity {
         }
 
         final LinearLayoutManager layoutManager = new LinearLayoutManager(this);
-        listView.setLayoutManager(layoutManager);
+        recyclerView.setLayoutManager(layoutManager);
         adapter = new SearchResultsAdapter(this) {
             @Override
             public void loadMore() {
                 fetchSearchResponse(query, cursor);
             }
         };
-        listView.setAdapter(adapter);
+        recyclerView.setAdapter(adapter);
 
-        listView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+        // Pagination
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
@@ -102,49 +100,9 @@ public class SearchResultsActivity extends AppCompatActivity {
             }
         });
 
-
-        // Extended Bar animations
-        final boolean[] isAnimating = {false};
-        Animation.AnimationListener listener = new Animation.AnimationListener() {
-            @Override
-            public void onAnimationStart(Animation animation) {
-                isAnimating[0] = true;
-            }
-
-            @Override
-            public void onAnimationEnd(Animation animation) {
-                isAnimating[0] = false;
-            }
-
-            @Override
-            public void onAnimationRepeat(Animation animation) {
-
-            }
-        };
-        listView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
-                super.onScrolled(recyclerView, dx, dy);
-                if(dx == 0 && dy == 0){
-                    return; // Bad event
-                }
-
-
-                View view = findViewById(R.id.search_results_extendedBar);
-                int pos = layoutManager.findFirstCompletelyVisibleItemPosition();
-                if(pos == 0) {
-                    Animation anim = AnimationUtils.loadAnimation(SearchResultsActivity.this, R.anim.slide_in);
-                    anim.setAnimationListener(listener);
-                    view.startAnimation(anim);
-                    view.setVisibility(View.VISIBLE);
-                } else if(!isAnimating[0] && view.getVisibility() == View.VISIBLE) {
-                    Animation anim = AnimationUtils.loadAnimation(SearchResultsActivity.this, R.anim.slide_out);
-                    anim.setAnimationListener(listener);
-                    view.startAnimation(anim);
-                    view.setVisibility(View.INVISIBLE);
-                }
-            }
-        });
+        View extendedBar = findViewById(R.id.search_results_extendedBar);
+        animationHandler = new AnimationHandler(extendedBar, recyclerView, this);
+        animationHandler.setupScrollAnimations(layoutManager);
 
         fetchSearchResponse(query, null);
     }
@@ -196,7 +154,7 @@ public class SearchResultsActivity extends AppCompatActivity {
         }
 
         if(dataLoaded) {
-            animateListView(); // Called when returning to this activity from another one
+            animationHandler.animateListView(); // Called when returning to this activity from another one
         }
     }
 
@@ -210,7 +168,7 @@ public class SearchResultsActivity extends AppCompatActivity {
                         adapter.addAll(dataResponse.data().search().results());
                         cursor = dataResponse.data().search().cursor();
                         if(!dataLoaded) {
-                            animateListView();
+                            animationHandler.animateListView();
                             dataLoaded = true;
                         }
                     }
@@ -248,15 +206,5 @@ public class SearchResultsActivity extends AppCompatActivity {
             snackbar.show();
             snackbarShown = true;*/
         }
-    }
-
-    private void animateListView() {
-        Animation topBot = AnimationUtils.loadAnimation(this,R.anim.slide_top_to_bot);
-        Animation botTop = AnimationUtils.loadAnimation(this, R.anim.slide_bot_to_top);
-        View extendedBar = findViewById(R.id.search_results_extendedBar);
-
-        extendedBar.setVisibility(View.VISIBLE); // Prevents stuttering
-        extendedBar.startAnimation(topBot);
-        listView.startAnimation(botTop);
     }
 }
