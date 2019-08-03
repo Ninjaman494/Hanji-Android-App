@@ -13,9 +13,8 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
 
 import com.a494studios.koreanconjugator.ConjugationQuery;
 import com.a494studios.koreanconjugator.EntryQuery;
@@ -50,6 +49,7 @@ public class DisplayActivity extends AppCompatActivity {
     private boolean isLoading;
     private SearchView searchView;
     private EntryQuery.Entry entry;
+    private AnimationHandler handler;
 
     @SuppressLint("CheckResult")
     @Override
@@ -140,6 +140,12 @@ public class DisplayActivity extends AppCompatActivity {
                     return new Pair<>(conjData, examplesResponse.data());
                 })
                 .subscribeWith(observer);
+
+        LinearLayout linearLayout = findViewById(R.id.disp_root);
+        View extendedBar = findViewById(R.id.disp_extendedBar);
+        ScrollView scrollView = findViewById(R.id.disp_scroll);
+        handler = new AnimationHandler(this, extendedBar, scrollView);
+        handler.setupScrollAnimation(linearLayout);
     }
 
     @Override
@@ -213,12 +219,7 @@ public class DisplayActivity extends AppCompatActivity {
             extendedBar.setVisibility(View.VISIBLE);
             rootLinearLayout.setVisibility(View.VISIBLE);
 
-            // Animations
-            LinearLayout layout = (LinearLayout) rootLinearLayout;
-            Animation topBot = AnimationUtils.loadAnimation(DisplayActivity.this,R.anim.slide_top_to_bot);
-            Animation botTop = AnimationUtils.loadAnimation(DisplayActivity.this, R.anim.slide_bot_to_top);
-            extendedBar.startAnimation(topBot);
-            layout.startAnimation(botTop);
+            handler.slideInViews(extendedBar,rootLinearLayout);
         }
     }
 
@@ -237,21 +238,5 @@ public class DisplayActivity extends AppCompatActivity {
             }
         });
         snackbar.show();*/
-    }
-
-    //TODO Implement
-    private void requestDefinition(){
-       /* Server.requestKorDefinition(term, this, new Server.DefinitionListener() {
-            @Override
-            public void onDefinitionReceived(String result) {
-                definition = result;
-                //defView.setText(definition);
-            }
-
-            @Override
-            public void onErrorOccurred(Exception error) {
-                handleError(error);
-            }
-        });*/
     }
 }
