@@ -2,13 +2,15 @@ package com.a494studios.koreanconjugator.display;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SwitchCompat;
+
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.BaseAdapter;
-import android.widget.Switch;
+import android.widget.TextView;
 
 import com.a494studios.koreanconjugator.ConjugationQuery;
 import com.a494studios.koreanconjugator.R;
@@ -43,15 +45,19 @@ public class ConjugationActivity extends AppCompatActivity {
         ActionBar actionBar = getSupportActionBar();
         if(actionBar != null) {
             actionBar.setTitle("Conjugations");
+            actionBar.setElevation(0);
         }
 
         setLoading(true);
         getConjugations(stem, honorific, isAdj);
-        ((Switch)findViewById(R.id.conj_switch)).setOnCheckedChangeListener((compoundButon, checked) -> {
+        TextView switchText = findViewById(R.id.conj_switchText);
+        ((SwitchCompat)findViewById(R.id.conj_switch)).setOnCheckedChangeListener((compoundButon, checked) -> {
             setLoading(true);
             if(checked) {
+                switchText.setText(getString(R.string.honorific_forms));
                 getConjugations(stem,true,isAdj);
             } else {
+                switchText.setText(getString(R.string.regular_forms));
                 getConjugations(stem,false,isAdj);
             }
         });

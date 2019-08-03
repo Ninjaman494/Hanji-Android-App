@@ -28,4 +28,11 @@
         <item name="android:textSize">20sp</item>
     </style>
 
+    <style name="HonorificSwitchStyle" parent="ThemeOverlay.AppCompat.Light">
+        <!-- Active thumb color & Active track color(30% transparency) -->
+        <item name="colorControlActivated">@color/white</item>
+        <!-- Inactive thumb color -->
+        <item name="colorSwitchThumbNormal">@color/grey_200</item>
+    </style>
+
 </resources>

@@ -10,44 +10,45 @@
         android:layout_centerInParent="true"
         android:indeterminate="true" />
 
-    <ScrollView
-        android:id="@+id/conj_root"
+    <RelativeLayout
+        android:id="@+id/conj_switchBar"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-            <RelativeLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingTop="16dp">
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimary"
+        android:paddingBottom="16dp"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_toStartOf="@id/conj_switch"
-                    android:layout_alignBottom="@id/conj_switch"
-                    android:layout_alignTop="@id/conj_switch"
-                    android:paddingEnd="8dp"
-                    android:text="Honorifics"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                    android:textSize="20sp"
-                    android:textColor="@color/colorAccent"
-                    android:gravity="center"/>
-                <Switch
-                    android:id="@+id/conj_switch"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:paddingEnd="8dp"/>
+        <TextView
+            android:id="@+id/conj_switchText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_toStartOf="@id/conj_switch"
+            android:text="@string/regular_forms"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            android:textColor="@color/white"
+            android:textSize="18sp"
+            android:fontFamily="sans-serif-medium"/>
 
-                <com.linearlistview.LinearListView
-                    android:id="@+id/conj_list"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/conj_switch"
-                    android:orientation="vertical"
-                    android:paddingTop="16dp"
-                    android:paddingBottom="16dp"
-                    android:clipToPadding="false"
-                    android:clipChildren="false"/>
-            </RelativeLayout>
-    </ScrollView>
+        <androidx.appcompat.widget.SwitchCompat
+            android:id="@+id/conj_switch"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:checked="false"
+            android:theme="@style/HonorificSwitchStyle"/>
+    </RelativeLayout>
+
+    <com.linearlistview.LinearListView
+        android:id="@+id/conj_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/conj_switchBar"
+        android:clipChildren="false"
+        android:clipToPadding="false"
+        android:orientation="vertical"
+        android:paddingTop="16dp"
+        android:paddingBottom="16dp" />
+
 </RelativeLayout>
