@@ -49,7 +49,7 @@ public class DisplayActivity extends AppCompatActivity {
     private boolean isLoading;
     private SearchView searchView;
     private EntryQuery.Entry entry;
-    private AnimationHandler handler;
+    private DisplayAnimationHandler animationHandler;
 
     @SuppressLint("CheckResult")
     @Override
@@ -144,8 +144,8 @@ public class DisplayActivity extends AppCompatActivity {
         LinearLayout linearLayout = findViewById(R.id.disp_root);
         View extendedBar = findViewById(R.id.disp_extendedBar);
         ScrollView scrollView = findViewById(R.id.disp_scroll);
-        handler = new AnimationHandler(this, extendedBar, scrollView);
-        handler.setupScrollAnimation(linearLayout);
+        animationHandler = new DisplayAnimationHandler(this, extendedBar, scrollView);
+        animationHandler.setupScrollAnimation(linearLayout);
     }
 
     @Override
@@ -219,7 +219,7 @@ public class DisplayActivity extends AppCompatActivity {
             extendedBar.setVisibility(View.VISIBLE);
             rootLinearLayout.setVisibility(View.VISIBLE);
 
-            handler.slideInViews(extendedBar,rootLinearLayout);
+            animationHandler.slideInViews(extendedBar,rootLinearLayout);
         }
     }
 

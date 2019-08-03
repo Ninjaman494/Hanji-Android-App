@@ -1,29 +1,29 @@
-package com.a494studios.koreanconjugator.search_results;
+package com.a494studios.koreanconjugator.display;
 
 import android.content.Context;
+import android.graphics.Rect;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
+import android.widget.LinearLayout;
+import android.widget.ScrollView;
 
 import com.a494studios.koreanconjugator.R;
 import com.a494studios.koreanconjugator.utils.BaseAnimationHandler;
 
-class AnimationHandler extends BaseAnimationHandler {
-
+class DisplayAnimationHandler extends BaseAnimationHandler {
     private View extendedBar;
-    private RecyclerView recyclerView;
+    private ScrollView scrollView;
+    private int lastScrollY;
 
-    AnimationHandler(View extendedBar, RecyclerView recyclerView, Context context) {
+    DisplayAnimationHandler(Context context, View extendedBar, ScrollView scrollView) {
         super(context);
         this.extendedBar = extendedBar;
-        this.recyclerView = recyclerView;
+        this.scrollView = scrollView;
+        this.lastScrollY = -1;
     }
 
-    void setupScrollAnimations(LinearLayoutManager layoutManager) {
+    void setupScrollAnimation(LinearLayout linearLayout) {
         final boolean[] isAnimating = {false};
         Animation.AnimationListener listener = new Animation.AnimationListener() {
             @Override
@@ -42,31 +42,34 @@ class AnimationHandler extends BaseAnimationHandler {
             }
         };
 
-        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
-                super.onScrolled(recyclerView, dx, dy);
-                if(dx == 0 && dy == 0){
-                    return; // Bad event
-                }
+        View firstView = linearLayout.getChildAt(0);
+        scrollView.getViewTreeObserver().addOnScrollChangedListener(() -> {
+            int scrollY = scrollView.getScrollY();
+            if (lastScrollY != -1 && scrollY - lastScrollY != 0) {
 
-                int pos = layoutManager.findFirstCompletelyVisibleItemPosition();
-                if(pos == 0) {
+                if (isViewVisible(firstView)) {
                     Animation anim = AnimationUtils.loadAnimation(context, R.anim.slide_in);
                     anim.setAnimationListener(listener);
                     extendedBar.startAnimation(anim);
                     extendedBar.setVisibility(View.VISIBLE);
-                } else if(!isAnimating[0] && extendedBar.getVisibility() == View.VISIBLE) {
+                } else if (!isAnimating[0] && extendedBar.getVisibility() == View.VISIBLE) {
                     Animation anim = AnimationUtils.loadAnimation(context, R.anim.slide_out);
                     anim.setAnimationListener(listener);
                     extendedBar.startAnimation(anim);
                     extendedBar.setVisibility(View.INVISIBLE);
                 }
             }
+
+            lastScrollY = scrollY;
         });
     }
 
-    void animateListView() {
-        this.slideInViews(extendedBar,recyclerView);
+    private boolean isViewVisible(View view) {
+        Rect scrollBounds = new Rect();
+        scrollView.getDrawingRect(scrollBounds);
+        float top = view.getY();
+        float bottom = top + view.getHeight();
+
+        return scrollBounds.top <= top && scrollBounds.bottom >= bottom;
     }
 }

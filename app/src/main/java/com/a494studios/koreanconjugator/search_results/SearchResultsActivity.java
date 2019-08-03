@@ -44,7 +44,7 @@ public class SearchResultsActivity extends AppCompatActivity {
     private boolean dataLoaded = false;
     private String cursor = null;
     private boolean loading = false;
-    private AnimationHandler animationHandler;
+    private SearchResultsAnimationHandler animationHandler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -101,7 +101,7 @@ public class SearchResultsActivity extends AppCompatActivity {
         });
 
         View extendedBar = findViewById(R.id.search_results_extendedBar);
-        animationHandler = new AnimationHandler(extendedBar, recyclerView, this);
+        animationHandler = new SearchResultsAnimationHandler(extendedBar, recyclerView, this);
         animationHandler.setupScrollAnimations(layoutManager);
 
         fetchSearchResponse(query, null);
