@@ -1,15 +1,18 @@
 package com.a494studios.koreanconjugator.display.cards;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.a494studios.koreanconjugator.display.ConjInfoActivity;
 import com.a494studios.koreanconjugator.display.adapters.ConjugationAdapter;
 import com.a494studios.koreanconjugator.ConjugationQuery;
 import com.a494studios.koreanconjugator.R;
 import com.a494studios.koreanconjugator.Utils;
 import com.linearlistview.LinearListView;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -35,6 +38,19 @@ public class ConjugationCard implements DisplayCardBody {
         }
         LinearListView listView = view.findViewById(R.id.listCard_list);
         listView.setAdapter(adapter);
+        listView.setOnItemClickListener(new LinearListView.OnItemClickListener() {
+            @Override
+            public void onItemClick(LinearListView parent, View view, int position, long id) {
+                ConjugationQuery.Conjugation conjugation = adapter.getItem(position);
+                Intent i = new Intent(view.getContext(), ConjInfoActivity.class);
+                i.putExtra(ConjInfoActivity.EXTRA_NAME, conjugation.name());
+                i.putExtra(ConjInfoActivity.EXTRA_CONJ,conjugation.conjugation());
+                i.putExtra(ConjInfoActivity.EXTRA_PRON,conjugation.pronunciation());
+                i.putExtra(ConjInfoActivity.EXTRA_ROME,conjugation.romanization());
+                i.putExtra(ConjInfoActivity.EXTRA_EXPL,new ArrayList<>(conjugation.reasons()));
+                view.getContext().startActivity(i);
+            }
+        });
         return view;
     }
 

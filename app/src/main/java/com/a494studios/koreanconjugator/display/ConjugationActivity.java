@@ -3,23 +3,22 @@ package com.a494studios.koreanconjugator.display;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SwitchCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.a494studios.koreanconjugator.ConjugationQuery;
 import com.a494studios.koreanconjugator.R;
-import com.a494studios.koreanconjugator.display.cards.ConjugationCard;
+import com.a494studios.koreanconjugator.conjugations.ConjugationCardsAdapter;
 import com.a494studios.koreanconjugator.parsing.Server;
 import com.apollographql.apollo.ApolloCall;
 import com.apollographql.apollo.api.Response;
 import com.apollographql.apollo.exception.ApolloException;
-import com.linearlistview.LinearListView;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -86,7 +85,9 @@ public class ConjugationActivity extends AppCompatActivity {
 
                         runOnUiThread(() -> {
                             List<List<ConjugationQuery.Conjugation>> conjugations1 = new ArrayList<>(conjMap.values());
-                            ((LinearListView)findViewById(R.id.conj_list)).setAdapter(new ConjugationsAdapter(conjugations1));
+                            RecyclerView recyclerView = findViewById(R.id.conj_list);
+                            recyclerView.setLayoutManager(new LinearLayoutManager(ConjugationActivity.this));
+                            recyclerView.setAdapter(new ConjugationCardsAdapter(conjugations1));
                             setLoading(false);
                         });
                     }
@@ -118,41 +119,5 @@ public class ConjugationActivity extends AppCompatActivity {
     private void animateList(){
         Animation botTop = AnimationUtils.loadAnimation(this, R.anim.slide_bot_to_top);
         findViewById(R.id.conj_list).startAnimation(botTop);
-    }
-
-    private class ConjugationsAdapter extends BaseAdapter {
-        List<List<ConjugationQuery.Conjugation>> conjugations;
-
-        ConjugationsAdapter(List<List<ConjugationQuery.Conjugation>> conjugations){
-            this.conjugations = conjugations;
-        }
-
-        @Override
-        public View getView(int i, View view, ViewGroup viewGroup) {
-            if(view != null){
-                return view;
-            }
-            DisplayCardView conjView = new DisplayCardView(viewGroup.getContext());
-            conjView.setCardBody(new ConjugationCard(conjugations.get(i)));
-
-            view = conjView;
-            view.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-            return view;
-        }
-
-        @Override
-        public int getCount() {
-            return conjugations.size();
-        }
-
-        @Override
-        public Object getItem(int i) {
-            return conjugations.get(i);
-        }
-
-        @Override
-        public long getItemId(int i) {
-            return i;
-        }
     }
 }
