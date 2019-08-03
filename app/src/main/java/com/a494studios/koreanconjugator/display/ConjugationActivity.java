@@ -8,7 +8,6 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.BaseAdapter;
-import android.widget.CompoundButton;
 import android.widget.Switch;
 
 import com.a494studios.koreanconjugator.ConjugationQuery;
@@ -43,20 +42,17 @@ public class ConjugationActivity extends AppCompatActivity {
 
         ActionBar actionBar = getSupportActionBar();
         if(actionBar != null) {
-            actionBar.setTitle("");
+            actionBar.setTitle("Conjugations");
         }
 
         setLoading(true);
         getConjugations(stem, honorific, isAdj);
-        ((Switch)findViewById(R.id.conj_switch)).setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean checked) {
-                setLoading(true);
-                if(checked) {
-                    getConjugations(stem,true,isAdj);
-                } else {
-                    getConjugations(stem,false,isAdj);
-                }
+        ((Switch)findViewById(R.id.conj_switch)).setOnCheckedChangeListener((compoundButon, checked) -> {
+            setLoading(true);
+            if(checked) {
+                getConjugations(stem,true,isAdj);
+            } else {
+                getConjugations(stem,false,isAdj);
             }
         });
     }
@@ -82,13 +78,10 @@ public class ConjugationActivity extends AppCompatActivity {
                             }
                         }
 
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                List<List<ConjugationQuery.Conjugation>> conjugations = new ArrayList<>(conjMap.values());
-                                ((LinearListView)findViewById(R.id.conj_list)).setAdapter(new ConjugationsAdapter(conjugations));
-                                setLoading(false);
-                            }
+                        runOnUiThread(() -> {
+                            List<List<ConjugationQuery.Conjugation>> conjugations1 = new ArrayList<>(conjMap.values());
+                            ((LinearListView)findViewById(R.id.conj_list)).setAdapter(new ConjugationsAdapter(conjugations1));
+                            setLoading(false);
                         });
                     }
 
