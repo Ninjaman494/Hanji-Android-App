@@ -6,7 +6,7 @@ import androidx.test.filters.LargeTest;
 import androidx.test.rule.ActivityTestRule;
 import androidx.test.runner.AndroidJUnit4;
 
-import com.a494studios.koreanconjugator.display.ConjugationActivity;
+import com.a494studios.koreanconjugator.conjugations.ConjugationActivity;
 import com.linearlistview.LinearListView;
 
 import org.junit.Rule;

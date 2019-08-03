@@ -5,7 +5,7 @@ import android.content.Intent;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.a494studios.koreanconjugator.display.ConjugationActivity;
+import com.a494studios.koreanconjugator.conjugations.ConjugationActivity;
 import com.a494studios.koreanconjugator.ConjugationQuery;
 import com.a494studios.koreanconjugator.R;
 import com.a494studios.koreanconjugator.display.adapters.FavoritesAdapter;

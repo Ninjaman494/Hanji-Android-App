@@ -1,4 +1,4 @@
-package com.a494studios.koreanconjugator.display;
+package com.a494studios.koreanconjugator.conjugations;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
@@ -14,7 +14,6 @@ import android.widget.TextView;
 
 import com.a494studios.koreanconjugator.ConjugationQuery;
 import com.a494studios.koreanconjugator.R;
-import com.a494studios.koreanconjugator.conjugations.ConjugationCardsAdapter;
 import com.a494studios.koreanconjugator.parsing.Server;
 import com.apollographql.apollo.ApolloCall;
 import com.apollographql.apollo.api.Response;

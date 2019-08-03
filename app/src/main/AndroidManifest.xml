@@ -14,7 +14,7 @@
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
         <activity android:name=".display.ConjInfoActivity"/>
-        <activity android:name=".display.ConjugationActivity" />
+        <activity android:name=".conjugations.ConjugationActivity" />
 
         <meta-data
             android:name="firebase_crashlytics_collection_enabled"

@@ -9,8 +9,7 @@ import android.widget.LinearLayout;
 import com.a494studios.koreanconjugator.ConjugationQuery;
 import com.a494studios.koreanconjugator.MainActivity;
 import com.a494studios.koreanconjugator.R;
-import com.a494studios.koreanconjugator.display.ConjugationActivity;
-import com.a494studios.koreanconjugator.display.cards.FavoritesCard;
+import com.a494studios.koreanconjugator.conjugations.ConjugationActivity;
 
 import org.junit.Assert;
 import org.junit.Before;
