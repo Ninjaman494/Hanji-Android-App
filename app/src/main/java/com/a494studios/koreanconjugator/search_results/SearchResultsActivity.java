@@ -23,6 +23,7 @@ import com.a494studios.koreanconjugator.Utils;
 import com.a494studios.koreanconjugator.parsing.Server;
 import com.a494studios.koreanconjugator.settings.SettingsActivity;
 import com.a494studios.koreanconjugator.utils.ErrorDialogFragment;
+import com.a494studios.koreanconjugator.utils.RecyclerAnimationHandler;
 import com.apollographql.apollo.api.Response;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
@@ -44,7 +45,7 @@ public class SearchResultsActivity extends AppCompatActivity {
     private boolean dataLoaded = false;
     private String cursor = null;
     private boolean loading = false;
-    private SearchResultsAnimationHandler animationHandler;
+    private RecyclerAnimationHandler animationHandler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -101,7 +102,7 @@ public class SearchResultsActivity extends AppCompatActivity {
         });
 
         View extendedBar = findViewById(R.id.search_results_extendedBar);
-        animationHandler = new SearchResultsAnimationHandler(extendedBar, recyclerView, this);
+        animationHandler = new RecyclerAnimationHandler(extendedBar, recyclerView, this);
         animationHandler.setupScrollAnimations(layoutManager);
 
         fetchSearchResponse(query, null);

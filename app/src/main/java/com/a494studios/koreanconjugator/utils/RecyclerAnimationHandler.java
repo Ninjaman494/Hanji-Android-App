@@ -1,4 +1,4 @@
-package com.a494studios.koreanconjugator.search_results;
+package com.a494studios.koreanconjugator.utils;
 
 import android.content.Context;
 import android.view.View;
@@ -10,14 +10,13 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.a494studios.koreanconjugator.R;
-import com.a494studios.koreanconjugator.utils.BaseAnimationHandler;
 
-public class SearchResultsAnimationHandler extends BaseAnimationHandler {
+public class RecyclerAnimationHandler extends BaseAnimationHandler {
 
     private View extendedBar;
     private RecyclerView recyclerView;
 
-    public SearchResultsAnimationHandler(View extendedBar, RecyclerView recyclerView, Context context) {
+    public RecyclerAnimationHandler(View extendedBar, RecyclerView recyclerView, Context context) {
         super(context);
         this.extendedBar = extendedBar;
         this.recyclerView = recyclerView;
