@@ -1,4 +1,4 @@
-package com.a494studios.koreanconjugator.display;
+package com.a494studios.koreanconjugator.utils;
 
 import android.content.Context;
 import android.graphics.Rect;
@@ -9,21 +9,20 @@ import android.widget.LinearLayout;
 import android.widget.ScrollView;
 
 import com.a494studios.koreanconjugator.R;
-import com.a494studios.koreanconjugator.utils.BaseAnimationHandler;
 
-class DisplayAnimationHandler extends BaseAnimationHandler {
+public class ScrollViewAnimationHandler extends BaseAnimationHandler {
     private View extendedBar;
     private ScrollView scrollView;
     private int lastScrollY;
 
-    DisplayAnimationHandler(Context context, View extendedBar, ScrollView scrollView) {
+    public ScrollViewAnimationHandler(Context context, View extendedBar, ScrollView scrollView) {
         super(context);
         this.extendedBar = extendedBar;
         this.scrollView = scrollView;
         this.lastScrollY = -1;
     }
 
-    void setupScrollAnimation(LinearLayout linearLayout) {
+    public void setupScrollAnimation(LinearLayout linearLayout) {
         final boolean[] isAnimating = {false};
         Animation.AnimationListener listener = new Animation.AnimationListener() {
             @Override

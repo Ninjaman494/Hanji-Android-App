@@ -24,6 +24,7 @@ import com.a494studios.koreanconjugator.display.cards.AdCard;
 import com.a494studios.koreanconjugator.parsing.Favorite;
 import com.a494studios.koreanconjugator.parsing.Server;
 import com.a494studios.koreanconjugator.settings.SettingsActivity;
+import com.a494studios.koreanconjugator.utils.ScrollViewAnimationHandler;
 import com.a494studios.koreanconjugator.utils.ErrorDialogFragment;
 import com.apollographql.apollo.api.Response;
 import com.crashlytics.android.Crashlytics;
@@ -49,7 +50,7 @@ public class DisplayActivity extends AppCompatActivity {
     private boolean isLoading;
     private SearchView searchView;
     private EntryQuery.Entry entry;
-    private DisplayAnimationHandler animationHandler;
+    private ScrollViewAnimationHandler animationHandler;
 
     @SuppressLint("CheckResult")
     @Override
@@ -144,7 +145,7 @@ public class DisplayActivity extends AppCompatActivity {
         LinearLayout linearLayout = findViewById(R.id.disp_root);
         View extendedBar = findViewById(R.id.disp_extendedBar);
         ScrollView scrollView = findViewById(R.id.disp_scroll);
-        animationHandler = new DisplayAnimationHandler(this, extendedBar, scrollView);
+        animationHandler = new ScrollViewAnimationHandler(this, extendedBar, scrollView);
         animationHandler.setupScrollAnimation(linearLayout);
     }
 

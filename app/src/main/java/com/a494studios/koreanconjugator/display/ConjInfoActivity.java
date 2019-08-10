@@ -3,11 +3,14 @@ package com.a494studios.koreanconjugator.display;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
+import android.view.View;
+import android.widget.LinearLayout;
+import android.widget.ScrollView;
 
 import com.a494studios.koreanconjugator.R;
+import com.a494studios.koreanconjugator.display.cards.AdCard;
 import com.a494studios.koreanconjugator.display.cards.ConjInfoCard;
+import com.a494studios.koreanconjugator.utils.ScrollViewAnimationHandler;
 
 import java.util.List;
 
@@ -18,6 +21,9 @@ public class ConjInfoActivity extends AppCompatActivity {
     public static final String EXTRA_PRON = "PRON";
     public static final String EXTRA_ROME = "ROME";
     public static final String EXTRA_EXPL = "EXPL";
+    private ScrollViewAnimationHandler animationHandler;
+    private View extendedBar;
+    private LinearLayout linearLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,14 +43,20 @@ public class ConjInfoActivity extends AppCompatActivity {
 
         DisplayCardView infoCard = findViewById(R.id.info_infoCard);
         infoCard.setCardBody(new ConjInfoCard(name,conjugated,pronunciation,romanization,explanations));
+
+        DisplayCardView adCard = findViewById(R.id.info_adCard);
+        adCard.setCardBody(new AdCard());
+
+        extendedBar = findViewById(R.id.info_extendedBar);
+        linearLayout = findViewById(R.id.info_root);
+        ScrollView scrollView = findViewById(R.id.info_scroll);
+        animationHandler = new ScrollViewAnimationHandler(this, extendedBar, scrollView);
+        animationHandler.setupScrollAnimation(linearLayout);
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        Animation topBot = AnimationUtils.loadAnimation(this,R.anim.slide_top_to_bot);
-        Animation botTop = AnimationUtils.loadAnimation(this, R.anim.slide_bot_to_top);
-        findViewById(R.id.info_extendedBar).startAnimation(topBot);
-        findViewById(R.id.info_infoCard).startAnimation(botTop);
+        animationHandler.slideInViews(extendedBar, linearLayout);
     }
 }
