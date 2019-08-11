@@ -1,7 +1,6 @@
 package com.a494studios.koreanconjugator;
 
 import android.app.SearchManager;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.PorterDuff;
 import androidx.appcompat.app.AlertDialog;
@@ -11,7 +10,6 @@ import androidx.cardview.widget.CardView;
 import androidx.appcompat.widget.PopupMenu;
 import androidx.appcompat.widget.SearchView;
 import android.view.Gravity;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
@@ -113,33 +111,28 @@ public class MainActivity extends AppCompatActivity {
         searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
 
         // Setting up Overflow Menu
-        overflowMenu.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                PopupMenu popup = new PopupMenu(MainActivity.this, view, Gravity.END);
-                popup.inflate(R.menu.main_menu);
-                popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-                    @Override
-                    public boolean onMenuItemClick(MenuItem item) {
-                        if(item.getItemId() == R.id.overflow_settings){
-                            startActivity(new Intent(getBaseContext(), SettingsActivity.class));
-                            return true;
-                        }else if(item.getItemId() == R.id.overflow_about){
-                            Utils.makeAboutBox(MainActivity.this);
-                            launch(MainActivity.this);
-                            return true;
-                        }else if(item.getItemId() == R.id.overflow_bug){
-                            Maoni maoni = Utils.makeMaoniActivity(MainActivity.this);
-                            if(maoni != null){
-                                maoni.start(MainActivity.this);
-                            }
-                            return true;
-                        }
-                        return false;
+        overflowMenu.setOnClickListener(view -> {
+            PopupMenu popup = new PopupMenu(MainActivity.this, view, Gravity.END);
+            popup.inflate(R.menu.main_menu);
+
+            popup.setOnMenuItemClickListener(item -> {
+                if(item.getItemId() == R.id.overflow_settings){
+                    startActivity(new Intent(getBaseContext(), SettingsActivity.class));
+                    return true;
+                }else if(item.getItemId() == R.id.overflow_about){
+                    Utils.makeAboutBox(MainActivity.this);
+                    launch(MainActivity.this);
+                    return true;
+                }else if(item.getItemId() == R.id.overflow_bug){
+                    Maoni maoni = Utils.makeMaoniActivity(MainActivity.this);
+                    if(maoni != null){
+                        maoni.start(MainActivity.this);
                     }
-                });
-                popup.show();
-            }
+                    return true;
+                }
+                return false;
+            });
+            popup.show();
         });
 
         // Setting up Feedback dialog
@@ -149,49 +142,30 @@ public class MainActivity extends AppCompatActivity {
                 .title(getString(R.string.feed_title))
                 .formTitle(getString(R.string.feed_form_title))
                 .formHint(getString(R.string.feed_form_hint))
-                .onThresholdCleared(new RatingDialog.Builder.RatingThresholdClearedListener() {
-                    @Override
-                    public void onThresholdCleared(final RatingDialog ratingDialog, final float rating, boolean thresholdCleared) {
-                        ratingDialog.dismiss();
-                        final AlertDialog dialog = new AlertDialog.Builder(MainActivity.this)
-                                .setTitle(R.string.feed_rate_title)
-                                .setMessage(R.string.feed_rate_msg)
-                                .setPositiveButton(R.string.feed_rate_sure, new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialogInterface, int i) {
-                                        //AboutConfig config = AboutConfig.getInstance();
-                                        //AboutBoxUtils.openApp(MainActivity.this, config.buildType,config.packageName);
-                                        AboutBoxUtils.openApp(MainActivity.this, AboutConfig.BuildType.GOOGLE,"com.a494studios.koreanconjugator");
-                                    }
-                                })
-                                .setNegativeButton(R.string.feed_rate_never, new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialogInterface, int i) {
-                                        // Do nothing
-                                    }
-                                }).create();
-                        dialog.setOnShowListener( new DialogInterface.OnShowListener() {
-                            @Override
-                            public void onShow(DialogInterface arg0) {
-                                dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(getResources().getColor(R.color.grey_500));
-                            }
-                        });
-                        dialog.show();
-                    }
+                .onThresholdCleared((ratingDialog1, rating, thresholdCleared) -> {
+                    ratingDialog1.dismiss();
+                    final AlertDialog dialog = new AlertDialog.Builder(MainActivity.this)
+                            .setTitle(R.string.feed_rate_title)
+                            .setMessage(R.string.feed_rate_msg)
+                            .setPositiveButton(R.string.feed_rate_sure, (dialogInterface, i) ->
+                                    AboutBoxUtils.openApp(MainActivity.this, AboutConfig.BuildType.GOOGLE,"com.a494studios.koreanconjugator"))
+                            .setNegativeButton(R.string.feed_rate_never, (dialogInterface, i) -> {/*Do Nothing*/})
+                            .create();
+                    dialog.setOnShowListener(arg0 ->
+                            dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(getResources().getColor(R.color.grey_500)));
+                    dialog.show();
                 })
-                .onRatingBarFormSumbit(new RatingDialog.Builder.RatingDialogFormListener() {
-                    @Override
-                    public void onFormSubmitted(String feedback) {
-                        SlackHandler handler = new SlackHandler(MainActivity.this);
-                        if(handler.auth()) {
-                            handler.sendFeedback(feedback);
-                            Toast.makeText(MainActivity.this,"Thanks for the feedback!",Toast.LENGTH_LONG).show();
-                        }else{
-                            Toast.makeText(MainActivity.this,"Couldn't connect to server",Toast.LENGTH_LONG).show();
-                        }
-
+                .onRatingBarFormSumbit(feedback -> {
+                    SlackHandler handler = new SlackHandler(MainActivity.this);
+                    if(handler.auth()) {
+                        handler.sendFeedback(feedback);
+                        Toast.makeText(MainActivity.this,"Thanks for the feedback!",Toast.LENGTH_LONG).show();
+                    }else{
+                        Toast.makeText(MainActivity.this,"Couldn't connect to server",Toast.LENGTH_LONG).show();
                     }
-                }).build();
+
+                })
+                .build();
         ratingDialog.show();
     }
 
@@ -204,7 +178,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void showSearchCard(){
-        //editText.getText().clear();
         logo.setVisibility(View.VISIBLE);
         searchCard.setVisibility(View.VISIBLE);
         overflowMenu.setVisibility(View.VISIBLE);
