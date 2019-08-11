@@ -18,6 +18,8 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.a494studios.koreanconjugator.display.DisplayCardView;
+import com.a494studios.koreanconjugator.display.cards.AdCard;
 import com.a494studios.koreanconjugator.parsing.Favorite;
 import com.a494studios.koreanconjugator.settings.SettingsActivity;
 import com.a494studios.koreanconjugator.utils.SlackHandler;
@@ -57,9 +59,8 @@ public class MainActivity extends AppCompatActivity {
         searchCard = findViewById(R.id.main_searchCard);
         searchView = findViewById(R.id.main_editText);
         logo = findViewById(R.id.main_logo);
-        AdView adView = findViewById(R.id.main_adView);
-
-        adView.loadAd(new AdRequest.Builder().build());
+        DisplayCardView adView = findViewById(R.id.main_adView);
+        adView.setCardBody(new AdCard());
 
         try {
             if (getIntent().getExtras() != null) {
