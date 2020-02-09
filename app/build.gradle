@@ -115,7 +115,7 @@ dependencies {
     implementation 'com.github.daniel-stoneuk:material-about-library:2.4.2'
 
     // Apollo
-    implementation 'com.apollographql.apollo:apollo-runtime:1.0.1'
+    implementation 'com.apollographql.apollo:apollo-runtime:1.2.3'
     implementation 'com.apollographql.apollo:apollo-http-cache:1.0.1'
     implementation 'com.apollographql.apollo:apollo-rx2-support:1.0.1'
     implementation 'io.reactivex.rxjava2:rxandroid:2.0.1'
