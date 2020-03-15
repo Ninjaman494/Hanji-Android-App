@@ -46,8 +46,6 @@ public class WordOfDayCard implements DisplayCardBody {
 
                     }
                 });
-
-
         return view;
     }
 

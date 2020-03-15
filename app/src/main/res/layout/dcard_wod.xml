@@ -10,7 +10,7 @@
         android:paddingTop="8dp"
         android:text="@string/loading"
         android:textColor="@android:color/primary_text_light"
-        android:textSize="30sp"
+        android:textSize="35sp"
         android:textAlignment="center"/>
 
 </RelativeLayout>

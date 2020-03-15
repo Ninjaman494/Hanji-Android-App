@@ -59,13 +59,13 @@
                 android:layout_height="wrap_content" />
 
             <com.a494studios.koreanconjugator.display.DisplayCardView
-                android:id="@+id/main_adView"
-                android:layout_width="wrap_content"
+                android:id="@+id/main_wodCard"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
 
             <com.a494studios.koreanconjugator.display.DisplayCardView
-                android:id="@+id/main_wodCard"
-                android:layout_width="match_parent"
+                android:id="@+id/main_adView"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
         </LinearLayout>
     </ScrollView>
