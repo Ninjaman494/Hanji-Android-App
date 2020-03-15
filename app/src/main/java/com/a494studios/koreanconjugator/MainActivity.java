@@ -3,15 +3,17 @@ package com.a494studios.koreanconjugator;
 import android.app.SearchManager;
 import android.content.Intent;
 import android.graphics.PorterDuff;
+
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import androidx.cardview.widget.CardView;
-import androidx.appcompat.widget.PopupMenu;
 import androidx.appcompat.widget.SearchView;
-import android.view.Gravity;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -42,7 +44,6 @@ public class MainActivity extends AppCompatActivity {
     private CardView searchCard;
     private SearchView searchView;
     private TextView logo;
-    private ImageView overflowMenu;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,12 +52,17 @@ public class MainActivity extends AppCompatActivity {
         MobileAds.initialize(this, APP_ID);
         progressBar = findViewById(R.id.main_loadingBar);
         loadingText = findViewById(R.id.main_loadingText);
-        overflowMenu = findViewById(R.id.main_menu_icon);
         searchCard = findViewById(R.id.main_searchCard);
         searchView = findViewById(R.id.main_editText);
-        logo = findViewById(R.id.main_logo);
+        logo = findViewById(R.id.info_extendedBar);
         DisplayCardView adView = findViewById(R.id.main_adView);
         adView.setCardBody(new AdCard());
+
+        ActionBar actionBar = getSupportActionBar();
+        if(actionBar != null) {
+            actionBar.setTitle("");
+            actionBar.setElevation(0);
+        }
 
         try {
             if (getIntent().getExtras() != null) {
@@ -110,31 +116,6 @@ public class MainActivity extends AppCompatActivity {
         SearchManager searchManager = (SearchManager) getSystemService(SEARCH_SERVICE);
         searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
 
-        // Setting up Overflow Menu
-        overflowMenu.setOnClickListener(view -> {
-            PopupMenu popup = new PopupMenu(MainActivity.this, view, Gravity.END);
-            popup.inflate(R.menu.main_menu);
-
-            popup.setOnMenuItemClickListener(item -> {
-                if(item.getItemId() == R.id.overflow_settings){
-                    startActivity(new Intent(getBaseContext(), SettingsActivity.class));
-                    return true;
-                }else if(item.getItemId() == R.id.overflow_about){
-                    Utils.makeAboutBox(MainActivity.this);
-                    launch(MainActivity.this);
-                    return true;
-                }else if(item.getItemId() == R.id.overflow_bug){
-                    Maoni maoni = Utils.makeMaoniActivity(MainActivity.this);
-                    if(maoni != null){
-                        maoni.start(MainActivity.this);
-                    }
-                    return true;
-                }
-                return false;
-            });
-            popup.show();
-        });
-
         // Setting up Feedback dialog
         final RatingDialog ratingDialog = new RatingDialog.Builder(this)
                 .threshold(5) // Get feedback if less than 5 stars
@@ -170,6 +151,34 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.main_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if(item.getItemId() == R.id.overflow_settings){
+            startActivity(new Intent(getBaseContext(), SettingsActivity.class));
+            return true;
+        }else if(item.getItemId() == R.id.overflow_about){
+            Utils.makeAboutBox(MainActivity.this);
+            launch(MainActivity.this);
+            return true;
+        }else if(item.getItemId() == R.id.overflow_bug){
+            Maoni maoni = Utils.makeMaoniActivity(MainActivity.this);
+            if(maoni != null){
+                maoni.start(MainActivity.this);
+            }
+            return true;
+        } else {
+            return super.onOptionsItemSelected(item);
+        }
+    }
+
+
+    @Override
     public void onResume(){
         super.onResume();
         searchView.setQuery("", false);
@@ -180,7 +189,6 @@ public class MainActivity extends AppCompatActivity {
     private void showSearchCard(){
         logo.setVisibility(View.VISIBLE);
         searchCard.setVisibility(View.VISIBLE);
-        overflowMenu.setVisibility(View.VISIBLE);
         progressBar.setVisibility(View.INVISIBLE);
         loadingText.setVisibility(View.INVISIBLE);
         loadingText.setText(R.string.loading);
