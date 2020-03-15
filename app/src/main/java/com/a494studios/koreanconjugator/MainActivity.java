@@ -2,7 +2,6 @@ package com.a494studios.koreanconjugator;
 
 import android.app.SearchManager;
 import android.content.Intent;
-import android.graphics.PorterDuff;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
@@ -15,7 +14,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -41,10 +39,9 @@ public class MainActivity extends AppCompatActivity {
 
     private static final String APP_ID = BuildConfig.ADMOB_KEY;
 
-    private ProgressBar progressBar;
-    private TextView loadingText;
     private CardView searchCard;
     private SearchView searchView;
+    private DisplayCardView wodCard;
     private TextView logo;
     private ScrollViewAnimationHandler animationHandler;
     private LinearLayout linearLayout;
@@ -54,13 +51,16 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         MobileAds.initialize(this, APP_ID);
-        progressBar = findViewById(R.id.main_loadingBar);
-        loadingText = findViewById(R.id.main_loadingText);
         searchCard = findViewById(R.id.main_searchCard);
         searchView = findViewById(R.id.main_editText);
+        wodCard = findViewById(R.id.main_wodCard);
         logo = findViewById(R.id.main_extendedBar);
+
+        // Set up Ad and Word of the Day cards
         DisplayCardView adView = findViewById(R.id.main_adView);
         adView.setCardBody(new AdCard());
+        wodCard = findViewById(R.id.main_wodCard);
+        wodCard.setCardBody(new WordOfDayCard());
 
         ActionBar actionBar = getSupportActionBar();
         if(actionBar != null) {
@@ -112,9 +112,6 @@ public class MainActivity extends AppCompatActivity {
             Utils.setFavorites(favs,this);
             Utils.setFirstBoot(this,false);
         }
-
-        progressBar.getIndeterminateDrawable().setColorFilter(getResources().getColor(R.color.colorAccent), PorterDuff.Mode.SRC_IN);
-        progressBar.getProgressDrawable().setColorFilter(getResources().getColor(R.color.colorAccent), PorterDuff.Mode.SRC_IN);
 
         // Handle Search
         SearchManager searchManager = (SearchManager) getSystemService(SEARCH_SERVICE);
@@ -198,10 +195,6 @@ public class MainActivity extends AppCompatActivity {
     private void showSearchCard(){
         logo.setVisibility(View.VISIBLE);
         searchCard.setVisibility(View.VISIBLE);
-        progressBar.setVisibility(View.INVISIBLE);
-        loadingText.setVisibility(View.INVISIBLE);
-        loadingText.setText(R.string.loading);
-        progressBar.setIndeterminate(true);
         animationHandler.slideInViews(logo, linearLayout);
     }
 }
