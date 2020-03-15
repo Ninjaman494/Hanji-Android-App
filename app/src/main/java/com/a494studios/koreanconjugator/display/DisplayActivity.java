@@ -41,11 +41,8 @@ import static com.eggheadgames.aboutbox.activity.AboutActivity.*;
 
 public class DisplayActivity extends AppCompatActivity {
 
-    public static final String EXTRA_DEF = "definition";
     public static final String EXTRA_ID = "id";
-    public static final String EXTRA_TERM = "term";
 
-    private String definition;
     private boolean overflowClicked;
     private boolean isLoading;
     private SearchView searchView;
@@ -57,22 +54,9 @@ public class DisplayActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_display);
-        String term = getIntent().getStringExtra(EXTRA_TERM);
         String id = getIntent().getStringExtra(EXTRA_ID);
-        if(savedInstanceState != null){
-            definition = savedInstanceState.getString(EXTRA_DEF);
-        }else{
-            definition = getIntent().getStringExtra(EXTRA_DEF);
-        }
 
         // Make sure extras were passed
-        if(term == null){
-            ErrorDialogFragment.newInstance()
-                    .setListener((dialogInterface, i) -> onBackPressed())
-                    .show(getSupportFragmentManager(),"error_dialog");
-            Crashlytics.log("Infinitive was null in DisplayActivity");
-            return;
-        }
         if(id == null){
             ErrorDialogFragment.newInstance()
                     .setListener((dialogInterface, i) -> onBackPressed())
@@ -179,12 +163,6 @@ public class DisplayActivity extends AppCompatActivity {
         } else{
             return super.onOptionsItemSelected(item);
         }
-    }
-
-    @Override
-    public void onSaveInstanceState(Bundle savedInstanceState) {
-        savedInstanceState.putString(EXTRA_DEF, definition);
-        super.onSaveInstanceState(savedInstanceState);
     }
 
     @Override

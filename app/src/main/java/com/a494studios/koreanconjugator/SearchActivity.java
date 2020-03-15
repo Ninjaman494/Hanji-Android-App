@@ -74,7 +74,7 @@ public class SearchActivity extends AppCompatActivity {
                                 }
                             }).show(getSupportFragmentManager(),"error_dialog");
                         } else if(results.size() == 1){
-                            goToDisplay(results.get(0).id,results.get(0).term);
+                            goToDisplay(results.get(0).id);
                         } else {
                             goToSearchResults(entry);
                         }
@@ -126,10 +126,9 @@ public class SearchActivity extends AppCompatActivity {
         prepForIntent();
     }
 
-    private void goToDisplay(String id, String term){
+    private void goToDisplay(String id){
         Intent intent = new Intent(getApplicationContext(), DisplayActivity.class);
         intent.putExtra(DisplayActivity.EXTRA_ID, id);
-        intent.putExtra(DisplayActivity.EXTRA_TERM, term);
         intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
         startActivity(intent);
         prepForIntent();

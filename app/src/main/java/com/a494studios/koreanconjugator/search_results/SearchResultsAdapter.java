@@ -49,7 +49,6 @@ public abstract class SearchResultsAdapter extends RecyclerView.Adapter<Recycler
         View.OnClickListener listener = view -> {
             Intent intent = new Intent(context, DisplayActivity.class);
             intent.putExtra(DisplayActivity.EXTRA_ID, result.id());
-            intent.putExtra(DisplayActivity.EXTRA_TERM, result.term());
             intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
             context.startActivity(intent);
         };
