@@ -1,18 +1,14 @@
 package com.a494studios.koreanconjugator;
 
-import android.app.SearchManager;
 import android.content.Intent;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
-import androidx.cardview.widget.CardView;
-import androidx.appcompat.widget.SearchView;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -39,9 +35,7 @@ public class MainActivity extends AppCompatActivity {
 
     private static final String APP_ID = BuildConfig.ADMOB_KEY;
 
-    private CardView searchCard;
-    private SearchView searchView;
-    private DisplayCardView wodCard;
+    private SearchCard searchCard;
     private TextView logo;
     private ScrollViewAnimationHandler animationHandler;
     private LinearLayout linearLayout;
@@ -51,16 +45,17 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         MobileAds.initialize(this, APP_ID);
-        searchCard = findViewById(R.id.main_searchCard);
-        searchView = findViewById(R.id.main_editText);
-        wodCard = findViewById(R.id.main_wodCard);
         logo = findViewById(R.id.main_extendedBar);
 
-        // Set up Ad and Word of the Day cards
+        // Set up Ad, Search, and Word of the Day cards
         DisplayCardView adView = findViewById(R.id.main_adView);
+        DisplayCardView wodCard = findViewById(R.id.main_wodCard);
+        DisplayCardView searchCard = findViewById(R.id.main_searchCard);
+        this.searchCard = new SearchCard(this);
+
         adView.setCardBody(new AdCard());
-        wodCard = findViewById(R.id.main_wodCard);
         wodCard.setCardBody(new WordOfDayCard());
+        searchCard.setCardBody(this.searchCard);
 
         ActionBar actionBar = getSupportActionBar();
         if(actionBar != null) {
@@ -112,10 +107,6 @@ public class MainActivity extends AppCompatActivity {
             Utils.setFavorites(favs,this);
             Utils.setFirstBoot(this,false);
         }
-
-        // Handle Search
-        SearchManager searchManager = (SearchManager) getSystemService(SEARCH_SERVICE);
-        searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
 
         // Setting up Feedback dialog
         final RatingDialog ratingDialog = new RatingDialog.Builder(this)
@@ -187,14 +178,8 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onResume(){
         super.onResume();
-        searchView.setQuery("", false);
-        searchView.clearFocus();
-        showSearchCard();
-    }
-
-    private void showSearchCard(){
-        logo.setVisibility(View.VISIBLE);
-        searchCard.setVisibility(View.VISIBLE);
+        this.searchCard.getSearchView().setQuery("", false);
+        this.searchCard.getSearchView().clearFocus();
         animationHandler.slideInViews(logo, linearLayout);
     }
 }
