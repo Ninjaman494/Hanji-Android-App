@@ -38,12 +38,16 @@
         android:id="@+id/main_scrollView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:clipToPadding="false"
+        android:clipChildren="false"
         app:layout_constraintTop_toTopOf="@+id/guideline">
 
         <LinearLayout
             android:id="@+id/main_linearLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:clipToPadding="false"
+            android:clipChildren="false"
             android:orientation="vertical">
 
 
@@ -56,10 +60,7 @@
                 android:layout_marginBottom="@dimen/horizontalMargin"
                 android:visibility="visible"
                 app:cardCornerRadius="10dp"
-                app:cardElevation="10dp"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
+                app:cardElevation="10dp">
 
                 <androidx.appcompat.widget.SearchView
                     android:id="@+id/main_editText"
