@@ -9,7 +9,7 @@
     tools:context="com.a494studios.koreanconjugator.MainActivity">
 
     <TextView
-        android:id="@+id/info_extendedBar"
+        android:id="@+id/main_extendedBar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/colorPrimary"
@@ -23,74 +23,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/main_loadingText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:text="@string/loading"
-        android:textAlignment="center"
-        android:textSize="25sp"
-        app:layout_constraintBottom_toBottomOf="@id/main_searchCard"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent" />
-
-    <ProgressBar
-        android:id="@+id/main_loadingBar"
-        style="?android:attr/progressBarStyleHorizontal"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:indeterminate="true"
-        android:visibility="invisible"
-        app:layout_constraintEnd_toEndOf="@+id/main_loadingText"
-        app:layout_constraintLeft_toLeftOf="@id/main_loadingText"
-        app:layout_constraintRight_toRightOf="@id/main_loadingText"
-        app:layout_constraintStart_toStartOf="@id/main_loadingText"
-        app:layout_constraintTop_toBottomOf="@id/main_loadingText" />
-
-
-    <androidx.cardview.widget.CardView
-        android:id="@+id/main_searchCard"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/horizontalMargin"
-        android:layout_marginLeft="@dimen/horizontalMargin"
-        android:layout_marginRight="@dimen/horizontalMargin"
-        android:visibility="visible"
-        app:cardCornerRadius="10dp"
-        app:cardElevation="10dp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/guideline">
-
-        <androidx.appcompat.widget.SearchView
-            android:id="@+id/main_editText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:layout_marginTop="5dp"
-            android:layout_marginRight="10dp"
-            android:layout_marginBottom="5dp"
-            android:focusable="false"
-            android:imeOptions="actionSearch"
-            android:inputType="text"
-            android:maxLines="1"
-            app:iconifiedByDefault="false"
-            app:queryBackground="@color/maoni_transparent_full"
-            app:queryHint="@string/main_search_hint"
-            app:searchIcon="@null"
-            app:theme="@style/AppSearchView" />
-    </androidx.cardview.widget.CardView>
-
-    <com.a494studios.koreanconjugator.display.DisplayCardView
-        android:id="@+id/main_adView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        app:layout_constraintTop_toBottomOf="@id/main_searchCard"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"/>
-
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline"
         android:layout_width="wrap_content"
@@ -100,5 +32,93 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintGuide_begin="100dp"
         app:layout_constraintStart_toStartOf="parent" />
+
+
+    <ScrollView
+        android:id="@+id/main_scrollView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="@+id/guideline">
+
+        <LinearLayout
+            android:id="@+id/main_linearLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/main_searchCard"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/horizontalMargin"
+                android:layout_marginRight="@dimen/horizontalMargin"
+                android:layout_marginBottom="@dimen/horizontalMargin"
+                android:visibility="visible"
+                app:cardCornerRadius="10dp"
+                app:cardElevation="10dp"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <androidx.appcompat.widget.SearchView
+                    android:id="@+id/main_editText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginBottom="5dp"
+                    android:focusable="false"
+                    android:imeOptions="actionSearch"
+                    android:inputType="text"
+                    android:maxLines="1"
+                    app:iconifiedByDefault="false"
+                    app:queryBackground="@color/maoni_transparent_full"
+                    app:queryHint="@string/main_search_hint"
+                    app:searchIcon="@null"
+                    app:theme="@style/AppSearchView" />
+            </androidx.cardview.widget.CardView>
+
+            <com.a494studios.koreanconjugator.display.DisplayCardView
+                android:id="@+id/main_adView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/main_searchCard" />
+
+        </LinearLayout>
+    </ScrollView>
+
+    <TextView
+        android:id="@+id/main_loadingText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:gravity="center"
+        android:text="@string/loading"
+        android:textAlignment="center"
+        android:textSize="25sp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/main_extendedBar"
+        app:layout_constraintVertical_bias="0.32999998" />
+
+    <ProgressBar
+        android:id="@+id/main_loadingBar"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:indeterminate="true"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="@+id/main_loadingText"
+        app:layout_constraintLeft_toLeftOf="@id/main_loadingText"
+        app:layout_constraintRight_toRightOf="@id/main_loadingText"
+        app:layout_constraintStart_toStartOf="@id/main_loadingText"
+        app:layout_constraintTop_toBottomOf="@id/main_loadingText" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

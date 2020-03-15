@@ -14,6 +14,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -22,6 +23,7 @@ import com.a494studios.koreanconjugator.display.DisplayCardView;
 import com.a494studios.koreanconjugator.display.cards.AdCard;
 import com.a494studios.koreanconjugator.parsing.Favorite;
 import com.a494studios.koreanconjugator.settings.SettingsActivity;
+import com.a494studios.koreanconjugator.utils.ScrollViewAnimationHandler;
 import com.a494studios.koreanconjugator.utils.SlackHandler;
 import com.codemybrainsout.ratingdialog.RatingDialog;
 import com.crashlytics.android.Crashlytics;
@@ -44,6 +46,8 @@ public class MainActivity extends AppCompatActivity {
     private CardView searchCard;
     private SearchView searchView;
     private TextView logo;
+    private ScrollViewAnimationHandler animationHandler;
+    private LinearLayout linearLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,7 +58,7 @@ public class MainActivity extends AppCompatActivity {
         loadingText = findViewById(R.id.main_loadingText);
         searchCard = findViewById(R.id.main_searchCard);
         searchView = findViewById(R.id.main_editText);
-        logo = findViewById(R.id.info_extendedBar);
+        logo = findViewById(R.id.main_extendedBar);
         DisplayCardView adView = findViewById(R.id.main_adView);
         adView.setCardBody(new AdCard());
 
@@ -148,6 +152,11 @@ public class MainActivity extends AppCompatActivity {
                 })
                 .build();
         ratingDialog.show();
+
+        // Setup animations
+        linearLayout = findViewById(R.id.main_linearLayout);
+        animationHandler = new ScrollViewAnimationHandler(this, logo, findViewById(R.id.main_scrollView));
+        animationHandler.setupScrollAnimation(linearLayout);
     }
 
     @Override
@@ -193,5 +202,6 @@ public class MainActivity extends AppCompatActivity {
         loadingText.setVisibility(View.INVISIBLE);
         loadingText.setText(R.string.loading);
         progressBar.setIndeterminate(true);
+        animationHandler.slideInViews(logo, linearLayout);
     }
 }
