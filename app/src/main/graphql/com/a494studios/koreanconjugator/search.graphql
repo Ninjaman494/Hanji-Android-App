@@ -1,4 +1,4 @@
-query SearchQuery($query: String!, $cursor: String) {
+query SearchQuery($query: String!, $cursor: Int) {
   search(query: $query, cursor: $cursor) {
     results {
         id,

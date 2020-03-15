@@ -43,7 +43,7 @@ public class SearchResultsActivity extends AppCompatActivity {
     private boolean overflowClicked;
     private SearchView searchView;
     private boolean dataLoaded = false;
-    private String cursor = null;
+    private int cursor = 0;
     private boolean loading = false;
     private RecyclerAnimationHandler animationHandler;
 
@@ -94,7 +94,7 @@ public class SearchResultsActivity extends AppCompatActivity {
                 int lastItemIndex = adapter.getItemCount() - 1;
 
                 // Don't make a new request if the previous one is still loading
-                if(pos >= lastItemIndex && cursor != null && !loading) {
+                if (pos >= lastItemIndex && cursor != -1 && !loading) {
                     loading = true;
                     adapter.loadMore();
                 }
@@ -105,7 +105,11 @@ public class SearchResultsActivity extends AppCompatActivity {
         animationHandler = new RecyclerAnimationHandler(extendedBar, recyclerView, this);
         animationHandler.setupScrollAnimations(layoutManager);
 
-        fetchSearchResponse(query, null);
+        // Checks made to handle screen rotation
+        if (cursor != -1 && !loading) {
+            loading = true;
+            fetchSearchResponse(query, cursor);
+        }
     }
 
     @Override
@@ -160,14 +164,19 @@ public class SearchResultsActivity extends AppCompatActivity {
     }
 
     @SuppressLint("CheckResult")
-    private void fetchSearchResponse(String query,String cur){
+    private void fetchSearchResponse(String query, int cur){
         Server.doSearchQuery(query, cur)
                 .subscribeWith(new DisposableObserver<Response<SearchQuery.Data>>() {
                     @Override
                     public void onNext(Response<SearchQuery.Data> dataResponse) {
                         assert dataResponse.data() != null; // Check should be done in Server
                         adapter.addAll(dataResponse.data().search().results());
-                        cursor = dataResponse.data().search().cursor();
+                        String returnedCursor = dataResponse.data().search().cursor();
+                        if(returnedCursor != null) {
+                            cursor = Integer.parseInt(dataResponse.data().search().cursor());
+                        } else {
+                            cursor = -1; // No more results left to load
+                        }
                         if(!dataLoaded) {
                             animationHandler.animateListView();
                             dataLoaded = true;

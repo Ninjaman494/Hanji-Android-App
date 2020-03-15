@@ -6,6 +6,10 @@ query EntryQuery($id: ID!) {
     definitions,
     antonyms,
     synonyms,
+    examples {
+      sentence,
+      translation
+    }
     regular,
     note
   }

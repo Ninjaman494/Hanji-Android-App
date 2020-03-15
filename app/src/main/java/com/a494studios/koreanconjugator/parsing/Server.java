@@ -25,15 +25,13 @@ import io.reactivex.schedulers.Schedulers;
 public class Server {
 
     public static Observable<Response<SearchQuery.Data>> doSearchQuery(final String query){
-        return doSearchQuery(query, null);
+        return doSearchQuery(query, 0);
     }
 
-    public static Observable<Response<SearchQuery.Data>> doSearchQuery(String query, String cursor) {
+    public static Observable<Response<SearchQuery.Data>> doSearchQuery(String query, int cursor) {
         SearchQuery.Builder queryBuilder = SearchQuery.builder()
-                .query(query);
-        if(cursor != null) {
-            queryBuilder.cursor(cursor);
-        }
+                .query(query)
+                .cursor(cursor);
 
         ApolloQueryCall<SearchQuery.Data> call = CustomApplication.getApolloClient()
                 .query(queryBuilder.build())
