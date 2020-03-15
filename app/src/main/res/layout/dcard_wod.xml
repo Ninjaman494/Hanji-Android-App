@@ -8,7 +8,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingTop="8dp"
-        android:text="가깝다"
+        android:text="@string/loading"
         android:textColor="@android:color/primary_text_light"
         android:textSize="30sp"
         android:textAlignment="center"/>

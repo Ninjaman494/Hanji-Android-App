@@ -27,7 +27,8 @@
         android:id="@+id/guideline"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="411dp"
+        android:paddingEnd="411dp"
+        android:paddingStart="0dp"
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintGuide_begin="100dp"
@@ -37,18 +38,20 @@
     <ScrollView
         android:id="@+id/main_scrollView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:clipToPadding="false"
+        android:layout_height="0dp"
         android:clipChildren="false"
-        app:layout_constraintTop_toTopOf="@+id/guideline">
+        android:clipToPadding="false"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/guideline">
 
         <LinearLayout
             android:id="@+id/main_linearLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:clipToPadding="false"
             android:clipChildren="false"
-            android:orientation="vertical">
+            android:clipToPadding="false"
+            android:orientation="vertical"
+            android:paddingBottom="0dp">
 
             <com.a494studios.koreanconjugator.display.DisplayCardView
                 android:id="@+id/main_searchCard"
@@ -62,7 +65,7 @@
 
             <com.a494studios.koreanconjugator.display.DisplayCardView
                 android:id="@+id/main_wodCard"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
         </LinearLayout>
     </ScrollView>
