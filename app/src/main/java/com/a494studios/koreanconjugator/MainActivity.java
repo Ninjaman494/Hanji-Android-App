@@ -14,7 +14,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.a494studios.koreanconjugator.display.DisplayCardView;
-import com.a494studios.koreanconjugator.display.cards.AdCard;
 import com.a494studios.koreanconjugator.parsing.Favorite;
 import com.a494studios.koreanconjugator.settings.SettingsActivity;
 import com.a494studios.koreanconjugator.utils.ScrollViewAnimationHandler;
@@ -48,12 +47,11 @@ public class MainActivity extends AppCompatActivity {
         logo = findViewById(R.id.main_extendedBar);
 
         // Set up Ad, Search, and Word of the Day cards
-        DisplayCardView adView = findViewById(R.id.main_adView);
         DisplayCardView wodCard = findViewById(R.id.main_wodCard);
         DisplayCardView searchCard = findViewById(R.id.main_searchCard);
         this.searchCard = new SearchCard(this);
 
-        adView.setCardBody(new AdCard());
+        CustomApplication.handleAdCard((DisplayCardView)findViewById(R.id.main_adView));
         wodCard.setCardBody(new WordOfDayCard());
         searchCard.setCardBody(this.searchCard);
 

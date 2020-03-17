@@ -17,6 +17,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.a494studios.koreanconjugator.CustomApplication;
 import com.a494studios.koreanconjugator.R;
 import com.a494studios.koreanconjugator.SearchQuery;
 import com.a494studios.koreanconjugator.Utils;
@@ -25,7 +26,6 @@ import com.a494studios.koreanconjugator.settings.SettingsActivity;
 import com.a494studios.koreanconjugator.utils.ErrorDialogFragment;
 import com.a494studios.koreanconjugator.utils.RecyclerAnimationHandler;
 import com.apollographql.apollo.api.Response;
-import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 
 import org.rm3l.maoni.Maoni;
@@ -51,7 +51,6 @@ public class SearchResultsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search_results);
-        AdView adView = findViewById(R.id.search_results_adView);
         RecyclerView recyclerView = findViewById(R.id.search_listView);
         snackbarShown = false;
         String query = getIntent().getStringExtra(EXTRA_QUERY);
@@ -63,7 +62,7 @@ public class SearchResultsActivity extends AppCompatActivity {
             return;
         }
 
-        adView.loadAd(new AdRequest.Builder().build());
+        CustomApplication.handleAdCard((AdView)findViewById(R.id.search_results_adView));
 
         ActionBar actionBar = getSupportActionBar();
         if(actionBar != null){

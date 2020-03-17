@@ -17,10 +17,10 @@ import android.widget.LinearLayout;
 import android.widget.ScrollView;
 
 import com.a494studios.koreanconjugator.ConjugationQuery;
+import com.a494studios.koreanconjugator.CustomApplication;
 import com.a494studios.koreanconjugator.EntryQuery;
 import com.a494studios.koreanconjugator.R;
 import com.a494studios.koreanconjugator.Utils;
-import com.a494studios.koreanconjugator.display.cards.AdCard;
 import com.a494studios.koreanconjugator.parsing.Favorite;
 import com.a494studios.koreanconjugator.parsing.Server;
 import com.a494studios.koreanconjugator.settings.SettingsActivity;
@@ -75,8 +75,7 @@ public class DisplayActivity extends AppCompatActivity {
         displayLoading(true);
 
         // Setting up Ad Card
-        DisplayCardView adCardView = findViewById(R.id.disp_adCard);
-        adCardView.setCardBody(new AdCard());
+        CustomApplication.handleAdCard((DisplayCardView)findViewById(R.id.disp_adCard));
 
         // Creating DisplayObserver
         View rootView = findViewById(android.R.id.content);

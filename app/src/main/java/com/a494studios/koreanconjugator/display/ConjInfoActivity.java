@@ -7,8 +7,8 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 
+import com.a494studios.koreanconjugator.CustomApplication;
 import com.a494studios.koreanconjugator.R;
-import com.a494studios.koreanconjugator.display.cards.AdCard;
 import com.a494studios.koreanconjugator.display.cards.ConjInfoCard;
 import com.a494studios.koreanconjugator.utils.ScrollViewAnimationHandler;
 
@@ -47,8 +47,7 @@ public class ConjInfoActivity extends AppCompatActivity {
         infoCard.setCardBody(new ConjInfoCard(name,conjugated,pronunciation,romanization,explanations));
         infoCard.showHonorificChip(isHonorific);
 
-        DisplayCardView adCard = findViewById(R.id.info_adCard);
-        adCard.setCardBody(new AdCard());
+        CustomApplication.handleAdCard((DisplayCardView)findViewById(R.id.info_adCard));
 
         extendedBar = findViewById(R.id.info_extendedBar);
         linearLayout = findViewById(R.id.info_root);
