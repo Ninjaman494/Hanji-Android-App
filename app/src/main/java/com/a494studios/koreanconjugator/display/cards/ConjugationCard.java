@@ -48,6 +48,7 @@ public class ConjugationCard implements DisplayCardBody {
                 i.putExtra(ConjInfoActivity.EXTRA_PRON,conjugation.pronunciation());
                 i.putExtra(ConjInfoActivity.EXTRA_ROME,conjugation.romanization());
                 i.putExtra(ConjInfoActivity.EXTRA_EXPL,new ArrayList<>(conjugation.reasons()));
+                i.putExtra(ConjInfoActivity.EXTRA_HONO, conjugation.honorific());
                 view.getContext().startActivity(i);
             }
         });

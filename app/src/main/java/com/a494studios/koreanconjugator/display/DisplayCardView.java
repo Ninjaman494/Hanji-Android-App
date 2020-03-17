@@ -19,6 +19,7 @@ public class DisplayCardView extends RelativeLayout {
     DisplayCardBody cardBody;
     Context context;
     LinearLayout linearLayout;
+    TextView honorificChip;
 
     public DisplayCardView(Context context) {
         super(context);
@@ -43,6 +44,7 @@ public class DisplayCardView extends RelativeLayout {
         headingView = rootView.findViewById(R.id.displayCard_heading);
         button = rootView.findViewById(R.id.displayCard_button);
         linearLayout = rootView.findViewById(R.id.displayCard_body);
+        honorificChip = rootView.findViewById(R.id.displayCard_honorific);
         // Add body view
         if(cardBody != null) {
             cardBodyUpdates();
@@ -77,6 +79,14 @@ public class DisplayCardView extends RelativeLayout {
     public void setCardBody(DisplayCardBody cardBody) {
         this.cardBody = Objects.requireNonNull(cardBody);
         cardBodyUpdates();
+    }
+
+    public void showHonorificChip(boolean shouldShow) {
+        if(shouldShow) {
+            honorificChip.setVisibility(VISIBLE);
+        } else {
+            honorificChip.setVisibility(GONE);
+        }
     }
 
     private void hideButton(boolean shouldHide){

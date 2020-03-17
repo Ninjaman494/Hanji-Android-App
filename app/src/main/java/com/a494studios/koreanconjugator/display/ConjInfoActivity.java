@@ -21,6 +21,7 @@ public class ConjInfoActivity extends AppCompatActivity {
     public static final String EXTRA_PRON = "PRON";
     public static final String EXTRA_ROME = "ROME";
     public static final String EXTRA_EXPL = "EXPL";
+    public static final String EXTRA_HONO = "HONO";
     private ScrollViewAnimationHandler animationHandler;
     private View extendedBar;
     private LinearLayout linearLayout;
@@ -40,9 +41,11 @@ public class ConjInfoActivity extends AppCompatActivity {
         String pronunciation = getIntent().getStringExtra(EXTRA_PRON);
         String romanization = getIntent().getStringExtra(EXTRA_ROME);
         List<String> explanations = getIntent().getStringArrayListExtra(EXTRA_EXPL);
+        boolean isHonorific = getIntent().getBooleanExtra(EXTRA_HONO, false);
 
         DisplayCardView infoCard = findViewById(R.id.info_infoCard);
         infoCard.setCardBody(new ConjInfoCard(name,conjugated,pronunciation,romanization,explanations));
+        infoCard.showHonorificChip(isHonorific);
 
         DisplayCardView adCard = findViewById(R.id.info_adCard);
         adCard.setCardBody(new AdCard());
