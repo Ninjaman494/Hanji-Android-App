@@ -26,9 +26,9 @@ public class ExampleAdapterUnitTest {
 
     @Before
     public void init() {
-        ExamplesQuery.Example e1 = new ExamplesQuery.Example("type","id1","sen1","tran1");
-        ExamplesQuery.Example e2 = new ExamplesQuery.Example("type","id2","sen2","tran2");
-        ExamplesQuery.Example e3 = new ExamplesQuery.Example("type","id3","sen3","tran3");
+        ExamplesQuery.Example e1 = new ExamplesQuery.Example("type","sen1","tran1");
+        ExamplesQuery.Example e2 = new ExamplesQuery.Example("type","sen2","tran2");
+        ExamplesQuery.Example e3 = new ExamplesQuery.Example("type","sen3","tran3");
         examples = new ArrayList<>();
         examples.add(e1);
         examples.add(e2);

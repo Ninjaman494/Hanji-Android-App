@@ -25,6 +25,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 @RunWith(RobolectricTestRunner.class)
@@ -74,6 +75,8 @@ public class ConjugationAdapterUnitTest {
             assertEquals(c.conjugation(),conjView.getText());
 
             conjView.callOnClick();
+            assertNotNull(Shadows.shadowOf(activity).peekNextStartedActivityForResult());
+
             Intent intent = Shadows.shadowOf(activity).peekNextStartedActivityForResult().intent;
             assertEquals(intent.getComponent(),new ComponentName(activity, ConjInfoActivity.class));
             assertEquals(intent.getStringExtra(ConjInfoActivity.EXTRA_NAME),c.name());
