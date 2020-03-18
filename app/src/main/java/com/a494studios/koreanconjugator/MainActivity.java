@@ -22,7 +22,6 @@ import com.codemybrainsout.ratingdialog.RatingDialog;
 import com.crashlytics.android.Crashlytics;
 import com.eggheadgames.aboutbox.AboutBoxUtils;
 import com.eggheadgames.aboutbox.AboutConfig;
-import com.google.android.gms.ads.MobileAds;
 
 import org.rm3l.maoni.Maoni;
 
@@ -32,7 +31,7 @@ import static com.eggheadgames.aboutbox.activity.AboutActivity.*;
 
 public class MainActivity extends AppCompatActivity {
 
-    private static final String APP_ID = BuildConfig.ADMOB_KEY;
+
 
     private SearchCard searchCard;
     private TextView logo;
@@ -43,7 +42,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        MobileAds.initialize(this, APP_ID);
         logo = findViewById(R.id.main_extendedBar);
 
         // Set up Ad, Search, and Word of the Day cards

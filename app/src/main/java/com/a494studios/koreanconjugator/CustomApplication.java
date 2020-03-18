@@ -10,28 +10,29 @@ import com.apollographql.apollo.cache.http.ApolloHttpCache;
 import com.apollographql.apollo.cache.http.DiskLruHttpCacheStore;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.MobileAds;
 
 import java.io.File;
 
 import okhttp3.OkHttpClient;
 
 public class CustomApplication extends Application {
+    private static final String APP_ID = BuildConfig.ADMOB_KEY;
     private static final String SERVER_URL = com.a494studios.koreanconjugator.BuildConfig.SERVER_URL;
     private static ApolloClient apolloClient;
-    private static boolean isAdFree = true;
+    private static boolean isAdFree = false;
 
     // Called when the application is starting, before any other application objects have been created.
     @Override
     public void onCreate() {
         super.onCreate();
 
-        //Directory where cached responses will be stored
+        // Setup ads
+        MobileAds.initialize(this, APP_ID);
+
+        // Setup response cache for Apollo
         File file = this.getCacheDir();
-
-        //Size in bytes of the cache
         int size = 1024*1024;
-
-        //Create the http response cache store
         DiskLruHttpCacheStore cacheStore = new DiskLruHttpCacheStore(file,size);
 
         //Build the Apollo Client
