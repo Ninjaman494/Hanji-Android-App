@@ -99,6 +99,7 @@ public class DisplayActivity extends AppCompatActivity {
                     assert dataResponse.data() != null;
                     entry = dataResponse.data().entry();
                     boolean isAdj = entry.pos().equals("Adjective");
+                    Boolean regular = entry.regular();
                     observer.setEntry(entry);
 
                     if (!entry.pos().equals("Verb") && !isAdj) {
@@ -110,7 +111,7 @@ public class DisplayActivity extends AppCompatActivity {
                             .map(Favorite::getConjugationName)
                             .toList()
                             .blockingGet();
-                    return Server.doConjugationQuery(entry.term(), false, isAdj, conjugations);
+                    return Server.doConjugationQuery(entry.term(), false, isAdj, regular, conjugations);
                 });
 
         // Combine with Examples Observable and execute

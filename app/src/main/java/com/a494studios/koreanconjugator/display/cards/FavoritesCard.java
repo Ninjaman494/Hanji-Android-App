@@ -22,13 +22,15 @@ public class FavoritesCard implements DisplayCardBody {
     private String stem;
     private boolean honorific;
     private boolean isAdj;
+    private Boolean regular;
     private FavoritesAdapter adapter;
 
-    public FavoritesCard(ArrayList<Map.Entry<String,ConjugationQuery.Conjugation>> entries, String stem, boolean honorific, boolean isAdj) {
+    public FavoritesCard(ArrayList<Map.Entry<String,ConjugationQuery.Conjugation>> entries, String stem, boolean honorific, boolean isAdj, Boolean regular) {
         this.adapter = new FavoritesAdapter(Objects.requireNonNull(entries));
         this.stem = Objects.requireNonNull(stem);
         this.honorific = honorific;
         this.isAdj = isAdj;
+        this.regular = regular;
     }
 
     @Override
@@ -47,6 +49,7 @@ public class FavoritesCard implements DisplayCardBody {
         i.putExtra(ConjugationActivity.EXTRA_STEM,stem);
         i.putExtra(ConjugationActivity.EXTRA_HONORIFIC,honorific);
         i.putExtra(ConjugationActivity.EXTRA_ISADJ, isAdj);
+        i.putExtra(ConjugationActivity.EXTRA_REGULAR, regular);
         view.getContext().startActivity(i);
     }
 

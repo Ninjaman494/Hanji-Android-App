@@ -61,9 +61,10 @@ public class DisplayObserver extends DisposableObserver<Pair<ConjugationQuery.Da
         } else {
             List<ConjugationQuery.Conjugation> conjugations = conjData.conjugations();
             boolean isAdj = entry.pos().equals("Adjective");
+            Boolean regular = entry.regular();
             List<Favorite> favorites = Utils.getFavorites(displayCardView.getContext());
 
-            FavoritesCard card = new FavoritesCard(new ArrayList<>(), entry.term(), false, isAdj);
+            FavoritesCard card = new FavoritesCard(new ArrayList<>(), entry.term(), false, isAdj, regular);
             this.conjugations.setCardBody(card);
             Observable.fromIterable(favorites)
                     .map(favorite -> {

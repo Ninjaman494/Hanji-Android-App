@@ -28,6 +28,7 @@ public class ConjugationActivity extends AppCompatActivity {
     public static final String EXTRA_STEM = "stem";
     public static final String EXTRA_HONORIFIC = "honorific";
     public static final String EXTRA_ISADJ = "isAdj";
+    public static final String EXTRA_REGULAR = "regular";
 
     private ConjugationAnimationHandler animationHandler;
     private RecyclerView recyclerView;
@@ -41,6 +42,7 @@ public class ConjugationActivity extends AppCompatActivity {
         final String stem = getIntent().getStringExtra(EXTRA_STEM);
         final boolean honorific = getIntent().getBooleanExtra(EXTRA_HONORIFIC,false);
         final boolean isAdj = getIntent().getBooleanExtra(EXTRA_ISADJ,false);
+        final Boolean regular = (Boolean)getIntent().getSerializableExtra(EXTRA_REGULAR);
 
         ActionBar actionBar = getSupportActionBar();
         if(actionBar != null) {
@@ -49,16 +51,16 @@ public class ConjugationActivity extends AppCompatActivity {
         }
 
         setLoading(true);
-        getConjugations(stem, honorific, isAdj);
+        getConjugations(stem, honorific, isAdj, regular);
         TextView switchText = findViewById(R.id.conj_switchText);
         ((SwitchCompat)findViewById(R.id.conj_switch)).setOnCheckedChangeListener((compoundButon, checked) -> {
             setLoading(true);
             if(checked) {
                 switchText.setText(getString(R.string.honorific_forms));
-                getConjugations(stem,true,isAdj);
+                getConjugations(stem,true,isAdj, regular);
             } else {
                 switchText.setText(getString(R.string.regular_forms));
-                getConjugations(stem,false,isAdj);
+                getConjugations(stem,false,isAdj, regular);
             }
         });
 
@@ -71,8 +73,8 @@ public class ConjugationActivity extends AppCompatActivity {
         animationHandler.setupScrollAnimations(layoutManager);
     }
 
-    private void getConjugations(String stem, boolean honorific, boolean isAdj) {
-        Server.doConjugationQuery(stem, honorific, isAdj, new ApolloCall.Callback<ConjugationQuery.Data>() {
+    private void getConjugations(String stem, boolean honorific, boolean isAdj, Boolean regular) {
+        Server.doConjugationQuery(stem, honorific, isAdj, regular, new ApolloCall.Callback<ConjugationQuery.Data>() {
                     @Override
                     public void onResponse(@NotNull Response<ConjugationQuery.Data> response) {
                         if(response.data() == null) {
