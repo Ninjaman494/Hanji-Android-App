@@ -7,7 +7,6 @@ import com.a494studios.koreanconjugator.EntryQuery;
 import com.a494studios.koreanconjugator.ExamplesQuery;
 import com.a494studios.koreanconjugator.SearchQuery;
 import com.a494studios.koreanconjugator.WordOfTheDayQuery;
-import com.apollographql.apollo.ApolloCall;
 import com.apollographql.apollo.ApolloQueryCall;
 import com.apollographql.apollo.api.Response;
 import com.apollographql.apollo.api.cache.http.HttpCachePolicy;
@@ -89,10 +88,14 @@ public class Server {
 
     }
 
-    public static void doConjugationNamesQuery(ApolloCall.Callback<ConjugationNamesQuery.Data> callback) {
-        CustomApplication.getApolloClient()
-                .query(new ConjugationNamesQuery())
-                .enqueue(callback);
+    public static Observable<Response<ConjugationNamesQuery.Data>> doConjugationNamesQuery() {
+        ApolloQueryCall<ConjugationNamesQuery.Data> call = CustomApplication.getApolloClient()
+                .query(new ConjugationNamesQuery());
+
+        return Rx2Apollo.from(call)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .filter((dataResponse -> dataResponse.data() != null));
     }
 
     public static Observable<Response<WordOfTheDayQuery.Data>> doWODQuery() {

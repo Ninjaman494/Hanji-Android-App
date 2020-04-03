@@ -1,6 +1,8 @@
 package com.a494studios.koreanconjugator.settings;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
@@ -18,15 +20,13 @@ import com.a494studios.koreanconjugator.R;
 import com.a494studios.koreanconjugator.Utils;
 import com.a494studios.koreanconjugator.parsing.Favorite;
 import com.a494studios.koreanconjugator.parsing.Server;
-import com.apollographql.apollo.ApolloCall;
 import com.apollographql.apollo.api.Response;
-import com.apollographql.apollo.exception.ApolloException;
-
-import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+
+import io.reactivex.observers.DisposableObserver;
 
 
 public class FavoritesActivity extends AppCompatActivity implements AddFavoriteFragment.AddFavoriteFragmentListener {
@@ -34,6 +34,7 @@ public class FavoritesActivity extends AppCompatActivity implements AddFavoriteF
     FavoritesAdapter adapter;
     AddFavoriteFragment addFavoriteFragment;
 
+    @SuppressLint("CheckResult")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,44 +48,50 @@ public class FavoritesActivity extends AppCompatActivity implements AddFavoriteF
         adapter = new FavoritesAdapter(Utils.getFavorites(this));
         listView.setAdapter(adapter);
 
-        Server.doConjugationNamesQuery(new ApolloCall.Callback<ConjugationNamesQuery.Data>() {
-            @Override
-            public void onResponse(@NotNull Response<ConjugationNamesQuery.Data> response) {
-                if(response.data() == null) {
-                    return;
-                }
+        Server.doConjugationNamesQuery()
+                .subscribeWith(new DisposableObserver<Response<ConjugationNamesQuery.Data>>() {
+                    @Override
+                    public void onNext(Response<ConjugationNamesQuery.Data> response) {
+                        if (response.data() == null) {
+                            return;
+                        }
 
-                List<String> names = response.data().conjugationNames();
-                HashMap<String,Boolean> data = new HashMap<>();
-                for(String name : names) {
-                    name = name.toLowerCase();
-                    boolean showSpeechLevels = false;
-                    if(name.contains("informal low")){
-                        showSpeechLevels = true;
-                        name = name.replace("informal low", "");
-                    } else if(name.contains("informal high")) {
-                        showSpeechLevels = true;
-                        name = name.replace("informal high", "");
-                    } else if(name.contains("formal low")) {
-                        showSpeechLevels = true;
-                        name = name.replace("formal low", "");
-                    } else if(name.contains("formal high")) {
-                        showSpeechLevels = true;
-                        name = name.replace("formal high", "");
+                        List<String> names = response.data().conjugationNames();
+                        HashMap<String, Boolean> data = new HashMap<>();
+                        for (String name : names) {
+                            name = name.toLowerCase();
+                            boolean showSpeechLevels = false;
+                            if (name.contains("informal low")) {
+                                showSpeechLevels = true;
+                                name = name.replace("informal low", "");
+                            } else if (name.contains("informal high")) {
+                                showSpeechLevels = true;
+                                name = name.replace("informal high", "");
+                            } else if (name.contains("formal low")) {
+                                showSpeechLevels = true;
+                                name = name.replace("formal low", "");
+                            } else if (name.contains("formal high")) {
+                                showSpeechLevels = true;
+                                name = name.replace("formal high", "");
+                            }
+
+                            if (!data.containsKey(name)) {
+                                data.put(Utils.toTitleCase(name), showSpeechLevels);
+                            }
+                        }
+                        addFavoriteFragment = AddFavoriteFragment.newInstance(data);
                     }
 
-                    if(!data.containsKey(name)) {
-                        data.put(Utils.toTitleCase(name), showSpeechLevels);
+                    @Override
+                    public void onError(Throwable e) {
+                        e.printStackTrace();
                     }
-                }
-                addFavoriteFragment = AddFavoriteFragment.newInstance(data);
-            }
 
-            @Override
-            public void onFailure(@NotNull ApolloException e) {
-                e.printStackTrace();
-            }
-        });
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
 
         listView.setAdapter(adapter);
         registerForContextMenu(listView);
