@@ -53,26 +53,8 @@ public class Server {
                 .filter((dataResponse) -> dataResponse.data() != null);
     }
 
-    public static void doConjugationQuery(String stem, boolean honorific, boolean isAdj, Boolean regular, ApolloCall.Callback<ConjugationQuery.Data> callback){
-        doConjugationQuery(stem,honorific,isAdj,regular, null, callback);
-    }
-
-    public static void doConjugationQuery(String stem, boolean honorific, boolean isAdj, Boolean regular, List<String> conjugations, ApolloCall.Callback<ConjugationQuery.Data> callback){
-        ConjugationQuery.Builder queryBuilder = ConjugationQuery.builder()
-                .stem(stem)
-                .honorific(honorific)
-                .isAdj(isAdj);
-        if(conjugations != null) {
-            queryBuilder.conjugations(conjugations);
-        }
-        if(regular != null) {
-            queryBuilder.regular(regular);
-        }
-
-        CustomApplication.getApolloClient()
-                .query(queryBuilder.build())
-                .httpCachePolicy(HttpCachePolicy.CACHE_FIRST)
-                .enqueue(callback);
+    public static Observable<Response<ConjugationQuery.Data>> doConjugationQuery(String stem, boolean honorific, boolean isAdj, Boolean regular){
+        return doConjugationQuery(stem,honorific,isAdj,regular, null);
     }
 
     public static Observable<Response<ConjugationQuery.Data>> doConjugationQuery(String stem, boolean honorific, boolean isAdj, Boolean regular, List<String> conjugations){

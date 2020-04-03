@@ -6,6 +6,7 @@ import androidx.appcompat.widget.SwitchCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
@@ -22,6 +23,8 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.TreeMap;
+
+import io.reactivex.observers.DisposableObserver;
 
 public class ConjugationActivity extends AppCompatActivity {
 
@@ -73,40 +76,45 @@ public class ConjugationActivity extends AppCompatActivity {
         animationHandler.setupScrollAnimations(layoutManager);
     }
 
+    @SuppressLint("CheckResult")
     private void getConjugations(String stem, boolean honorific, boolean isAdj, Boolean regular) {
-        Server.doConjugationQuery(stem, honorific, isAdj, regular, new ApolloCall.Callback<ConjugationQuery.Data>() {
-                    @Override
-                    public void onResponse(@NotNull Response<ConjugationQuery.Data> response) {
-                        if(response.data() == null) {
-                            return;
-                        }
+        Server.doConjugationQuery(stem, honorific, isAdj, regular)
+        .subscribeWith(new DisposableObserver<Response<ConjugationQuery.Data>>() {
+            @Override
+            public void onNext(Response<ConjugationQuery.Data> response) {
+                if(response.data() == null) {
+                    return;
+                }
 
-                        List<ConjugationQuery.Conjugation> conjugations = response.data().conjugations();
-                        final TreeMap<String,List<ConjugationQuery.Conjugation>> conjMap = new TreeMap<>();
-                        for(ConjugationQuery.Conjugation conjugation : conjugations){
-                            String type = conjugation.type();
-                            if(conjMap.keySet().contains(type)){
-                                conjMap.get(type).add(conjugation);
-                            }else{
-                                List<ConjugationQuery.Conjugation> value = new ArrayList<>();
-                                value.add(conjugation);
-                                conjMap.put(type,value);
-                            }
-                        }
-
-                        runOnUiThread(() -> {
-                            List<List<ConjugationQuery.Conjugation>> conjugations1 = new ArrayList<>(conjMap.values());
-                            recyclerView.setAdapter(new ConjugationCardsAdapter(conjugations1));
-                            setLoading(false);
-                            dataLoaded = true;
-                        });
+                List<ConjugationQuery.Conjugation> conjugations = response.data().conjugations();
+                final TreeMap<String,List<ConjugationQuery.Conjugation>> conjMap = new TreeMap<>();
+                for(ConjugationQuery.Conjugation conjugation : conjugations){
+                    String type = conjugation.type();
+                    if(conjMap.keySet().contains(type)){
+                        conjMap.get(type).add(conjugation);
+                    }else{
+                        List<ConjugationQuery.Conjugation> value = new ArrayList<>();
+                        value.add(conjugation);
+                        conjMap.put(type,value);
                     }
+                }
 
-                    @Override
-                    public void onFailure(@NotNull ApolloException e) {
-                        e.printStackTrace();
-                    }
-                });
+                List<List<ConjugationQuery.Conjugation>> conjugations1 = new ArrayList<>(conjMap.values());
+                recyclerView.setAdapter(new ConjugationCardsAdapter(conjugations1));
+                setLoading(false);
+                dataLoaded = true;
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                e.printStackTrace();
+            }
+
+            @Override
+            public void onComplete() {
+
+            }
+        });
     }
 
     @Override
