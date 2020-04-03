@@ -93,15 +93,15 @@ public class MainActivity extends AppCompatActivity {
             Crashlytics.logException(e);
         }
 
-        if(Utils.isFirstBoot(this)){
-            // Make default favorites
-            // TODO Clear old favorites, or at least find a way to handle old favorite form
+        if(Utils.isFirstBoot(this) || Utils.isFirstTwo(this)){
+            // Make default favorites, or clear old favorites from 1.0
             ArrayList<Favorite> favs = new ArrayList<>();
             favs.add(new Favorite("Past","declarative past informal high",false));
-            favs.add(new Favorite("Present","declarative present informal high",true));
+            favs.add(new Favorite("Present","declarative present informal high",false));
             favs.add(new Favorite("Future","declarative future informal high",false));
             Utils.setFavorites(favs,this);
             Utils.setFirstBoot(this,false);
+            Utils.setFirstTwo(this, false);
         }
 
         // Setting up Feedback dialog

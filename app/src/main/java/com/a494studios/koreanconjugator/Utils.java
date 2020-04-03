@@ -37,6 +37,7 @@ public class Utils {
     public static final String PREF_FAV_COUNT = "pref_fav_count";
     private static final String PREF_FAV_VALUES = "FAVORITES_VALUES";
     private static final String PREF_FIRST_BOOT = "FIRST_BOOT";
+    private static final String PREF_FIRST_TWO = "FIRST_TWO";
 
     public static boolean isFirstBoot(Context context){
         return PreferenceManager.getDefaultSharedPreferences(context).getBoolean(PREF_FIRST_BOOT,true);
@@ -44,6 +45,14 @@ public class Utils {
 
     public static void setFirstBoot(Context context, boolean firstBoot){
         PreferenceManager.getDefaultSharedPreferences(context).edit().putBoolean(PREF_FIRST_BOOT,firstBoot).apply();
+    }
+
+    public static boolean isFirstTwo(Context context) {
+        return PreferenceManager.getDefaultSharedPreferences(context).getBoolean(PREF_FIRST_TWO, true);
+    }
+
+    public static void setFirstTwo(Context context, boolean firstTwo) {
+        PreferenceManager.getDefaultSharedPreferences(context).edit().putBoolean(PREF_FIRST_TWO, firstTwo).apply();
     }
 
     public static boolean getKoreanLuck(Context context){
