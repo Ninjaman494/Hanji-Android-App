@@ -24,15 +24,13 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/addFav_name"
-        android:layout_marginTop="@dimen/verticalMargin"
-        android:layout_marginStart="@dimen/horizontalMargin"/>
+        android:layout_marginTop="@dimen/verticalMargin" />
     <Spinner
         android:id="@+id/addFav_speechLevelSpinner"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/addFav_conjSpinner"
-        android:layout_marginTop="@dimen/verticalMargin"
-        android:layout_marginStart="@dimen/horizontalMargin"/>
+        android:layout_marginTop="@dimen/verticalMargin" />
 
     <TextView
         android:layout_width="wrap_content"
