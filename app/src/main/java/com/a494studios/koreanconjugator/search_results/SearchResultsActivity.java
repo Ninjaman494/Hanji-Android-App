@@ -20,7 +20,7 @@ import android.view.View;
 import com.a494studios.koreanconjugator.CustomApplication;
 import com.a494studios.koreanconjugator.R;
 import com.a494studios.koreanconjugator.SearchQuery;
-import com.a494studios.koreanconjugator.Utils;
+import com.a494studios.koreanconjugator.utils.Utils;
 import com.a494studios.koreanconjugator.parsing.Server;
 import com.a494studios.koreanconjugator.settings.SettingsActivity;
 import com.a494studios.koreanconjugator.utils.ErrorDialogFragment;

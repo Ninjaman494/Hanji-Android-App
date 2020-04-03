@@ -4,6 +4,7 @@ package com.a494studios.koreanconjugator;
 import android.content.Context;
 
 import com.a494studios.koreanconjugator.parsing.Favorite;
+import com.a494studios.koreanconjugator.utils.Utils;
 
 import org.junit.Before;
 import org.junit.Test;

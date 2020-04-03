@@ -20,7 +20,7 @@ import com.a494studios.koreanconjugator.ConjugationQuery;
 import com.a494studios.koreanconjugator.CustomApplication;
 import com.a494studios.koreanconjugator.EntryQuery;
 import com.a494studios.koreanconjugator.R;
-import com.a494studios.koreanconjugator.Utils;
+import com.a494studios.koreanconjugator.utils.Utils;
 import com.a494studios.koreanconjugator.parsing.Favorite;
 import com.a494studios.koreanconjugator.parsing.Server;
 import com.a494studios.koreanconjugator.settings.SettingsActivity;

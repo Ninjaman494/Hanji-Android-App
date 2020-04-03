@@ -9,7 +9,7 @@ import com.a494studios.koreanconjugator.display.ConjInfoActivity;
 import com.a494studios.koreanconjugator.display.adapters.ConjugationAdapter;
 import com.a494studios.koreanconjugator.ConjugationQuery;
 import com.a494studios.koreanconjugator.R;
-import com.a494studios.koreanconjugator.Utils;
+import com.a494studios.koreanconjugator.utils.Utils;
 import com.linearlistview.LinearListView;
 
 import java.util.ArrayList;

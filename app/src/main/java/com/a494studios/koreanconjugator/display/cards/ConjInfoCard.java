@@ -6,7 +6,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.a494studios.koreanconjugator.R;
-import com.a494studios.koreanconjugator.Utils;
+import com.a494studios.koreanconjugator.utils.Utils;
 import com.a494studios.koreanconjugator.display.adapters.ExplanationsAdapter;
 import com.linearlistview.LinearListView;
 

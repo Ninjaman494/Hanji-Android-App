@@ -1,4 +1,4 @@
-package com.a494studios.koreanconjugator;
+package com.a494studios.koreanconjugator.utils;
 
 import android.app.Activity;
 import android.content.Context;
@@ -8,13 +8,12 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.a494studios.koreanconjugator.BuildConfig;
+import com.a494studios.koreanconjugator.R;
 import com.a494studios.koreanconjugator.parsing.Favorite;
 import com.a494studios.koreanconjugator.parsing.FavoriteSerializer;
 import com.a494studios.koreanconjugator.settings.LegalDisplayActivity;
-import com.a494studios.koreanconjugator.utils.ErrorDialogFragment;
-import com.a494studios.koreanconjugator.utils.SlackHandler;
 import com.eggheadgames.aboutbox.AboutConfig;
-import com.eggheadgames.aboutbox.IDialog;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
@@ -32,8 +31,6 @@ import javax.annotation.Nullable;
  */
 
 public class Utils {
-    public static final String PREF_LUCKY_KOR = "pref_luckyKorean";
-    public static final String PREF_LUCKY_ENG = "pref_luckyEnglish";
     public static final String PREF_FAV_COUNT = "pref_fav_count";
     private static final String PREF_FAV_VALUES = "FAVORITES_VALUES";
     private static final String PREF_FIRST_BOOT = "FIRST_BOOT";
@@ -53,14 +50,6 @@ public class Utils {
 
     public static void setFirstTwo(Context context, boolean firstTwo) {
         PreferenceManager.getDefaultSharedPreferences(context).edit().putBoolean(PREF_FIRST_TWO, firstTwo).apply();
-    }
-
-    public static boolean getKoreanLuck(Context context){
-        return PreferenceManager.getDefaultSharedPreferences(context).getBoolean(PREF_LUCKY_KOR, false);
-    }
-
-    public static boolean getEnglishLuck(Context context){
-        return PreferenceManager.getDefaultSharedPreferences(context).getBoolean(PREF_LUCKY_ENG, false);
     }
 
     public static int getFavCount(Context context){
@@ -85,21 +74,6 @@ public class Utils {
         builder.registerTypeHierarchyAdapter(Favorite.class, new FavoriteSerializer());
         java.lang.reflect.Type type = new TypeToken<ArrayList<Favorite>>(){}.getType();
         return builder.create().fromJson(jsonString,type);
-    }
-
-    public static boolean isHangul(String korean){
-        if(korean.isEmpty()){
-            return false;
-        }
-
-        korean = korean.replace(" ","");
-        for(int i=0;i<korean.length();i++){
-            char c = korean.charAt(i);
-            if(!((int)c >= '가' && (int)c <= '힣')){
-                return false;
-            }
-        }
-        return true;
     }
 
     public static String toTitleCase(String string) {
@@ -127,23 +101,20 @@ public class Utils {
         aboutConfig.privacyHtmlPath = "file:///android_asset/PrivacyPolicy.html";
         aboutConfig.acknowledgmentHtmlPath = "www.google.com";
         // Custom handler for Acknowledgements and Privacy Policy options
-        aboutConfig.dialog = new IDialog() {
-            @Override
-            public void open(AppCompatActivity appCompatActivity, String url, String tag) {
-                if(tag.equals(activity.getString(R.string.egab_privacy_policy))) {
-                    Intent intent = new Intent(activity,LegalDisplayActivity.class);
-                    intent.putExtra("type",LegalDisplayActivity.TYPE_PRIV_POLICY);
-                    activity.startActivity(intent);
-                }else if(tag.equals(activity.getString(R.string.egab_acknowledgements))){
-                    new LibsBuilder()
-                            .withActivityStyle(Libs.ActivityStyle.LIGHT_DARK_TOOLBAR)
-                            .withExcludedLibraries("support_cardview","support_v4","support_annotations","AppCompat","appcompat_v7","recyclerview_v7","GooglePlayServices","design","volleyplus")
-                            .withLicenseDialog(true)
-                            .withLicenseShown(true)
-                            .withActivityTitle("Libraries Used")
-                            .withLibraries("aboutBox","linear_list","transitions")
-                            .start(activity);
-                }
+        aboutConfig.dialog = (appCompatActivity, url, tag) -> {
+            if(tag.equals(activity.getString(R.string.egab_privacy_policy))) {
+                Intent intent = new Intent(activity,LegalDisplayActivity.class);
+                intent.putExtra("type",LegalDisplayActivity.TYPE_PRIV_POLICY);
+                activity.startActivity(intent);
+            }else if(tag.equals(activity.getString(R.string.egab_acknowledgements))){
+                new LibsBuilder()
+                        .withActivityStyle(Libs.ActivityStyle.LIGHT_DARK_TOOLBAR)
+                        .withExcludedLibraries("support_cardview","support_v4","support_annotations","AppCompat","appcompat_v7","recyclerview_v7","GooglePlayServices","design","volleyplus")
+                        .withLicenseDialog(true)
+                        .withLicenseShown(true)
+                        .withActivityTitle("Libraries Used")
+                        .withLibraries("aboutBox","linear_list","transitions")
+                        .start(activity);
             }
         };
     }

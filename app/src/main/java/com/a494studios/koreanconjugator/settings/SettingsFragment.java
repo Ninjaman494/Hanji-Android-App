@@ -6,7 +6,7 @@ import android.os.Bundle;
 import android.preference.PreferenceFragment;
 
 import com.a494studios.koreanconjugator.R;
-import com.a494studios.koreanconjugator.Utils;
+import com.a494studios.koreanconjugator.utils.Utils;
 
 /**
  * A simple {@link PreferenceFragment} subclass.
@@ -22,22 +22,7 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
 
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-        switch (key) {
-            case Utils.PREF_LUCKY_KOR:
-                if (sharedPreferences.getBoolean(key, false)) {
-                    findPreference(key).setSummary(R.string.lucky_kor_true);
-                } else {
-                    findPreference(key).setSummary(R.string.lucky_kor_false);
-                }
-                break;
-            case Utils.PREF_LUCKY_ENG:
-                if (sharedPreferences.getBoolean(key, false)) {
-                    findPreference(key).setSummary(R.string.lucky_eng_true);
-                } else {
-                    findPreference(key).setSummary(R.string.lucky_eng_false);
-                }
-                break;
-        }
+       // Empty on purpose
     }
 
     @Override

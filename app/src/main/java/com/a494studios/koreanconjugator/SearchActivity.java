@@ -14,6 +14,7 @@ import com.a494studios.koreanconjugator.display.DisplayActivity;
 import com.a494studios.koreanconjugator.parsing.Server;
 import com.a494studios.koreanconjugator.search_results.SearchResultsActivity;
 import com.a494studios.koreanconjugator.utils.ErrorDialogFragment;
+import com.a494studios.koreanconjugator.utils.Utils;
 import com.apollographql.apollo.api.Response;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;

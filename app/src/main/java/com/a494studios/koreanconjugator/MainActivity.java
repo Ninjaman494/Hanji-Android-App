@@ -18,6 +18,7 @@ import com.a494studios.koreanconjugator.parsing.Favorite;
 import com.a494studios.koreanconjugator.settings.SettingsActivity;
 import com.a494studios.koreanconjugator.utils.ScrollViewAnimationHandler;
 import com.a494studios.koreanconjugator.utils.SlackHandler;
+import com.a494studios.koreanconjugator.utils.Utils;
 import com.codemybrainsout.ratingdialog.RatingDialog;
 import com.crashlytics.android.Crashlytics;
 import com.eggheadgames.aboutbox.AboutBoxUtils;

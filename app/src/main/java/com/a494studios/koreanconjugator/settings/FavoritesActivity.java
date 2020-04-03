@@ -17,7 +17,7 @@ import android.widget.TextView;
 
 import com.a494studios.koreanconjugator.ConjugationNamesQuery;
 import com.a494studios.koreanconjugator.R;
-import com.a494studios.koreanconjugator.Utils;
+import com.a494studios.koreanconjugator.utils.Utils;
 import com.a494studios.koreanconjugator.parsing.Favorite;
 import com.a494studios.koreanconjugator.parsing.Server;
 import com.apollographql.apollo.api.Response;

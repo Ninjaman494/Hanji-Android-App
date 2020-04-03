@@ -8,7 +8,7 @@ import com.a494studios.koreanconjugator.ConjugationQuery;
 import com.a494studios.koreanconjugator.EntryQuery;
 import com.a494studios.koreanconjugator.ExamplesQuery;
 import com.a494studios.koreanconjugator.R;
-import com.a494studios.koreanconjugator.Utils;
+import com.a494studios.koreanconjugator.utils.Utils;
 import com.a494studios.koreanconjugator.display.cards.DefPOSCard;
 import com.a494studios.koreanconjugator.display.cards.ExamplesCard;
 import com.a494studios.koreanconjugator.display.cards.FavoritesCard;

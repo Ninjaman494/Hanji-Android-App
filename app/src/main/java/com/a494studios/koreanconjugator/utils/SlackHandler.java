@@ -11,7 +11,6 @@ import android.widget.Toast;
 
 import com.a494studios.koreanconjugator.BuildConfig;
 import com.a494studios.koreanconjugator.R;
-import com.a494studios.koreanconjugator.Utils;
 import com.crashlytics.android.Crashlytics;
 
 import org.rm3l.maoni.common.contract.Handler;
