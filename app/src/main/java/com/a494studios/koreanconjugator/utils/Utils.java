@@ -6,13 +6,20 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
+import android.widget.Toast;
+
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.a494studios.koreanconjugator.BuildConfig;
+import com.a494studios.koreanconjugator.CustomApplication;
 import com.a494studios.koreanconjugator.R;
 import com.a494studios.koreanconjugator.parsing.Favorite;
 import com.a494studios.koreanconjugator.parsing.FavoriteSerializer;
 import com.a494studios.koreanconjugator.settings.LegalDisplayActivity;
+import com.android.billingclient.api.BillingClient;
+import com.android.billingclient.api.BillingFlowParams;
+import com.android.billingclient.api.SkuDetails;
+import com.android.billingclient.api.SkuDetailsParams;
 import com.eggheadgames.aboutbox.AboutConfig;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -35,6 +42,7 @@ public class Utils {
     private static final String PREF_FAV_VALUES = "FAVORITES_VALUES";
     private static final String PREF_FIRST_BOOT = "FIRST_BOOT";
     private static final String PREF_FIRST_TWO = "FIRST_TWO";
+    private static final String SKU_AD_FREE = "AD_FREE_UPGRADE";
 
     public static boolean isFirstBoot(Context context){
         return PreferenceManager.getDefaultSharedPreferences(context).getBoolean(PREF_FIRST_BOOT,true);
@@ -134,6 +142,37 @@ public class Utils {
                 .withHeader(R.drawable.feedback_header)
                 .withTheme(R.style.AppTheme_NoActionBar)
                 .build();
+    }
+
+    public static void showAdFreeUpgrade(Activity activity){
+        if(!CustomApplication.isBillingConnected()) {
+            Toast.makeText(activity, "Couldn't connect to Google Play, please try again later.", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        BillingClient billingClient = CustomApplication.getBillingClient();
+        ArrayList<String> skuList = new ArrayList<>();
+        skuList.add(SKU_AD_FREE);
+        SkuDetailsParams params = SkuDetailsParams.newBuilder()
+                .setSkusList(skuList)
+                .setType(BillingClient.SkuType.INAPP)
+                .build();
+        billingClient.querySkuDetailsAsync(params, (billingResult, skuDetailsList) -> {
+            if(billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK) {
+                for (SkuDetails skuDetails : skuDetailsList) {
+                    if (skuDetails.getSku().equals(SKU_AD_FREE)) {
+                        BillingFlowParams flowParams = BillingFlowParams.newBuilder()
+                                .setSkuDetails(skuDetails)
+                                .build();
+
+                        activity.runOnUiThread(() ->
+                                billingClient.launchBillingFlow(activity, flowParams));
+                    }
+                }
+            } else {
+                System.out.println("Error getting SKU Details: " + billingResult.getResponseCode());
+            }
+        });
     }
 
     public static void handleError(Exception error, AppCompatActivity context, DialogInterface.OnClickListener listener){

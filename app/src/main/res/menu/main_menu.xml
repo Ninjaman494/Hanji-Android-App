@@ -10,4 +10,7 @@
     <item android:id="@+id/overflow_bug"
         android:title="@string/menu_bug"
         app:showAsAction="never"/>
+    <item android:id="@+id/overflow_ad_free"
+        android:title="@string/menu_ad_free"
+        app:showAsAction="never"/>
 </menu>

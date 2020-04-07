@@ -166,7 +166,10 @@ public class MainActivity extends AppCompatActivity {
                 maoni.start(MainActivity.this);
             }
             return true;
-        } else {
+        } else if(item.getItemId() == R.id.overflow_ad_free){
+            Utils.showAdFreeUpgrade(this);
+            return true;
+        }else {
             return super.onOptionsItemSelected(item);
         }
     }
