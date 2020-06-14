@@ -40,17 +40,22 @@ public class FavoritesCardUnitTest {
     public void init() {
         entries = new ArrayList<>();
         context = RuntimeEnvironment.application.getApplicationContext();
-        card = new FavoritesCard(entries,STEM,HONORIFIC,IS_ADJ);
+        card = new FavoritesCard(entries,STEM,HONORIFIC,IS_ADJ, true);
     }
 
     @Test(expected =  NullPointerException.class)
     public void test_nullEntries() {
-        new FavoritesCard(null,STEM,HONORIFIC,IS_ADJ);
+        new FavoritesCard(null,STEM,HONORIFIC,IS_ADJ, true);
     }
 
     @Test(expected =  NullPointerException.class)
     public void test_nullStem() {
-        new FavoritesCard(entries,null,HONORIFIC,IS_ADJ);
+        new FavoritesCard(entries,null,HONORIFIC,IS_ADJ, true);
+    }
+
+    @Test
+    public void test_nullRegular() {
+        new FavoritesCard(entries,STEM,HONORIFIC,IS_ADJ, null);
     }
 
     @Test
