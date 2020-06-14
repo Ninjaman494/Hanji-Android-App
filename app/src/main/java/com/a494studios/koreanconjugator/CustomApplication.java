@@ -7,6 +7,7 @@ import androidx.annotation.Nullable;
 
 import com.a494studios.koreanconjugator.display.DisplayCardView;
 import com.a494studios.koreanconjugator.display.cards.AdCard;
+import com.a494studios.koreanconjugator.utils.Utils;
 import com.android.billingclient.api.BillingClient;
 import com.android.billingclient.api.BillingClientStateListener;
 import com.android.billingclient.api.BillingResult;
@@ -18,6 +19,8 @@ import com.apollographql.apollo.cache.http.DiskLruHttpCacheStore;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.MobileAds;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.util.List;
@@ -40,6 +43,12 @@ public class CustomApplication extends Application implements PurchasesUpdatedLi
         // Setup ads
         MobileAds.initialize(this, APP_ID);
 
+        // Check preferences first, to save us a billing request
+        Boolean prefAdFree = Utils.isAdFree(getApplicationContext());
+        if(prefAdFree != null) {
+            isAdFree = prefAdFree;
+        }
+
         // Setup response cache for Apollo
         File file = this.getCacheDir();
         int size = 1024*1024;
@@ -60,10 +69,22 @@ public class CustomApplication extends Application implements PurchasesUpdatedLi
                 .build();
         billingClient.startConnection(new BillingClientStateListener() {
             @Override
-            public void onBillingSetupFinished(BillingResult billingResult) {
+            public void onBillingSetupFinished(@NotNull BillingResult billingResult) {
                 if (billingResult.getResponseCode() ==  BillingClient.BillingResponseCode.OK) {
                     System.out.println("Connected to Google  Play Billing");
                     billingConnected = true;
+
+                    if(prefAdFree == null) {
+                        // Nothing saved in preferences, check purchase history if an upgrade was bought
+                        billingClient.queryPurchaseHistoryAsync(BillingClient.SkuType.INAPP, (result, list) -> {
+                            if (result.getResponseCode() == BillingClient.BillingResponseCode.OK) {
+                                isAdFree = list.size() > 0 && list.get(0).getSku().equals(Utils.SKU_AD_FREE);
+                                Utils.setAdFree(getApplicationContext(), isAdFree);
+                            } else {
+                                System.out.println("Error occurred when fetching purchase history:" + result.getDebugMessage());
+                            }
+                        });
+                    }
                 } else {
                     System.out.println("Error connecting: " + billingResult.getResponseCode());
                     billingConnected = false;
@@ -99,8 +120,12 @@ public class CustomApplication extends Application implements PurchasesUpdatedLi
     }
 
     @Override
-    public void onPurchasesUpdated(BillingResult billingResult, @Nullable List<Purchase> list) {
-        System.out.println("Bought stuff?");
+    public void onPurchasesUpdated(@NotNull BillingResult billingResult, @Nullable List<Purchase> list) {
+        if(billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK
+                && !list.isEmpty() && list.get(0).getSku().equals(Utils.SKU_AD_FREE)) {
+            isAdFree = true;
+            Utils.setAdFree(this, true);
+        }
     }
 
     public static boolean isBillingConnected() {

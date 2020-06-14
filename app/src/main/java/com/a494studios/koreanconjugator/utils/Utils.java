@@ -18,6 +18,7 @@ import com.a494studios.koreanconjugator.parsing.FavoriteSerializer;
 import com.a494studios.koreanconjugator.settings.LegalDisplayActivity;
 import com.android.billingclient.api.BillingClient;
 import com.android.billingclient.api.BillingFlowParams;
+import com.android.billingclient.api.BillingResult;
 import com.android.billingclient.api.SkuDetails;
 import com.android.billingclient.api.SkuDetailsParams;
 import com.eggheadgames.aboutbox.AboutConfig;
@@ -42,7 +43,8 @@ public class Utils {
     private static final String PREF_FAV_VALUES = "FAVORITES_VALUES";
     private static final String PREF_FIRST_BOOT = "FIRST_BOOT";
     private static final String PREF_FIRST_TWO = "FIRST_TWO";
-    private static final String SKU_AD_FREE = "AD_FREE_UPGRADE";
+    private static final String PREF_AD_FREE = "AD_FREE";
+    public static final String SKU_AD_FREE = "ad_free_upgrade";
 
     public static boolean isFirstBoot(Context context){
         return PreferenceManager.getDefaultSharedPreferences(context).getBoolean(PREF_FIRST_BOOT,true);
@@ -62,6 +64,18 @@ public class Utils {
 
     public static int getFavCount(Context context){
         return PreferenceManager.getDefaultSharedPreferences(context).getInt(PREF_FAV_COUNT, 3);
+    }
+
+    public static Boolean isAdFree(Context context) {
+        if (PreferenceManager.getDefaultSharedPreferences(context).contains(PREF_AD_FREE)) {
+            return PreferenceManager.getDefaultSharedPreferences(context).getBoolean(PREF_AD_FREE, false);
+        } else {
+            return null;
+        }
+    }
+
+    public static void setAdFree(Context context, boolean adFree) {
+        PreferenceManager.getDefaultSharedPreferences(context).edit().putBoolean(PREF_AD_FREE, adFree).apply();
     }
 
     public static void setFavorites(ArrayList<Favorite> data, Context context){
@@ -165,8 +179,12 @@ public class Utils {
                                 .setSkuDetails(skuDetails)
                                 .build();
 
-                        activity.runOnUiThread(() ->
-                                billingClient.launchBillingFlow(activity, flowParams));
+                        activity.runOnUiThread(() -> {
+                            BillingResult result = billingClient.launchBillingFlow(activity, flowParams);
+                            if(result.getResponseCode() == BillingClient.BillingResponseCode.ITEM_ALREADY_OWNED) {
+                                Toast.makeText(activity,"You've already purchased an ad free upgrade", Toast.LENGTH_SHORT).show();
+                            }
+                        });
                     }
                 }
             } else {
