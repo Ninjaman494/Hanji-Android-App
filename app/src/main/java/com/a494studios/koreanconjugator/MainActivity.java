@@ -32,8 +32,6 @@ import static com.eggheadgames.aboutbox.activity.AboutActivity.*;
 
 public class MainActivity extends AppCompatActivity {
 
-
-
     private SearchCard searchCard;
     private TextView logo;
     private ScrollViewAnimationHandler animationHandler;

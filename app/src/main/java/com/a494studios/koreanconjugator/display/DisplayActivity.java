@@ -1,17 +1,10 @@
 package com.a494studios.koreanconjugator.display;
 
 import android.annotation.SuppressLint;
-import android.app.SearchManager;
-import android.content.Intent;
 import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
-import androidx.appcompat.widget.SearchView;
 
 import android.util.Pair;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
@@ -20,16 +13,14 @@ import com.a494studios.koreanconjugator.ConjugationQuery;
 import com.a494studios.koreanconjugator.CustomApplication;
 import com.a494studios.koreanconjugator.EntryQuery;
 import com.a494studios.koreanconjugator.R;
+import com.a494studios.koreanconjugator.utils.BaseActivity;
 import com.a494studios.koreanconjugator.utils.Utils;
 import com.a494studios.koreanconjugator.parsing.Favorite;
 import com.a494studios.koreanconjugator.parsing.Server;
-import com.a494studios.koreanconjugator.settings.SettingsActivity;
 import com.a494studios.koreanconjugator.utils.ScrollViewAnimationHandler;
 import com.a494studios.koreanconjugator.utils.ErrorDialogFragment;
 import com.apollographql.apollo.api.Response;
 import com.crashlytics.android.Crashlytics;
-
-import org.rm3l.maoni.Maoni;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,15 +28,11 @@ import java.util.List;
 import io.reactivex.Observable;
 import io.reactivex.ObservableSource;
 
-import static com.eggheadgames.aboutbox.activity.AboutActivity.*;
-
-public class DisplayActivity extends AppCompatActivity {
+public class DisplayActivity extends BaseActivity {
 
     public static final String EXTRA_ID = "id";
 
-    private boolean overflowClicked;
     private boolean isLoading;
-    private SearchView searchView;
     private EntryQuery.Entry entry;
     private ScrollViewAnimationHandler animationHandler;
 
@@ -134,54 +121,9 @@ public class DisplayActivity extends AppCompatActivity {
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.search_menu, menu);
-        SearchManager searchManager = (SearchManager) getSystemService(SEARCH_SERVICE);
-        searchView = (SearchView) menu.findItem(R.id.menu_search).getActionView();
-        searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        if(item.getItemId() == R.id.overflow_settings){
-            overflowClicked = true;
-            startActivity(new Intent(getBaseContext(), SettingsActivity.class));
-            return true;
-        }else if(item.getItemId() == R.id.overflow_about){
-            overflowClicked = true;
-            Utils.makeAboutBox(this);
-            launch(this);
-            return true;
-        }else if(item.getItemId() == R.id.overflow_bug) {
-            Maoni maoni = Utils.makeMaoniActivity(DisplayActivity.this);
-            if(maoni != null){
-                maoni.start(DisplayActivity.this);
-            }
-            return true;
-        } else{
-            return super.onOptionsItemSelected(item);
-        }
-    }
-
-    @Override
-    public void onPause(){
-        super.onPause();
-        if(!overflowClicked) overridePendingTransition(0,0);
-    }
-
-    @Override
     public void onResume(){
         super.onResume();
-        overflowClicked = false;
         displayLoading(isLoading);
-
-        if(searchView != null) {
-            searchView.setQuery("", false);
-            searchView.setIconified(true);
-            searchView.clearFocus();
-        }
     }
 
     private void displayLoading(boolean isLoading){
