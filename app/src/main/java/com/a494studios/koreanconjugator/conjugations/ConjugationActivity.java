@@ -1,7 +1,6 @@
 package com.a494studios.koreanconjugator.conjugations;
 
 import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SwitchCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -14,6 +13,7 @@ import android.widget.TextView;
 import com.a494studios.koreanconjugator.ConjugationQuery;
 import com.a494studios.koreanconjugator.R;
 import com.a494studios.koreanconjugator.parsing.Server;
+import com.a494studios.koreanconjugator.utils.BaseActivity;
 import com.apollographql.apollo.api.Response;
 
 import java.util.ArrayList;
@@ -22,7 +22,7 @@ import java.util.TreeMap;
 
 import io.reactivex.observers.DisposableObserver;
 
-public class ConjugationActivity extends AppCompatActivity {
+public class ConjugationActivity extends BaseActivity {
 
     public static final String EXTRA_STEM = "stem";
     public static final String EXTRA_HONORIFIC = "honorific";

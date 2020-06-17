@@ -1,7 +1,6 @@
 package com.a494studios.koreanconjugator.display;
 
 import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -10,11 +9,12 @@ import android.widget.ScrollView;
 import com.a494studios.koreanconjugator.CustomApplication;
 import com.a494studios.koreanconjugator.R;
 import com.a494studios.koreanconjugator.display.cards.ConjInfoCard;
+import com.a494studios.koreanconjugator.utils.BaseActivity;
 import com.a494studios.koreanconjugator.utils.ScrollViewAnimationHandler;
 
 import java.util.List;
 
-public class ConjInfoActivity extends AppCompatActivity {
+public class ConjInfoActivity extends BaseActivity {
 
     public static final String EXTRA_NAME = "NAME";
     public static final String EXTRA_CONJ = "CONJ";

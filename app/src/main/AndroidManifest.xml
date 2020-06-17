@@ -14,8 +14,16 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".display.ConjInfoActivity"/>
-        <activity android:name=".conjugations.ConjugationActivity" />
+        <activity android:name=".display.ConjInfoActivity">
+            <meta-data
+                android:name="android.app.default_searchable"
+                android:value=".SearchActivity" />
+        </activity>
+        <activity android:name=".conjugations.ConjugationActivity">
+            <meta-data
+                android:name="android.app.default_searchable"
+                android:value=".SearchActivity" />
+        </activity>
 
         <meta-data
             android:name="firebase_crashlytics_collection_enabled"

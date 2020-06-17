@@ -10,7 +10,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 
 import com.a494studios.koreanconjugator.R;
-import com.a494studios.koreanconjugator.display.DisplayActivity;
 import com.a494studios.koreanconjugator.settings.SettingsActivity;
 
 import org.rm3l.maoni.Maoni;
