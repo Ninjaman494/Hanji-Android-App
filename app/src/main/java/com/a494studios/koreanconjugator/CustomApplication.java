@@ -2,6 +2,7 @@ package com.a494studios.koreanconjugator;
 
 import android.app.Application;
 import android.view.View;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 
@@ -46,6 +47,7 @@ public class CustomApplication extends Application implements PurchasesUpdatedLi
         // Check preferences first, to save us a billing request
         Boolean prefAdFree = Utils.isAdFree(getApplicationContext());
         if(prefAdFree != null) {
+            System.out.println("Got Ad Free from prefs");
             isAdFree = prefAdFree;
         }
 
@@ -78,6 +80,7 @@ public class CustomApplication extends Application implements PurchasesUpdatedLi
                         // Nothing saved in preferences, check purchase history if an upgrade was bought
                         billingClient.queryPurchaseHistoryAsync(BillingClient.SkuType.INAPP, (result, list) -> {
                             if (result.getResponseCode() == BillingClient.BillingResponseCode.OK) {
+                                System.out.println("Got Ad Free from purchases");
                                 isAdFree = list.size() > 0 && list.get(0).getSku().equals(Utils.SKU_AD_FREE);
                                 Utils.setAdFree(getApplicationContext(), isAdFree);
                             } else {
@@ -123,8 +126,17 @@ public class CustomApplication extends Application implements PurchasesUpdatedLi
     public void onPurchasesUpdated(@NotNull BillingResult billingResult, @Nullable List<Purchase> list) {
         if(billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK
                 && !list.isEmpty() && list.get(0).getSku().equals(Utils.SKU_AD_FREE)) {
-            isAdFree = true;
-            Utils.setAdFree(this, true);
+
+            if(list.get(0).getPurchaseState() == Purchase.PurchaseState.PURCHASED) {
+                isAdFree = true;
+                Utils.setAdFree(this, true);
+
+                Toast.makeText(this, "Upgrade Success! Please restart Hanji for the upgrade to take affect", Toast.LENGTH_LONG).show();
+            } else if (list.get(0).getPurchaseState() == Purchase.PurchaseState.PENDING) {
+                Toast.makeText(this, "Payment pending. Hanji will be upgraded once payment is received", Toast.LENGTH_LONG).show();
+            } else {
+                Toast.makeText(this, "An error occurred with your purchase, please contact support", Toast.LENGTH_LONG).show();
+            }
         }
     }
 
