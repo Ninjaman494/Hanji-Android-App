@@ -136,10 +136,9 @@ public class SlackHandler implements Handler {
                     }
 
                     if(feedback.screenshotFile != null) {
-                        webApiClient.uploadFile(feedback.screenshotFile, "screenshot", body.toString(), channel);
-                    }else { // User opted-out of sharing a screenshot
-                        webApiClient.postMessage(channel,body.toString());
+                        webApiClient.uploadFile(feedback.screenshotFile, "screenshot", "", channel);
                     }
+                    webApiClient.postMessage(channel,body.toString());
                 }catch (SlackException e){
                     e.printStackTrace();
                 }finally {
