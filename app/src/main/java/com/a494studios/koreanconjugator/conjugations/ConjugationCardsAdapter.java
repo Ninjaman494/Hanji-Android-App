@@ -13,10 +13,14 @@ import java.util.List;
 
 public class ConjugationCardsAdapter extends RecyclerView.Adapter<ConjugationCardsAdapter.ViewHolder> {
 
-    private  List<List<ConjugationQuery.Conjugation>> conjugations;
+    private List<List<ConjugationQuery.Conjugation>> conjugations;
+    private String term;
+    private String pos;
 
-    public ConjugationCardsAdapter(List<List<ConjugationQuery.Conjugation>> conjugations) {
+    public ConjugationCardsAdapter(List<List<ConjugationQuery.Conjugation>> conjugations, String term, String pos) {
         this.conjugations = conjugations;
+        this.term = term;
+        this.pos = pos;
     }
 
     @NonNull
@@ -30,7 +34,7 @@ public class ConjugationCardsAdapter extends RecyclerView.Adapter<ConjugationCar
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        ConjugationCard card = new ConjugationCard(conjugations.get(position));
+        ConjugationCard card = new ConjugationCard(conjugations.get(position), term, pos);
         holder.displayCardView.setCardBody(card);
     }
 

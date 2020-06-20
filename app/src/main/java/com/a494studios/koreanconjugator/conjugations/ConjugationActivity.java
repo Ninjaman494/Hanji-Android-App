@@ -96,7 +96,7 @@ public class ConjugationActivity extends BaseActivity {
                 }
 
                 List<List<ConjugationQuery.Conjugation>> conjugations1 = new ArrayList<>(conjMap.values());
-                recyclerView.setAdapter(new ConjugationCardsAdapter(conjugations1));
+                recyclerView.setAdapter(new ConjugationCardsAdapter(conjugations1, stem, isAdj ? "Adjective" : "Verb"));
                 setLoading(false);
                 dataLoaded = true;
             }

@@ -38,12 +38,12 @@ public class ConjugationCardUnitTest {
         conjugations = new ArrayList<>();
         conjugations.add(c);
         context = RuntimeEnvironment.application.getApplicationContext();
-        card = new ConjugationCard(conjugations);
+        card = new ConjugationCard(conjugations, "term", "pos");
     }
 
     @Test(expected = NullPointerException.class)
     public void test_nullConjugations() {
-        new ConjugationCard(null);
+        new ConjugationCard(null, "term", "pos");
     }
 
     @Test
@@ -70,7 +70,7 @@ public class ConjugationCardUnitTest {
 
     @Test
     public void test_getHeading() {
-        ConjugationCard empty = new ConjugationCard(new ArrayList<ConjugationQuery.Conjugation>());
+        ConjugationCard empty = new ConjugationCard(new ArrayList<ConjugationQuery.Conjugation>(), "term", "pos");
         assertEquals("Conjugations",empty.getHeading());
         assertEquals("Type",card.getHeading());
     }

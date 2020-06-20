@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.a494studios.koreanconjugator.CustomApplication;
 import com.a494studios.koreanconjugator.display.ConjInfoActivity;
 import com.a494studios.koreanconjugator.display.adapters.ConjugationAdapter;
 import com.a494studios.koreanconjugator.ConjugationQuery;
@@ -20,15 +21,19 @@ public class ConjugationCard implements DisplayCardBody {
 
     private View view;
     private String heading;
+    private String term;
+    private String pos;
     private ConjugationAdapter adapter;
 
-    public ConjugationCard(List<ConjugationQuery.Conjugation> conjugations) {
+    public ConjugationCard(List<ConjugationQuery.Conjugation> conjugations, String term, String pos) {
         this.adapter = new ConjugationAdapter(Objects.requireNonNull(conjugations));
         if (conjugations.isEmpty()) {
             heading = "Conjugations";
         } else {
             heading = Utils.toTitleCase(conjugations.get(0).type());
         }
+        this.term = term;
+        this.pos = pos;
     }
 
     @Override
@@ -42,6 +47,10 @@ public class ConjugationCard implements DisplayCardBody {
             @Override
             public void onItemClick(LinearListView parent, View view, int position, long id) {
                 ConjugationQuery.Conjugation conjugation = adapter.getItem(position);
+
+                // Log select conjugation event
+                CustomApplication.logSelectConjugation(term, pos, conjugation.name());
+
                 Intent i = new Intent(view.getContext(), ConjInfoActivity.class);
                 i.putExtra(ConjInfoActivity.EXTRA_NAME, conjugation.name());
                 i.putExtra(ConjInfoActivity.EXTRA_CONJ,conjugation.conjugation());

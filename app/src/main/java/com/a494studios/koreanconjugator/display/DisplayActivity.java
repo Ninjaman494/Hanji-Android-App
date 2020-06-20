@@ -93,6 +93,9 @@ public class DisplayActivity extends BaseActivity {
                         return Observable.just("");
                     }
 
+                    // Log select content event
+                    CustomApplication.logSelectContent(entry.term(), entry.pos());
+
                     // Get favorite conjugation names and fetch them
                     List<String> conjugations = Observable.fromIterable(favorites)
                             .map(Favorite::getConjugationName)
