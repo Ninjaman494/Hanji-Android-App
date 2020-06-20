@@ -146,6 +146,11 @@ public class MainActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.main_menu, menu);
+
+        if(Utils.isAdFree(this)) {
+            menu.findItem(R.id.overflow_ad_free).setVisible(false);
+        }
+
         return true;
     }
 

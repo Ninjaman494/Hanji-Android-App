@@ -27,6 +27,11 @@ public abstract class BaseActivity extends AppCompatActivity {
         SearchManager searchManager = (SearchManager) getSystemService(SEARCH_SERVICE);
         searchView = (SearchView) menu.findItem(R.id.menu_search).getActionView();
         searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
+
+        if(Utils.isAdFree(this)) {
+            menu.findItem(R.id.overflow_ad_free).setVisible(false);
+        }
+
         return true;
     }
 
