@@ -14,6 +14,7 @@ import com.a494studios.koreanconjugator.display.DisplayActivity;
 import com.a494studios.koreanconjugator.parsing.Server;
 import com.a494studios.koreanconjugator.search_results.SearchResultsActivity;
 import com.a494studios.koreanconjugator.utils.ErrorDialogFragment;
+import com.a494studios.koreanconjugator.utils.Logger;
 import com.a494studios.koreanconjugator.utils.Utils;
 import com.apollographql.apollo.api.Response;
 import com.google.android.gms.ads.AdRequest;
@@ -58,6 +59,9 @@ public class SearchActivity extends AppCompatActivity {
         if (getSupportActionBar() != null) getSupportActionBar().setTitle("Searching: " + entry);
         progressBar.getIndeterminateDrawable().setColorFilter(getResources().getColor(R.color.colorAccent), PorterDuff.Mode.SRC_IN);
         progressBar.getProgressDrawable().setColorFilter(getResources().getColor(R.color.colorAccent), PorterDuff.Mode.SRC_IN);
+
+        // Log search event
+        Logger.getInstance().logSearch(entry);
 
         // Search
         Server.doSearchQuery(entry)

@@ -17,6 +17,7 @@ import android.widget.TextView;
 
 import com.a494studios.koreanconjugator.ConjugationNamesQuery;
 import com.a494studios.koreanconjugator.R;
+import com.a494studios.koreanconjugator.utils.Logger;
 import com.a494studios.koreanconjugator.utils.Utils;
 import com.a494studios.koreanconjugator.parsing.Favorite;
 import com.a494studios.koreanconjugator.parsing.Server;
@@ -129,6 +130,7 @@ public class FavoritesActivity extends AppCompatActivity implements AddFavoriteF
 
     @Override
     public void onFavoriteAdded(Favorite entry) {
+        Logger.getInstance().logFavoriteAdded(entry.getName(), entry.getConjugationName(), entry.isHonorific());
         ArrayList<Favorite> favorites = adapter.add(entry);
         Utils.setFavorites(favorites,this);
         adapter.notifyDataSetChanged();
