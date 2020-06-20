@@ -27,7 +27,7 @@ jobs:
       - name: Create keys.txt
         uses: DamianReeves/write-file-action@v1.0
         with:
-          path: ${{ env.home}}/keys.txt
+          path: keys.txt
           contents: |
             serverURL = "key"
             adMobKey = "key"
