@@ -23,7 +23,7 @@ jobs:
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
       - name: Create keys.txt
-          uses: DamianReeves/write-file-action@v1.0
+        uses: DamianReeves/write-file-action@v1.0
         with:
           path: ${{ env.home}}/keys.txt
           contents: |
