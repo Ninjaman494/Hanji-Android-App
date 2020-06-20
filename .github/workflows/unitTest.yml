@@ -22,6 +22,8 @@ jobs:
           java-version: 1.8
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
+      - name: Grant permissions for keys.txt
+        run: touch keys.text && chmod 777 keys.text
       - name: Create keys.txt
         uses: DamianReeves/write-file-action@v1.0
         with:
