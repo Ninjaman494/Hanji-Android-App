@@ -139,7 +139,7 @@ public class MainActivity extends BaseActivity {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.main_menu, menu);
 
-        if(Utils.isAdFree(this)) {
+        if(Utils.isAdFree(this) != null && Utils.isAdFree(this)) {
             menu.findItem(R.id.overflow_ad_free).setVisible(false);
         }
 

@@ -36,7 +36,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         searchView = (SearchView) menu.findItem(R.id.menu_search).getActionView();
         searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
 
-        if(Utils.isAdFree(this)) {
+        if(Utils.isAdFree(this) != null && Utils.isAdFree(this)) {
             menu.findItem(R.id.overflow_ad_free).setVisible(false);
         }
 
@@ -59,6 +59,7 @@ public abstract class BaseActivity extends AppCompatActivity {
             }
             return true;
         } else if(item.getItemId() == R.id.overflow_ad_free) {
+            Logger.getInstance().logViewUpgrade();
             Utils.showAdFreeUpgrade(this);
             return true;
         } else {

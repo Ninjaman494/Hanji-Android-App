@@ -7,6 +7,7 @@ import com.google.firebase.analytics.FirebaseAnalytics;
 public class Logger {
 
     private static final String EVENT_SELECT_CONJ = "select_conjugation";
+    private static final String EVENT_VIEW_UPGRADE = "view_upgrade";
 
     private FirebaseAnalytics mFirebaseAnalytics;
     private static Logger logger;
@@ -40,5 +41,9 @@ public class Logger {
         bundle.putString("pos", pos);
         bundle.putString("conjugation", conjugation);
         mFirebaseAnalytics.logEvent(EVENT_SELECT_CONJ, bundle);
+    }
+
+    public void logViewUpgrade() {
+        mFirebaseAnalytics.logEvent(EVENT_VIEW_UPGRADE, new Bundle());
     }
 }
