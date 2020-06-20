@@ -1,21 +1,17 @@
 package com.a494studios.koreanconjugator;
 
-import android.content.Intent;
-
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.a494studios.koreanconjugator.display.DisplayCardView;
 import com.a494studios.koreanconjugator.parsing.Favorite;
-import com.a494studios.koreanconjugator.settings.SettingsActivity;
+import com.a494studios.koreanconjugator.utils.BaseActivity;
 import com.a494studios.koreanconjugator.utils.ScrollViewAnimationHandler;
 import com.a494studios.koreanconjugator.utils.SlackHandler;
 import com.a494studios.koreanconjugator.utils.Utils;
@@ -24,13 +20,9 @@ import com.crashlytics.android.Crashlytics;
 import com.eggheadgames.aboutbox.AboutBoxUtils;
 import com.eggheadgames.aboutbox.AboutConfig;
 
-import org.rm3l.maoni.Maoni;
-
 import java.util.ArrayList;
 
-import static com.eggheadgames.aboutbox.activity.AboutActivity.*;
-
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends BaseActivity {
 
     private SearchCard searchCard;
     private TextView logo;
@@ -153,30 +145,6 @@ public class MainActivity extends AppCompatActivity {
 
         return true;
     }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        if(item.getItemId() == R.id.overflow_settings){
-            startActivity(new Intent(getBaseContext(), SettingsActivity.class));
-            return true;
-        }else if(item.getItemId() == R.id.overflow_about){
-            Utils.makeAboutBox(MainActivity.this);
-            launch(MainActivity.this);
-            return true;
-        }else if(item.getItemId() == R.id.overflow_bug){
-            Maoni maoni = Utils.makeMaoniActivity(MainActivity.this);
-            if(maoni != null){
-                maoni.start(MainActivity.this);
-            }
-            return true;
-        } else if(item.getItemId() == R.id.overflow_ad_free){
-            Utils.showAdFreeUpgrade(this);
-            return true;
-        }else {
-            return super.onOptionsItemSelected(item);
-        }
-    }
-
 
     @Override
     public void onResume(){
