@@ -1,7 +1,6 @@
 package com.a494studios.koreanconjugator;
 
 import android.app.Application;
-import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
 
@@ -9,6 +8,7 @@ import androidx.annotation.Nullable;
 
 import com.a494studios.koreanconjugator.display.DisplayCardView;
 import com.a494studios.koreanconjugator.display.cards.AdCard;
+import com.a494studios.koreanconjugator.utils.Logger;
 import com.a494studios.koreanconjugator.utils.Utils;
 import com.android.billingclient.api.BillingClient;
 import com.android.billingclient.api.BillingClientStateListener;
@@ -33,13 +33,11 @@ import okhttp3.OkHttpClient;
 public class CustomApplication extends Application implements PurchasesUpdatedListener {
     private static final String APP_ID = BuildConfig.ADMOB_KEY;
     private static final String SERVER_URL = com.a494studios.koreanconjugator.BuildConfig.SERVER_URL;
-    private static final String EVENT_SELECT_CONJ = "select_conjugation";
 
     private static ApolloClient apolloClient;
     private static boolean isAdFree = false;
     private static boolean billingConnected = false;
     private static BillingClient billingClient;
-    private static FirebaseAnalytics mFirebaseAnalytics;
 
     // Called when the application is starting, before any other application objects have been created.
     @Override
@@ -107,7 +105,7 @@ public class CustomApplication extends Application implements PurchasesUpdatedLi
         });
 
         // Setup Firebase Analytics
-        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
+        Logger.initialize(FirebaseAnalytics.getInstance(this));
     }
 
     public static ApolloClient getApolloClient() {
@@ -154,20 +152,5 @@ public class CustomApplication extends Application implements PurchasesUpdatedLi
 
     public static BillingClient getBillingClient() {
         return billingClient;
-    }
-
-    public static void logSelectContent(String term, String pos) {
-        Bundle bundle = new Bundle();
-        bundle.putString(FirebaseAnalytics.Param.ITEM_ID, term);
-        bundle.putString(FirebaseAnalytics.Param.CONTENT_TYPE, pos);
-        mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundle);
-    }
-
-    public static void logSelectConjugation(String term, String pos, String conjugation) {
-        Bundle bundle = new Bundle();
-        bundle.putString(FirebaseAnalytics.Param.TERM, term);
-        bundle.putString("pos", pos);
-        bundle.putString("conjugation", conjugation);
-        mFirebaseAnalytics.logEvent(EVENT_SELECT_CONJ, bundle);
     }
 }

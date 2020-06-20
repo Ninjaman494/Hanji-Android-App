@@ -14,6 +14,7 @@ import com.a494studios.koreanconjugator.CustomApplication;
 import com.a494studios.koreanconjugator.EntryQuery;
 import com.a494studios.koreanconjugator.R;
 import com.a494studios.koreanconjugator.utils.BaseActivity;
+import com.a494studios.koreanconjugator.utils.Logger;
 import com.a494studios.koreanconjugator.utils.Utils;
 import com.a494studios.koreanconjugator.parsing.Favorite;
 import com.a494studios.koreanconjugator.parsing.Server;
@@ -94,7 +95,7 @@ public class DisplayActivity extends BaseActivity {
                     }
 
                     // Log select content event
-                    CustomApplication.logSelectContent(entry.term(), entry.pos());
+                    Logger.getInstance().logSelectContent(entry.term(), entry.pos());
 
                     // Get favorite conjugation names and fetch them
                     List<String> conjugations = Observable.fromIterable(favorites)

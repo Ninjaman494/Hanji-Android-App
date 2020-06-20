@@ -10,6 +10,7 @@ import com.a494studios.koreanconjugator.display.ConjInfoActivity;
 import com.a494studios.koreanconjugator.display.adapters.ConjugationAdapter;
 import com.a494studios.koreanconjugator.ConjugationQuery;
 import com.a494studios.koreanconjugator.R;
+import com.a494studios.koreanconjugator.utils.Logger;
 import com.a494studios.koreanconjugator.utils.Utils;
 import com.linearlistview.LinearListView;
 
@@ -49,7 +50,7 @@ public class ConjugationCard implements DisplayCardBody {
                 ConjugationQuery.Conjugation conjugation = adapter.getItem(position);
 
                 // Log select conjugation event
-                CustomApplication.logSelectConjugation(term, pos, conjugation.name());
+                Logger.getInstance().logSelectConjugation(term, pos, conjugation.name());
 
                 Intent i = new Intent(view.getContext(), ConjInfoActivity.class);
                 i.putExtra(ConjInfoActivity.EXTRA_NAME, conjugation.name());

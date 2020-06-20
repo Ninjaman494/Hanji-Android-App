@@ -2,6 +2,7 @@ package com.a494studios.koreanconjugator.utils;
 
 import android.app.SearchManager;
 import android.content.Intent;
+import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -19,6 +20,13 @@ import static com.eggheadgames.aboutbox.activity.AboutActivity.launch;
 public abstract class BaseActivity extends AppCompatActivity {
 
     private SearchView searchView;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
