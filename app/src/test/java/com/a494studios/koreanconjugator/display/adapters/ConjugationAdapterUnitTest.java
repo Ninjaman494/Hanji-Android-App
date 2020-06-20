@@ -1,16 +1,13 @@
 package com.a494studios.koreanconjugator.display.adapters;
 
-import android.content.ComponentName;
-import android.content.Intent;
+import android.app.Activity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.a494studios.koreanconjugator.ConjugationQuery;
-import com.a494studios.koreanconjugator.MainActivity;
 import com.a494studios.koreanconjugator.R;
-import com.a494studios.koreanconjugator.display.ConjInfoActivity;
 import com.a494studios.koreanconjugator.type.SpeechLevel;
 import com.a494studios.koreanconjugator.type.Tense;
 
@@ -19,13 +16,11 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
-import org.robolectric.Shadows;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 @RunWith(RobolectricTestRunner.class)
@@ -59,7 +54,7 @@ public class ConjugationAdapterUnitTest {
 
     @Test
     public void test_getView() {
-        MainActivity activity = Robolectric.buildActivity(MainActivity.class).create().start().visible().get();
+        Activity activity = Robolectric.buildActivity(Activity.class).create().start().visible().get();
         ViewGroup group = new LinearLayout(activity);
         for(int i = 0;i<conjugations.size();i++) {
             View view = adapter.getView(i,null,group);
@@ -73,17 +68,6 @@ public class ConjugationAdapterUnitTest {
                 assertEquals(formatSpeechLevel(c.speechLevel()), nameView.getText());
             }
             assertEquals(c.conjugation(),conjView.getText());
-
-            conjView.callOnClick();
-            assertNotNull(Shadows.shadowOf(activity).peekNextStartedActivityForResult());
-
-            Intent intent = Shadows.shadowOf(activity).peekNextStartedActivityForResult().intent;
-            assertEquals(intent.getComponent(),new ComponentName(activity, ConjInfoActivity.class));
-            assertEquals(intent.getStringExtra(ConjInfoActivity.EXTRA_NAME),c.name());
-            assertEquals(intent.getStringExtra(ConjInfoActivity.EXTRA_CONJ),c.conjugation());
-            assertEquals(intent.getStringExtra(ConjInfoActivity.EXTRA_PRON),c.pronunciation());
-            assertEquals(intent.getStringExtra(ConjInfoActivity.EXTRA_ROME),c.romanization());
-            assertEquals(intent.getStringArrayListExtra(ConjInfoActivity.EXTRA_EXPL),new ArrayList<>(c.reasons()));
         }
     }
 

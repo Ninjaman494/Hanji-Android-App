@@ -1,5 +1,6 @@
 package com.a494studios.koreanconjugator.display.cards;
 
+import android.app.Activity;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -7,7 +8,6 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
 import com.a494studios.koreanconjugator.ConjugationQuery;
-import com.a494studios.koreanconjugator.MainActivity;
 import com.a494studios.koreanconjugator.R;
 import com.a494studios.koreanconjugator.conjugations.ConjugationActivity;
 
@@ -67,7 +67,7 @@ public class FavoritesCardUnitTest {
 
     @Test
     public void test_onButtonClick() {
-        MainActivity activity = Robolectric.buildActivity(MainActivity.class).create().start().visible().get();
+        Activity activity = Robolectric.buildActivity(Activity.class).create().start().visible().get();
         card.addBodyView(activity,new LinearLayout(activity));
         card.onButtonClick();
 

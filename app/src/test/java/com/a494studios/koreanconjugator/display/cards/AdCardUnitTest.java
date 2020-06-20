@@ -5,7 +5,6 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
 import com.a494studios.koreanconjugator.R;
-import com.a494studios.koreanconjugator.display.cards.AdCard;
 
 import org.junit.Assert;
 import org.junit.Before;
@@ -24,7 +23,7 @@ public class AdCardUnitTest {
 
     @Before
     public void init() {
-        card = new AdCard();
+        card = new AdCard("Ad unit id");
         context = RuntimeEnvironment.application.getApplicationContext();
     }
     @Test
