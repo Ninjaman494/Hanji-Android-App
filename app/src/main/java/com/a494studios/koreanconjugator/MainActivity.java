@@ -40,7 +40,7 @@ public class MainActivity extends BaseActivity {
         DisplayCardView searchCard = findViewById(R.id.main_searchCard);
         this.searchCard = new SearchCard(this);
 
-        CustomApplication.handleAdCard((DisplayCardView)findViewById(R.id.main_adView));
+        CustomApplication.handleAdCard(findViewById(R.id.main_adView), getString(R.string.MAIN_AD_ID));
         wodCard.setCardBody(new WordOfDayCard());
         searchCard.setCardBody(this.searchCard);
 

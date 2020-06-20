@@ -112,12 +112,8 @@ public class CustomApplication extends Application implements PurchasesUpdatedLi
         return apolloClient;
     }
 
-    public static void handleAdCard(DisplayCardView cardView){
-        if(isAdFree) {
-            cardView.setVisibility(View.GONE);
-        } else {
-            cardView.setCardBody(new AdCard());
-        }
+    public static void handleAdCard(DisplayCardView cardView, String adId){
+        cardView.setCardBody(new AdCard(adId));
     }
 
     public static void handleAdCard(AdView adView) {

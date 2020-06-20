@@ -47,7 +47,7 @@ public class ConjInfoActivity extends BaseActivity {
         infoCard.setCardBody(new ConjInfoCard(name,conjugated,pronunciation,romanization,explanations));
         infoCard.showHonorificChip(isHonorific);
 
-        CustomApplication.handleAdCard((DisplayCardView)findViewById(R.id.info_adCard));
+        CustomApplication.handleAdCard(findViewById(R.id.info_adCard), getString(R.string.CONJ_INFO_AD_ID));
 
         extendedBar = findViewById(R.id.info_extendedBar);
         linearLayout = findViewById(R.id.info_root);

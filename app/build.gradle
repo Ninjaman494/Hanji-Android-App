@@ -58,6 +58,7 @@ android {
         it.resValue("string", "MAIN_AD_ID", getApiKey("mainAdID"))
         it.resValue("string", "SEARCH_AD_ID", getApiKey("searchAdID"))
         it.resValue("string", "SEARCH_RESULTS_AD_ID", getApiKey("searchResultsAdID"))
+        it.resValue("string", "CONJ_INFO_AD_ID", getApiKey("conjInfoAdID"))
     }
 
     configurations.all {

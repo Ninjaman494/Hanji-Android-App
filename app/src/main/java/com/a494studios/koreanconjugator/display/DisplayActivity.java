@@ -63,7 +63,7 @@ public class DisplayActivity extends BaseActivity {
         displayLoading(true);
 
         // Setting up Ad Card
-        CustomApplication.handleAdCard((DisplayCardView)findViewById(R.id.disp_adCard));
+        CustomApplication.handleAdCard(findViewById(R.id.disp_adCard), getString(R.string.DISPLAY_AD_ID));
 
         // Creating DisplayObserver
         View rootView = findViewById(android.R.id.content);

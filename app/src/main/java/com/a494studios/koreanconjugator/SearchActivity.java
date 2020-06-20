@@ -17,7 +17,6 @@ import com.a494studios.koreanconjugator.utils.ErrorDialogFragment;
 import com.a494studios.koreanconjugator.utils.Logger;
 import com.a494studios.koreanconjugator.utils.Utils;
 import com.apollographql.apollo.api.Response;
-import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 
 import java.util.List;
@@ -37,7 +36,7 @@ public class SearchActivity extends AppCompatActivity {
         progressBar = findViewById(R.id.main_loadingBar);
         loadingText = findViewById(R.id.main_loadingText);
         AdView adView = findViewById(R.id.search_adView);
-        adView.loadAd(new AdRequest.Builder().build());
+        CustomApplication.handleAdCard(adView);
 
         if (!Intent.ACTION_SEARCH.equals(getIntent().getAction())) {
             finish();
