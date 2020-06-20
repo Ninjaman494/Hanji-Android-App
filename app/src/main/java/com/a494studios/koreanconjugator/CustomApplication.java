@@ -113,7 +113,11 @@ public class CustomApplication extends Application implements PurchasesUpdatedLi
     }
 
     public static void handleAdCard(DisplayCardView cardView, String adId){
-        cardView.setCardBody(new AdCard(adId));
+        if(isAdFree) {
+            cardView.setVisibility(View.GONE);
+        } else {
+            cardView.setCardBody(new AdCard(adId));
+        }
     }
 
     public static void handleAdCard(AdView adView) {
