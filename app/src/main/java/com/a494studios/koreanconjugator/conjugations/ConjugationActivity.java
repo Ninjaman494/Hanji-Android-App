@@ -14,6 +14,7 @@ import com.a494studios.koreanconjugator.ConjugationQuery;
 import com.a494studios.koreanconjugator.R;
 import com.a494studios.koreanconjugator.parsing.Server;
 import com.a494studios.koreanconjugator.utils.BaseActivity;
+import com.a494studios.koreanconjugator.utils.Utils;
 import com.apollographql.apollo.api.Response;
 
 import java.util.ArrayList;
@@ -104,6 +105,7 @@ public class ConjugationActivity extends BaseActivity {
             @Override
             public void onError(Throwable e) {
                 e.printStackTrace();
+                Utils.handleError(e, ConjugationActivity.this, (dialogInterface, i) -> ConjugationActivity.this.onBackPressed());
             }
 
             @Override

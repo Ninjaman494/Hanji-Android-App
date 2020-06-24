@@ -7,9 +7,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.a494studios.koreanconjugator.display.DisplayActivity;
 import com.a494studios.koreanconjugator.display.cards.DisplayCardBody;
 import com.a494studios.koreanconjugator.parsing.Server;
+import com.a494studios.koreanconjugator.utils.Utils;
 import com.apollographql.apollo.api.Response;
 
 import io.reactivex.observers.DisposableObserver;
@@ -39,6 +42,7 @@ public class WordOfDayCard implements DisplayCardBody {
                     @Override
                     public void onError(Throwable e) {
                         e.printStackTrace();
+                        Utils.handleError(e, (AppCompatActivity) context);
                     }
 
                     @Override

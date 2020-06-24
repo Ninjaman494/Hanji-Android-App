@@ -71,6 +71,7 @@ public class DisplayActivity extends BaseActivity {
             @Override
             public void onError(Throwable t) {
                 t.printStackTrace();
+                Utils.handleError(t, DisplayActivity.this, (dialogInterface, i) -> DisplayActivity.this.onBackPressed());
             }
 
             @Override
@@ -125,9 +126,11 @@ public class DisplayActivity extends BaseActivity {
     }
 
     @Override
-    public void onResume(){
+    public void onResume() {
         super.onResume();
-        displayLoading(isLoading);
+        if (animationHandler != null) {
+            displayLoading(isLoading);
+        }
     }
 
     private void displayLoading(boolean isLoading){
@@ -146,22 +149,5 @@ public class DisplayActivity extends BaseActivity {
 
             animationHandler.slideInViews(extendedBar,rootLinearLayout);
         }
-    }
-
-    private void handleError(Exception error) {
-        /*Snackbar snackbar;
-        if (error instanceof NoConnectionError) {
-            snackbar = Snackbar.make(findViewById(R.id.disp_root), "Lost connection", Snackbar.LENGTH_INDEFINITE);
-        }else{
-            snackbar = Snackbar.make(findViewById(R.id.disp_root), "Couldn't connect to server", Snackbar.LENGTH_INDEFINITE);
-            System.err.println(error.toString());
-        }
-        snackbar.setAction("Retry", new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                requestDefinition();
-            }
-        });
-        snackbar.show();*/
     }
 }

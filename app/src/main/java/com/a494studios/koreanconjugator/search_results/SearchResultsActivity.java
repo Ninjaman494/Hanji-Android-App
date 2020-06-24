@@ -17,6 +17,7 @@ import com.a494studios.koreanconjugator.utils.BaseActivity;
 import com.a494studios.koreanconjugator.parsing.Server;
 import com.a494studios.koreanconjugator.utils.ErrorDialogFragment;
 import com.a494studios.koreanconjugator.utils.RecyclerAnimationHandler;
+import com.a494studios.koreanconjugator.utils.Utils;
 import com.apollographql.apollo.api.Response;
 import com.google.android.gms.ads.AdView;
 
@@ -137,7 +138,7 @@ public class SearchResultsActivity extends BaseActivity {
                     @Override
                     public void onError(Throwable e) {
                         e.printStackTrace();
-                        handleError(e);
+                        Utils.handleError(e, SearchResultsActivity.this, (dialogInterface, i) -> SearchResultsActivity.this.onBackPressed());
                     }
 
                     @Override
@@ -146,26 +147,5 @@ public class SearchResultsActivity extends BaseActivity {
                         this.dispose();
                     }
                 });
-    }
-
-    private void handleError(Throwable t){
-        if (!snackbarShown) {
-           /* Snackbar snackbar;
-            if (error instanceof NoConnectionError) {
-                snackbar = Snackbar.make(findViewById(R.id.search_listView), "Lost connection", Snackbar.LENGTH_INDEFINITE);
-            } else {
-                snackbar = Snackbar.make(findViewById(R.id.search_listView), "Couldn't connect to server", Snackbar.LENGTH_INDEFINITE);
-                System.err.println(error.toString());
-            }
-            snackbar.setAction("Retry", new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    fetchSearchResponse();
-                    snackbarShown = false;
-                }
-            });
-            snackbar.show();
-            snackbarShown = true;*/
-        }
     }
 }

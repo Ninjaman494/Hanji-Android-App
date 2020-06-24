@@ -21,6 +21,7 @@ import com.android.billingclient.api.BillingFlowParams;
 import com.android.billingclient.api.BillingResult;
 import com.android.billingclient.api.SkuDetails;
 import com.android.billingclient.api.SkuDetailsParams;
+import com.apollographql.apollo.exception.ApolloNetworkException;
 import com.eggheadgames.aboutbox.AboutConfig;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -193,16 +194,13 @@ public class Utils {
         });
     }
 
-    public static void handleError(Exception error, AppCompatActivity context, DialogInterface.OnClickListener listener){
+    public static void handleError(Throwable error, AppCompatActivity context, DialogInterface.OnClickListener listener){
         ErrorDialogFragment fragment;
-       /* if(error instanceof NoConnectionError){
-            fragment = ErrorDialogFragment.newInstance("Can't load results",
+        if(error instanceof ApolloNetworkException){
+            fragment = ErrorDialogFragment.newInstance("Can't connect to server",
                     "Check your network settings and try again");
-        } else if(error instanceof ParseError) {
-            fragment = ErrorDialogFragment.newInstance("Can't read results",
-                    "A response was given that we couldn't understand");
-        }else{
-            Crashlytics.log("Unrecognized Error: "+ error.toString());
+        } else {
+            //Crashlytics.log("Unrecognized Error: "+ error.toString());
             fragment = ErrorDialogFragment.newInstance("Something went wrong",
                     "Try again later or contact support");
         }
@@ -213,10 +211,10 @@ public class Utils {
         context.getSupportFragmentManager()
                 .beginTransaction()
                 .add(fragment,"frag_alert")
-                .commitAllowingStateLoss();*/
+                .commitAllowingStateLoss();
     }
 
-    public static void handleError(Exception error, AppCompatActivity context) {
+    public static void handleError(Throwable error, AppCompatActivity context) {
         handleError(error,context,null);
     }
 

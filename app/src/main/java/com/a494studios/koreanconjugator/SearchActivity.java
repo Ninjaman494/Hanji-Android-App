@@ -87,6 +87,7 @@ public class SearchActivity extends AppCompatActivity {
                     @Override
                     public void onError(Throwable e) {
                         e.printStackTrace();
+                        Utils.handleError(e, SearchActivity.this, (dialogInterface, i) -> SearchActivity.this.onBackPressed());
                     }
 
                     @Override
@@ -94,15 +95,6 @@ public class SearchActivity extends AppCompatActivity {
                         this.dispose();
                     }
                 });
-    }
-
-    private void handleError(Exception error){
-        Utils.handleError(error, this, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface,int i) {
-                finish(); // Exit this activity
-            }
-        });
     }
 
     @Override
