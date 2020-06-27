@@ -18,8 +18,8 @@
         <item name="windowNoTitle">true</item>
     </style>
 
-    <style name="AppTheme.MainActivityTheme" parent="AppTheme.NoActionBar">
-        <item name="colorPrimaryDark">@color/grey_200</item>
+    <style name="AppTheme.MainActivityTheme" parent="AppTheme">
+        <item name="android:windowBackground">@drawable/background</item>
     </style>
 
     <style name="OverflowMenuStyle" parent="Widget.AppCompat.Light.PopupMenu.Overflow">

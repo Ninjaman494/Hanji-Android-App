@@ -6,6 +6,7 @@
     android:layout_height="match_parent"
     android:clipToPadding="false"
     android:clipChildren="false"
+    android:background="@color/white"
     tools:context="com.a494studios.koreanconjugator.MainActivity">
 
     <TextView
@@ -68,6 +69,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
         </LinearLayout>
-    </ScrollView>
+    </ScrollView>-->
 
 </androidx.constraintlayout.widget.ConstraintLayout>
