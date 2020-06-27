@@ -18,7 +18,7 @@
         <item name="windowNoTitle">true</item>
     </style>
 
-    <style name="AppTheme.MainActivityTheme" parent="AppTheme">
+    <style name="AppTheme.LaunchActivityTheme" parent="AppTheme.NoActionBar">
         <item name="android:windowBackground">@drawable/background</item>
     </style>
 

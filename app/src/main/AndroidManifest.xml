@@ -35,12 +35,7 @@
         <activity
             android:name=".MainActivity"
             android:windowSoftInputMode="adjustNothing"
-            android:theme="@style/AppTheme.MainActivityTheme">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-
+            android:theme="@style/AppTheme.LaunchActivityTheme">
             <meta-data
                 android:name="android.app.default_searchable"
                 android:value=".SearchActivity" />
@@ -70,6 +65,14 @@
         <activity android:name=".settings.SettingsActivity" />
         <activity android:name=".settings.FavoritesActivity" />
         <activity android:name=".settings.LegalDisplayActivity" />
+        <activity android:name=".LaunchActivity"
+            android:noHistory="true"
+            android:theme="@style/AppTheme.LaunchActivityTheme">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
 
         <service android:name=".MessagingService">
             <intent-filter>
