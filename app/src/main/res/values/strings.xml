@@ -29,6 +29,13 @@
     <string name="feed_rate_never">Never</string>
     <string name="feedback_sent">Feedback sent</string>
     <string name="feedback_sending">Sending feedback</string>
+    <!--Onboarding-->
+    <string name="onboarding1_title">Hanji 2.0</string>
+    <string name="onboarding1_desc">Welcome to Hanji 2.0! This new update adds a ton of new features and takes Hanji to the next level.</string>
+    <string name="onboarding2_title">Honorifics</string>
+    <string name="onboarding2_desc">All conjugations now have an honorific form. Click on the slider to switch between regular and honorific conjugations</string>
+    <string name="onboarding3_title">Conjugation Info</string>
+    <string name="onboarding3_desc">Get detailed information about a conjugation. Just click on any conjugation to see its details</string>
     <!--Other-->
     <string name="honorific">Honorific</string>
     <string name="see_entry">See Entry</string>
