@@ -84,17 +84,6 @@ public class MainActivity extends BaseActivity {
             Crashlytics.logException(e);
         }
 
-        if(Utils.isFirstBoot(this) || Utils.isFirstTwo(this)){
-            // Make default favorites, or clear old favorites from 1.0
-            ArrayList<Favorite> favs = new ArrayList<>();
-            favs.add(new Favorite("Past","declarative past informal high",false));
-            favs.add(new Favorite("Present","declarative present informal high",false));
-            favs.add(new Favorite("Future","declarative future informal high",false));
-            Utils.setFavorites(favs,this);
-            Utils.setFirstBoot(this,false);
-            Utils.setFirstTwo(this, false);
-        }
-
         // Setting up Feedback dialog
         final RatingDialog ratingDialog = new RatingDialog.Builder(this)
                 .threshold(5) // Get feedback if less than 5 stars

@@ -3,6 +3,8 @@ package com.a494studios.koreanconjugator;
 import android.content.Intent;
 import android.os.Bundle;
 
+import com.a494studios.koreanconjugator.parsing.Favorite;
+import com.a494studios.koreanconjugator.utils.Utils;
 import com.codemybrainsout.onboarder.AhoyOnboarderActivity;
 import com.codemybrainsout.onboarder.AhoyOnboarderCard;
 
@@ -13,6 +15,23 @@ public class LaunchActivity extends AhoyOnboarderActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        if(!Utils.isFirstBoot(this) && !Utils.isFirstTwo(this)){
+            Intent intent = new Intent(this,MainActivity.class);
+            startActivity(intent);
+            finish();
+            return;
+        }
+
+        // Make default favorites, or clear old favorites from 1.0
+        ArrayList<Favorite> favs = new ArrayList<>();
+        favs.add(new Favorite("Past","declarative past informal high",false));
+        favs.add(new Favorite("Present","declarative present informal high",false));
+        favs.add(new Favorite("Future","declarative future informal high",false));
+        Utils.setFavorites(favs,this);
+        Utils.setFirstBoot(this,false);
+        Utils.setFirstTwo(this, false);
+
 
         // First card
         String title = getString(R.string.onboarding1_title);
@@ -70,6 +89,7 @@ public class LaunchActivity extends AhoyOnboarderActivity {
 
         setColorBackground(colors);
         setOnboardPages(pages);
+        setFinishButtonTitle(R.string.finish_btn_text);
     }
 
     @Override
