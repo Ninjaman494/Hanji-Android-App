@@ -42,7 +42,7 @@ public class WordOfDayCard implements DisplayCardBody {
                     @Override
                     public void onError(Throwable e) {
                         e.printStackTrace();
-                        Utils.handleError(e, (AppCompatActivity) context);
+                        Utils.handleError(e, (AppCompatActivity) context, 8);
                     }
 
                     @Override

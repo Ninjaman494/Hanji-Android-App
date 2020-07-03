@@ -11,7 +11,7 @@ import android.widget.Toast;
 
 import com.a494studios.koreanconjugator.BuildConfig;
 import com.a494studios.koreanconjugator.R;
-import com.crashlytics.android.Crashlytics;
+import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
 import org.rm3l.maoni.common.contract.Handler;
 import org.rm3l.maoni.common.model.Feedback;
@@ -55,8 +55,7 @@ public class SlackHandler implements Handler {
                     System.out.println(webApiClient.auth());
                     success[0] = true;
                 }catch (SlackResponseErrorException e) {
-                    Crashlytics.log("Wrong token code for Slack app?");
-                    Crashlytics.logException(e);
+                    FirebaseCrashlytics.getInstance().recordException(e);
                     success[0] = false;
                 }catch (SlackException e){
                     e.printStackTrace();

@@ -15,7 +15,6 @@ import com.a494studios.koreanconjugator.R;
 import com.a494studios.koreanconjugator.SearchQuery;
 import com.a494studios.koreanconjugator.utils.BaseActivity;
 import com.a494studios.koreanconjugator.parsing.Server;
-import com.a494studios.koreanconjugator.utils.ErrorDialogFragment;
 import com.a494studios.koreanconjugator.utils.RecyclerAnimationHandler;
 import com.a494studios.koreanconjugator.utils.Utils;
 import com.apollographql.apollo.api.Response;
@@ -43,10 +42,8 @@ public class SearchResultsActivity extends BaseActivity {
         snackbarShown = false;
         String query = getIntent().getStringExtra(EXTRA_QUERY);
         if(query == null){ // Null check for extra
-            ErrorDialogFragment.newInstance()
-                    .setListener((dialogInterface, i) -> onBackPressed())
-                    .show(getSupportFragmentManager(),"error_dialog");
-            //Crashlytics.log("Query was null in SearchResultsActivity");
+            Exception exception = new Exception("Query was null in SearchResultsActivity");
+            Utils.handleError(exception, this, 6, (dialogInterface, i) -> onBackPressed());
             return;
         }
 

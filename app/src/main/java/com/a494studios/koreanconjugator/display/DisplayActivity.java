@@ -19,9 +19,7 @@ import com.a494studios.koreanconjugator.utils.Utils;
 import com.a494studios.koreanconjugator.parsing.Favorite;
 import com.a494studios.koreanconjugator.parsing.Server;
 import com.a494studios.koreanconjugator.utils.ScrollViewAnimationHandler;
-import com.a494studios.koreanconjugator.utils.ErrorDialogFragment;
 import com.apollographql.apollo.api.Response;
-import com.crashlytics.android.Crashlytics;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,10 +44,8 @@ public class DisplayActivity extends BaseActivity {
 
         // Make sure extras were passed
         if(id == null){
-            ErrorDialogFragment.newInstance()
-                    .setListener((dialogInterface, i) -> onBackPressed())
-                    .show(getSupportFragmentManager(),"error_dialog");
-            Crashlytics.log("ID was null in DisplayActivity");
+            Exception exception = new Exception("ID was null in DisplayActivity");
+            Utils.handleError(exception, this, 5, (dialogInterface, i) -> onBackPressed());
             return;
         }
 

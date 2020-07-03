@@ -23,6 +23,7 @@ import com.android.billingclient.api.SkuDetails;
 import com.android.billingclient.api.SkuDetailsParams;
 import com.apollographql.apollo.exception.ApolloNetworkException;
 import com.eggheadgames.aboutbox.AboutConfig;
+import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
@@ -32,6 +33,7 @@ import com.mikepenz.aboutlibraries.LibsBuilder;
 import org.rm3l.maoni.Maoni;
 
 import java.util.ArrayList;
+import java.util.Locale;
 
 import javax.annotation.Nullable;
 
@@ -195,14 +197,15 @@ public class Utils {
     }
 
     public static void handleError(Throwable error, AppCompatActivity context, int errorCode, DialogInterface.OnClickListener listener){
+        String message = "Error code: " + String.format(Locale.getDefault(), "%03d", errorCode);
         ErrorDialogFragment fragment;
         if(error instanceof ApolloNetworkException){
-            fragment = ErrorDialogFragment.newInstance("Can't connect to server",
-                    "Check your network settings and try again");
+            message += ". Check your network settings and try again";
+            fragment = ErrorDialogFragment.newInstance("Can't connect to server", message);
         } else {
-            //Crashlytics.log("Unrecognized Error: "+ error.toString());
-            fragment = ErrorDialogFragment.newInstance("Something went wrong",
-                    "Try again later or contact support");
+            FirebaseCrashlytics.getInstance().recordException(error);
+            message += ". Try again later or contact support";
+            fragment = ErrorDialogFragment.newInstance("Something went wrong", message);
         }
 
         if(listener != null){

@@ -8,7 +8,7 @@ import android.webkit.WebView;
 
 import com.a494studios.koreanconjugator.R;
 import com.a494studios.koreanconjugator.utils.ErrorDialogFragment;
-import com.crashlytics.android.Crashlytics;
+import com.a494studios.koreanconjugator.utils.Utils;
 
 
 public class LegalDisplayActivity extends AppCompatActivity {
@@ -27,13 +27,8 @@ public class LegalDisplayActivity extends AppCompatActivity {
         WebView wv = findViewById(R.id.webview);
         String type = getIntent().getStringExtra("type");
         if(type == null){ // Null check for extra
-            ErrorDialogFragment.newInstance().setListener(new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialogInterface, int i) {
-                    onBackPressed();
-                }
-            }).show(getSupportFragmentManager(),"error_dialog");
-            Crashlytics.log("Type was null in LegalDisplayActivity");
+            Exception exception = new Exception("Type was null in LegalDisplayActivity");
+            Utils.handleError(exception, this, 7, (dialogInterface, i) -> onBackPressed());
         }else {
             switch (type) {
                 case TYPE_PRIV_POLICY:

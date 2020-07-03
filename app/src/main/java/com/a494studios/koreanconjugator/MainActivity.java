@@ -10,17 +10,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.a494studios.koreanconjugator.display.DisplayCardView;
-import com.a494studios.koreanconjugator.parsing.Favorite;
 import com.a494studios.koreanconjugator.utils.BaseActivity;
 import com.a494studios.koreanconjugator.utils.ScrollViewAnimationHandler;
 import com.a494studios.koreanconjugator.utils.SlackHandler;
 import com.a494studios.koreanconjugator.utils.Utils;
 import com.codemybrainsout.ratingdialog.RatingDialog;
-import com.crashlytics.android.Crashlytics;
+import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.eggheadgames.aboutbox.AboutBoxUtils;
 import com.eggheadgames.aboutbox.AboutConfig;
-
-import java.util.ArrayList;
 
 public class MainActivity extends BaseActivity {
 
@@ -50,29 +47,30 @@ public class MainActivity extends BaseActivity {
             actionBar.setElevation(0);
         }
 
+        FirebaseCrashlytics crashlytics = FirebaseCrashlytics.getInstance();
         try {
             if (getIntent().getExtras() != null) {
-                Crashlytics.log("Extra in Main");
+                crashlytics.log("Extra in Main");
                 for (String s : getIntent().getExtras().keySet()) {
-                    Crashlytics.log("Key: " + s);
+                    FirebaseCrashlytics.getInstance().log("Key: " + s);
                     if (getIntent().getStringExtra(s) != null) {
-                        Crashlytics.setString(s, getIntent().getStringExtra(s));
+                        crashlytics.setCustomKey(s, getIntent().getStringExtra(s));
                     } else if (getIntent().getSerializableExtra(s) != null) {
-                        Crashlytics.setString(s, getIntent().getSerializableExtra(s).toString());
+                       crashlytics.setCustomKey(s, getIntent().getSerializableExtra(s).toString());
                     } else {
-                        Crashlytics.setString(s, "null");
+                        crashlytics.setCustomKey(s, "null");
                     }
 
                 }
 
                 String showDialog = getIntent().getStringExtra("dialog");
                 if (showDialog != null && showDialog.equals("true")) {
-                    Crashlytics.log("Dialog is not null and true");
+                    FirebaseCrashlytics.getInstance().log("Dialog is not null and true");
                     AlertDialog.Builder builder = new AlertDialog.Builder(this);
                     String title = getIntent().getStringExtra("title");
                     String msg = getIntent().getStringExtra("message");
                     if (title != null && msg != null) {
-                        Crashlytics.log("Title and msg not null, building dialog");
+                        FirebaseCrashlytics.getInstance().log("Title and msg not null, building dialog");
                         builder.setTitle(title);
                         builder.setMessage(msg);
                         builder.create().show();
@@ -80,8 +78,8 @@ public class MainActivity extends BaseActivity {
                 }
             }
         } catch (Exception e) {
-            Crashlytics.log("Exception caught by try-catch block");
-            Crashlytics.logException(e);
+            crashlytics.log("Exception caught by try-catch block");
+            crashlytics.recordException(e);
         }
 
         // Setting up Feedback dialog

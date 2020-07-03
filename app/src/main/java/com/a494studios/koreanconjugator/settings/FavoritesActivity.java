@@ -85,7 +85,7 @@ public class FavoritesActivity extends AppCompatActivity implements AddFavoriteF
 
                     @Override
                     public void onError(Throwable e) {
-                        e.printStackTrace();
+                       Utils.handleError(e, FavoritesActivity.this, 9);
                     }
 
                     @Override
