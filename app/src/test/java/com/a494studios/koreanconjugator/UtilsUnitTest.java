@@ -5,6 +5,7 @@ import android.content.Context;
 
 import com.a494studios.koreanconjugator.parsing.Favorite;
 import com.a494studios.koreanconjugator.utils.Utils;
+import com.google.firebase.FirebaseApp;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -24,6 +25,7 @@ public class UtilsUnitTest {
     @Before
     public void setup() {
         context = RuntimeEnvironment.application.getApplicationContext();
+        FirebaseApp.initializeApp(context);
     }
 
     @Test
