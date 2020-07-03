@@ -87,7 +87,7 @@ public class SearchActivity extends AppCompatActivity {
                     @Override
                     public void onError(Throwable e) {
                         e.printStackTrace();
-                        Utils.handleError(e, SearchActivity.this, (dialogInterface, i) -> SearchActivity.this.onBackPressed());
+                        Utils.handleError(e, SearchActivity.this, 1, (dialogInterface, i) -> SearchActivity.this.onBackPressed());
                     }
 
                     @Override

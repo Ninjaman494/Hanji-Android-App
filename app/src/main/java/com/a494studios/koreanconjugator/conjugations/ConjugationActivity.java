@@ -105,7 +105,7 @@ public class ConjugationActivity extends BaseActivity {
             @Override
             public void onError(Throwable e) {
                 e.printStackTrace();
-                Utils.handleError(e, ConjugationActivity.this, (dialogInterface, i) -> ConjugationActivity.this.onBackPressed());
+                Utils.handleError(e, ConjugationActivity.this,4, (dialogInterface, i) -> ConjugationActivity.this.onBackPressed());
             }
 
             @Override

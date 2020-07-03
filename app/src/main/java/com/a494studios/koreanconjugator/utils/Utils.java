@@ -194,7 +194,7 @@ public class Utils {
         });
     }
 
-    public static void handleError(Throwable error, AppCompatActivity context, DialogInterface.OnClickListener listener){
+    public static void handleError(Throwable error, AppCompatActivity context, int errorCode, DialogInterface.OnClickListener listener){
         ErrorDialogFragment fragment;
         if(error instanceof ApolloNetworkException){
             fragment = ErrorDialogFragment.newInstance("Can't connect to server",
@@ -214,8 +214,8 @@ public class Utils {
                 .commitAllowingStateLoss();
     }
 
-    public static void handleError(Throwable error, AppCompatActivity context) {
-        handleError(error,context,null);
+    public static void handleError(Throwable error, AppCompatActivity context, int errorCode) {
+        handleError(error,context,errorCode,null);
     }
 
     public static void displayErrorDialog(AppCompatActivity context, String title, String msg,DialogInterface.OnClickListener listener){

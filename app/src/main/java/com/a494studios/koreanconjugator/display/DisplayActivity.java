@@ -71,7 +71,7 @@ public class DisplayActivity extends BaseActivity {
             @Override
             public void onError(Throwable t) {
                 t.printStackTrace();
-                Utils.handleError(t, DisplayActivity.this, (dialogInterface, i) -> DisplayActivity.this.onBackPressed());
+                Utils.handleError(t, DisplayActivity.this,2, (dialogInterface, i) -> DisplayActivity.this.onBackPressed());
             }
 
             @Override

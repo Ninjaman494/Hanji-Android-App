@@ -138,7 +138,7 @@ public class SearchResultsActivity extends BaseActivity {
                     @Override
                     public void onError(Throwable e) {
                         e.printStackTrace();
-                        Utils.handleError(e, SearchResultsActivity.this, (dialogInterface, i) -> SearchResultsActivity.this.onBackPressed());
+                        Utils.handleError(e, SearchResultsActivity.this, 3, (dialogInterface, i) -> SearchResultsActivity.this.onBackPressed());
                     }
 
                     @Override
