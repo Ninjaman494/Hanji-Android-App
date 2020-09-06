@@ -4,12 +4,15 @@ import android.app.Application;
 import android.view.View;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.a494studios.koreanconjugator.display.DisplayCardView;
 import com.a494studios.koreanconjugator.display.cards.AdCard;
 import com.a494studios.koreanconjugator.utils.Logger;
 import com.a494studios.koreanconjugator.utils.Utils;
+import com.android.billingclient.api.AcknowledgePurchaseParams;
+import com.android.billingclient.api.AcknowledgePurchaseResponseListener;
 import com.android.billingclient.api.BillingClient;
 import com.android.billingclient.api.BillingClientStateListener;
 import com.android.billingclient.api.BillingResult;
@@ -134,10 +137,29 @@ public class CustomApplication extends Application implements PurchasesUpdatedLi
                 && !list.isEmpty() && list.get(0).getSku().equals(Utils.SKU_AD_FREE)) {
 
             if(list.get(0).getPurchaseState() == Purchase.PurchaseState.PURCHASED) {
-                isAdFree = true;
-                Utils.setAdFree(this, true);
+                AcknowledgePurchaseParams consumeParams = AcknowledgePurchaseParams
+                        .newBuilder()
+                        .setPurchaseToken(list.get(0).getPurchaseToken())
+                        .build();
 
-                Toast.makeText(this, "Upgrade Success! Please restart Hanji for the upgrade to take affect", Toast.LENGTH_LONG).show();
+                // Weird bug requires this not be a lambda
+                AcknowledgePurchaseResponseListener listener = new AcknowledgePurchaseResponseListener() {
+                    @Override
+                    public void onAcknowledgePurchaseResponse(@NonNull BillingResult billingResult) {
+                        String toastMsg = "";
+                        if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK) {
+                            System.out.println("Purchase Acknowledged");
+                            isAdFree = true;
+                            Utils.setAdFree(CustomApplication.this, true);
+                            toastMsg = "Upgrade Success! Please restart Hanji for the upgrade to take affect";
+                        } else {
+                            toastMsg = "An error occurred with your purchase, please contact support";
+                        }
+                        Toast.makeText(CustomApplication.this, toastMsg, Toast.LENGTH_LONG).show();
+                    }
+                };
+
+                billingClient.acknowledgePurchase(consumeParams, listener);
             } else if (list.get(0).getPurchaseState() == Purchase.PurchaseState.PENDING) {
                 Toast.makeText(this, "Payment pending. Hanji will be upgraded once payment is received", Toast.LENGTH_LONG).show();
             } else {
