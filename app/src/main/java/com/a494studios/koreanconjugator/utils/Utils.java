@@ -133,12 +133,13 @@ public class Utils {
                 activity.startActivity(intent);
             }else if(tag.equals(activity.getString(R.string.egab_acknowledgements))){
                 new LibsBuilder()
-                        .withActivityStyle(Libs.ActivityStyle.LIGHT_DARK_TOOLBAR)
                         .withExcludedLibraries("support_cardview","support_v4","support_annotations","AppCompat","appcompat_v7","recyclerview_v7","GooglePlayServices","design","volleyplus")
                         .withLicenseDialog(true)
                         .withLicenseShown(true)
+                        .withAboutIconShown(false)
+                        .withAboutVersionShownName(false)
+                        .withAboutVersionShown(false)
                         .withActivityTitle("Libraries Used")
-                        .withLibraries("aboutBox","linear_list","transitions")
                         .start(activity);
             }
         };

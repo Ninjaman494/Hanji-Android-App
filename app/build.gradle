@@ -86,12 +86,13 @@ def getApiKey(String property) {
 
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
-    implementation 'androidx.appcompat:appcompat:1.0.2'
+    implementation 'androidx.appcompat:appcompat:1.2.0'
     implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'androidx.multidex:multidex:2.0.1'
     implementation 'androidx.cardview:cardview:1.0.0'
-    implementation 'com.google.android.material:material:1.0.0'
+    implementation "androidx.recyclerview:recyclerview:1.1.0"
+    implementation 'com.google.android.material:material:1.2.1'
     implementation 'org.jetbrains:annotations:16.0.2'
     implementation 'com.github.frankiesardo:linearlistview:1.0.1@aar'
     implementation 'com.codemybrainsout.onboarding:onboarder:1.0.4'
@@ -109,12 +110,11 @@ dependencies {
 
     // Settings, About, Feedback
     implementation 'com.codemybrainsout.rating:ratingdialog:1.0.8'
-    implementation project(':about-box')
-    implementation('com.mikepenz:aboutlibraries:6.1.1@aar') { transitive = true }
+    implementation 'com.github.eggheadgames:android-about-box:2.0.1'
+    implementation 'com.mikepenz:aboutlibraries:8.3.0'
     implementation 'org.rm3l:maoni:6.0.0'
     implementation 'org.rm3l:maoni-common:6.0.0'
     implementation 'com.github.pschroen:slack-api-android:c66cc8d997'
-    implementation 'com.github.daniel-stoneuk:material-about-library:2.4.2'
 
     // Apollo
     implementation 'com.apollographql.apollo:apollo-runtime:1.2.3'

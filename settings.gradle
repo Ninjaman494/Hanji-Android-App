@@ -1,2 +1,1 @@
-include ':app',':about-box'
-project (':about-box').projectDir = new File("C:\\Users\\akash\\StudioProjects\\android-about-box\\library")
+include ':app'

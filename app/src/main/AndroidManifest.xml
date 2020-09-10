@@ -73,6 +73,10 @@
             </intent-filter>
         </activity>
 
+        <activity
+            android:name="com.mikepenz.aboutlibraries.ui.LibsActivity"
+            android:theme="@style/AppTheme.LibrariesTheme" />
+
         <service android:name=".MessagingService">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
