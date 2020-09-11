@@ -3,6 +3,8 @@ package com.a494studios.koreanconjugator;
 
 import android.content.Context;
 
+import androidx.test.core.app.ApplicationProvider;
+
 import com.a494studios.koreanconjugator.parsing.Favorite;
 import com.a494studios.koreanconjugator.utils.Utils;
 import com.google.firebase.FirebaseApp;
@@ -11,7 +13,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
-import org.robolectric.RuntimeEnvironment;
 
 import java.util.ArrayList;
 
@@ -24,7 +25,7 @@ public class UtilsUnitTest {
 
     @Before
     public void setup() {
-        context = RuntimeEnvironment.application.getApplicationContext();
+        context = ApplicationProvider.getApplicationContext();
         FirebaseApp.initializeApp(context);
     }
 
@@ -46,7 +47,7 @@ public class UtilsUnitTest {
 
         Utils.setFavorites(favorites,context);
         assertThat(favorites, samePropertyValuesAs(Utils.getFavorites(context)));
-        assertEquals(favorites.size(),Utils.getFavCount(context));
+        assertEquals(favorites.size(), Utils.getFavCount(context));
     }
 
     @Test
