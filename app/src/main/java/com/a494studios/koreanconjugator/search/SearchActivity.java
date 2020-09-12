@@ -1,4 +1,4 @@
-package com.a494studios.koreanconjugator;
+package com.a494studios.koreanconjugator.search;
 
 import android.annotation.SuppressLint;
 import android.app.SearchManager;
@@ -10,6 +10,9 @@ import android.os.Bundle;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.a494studios.koreanconjugator.CustomApplication;
+import com.a494studios.koreanconjugator.R;
+import com.a494studios.koreanconjugator.SearchQuery;
 import com.a494studios.koreanconjugator.display.DisplayActivity;
 import com.a494studios.koreanconjugator.parsing.Server;
 import com.a494studios.koreanconjugator.search_results.SearchResultsActivity;
@@ -69,16 +72,11 @@ public class SearchActivity extends AppCompatActivity {
                     public void onNext(Response<SearchQuery.Data> dataResponse) {
                         List<SearchQuery.Result> results = dataResponse.data().search().results();
                         if(results.isEmpty()) {
-                            String title = getString(R.string.no_results_title);
-                            String msg = getString(R.string.no_results_msg);
-                            ErrorDialogFragment.newInstance(title, msg).setListener(new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialogInterface, int i) {
-                                    finish();
-                                }
-                            }).show(getSupportFragmentManager(),"error_dialog");
+                            NoResultsFragment.newInstance((dialogInterface, i) ->
+                                    finish()
+                            ).show(getSupportFragmentManager(), "error_dialog");
                         } else if(results.size() == 1){
-                            goToDisplay(results.get(0).id);
+                            goToDisplay(results.get(0).id());
                         } else {
                             goToSearchResults(entry);
                         }
