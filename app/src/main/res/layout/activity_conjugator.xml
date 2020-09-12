@@ -5,74 +5,77 @@
     android:layout_height="match_parent"
     tools:context=".conjugator.ConjugatorActivity">
 
-    <TextView
-        android:id="@+id/conjugator_stemText"
+    <ProgressBar
+        android:id="@+id/conjugator_progress"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_centerInParent="true"
+        android:indeterminate="true" />
+
+    <LinearLayout
+        android:id="@+id/conjugator_linearLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="8dp"
-        android:layout_marginTop="56dp"
-        android:layout_marginBottom="8dp"
-        android:text="Possible stems"
-        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-        android:textColor="@color/black"/>
-
-    <Spinner
-        android:id="@+id/conjugator_stemSpinner"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="8dp"
-        android:layout_below="@id/conjugator_stemText"
-        android:entries="@array/formality"/>
-
-    <TextView
-        android:id="@+id/conjugator_posText"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="8dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginBottom="8dp"
-        android:layout_below="@id/conjugator_stemSpinner"
-        android:text="Part of Speech"
-        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-        android:textColor="@color/black"/>
-
-    <Spinner
-        android:id="@+id/conjugator_posSpinner"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="8dp"
-        android:layout_below="@id/conjugator_posText"
-        android:entries="@array/pos"/>
-
-    <TextView
-        android:id="@+id/conjugator_regText"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="8dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginBottom="8dp"
-        android:layout_below="@id/conjugator_posSpinner"
-        android:text="Regularity"
-        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-        android:textColor="@color/black"/>
-
-    <Spinner
-        android:id="@+id/conjugator_regSpinner"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="8dp"
-        android:layout_below="@id/conjugator_regText"
-        android:entries="@array/regularity"/>
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/conjugator_list"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@id/conjugator_regSpinner"
-        android:clipChildren="false"
-        android:clipToPadding="false"
         android:orientation="vertical"
-        android:paddingVertical="16dp" />
+        android:layout_marginHorizontal="8dp"
+        android:layout_marginTop="56dp">
+
+        <TextView
+            android:id="@+id/conjugator_stemText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:text="@string/possible_stems"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            android:textColor="@color/black"/>
+
+        <Spinner
+            android:id="@+id/conjugator_stemSpinner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/conjugator_posText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="8dp"
+            android:text="@string/part_of_speech"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            android:textColor="@color/black"/>
+
+        <Spinner
+            android:id="@+id/conjugator_posSpinner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:entries="@array/pos"/>
+
+        <TextView
+            android:id="@+id/conjugator_regText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="8dp"
+            android:text="@string/regularity"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            android:textColor="@color/black"/>
+
+        <Spinner
+            android:id="@+id/conjugator_regSpinner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:entries="@array/regularity"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/conjugator_list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:clipChildren="false"
+            android:clipToPadding="false"
+            android:orientation="vertical"
+            android:paddingVertical="16dp" />
+
+    </LinearLayout>
 
     <RelativeLayout
         android:id="@+id/conjugator_switchBar"

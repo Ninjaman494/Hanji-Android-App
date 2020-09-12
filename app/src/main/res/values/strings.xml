@@ -37,6 +37,10 @@
     <string name="onboarding3_title">Conjugation Info</string>
     <string name="onboarding3_desc">Get detailed information about a conjugation. Just click on any conjugation to see its details</string>
     <string name="finish_btn_text">Start Learning!</string>
+    <!-- Conjugator Activity -->
+    <string name="possible_stems">Possible stems</string>
+    <string name="part_of_speech">Part of Speech</string>
+    <string name="regularity">Regularity</string>
     <!--Other-->
     <string name="honorific">Honorific</string>
     <string name="see_entry">See Entry</string>

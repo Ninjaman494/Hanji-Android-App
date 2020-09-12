@@ -12,10 +12,14 @@ import androidx.fragment.app.DialogFragment;
 import com.a494studios.koreanconjugator.R;
 import com.a494studios.koreanconjugator.conjugator.ConjugatorActivity;
 
+import org.jetbrains.annotations.NotNull;
+
 /**
  * A simple {@link DialogFragment} subclass.
  */
 public class NoResultsFragment extends DialogFragment implements DialogInterface.OnClickListener {
+
+    private static final String ARG_SEARCH_TERM = "search_term";
 
     private DialogInterface.OnClickListener onCancelListener = null;
 
@@ -23,17 +27,23 @@ public class NoResultsFragment extends DialogFragment implements DialogInterface
         // Required empty public constructor
     }
 
-    public static NoResultsFragment newInstance(DialogInterface.OnClickListener listener) {
+    static NoResultsFragment newInstance(String searchTerm,
+                                         DialogInterface.OnClickListener listener) {
         NoResultsFragment frag = new NoResultsFragment();
+        Bundle args = new Bundle();
+        args.putString(ARG_SEARCH_TERM, searchTerm);
+        frag.setArguments(args);
         frag.setOnCancelListener(listener);
         return frag;
     }
 
+    @NotNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         String title = getString(R.string.no_results_title);
         String msg = getString(R.string.no_results_msg);
+        String searchTerm = getArguments().getString(ARG_SEARCH_TERM);
 
         builder.setTitle(title);
         builder.setMessage(msg);
@@ -48,6 +58,7 @@ public class NoResultsFragment extends DialogFragment implements DialogInterface
         String okBtnText = getResources().getString(android.R.string.ok);
         builder.setPositiveButton(okBtnText, (dialogInterface, i) -> {
             Intent intent = new Intent(getContext(), ConjugatorActivity.class);
+            intent.putExtra(ConjugatorActivity.EXTRA_TERM, searchTerm);
             startActivity(intent);
         });
 
@@ -64,7 +75,7 @@ public class NoResultsFragment extends DialogFragment implements DialogInterface
     }
 
     @Override
-    public void onDismiss(DialogInterface dialog){
+    public void onDismiss(@NotNull DialogInterface dialog){
         super.onDismiss(dialog);
         if (onCancelListener != null) {
             onCancelListener.onClick(dialog, -1);
