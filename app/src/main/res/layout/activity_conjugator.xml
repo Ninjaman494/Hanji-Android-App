@@ -5,13 +5,6 @@
     android:layout_height="match_parent"
     tools:context=".conjugator.ConjugatorActivity">
 
-    <ProgressBar
-        android:id="@+id/conjugator_progress"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
-        android:layout_centerInParent="true"
-        android:indeterminate="true" />
-
     <LinearLayout
         android:id="@+id/conjugator_linearLayout"
         android:layout_width="match_parent"
@@ -65,17 +58,26 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:entries="@array/regularity"/>
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/conjugator_list"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:clipChildren="false"
-            android:clipToPadding="false"
-            android:orientation="vertical"
-            android:paddingVertical="16dp" />
-
     </LinearLayout>
+
+    <ProgressBar
+        android:id="@+id/conjugator_progress"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_below="@id/conjugator_linearLayout"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="48dp"
+        android:indeterminate="true" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/conjugator_list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/conjugator_linearLayout"
+        android:clipChildren="false"
+        android:clipToPadding="false"
+        android:orientation="vertical"
+        android:paddingVertical="16dp" />
 
     <RelativeLayout
         android:id="@+id/conjugator_switchBar"
