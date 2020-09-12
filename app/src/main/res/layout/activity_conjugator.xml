@@ -5,79 +5,90 @@
     android:layout_height="match_parent"
     tools:context=".conjugator.ConjugatorActivity">
 
-    <LinearLayout
-        android:id="@+id/conjugator_linearLayout"
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_marginHorizontal="8dp"
-        android:layout_marginTop="56dp">
+        android:layout_height="match_parent">
 
-        <TextView
-            android:id="@+id/conjugator_stemText"
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
-            android:text="@string/possible_stems"
-            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-            android:textColor="@color/black"/>
+            android:layout_height="match_parent">
 
-        <Spinner
-            android:id="@+id/conjugator_stemSpinner"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            <LinearLayout
+                android:id="@+id/conjugator_linearLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginHorizontal="8dp"
+                android:layout_marginTop="56dp">
 
-        <TextView
-            android:id="@+id/conjugator_posText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:layout_marginBottom="8dp"
-            android:text="@string/part_of_speech"
-            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-            android:textColor="@color/black"/>
+                <TextView
+                    android:id="@+id/conjugator_stemText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:text="@string/possible_stems"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                    android:textColor="@color/black"/>
 
-        <Spinner
-            android:id="@+id/conjugator_posSpinner"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:entries="@array/pos"/>
+                <Spinner
+                    android:id="@+id/conjugator_stemSpinner"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
 
-        <TextView
-            android:id="@+id/conjugator_regText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:layout_marginBottom="8dp"
-            android:text="@string/regularity"
-            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-            android:textColor="@color/black"/>
+                <TextView
+                    android:id="@+id/conjugator_posText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginBottom="8dp"
+                    android:text="@string/part_of_speech"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                    android:textColor="@color/black"/>
 
-        <Spinner
-            android:id="@+id/conjugator_regSpinner"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:entries="@array/regularity"/>
-    </LinearLayout>
+                <Spinner
+                    android:id="@+id/conjugator_posSpinner"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:entries="@array/pos"/>
 
-    <ProgressBar
-        android:id="@+id/conjugator_progress"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
-        android:layout_below="@id/conjugator_linearLayout"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="48dp"
-        android:indeterminate="true" />
+                <TextView
+                    android:id="@+id/conjugator_regText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginBottom="8dp"
+                    android:text="@string/regularity"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                    android:textColor="@color/black"/>
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/conjugator_list"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@id/conjugator_linearLayout"
-        android:clipChildren="false"
-        android:clipToPadding="false"
-        android:orientation="vertical"
-        android:paddingVertical="16dp" />
+                <Spinner
+                    android:id="@+id/conjugator_regSpinner"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:entries="@array/regularity"/>
+            </LinearLayout>
+
+            <ProgressBar
+                android:id="@+id/conjugator_progress"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:layout_below="@id/conjugator_linearLayout"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="48dp"
+                android:indeterminate="true" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/conjugator_list"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_below="@id/conjugator_linearLayout"
+                android:clipChildren="false"
+                android:clipToPadding="false"
+                android:orientation="vertical"
+                android:paddingVertical="16dp" />
+
+        </RelativeLayout>
+    </androidx.core.widget.NestedScrollView>
 
     <RelativeLayout
         android:id="@+id/conjugator_switchBar"

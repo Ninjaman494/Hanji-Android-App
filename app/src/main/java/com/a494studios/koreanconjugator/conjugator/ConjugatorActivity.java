@@ -65,6 +65,7 @@ public class ConjugatorActivity extends AppCompatActivity implements AdapterView
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
+        recyclerView.setNestedScrollingEnabled(false);
 
         stemSpinner = findViewById(R.id.conjugator_stemSpinner);
         posSpinner = findViewById(R.id.conjugator_posSpinner);
