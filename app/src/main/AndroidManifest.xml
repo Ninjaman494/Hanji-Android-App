@@ -14,43 +14,42 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
+        <activity android:name=".conjugator.ConjugatorActivity">
+            <meta-data
+                android:name="android.app.default_searchable"
+                android:value=".search.SearchActivity" />
+        </activity>
         <activity android:name=".display.ConjInfoActivity">
             <meta-data
                 android:name="android.app.default_searchable"
-                android:value=".SearchActivity" />
+                android:value=".search.SearchActivity" />
         </activity>
         <activity android:name=".conjugations.ConjugationActivity">
             <meta-data
                 android:name="android.app.default_searchable"
-                android:value=".SearchActivity" />
+                android:value=".search.SearchActivity" />
         </activity>
-
-        <meta-data
-            android:name="firebase_crashlytics_collection_enabled"
-            android:value="true" />
-        <meta-data
-            android:name="com.google.android.gms.ads.APPLICATION_ID"
-            android:value="ca-app-pub-7378286993062620~3014364162" />
 
         <activity
             android:name=".MainActivity"
             android:windowSoftInputMode="adjustNothing">
             <meta-data
                 android:name="android.app.default_searchable"
-                android:value=".SearchActivity" />
+                android:value=".search.SearchActivity" />
         </activity>
         <activity android:name=".display.DisplayActivity">
             <meta-data
                 android:name="android.app.default_searchable"
-                android:value=".SearchActivity" />
+                android:value=".search.SearchActivity" />
         </activity>
+
         <activity android:name=".search_results.SearchResultsActivity">
             <meta-data
                 android:name="android.app.default_searchable"
-                android:value=".SearchActivity" />
+                android:value=".search.SearchActivity" />
         </activity>
         <activity
-            android:name=".SearchActivity"
+            android:name=".search.SearchActivity"
             android:noHistory="true"
             android:theme="@style/AppTheme.NoTransition">
             <intent-filter>
@@ -64,7 +63,8 @@
         <activity android:name=".settings.SettingsActivity" />
         <activity android:name=".settings.FavoritesActivity" />
         <activity android:name=".settings.LegalDisplayActivity" />
-        <activity android:name=".LaunchActivity"
+        <activity
+            android:name=".LaunchActivity"
             android:noHistory="true"
             android:theme="@style/AppTheme.LaunchActivityTheme">
             <intent-filter>
@@ -72,23 +72,23 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
             android:name="com.mikepenz.aboutlibraries.ui.LibsActivity"
             android:theme="@style/AppTheme.LibrariesTheme" />
-
-        <service android:name=".MessagingService">
-            <intent-filter>
-                <action android:name="com.google.firebase.MESSAGING_EVENT" />
-            </intent-filter>
-        </service>
+        <meta-data
+            android:name="firebase_crashlytics_collection_enabled"
+            android:value="true" />
+        <meta-data
+            android:name="com.google.android.gms.ads.APPLICATION_ID"
+            android:value="ca-app-pub-7378286993062620~3014364162" />
 
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_icon"
             android:resource="@drawable/ic_status" />
+
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_color"
-            android:resource="@android:color/transparent" /> <!-- If not defined yet, declare a file provider to be able to share screenshots captured by Maoni -->
+            android:resource="@android:color/transparent" />
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="com.a494studios.koreanconjugator.fileprovider"
@@ -97,7 +97,12 @@
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/filepaths" />
-        </provider>
+        </provider> <!-- If not defined yet, declare a file provider to be able to share screenshots captured by Maoni -->
+        <service android:name=".MessagingService">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
     </application>
 
 </manifest>

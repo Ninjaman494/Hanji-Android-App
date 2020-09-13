@@ -29,4 +29,12 @@
     <string-array name="tense_imp_prop">
         <item>Present</item>
     </string-array>
+    <string-array name="pos">
+        <item>Verb</item>
+        <item>Adjective</item>
+    </string-array>
+    <string-array name="regularity">
+        <item>Regular verb/adjective</item>
+        <item>Irregular verb/adjective</item>
+    </string-array>
 </resources>

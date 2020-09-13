@@ -14,12 +14,12 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.a494studios.koreanconjugator.R;
 import com.a494studios.koreanconjugator.utils.RecyclerAnimationHandler;
 
-class ConjugationAnimationHandler extends RecyclerAnimationHandler {
+public class ConjugationAnimationHandler extends RecyclerAnimationHandler {
 
     private View extendedBar;
     private RecyclerView recyclerView;
 
-    ConjugationAnimationHandler(View extendedBar, RecyclerView recyclerView, Context context) {
+    public ConjugationAnimationHandler(View extendedBar, RecyclerView recyclerView, Context context) {
         super(extendedBar, recyclerView, context);
         this.extendedBar = extendedBar;
         this.recyclerView = recyclerView;
@@ -51,7 +51,7 @@ class ConjugationAnimationHandler extends RecyclerAnimationHandler {
         recyclerView.setOnTouchListener((view, motionEvent) -> detector.onTouchEvent(motionEvent));
     }
 
-    void slideInConjugations() {
+    public void slideInConjugations() {
         Animation botTop = AnimationUtils.loadAnimation(context, R.anim.slide_bot_to_top);
         recyclerView.startAnimation(botTop);
     }
