@@ -55,7 +55,7 @@ public class NoResultsFragment extends DialogFragment implements DialogInterface
             builder.setNegativeButton(cancelBtnText,this);
         }
 
-        String okBtnText = getResources().getString(android.R.string.ok);
+        String okBtnText = getResources().getString(R.string.no_results_positive_btn);
         builder.setPositiveButton(okBtnText, (dialogInterface, i) -> {
             Intent intent = new Intent(getContext(), ConjugatorActivity.class);
             intent.putExtra(ConjugatorActivity.EXTRA_TERM, searchTerm);

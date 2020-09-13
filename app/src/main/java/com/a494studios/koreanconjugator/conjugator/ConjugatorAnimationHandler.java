@@ -60,7 +60,7 @@ public class ConjugatorAnimationHandler extends ConjugationAnimationHandler {
                         anim.setAnimationListener(listener);
                         extendedBar.startAnimation(anim);
                         extendedBar.setVisibility(View.INVISIBLE);
-                    } else if (yDiff < 0 && scrollPosition > 10 && !isAnimating[0] && !isVisible) {
+                    } else if (yDiff < 0 && !isAnimating[0] && !isVisible) {
                         // Scroll up
                         Animation anim = AnimationUtils.loadAnimation(context, R.anim.slide_in);
                         anim.setAnimationListener(listener);
