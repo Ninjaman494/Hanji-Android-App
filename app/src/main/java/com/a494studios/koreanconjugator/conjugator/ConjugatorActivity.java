@@ -3,6 +3,7 @@ package com.a494studios.koreanconjugator.conjugator;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SwitchCompat;
+import androidx.core.widget.NestedScrollView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -43,6 +44,8 @@ public class ConjugatorActivity extends AppCompatActivity implements AdapterView
     private Spinner posSpinner;
     private Spinner regSpinner;
 
+    private ConjugatorAnimationHandler animationHandler;
+
     // Used to prevent multiple refreshes for the same data
     private boolean isRefreshing = false;
     // Used to hide fields when first fetching possible stems
@@ -70,7 +73,12 @@ public class ConjugatorActivity extends AppCompatActivity implements AdapterView
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
-        recyclerView.setNestedScrollingEnabled(false);
+        recyclerView.setNestedScrollingEnabled(true);
+
+        NestedScrollView scrollView = findViewById(R.id.conjugator_scrollView);
+        View extendedBar = findViewById(R.id.conjugator_switchBar);
+        animationHandler = new ConjugatorAnimationHandler(extendedBar, scrollView, recyclerView, this);
+        animationHandler.setupScrollAnimations(layoutManager);
 
         stemSpinner = findViewById(R.id.conjugator_stemSpinner);
         posSpinner = findViewById(R.id.conjugator_posSpinner);
@@ -134,7 +142,12 @@ public class ConjugatorActivity extends AppCompatActivity implements AdapterView
 
                     }
                 });
+    }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        animationHandler.animateListView();
     }
 
     @SuppressLint("CheckResult")
@@ -190,12 +203,7 @@ public class ConjugatorActivity extends AppCompatActivity implements AdapterView
             loadingBar.setVisibility(View.GONE);
             recyclerView.setVisibility(View.VISIBLE);
             linearLayout.setVisibility(View.VISIBLE);
-/*
-            if(dataLoaded) {
-                animationHandler.slideInConjugations();
-            } else {
-                animationHandler.animateListView();
-            }*/
+            animationHandler.slideInConjugations();
         }
     }
 
