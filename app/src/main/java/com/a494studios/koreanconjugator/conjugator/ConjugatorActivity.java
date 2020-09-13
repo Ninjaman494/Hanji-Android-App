@@ -18,13 +18,12 @@ import com.a494studios.koreanconjugator.ConjugationQuery;
 import com.a494studios.koreanconjugator.R;
 import com.a494studios.koreanconjugator.StemQuery;
 import com.a494studios.koreanconjugator.conjugations.ConjugationCardsAdapter;
+import com.a494studios.koreanconjugator.conjugations.ConjugationObserver;
 import com.a494studios.koreanconjugator.parsing.Server;
 import com.a494studios.koreanconjugator.utils.Utils;
 import com.apollographql.apollo.api.Response;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.TreeMap;
 
 import io.reactivex.observers.DisposableObserver;
 
@@ -109,7 +108,7 @@ public class ConjugatorActivity extends AppCompatActivity implements AdapterView
                     public void onError(Throwable e) {
                         e.printStackTrace();
                         AppCompatActivity activity = ConjugatorActivity.this;
-                        Utils.handleError(e, activity,4,
+                        Utils.handleError(e, activity,11,
                                 (dialogInterface, i) -> activity.onBackPressed());
                     }
 
@@ -122,46 +121,25 @@ public class ConjugatorActivity extends AppCompatActivity implements AdapterView
     }
 
     @SuppressLint("CheckResult")
-    private void getConjugations(String stem, boolean honorific, boolean isAdj, Boolean regular) {
-        Server.doConjugationQuery(stem, honorific, isAdj, regular)
-                .subscribeWith(new DisposableObserver<Response<ConjugationQuery.Data>>() {
-                    @Override
-                    public void onNext(Response<ConjugationQuery.Data> response) {
-                        if(response.data() == null) {
-                            return;
-                        }
+    private void getConjugations(String stem, boolean isAdj, Boolean regular) {
+        ConjugationObserver observer = new ConjugationObserver(new ConjugationObserver.ConjugationObserverListener() {
+            @Override
+            public void onDataReceived(List<List<ConjugationQuery.Conjugation>> conjugations) {
+                recyclerView.setAdapter(new ConjugationCardsAdapter(conjugations, stem, isAdj ? "Adjective" : "Verb"));
+                setLoading(false);
+                isRefreshing = false;
+            }
 
-                        List<ConjugationQuery.Conjugation> conjugations = response.data().conjugations();
-                        final TreeMap<String,List<ConjugationQuery.Conjugation>> conjMap = new TreeMap<>();
-                        for(ConjugationQuery.Conjugation conjugation : conjugations){
-                            String type = conjugation.type();
-                            if(conjMap.containsKey(type)){
-                                conjMap.get(type).add(conjugation);
-                            }else{
-                                List<ConjugationQuery.Conjugation> value = new ArrayList<>();
-                                value.add(conjugation);
-                                conjMap.put(type,value);
-                            }
-                        }
+            @Override
+            public void onError(Throwable e) {
+                e.printStackTrace();
+                Utils.handleError(e, ConjugatorActivity.this,10,
+                        (dialogInterface, i) -> ConjugatorActivity.this.onBackPressed());
+            }
+        });
 
-                        List<List<ConjugationQuery.Conjugation>> conjugations1 = new ArrayList<>(conjMap.values());
-                        recyclerView.setAdapter(new ConjugationCardsAdapter(conjugations1, stem, isAdj ? "Adjective" : "Verb"));
-                        setLoading(false);
-                        isRefreshing = false;
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        e.printStackTrace();
-                        Utils.handleError(e, ConjugatorActivity.this,4,
-                                (dialogInterface, i) -> ConjugatorActivity.this.onBackPressed());
-                    }
-
-                    @Override
-                    public void onComplete() {
-
-                    }
-                });
+        Server.doConjugationQuery(stem, false, isAdj, regular)
+                .subscribeWith(observer);
     }
 
     private void setLoading(boolean loading){
@@ -204,7 +182,7 @@ public class ConjugatorActivity extends AppCompatActivity implements AdapterView
         String stem = stemItem.toString();
         boolean isAdj = posItem.toString().equals("Adjective");
         boolean regular = regItem.toString().equals("Regular verb/adjective");
-        getConjugations(stem, false, isAdj, regular);
+        getConjugations(stem, isAdj, regular);
     }
 
     @Override

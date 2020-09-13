@@ -15,13 +15,8 @@ import com.a494studios.koreanconjugator.R;
 import com.a494studios.koreanconjugator.parsing.Server;
 import com.a494studios.koreanconjugator.utils.BaseActivity;
 import com.a494studios.koreanconjugator.utils.Utils;
-import com.apollographql.apollo.api.Response;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.TreeMap;
-
-import io.reactivex.observers.DisposableObserver;
 
 public class ConjugationActivity extends BaseActivity {
 
@@ -53,7 +48,7 @@ public class ConjugationActivity extends BaseActivity {
         setLoading(true);
         getConjugations(stem, honorific, isAdj, regular);
         TextView switchText = findViewById(R.id.conj_switchText);
-        ((SwitchCompat)findViewById(R.id.conj_switch)).setOnCheckedChangeListener((compoundButon, checked) -> {
+        ((SwitchCompat)findViewById(R.id.conj_switch)).setOnCheckedChangeListener((compoundBtn, checked) -> {
             setLoading(true);
             if(checked) {
                 switchText.setText(getString(R.string.honorific_forms));
@@ -75,29 +70,10 @@ public class ConjugationActivity extends BaseActivity {
 
     @SuppressLint("CheckResult")
     private void getConjugations(String stem, boolean honorific, boolean isAdj, Boolean regular) {
-        Server.doConjugationQuery(stem, honorific, isAdj, regular)
-        .subscribeWith(new DisposableObserver<Response<ConjugationQuery.Data>>() {
+        ConjugationObserver observer = new ConjugationObserver(new ConjugationObserver.ConjugationObserverListener() {
             @Override
-            public void onNext(Response<ConjugationQuery.Data> response) {
-                if(response.data() == null) {
-                    return;
-                }
-
-                List<ConjugationQuery.Conjugation> conjugations = response.data().conjugations();
-                final TreeMap<String,List<ConjugationQuery.Conjugation>> conjMap = new TreeMap<>();
-                for(ConjugationQuery.Conjugation conjugation : conjugations){
-                    String type = conjugation.type();
-                    if(conjMap.keySet().contains(type)){
-                        conjMap.get(type).add(conjugation);
-                    }else{
-                        List<ConjugationQuery.Conjugation> value = new ArrayList<>();
-                        value.add(conjugation);
-                        conjMap.put(type,value);
-                    }
-                }
-
-                List<List<ConjugationQuery.Conjugation>> conjugations1 = new ArrayList<>(conjMap.values());
-                recyclerView.setAdapter(new ConjugationCardsAdapter(conjugations1, stem, isAdj ? "Adjective" : "Verb"));
+            public void onDataReceived(List<List<ConjugationQuery.Conjugation>> conjugations) {
+                recyclerView.setAdapter(new ConjugationCardsAdapter(conjugations, stem, isAdj ? "Adjective" : "Verb"));
                 setLoading(false);
                 dataLoaded = true;
             }
@@ -105,14 +81,13 @@ public class ConjugationActivity extends BaseActivity {
             @Override
             public void onError(Throwable e) {
                 e.printStackTrace();
-                Utils.handleError(e, ConjugationActivity.this,4, (dialogInterface, i) -> ConjugationActivity.this.onBackPressed());
-            }
-
-            @Override
-            public void onComplete() {
-
+                Utils.handleError(e, ConjugationActivity.this,4,
+                        (dialogInterface, i) -> ConjugationActivity.this.onBackPressed());
             }
         });
+
+        Server.doConjugationQuery(stem, honorific, isAdj, regular)
+        .subscribeWith(observer);
     }
 
     @Override
