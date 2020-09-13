@@ -81,7 +81,7 @@ public class NoResultsFragmentUnitTest {
         // listener is called a second time when dismissed by test runner
         verify(listener, times(2)).onClick(anyObject(), anyInt());
     }
-c
+
     @Test
     public void test_okBtn() {
         String term = "term";
