@@ -10,6 +10,7 @@ import com.a494studios.koreanconjugator.display.DisplayCardView;
 import com.a494studios.koreanconjugator.display.cards.ConjugationCard;
 
 import java.util.List;
+import java.util.Objects;
 
 public class ConjugationCardsAdapter extends RecyclerView.Adapter<ConjugationCardsAdapter.ViewHolder> {
 
@@ -18,9 +19,9 @@ public class ConjugationCardsAdapter extends RecyclerView.Adapter<ConjugationCar
     private String pos;
 
     public ConjugationCardsAdapter(List<List<ConjugationQuery.Conjugation>> conjugations, String term, String pos) {
-        this.conjugations = conjugations;
-        this.term = term;
-        this.pos = pos;
+        this.conjugations = Objects.requireNonNull(conjugations, "conjugations can't be null");
+        this.term = Objects.requireNonNull(term, "term can't be null");
+        this.pos = Objects.requireNonNull(pos, "pos can't be null");
     }
 
     @NonNull
