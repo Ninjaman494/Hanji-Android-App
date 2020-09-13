@@ -14,7 +14,11 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".conjugator.ConjugatorActivity"/>
+        <activity android:name=".conjugator.ConjugatorActivity">
+            <meta-data
+                android:name="android.app.default_searchable"
+                android:value=".search.SearchActivity" />
+        </activity>
         <activity android:name=".display.ConjInfoActivity">
             <meta-data
                 android:name="android.app.default_searchable"

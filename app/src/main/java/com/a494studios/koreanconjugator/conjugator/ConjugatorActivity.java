@@ -23,6 +23,7 @@ import com.a494studios.koreanconjugator.StemQuery;
 import com.a494studios.koreanconjugator.conjugations.ConjugationCardsAdapter;
 import com.a494studios.koreanconjugator.conjugations.ConjugationObserver;
 import com.a494studios.koreanconjugator.parsing.Server;
+import com.a494studios.koreanconjugator.utils.BaseActivity;
 import com.a494studios.koreanconjugator.utils.Utils;
 import com.apollographql.apollo.api.Response;
 
@@ -30,7 +31,7 @@ import java.util.List;
 
 import io.reactivex.observers.DisposableObserver;
 
-public class ConjugatorActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
+public class ConjugatorActivity extends BaseActivity implements AdapterView.OnItemSelectedListener {
 
     public static final String EXTRA_TERM = "term";
     private static final int SPINNER_ITEM = R.layout.item_spinner;
