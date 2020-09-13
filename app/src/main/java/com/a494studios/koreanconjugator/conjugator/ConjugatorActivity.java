@@ -2,6 +2,7 @@ package com.a494studios.koreanconjugator.conjugator;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SwitchCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -13,6 +14,7 @@ import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import com.a494studios.koreanconjugator.ConjugationQuery;
 import com.a494studios.koreanconjugator.R;
@@ -35,6 +37,8 @@ public class ConjugatorActivity extends AppCompatActivity implements AdapterView
     private RecyclerView recyclerView;
     private LinearLayout linearLayout;
     private ProgressBar loadingBar;
+    private SwitchCompat honorificSwitch;
+    private TextView honorificText;
     private Spinner stemSpinner;
     private Spinner posSpinner;
     private Spinner regSpinner;
@@ -61,6 +65,8 @@ public class ConjugatorActivity extends AppCompatActivity implements AdapterView
         recyclerView = findViewById(R.id.conjugator_list);
         linearLayout = findViewById(R.id.conjugator_linearLayout);
         loadingBar = findViewById(R.id.conjugator_progress);
+        honorificSwitch = findViewById(R.id.conjugator_switch);
+        honorificText = findViewById(R.id.conjugator_switchText);
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
@@ -84,6 +90,17 @@ public class ConjugatorActivity extends AppCompatActivity implements AdapterView
 
         fetchingStems = true;
         setLoading(true);
+
+        honorificSwitch.setOnCheckedChangeListener((compoundBtn, checked) -> {
+            setLoading(true);
+            if(checked) {
+                honorificText.setText(getString(R.string.honorific_forms));
+                getConjugations();
+            } else {
+                honorificText.setText(getString(R.string.regular_forms));
+                getConjugations();
+            }
+        });
 
         Server.doStemQuery(term)
                 .subscribeWith(new DisposableObserver<Response<StemQuery.Data>>() {
@@ -121,7 +138,25 @@ public class ConjugatorActivity extends AppCompatActivity implements AdapterView
     }
 
     @SuppressLint("CheckResult")
-    private void getConjugations(String stem, boolean isAdj, Boolean regular) {
+    private void getConjugations() {
+        Object stemItem = stemSpinner.getSelectedItem();
+        Object posItem = posSpinner.getSelectedItem();
+        Object regItem = regSpinner.getSelectedItem();
+
+        // Already refreshing conjugations, wait for that to finish first, or not
+        // all spinners have finished being set up
+        if (isRefreshing || stemItem == null || posItem == null || regItem == null) {
+            return;
+        }
+
+        isRefreshing = true;
+        setLoading(true);
+
+        String stem = stemItem.toString();
+        boolean isAdj = posItem.toString().equals("Adjective");
+        boolean regular = regItem.toString().equals("Regular verb/adjective");
+        boolean honorific = honorificSwitch.isChecked();
+
         ConjugationObserver observer = new ConjugationObserver(new ConjugationObserver.ConjugationObserverListener() {
             @Override
             public void onDataReceived(List<List<ConjugationQuery.Conjugation>> conjugations) {
@@ -138,7 +173,7 @@ public class ConjugatorActivity extends AppCompatActivity implements AdapterView
             }
         });
 
-        Server.doConjugationQuery(stem, false, isAdj, regular)
+        Server.doConjugationQuery(stem, honorific, isAdj, regular)
                 .subscribeWith(observer);
     }
 
@@ -166,23 +201,7 @@ public class ConjugatorActivity extends AppCompatActivity implements AdapterView
 
     @Override
     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-        Object stemItem = stemSpinner.getSelectedItem();
-        Object posItem = posSpinner.getSelectedItem();
-        Object regItem = regSpinner.getSelectedItem();
-
-        // Already refreshing conjugations, wait for that to finish first, or not
-        // all spinners have finished being set up
-        if (isRefreshing || stemItem == null || posItem == null || regItem == null) {
-            return;
-        }
-
-        isRefreshing = true;
-        setLoading(true);
-
-        String stem = stemItem.toString();
-        boolean isAdj = posItem.toString().equals("Adjective");
-        boolean regular = regItem.toString().equals("Regular verb/adjective");
-        getConjugations(stem, isAdj, regular);
+        getConjugations();
     }
 
     @Override
