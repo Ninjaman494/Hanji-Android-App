@@ -23,13 +23,13 @@ jobs:
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
       - name: Grant write permission for keys.txt
-        run: touch ${{ env.home}}/keys.txt
+        run: touch $HOME/keys.txt
       - name: Grant write permission for keys.txt
-        run: chmod 777 ${{ env.home}}/keys.txt
+        run: chmod 777 $HOME/keys.txt
       - name: Create keys.txt
         uses: DamianReeves/write-file-action@v1.0
         with:
-          path: ${{ env.home}}/keys.txt
+          path: $HOME/keys.txt
           contents: |
             serverURL = "key"
             adMobKey = "key"
