@@ -42,7 +42,7 @@ jobs:
           write-mode: append
       - name: Decode google-services.json
         env:
-          FIREBASE_SECRET: ${{ secrets.FIREBASE_SECRET }}
+          FIREBASE_SECRET: ${{ secrets.GOOGLE_SERVICES }}
         run: echo $FIREBASE_SECRET > app/google-services.json
       - name: Run unit tests
         run: ./gradlew testDebugUnitTest --stacktrace
