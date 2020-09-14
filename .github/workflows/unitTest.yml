@@ -25,7 +25,7 @@ jobs:
       - name: Grant write permission for keys.txt
         run: touch ${{ env.home}}/keys.txt
       - name: Grant write permission for keys.txt
-        run: chmod ${{ env.home}}/keys.txt
+        run: chmod 777 ${{ env.home}}/keys.txt
       - name: Create keys.txt
         uses: DamianReeves/write-file-action@v1.0
         with:
