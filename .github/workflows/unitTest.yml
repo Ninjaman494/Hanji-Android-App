@@ -31,14 +31,14 @@ jobs:
         with:
           path: keys.txt
           contents: |
-            serverURL = "key"
-            adMobKey = "key"
-            slackKey = "key"
-            displayAdID = "key"
-            mainAdID = "key"
-            searchAdID = "key"
-            searchResultsAdID =	"key"
-            conjInfoAdID = "key"
+            serverURL = key
+            adMobKey = key
+            slackKey = key
+            displayAdID = key
+            mainAdID = key
+            searchAdID = key
+            searchResultsAdID =	key
+            conjInfoAdID = key
           write-mode: append
       - name: Decode google-services.json
         env:
