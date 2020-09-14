@@ -23,13 +23,13 @@ jobs:
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
       - name: Grant write permission for keys.txt
-        run: touch $HOME/keys.txt
+        run: touch keys.txt
       - name: Grant write permission for keys.txt
-        run: chmod 777 $HOME/keys.txt
+        run: chmod 777 keys.txt
       - name: Create keys.txt
         uses: DamianReeves/write-file-action@v1.0
         with:
-          path: $HOME/keys.txt
+          path: keys.txt
           contents: |
             serverURL = "key"
             adMobKey = "key"
@@ -41,4 +41,4 @@ jobs:
             conjInfoAdID = "key"
           write-mode: append
       - name: Run unit tests
-        run: ./gradlew testDebugUnitTest
+        run: ./gradlew testDebugUnitTest --stacktrace
