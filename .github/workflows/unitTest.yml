@@ -27,19 +27,9 @@ jobs:
       - name: Grant write permission for keys.txt
         run: chmod 777 keys.txt
       - name: Create keys.txt
-        uses: DamianReeves/write-file-action@v1.0
-        with:
-          path: keys.txt
-          contents: |
-            serverURL = key
-            adMobKey = key
-            slackKey = key
-            displayAdID = key
-            mainAdID = key
-            searchAdID = key
-            searchResultsAdID =	key
-            conjInfoAdID = key
-          write-mode: append
+        env:
+          KEYS_TXT: ${{ secrets.KEYS_TXT }}
+        run: echo $KEYS_TXT > keys.txt
       - name: Decode google-services.json
         env:
           FIREBASE_SECRET: ${{ secrets.GOOGLE_SERVICES }}
