@@ -40,7 +40,9 @@ jobs:
             searchResultsAdID =	"key"
             conjInfoAdID = "key"
           write-mode: append
-      - name: Create google-services.json
-        run: touch app/google-services.json
+      - name: Decode google-services.json
+        env:
+          FIREBASE_SECRET: ${{ secrets.FIREBASE_SECRET }}
+        run: echo $FIREBASE_SECRET > YOUR_PROJECT_FOLDER/app/google-services.json
       - name: Run unit tests
         run: ./gradlew testDebugUnitTest --stacktrace
