@@ -40,5 +40,7 @@ jobs:
             searchResultsAdID =	"key"
             conjInfoAdID = "key"
           write-mode: append
+      - name: Create google-services.json
+        run: touch app/google-services.json
       - name: Run unit tests
         run: ./gradlew testDebugUnitTest --stacktrace
