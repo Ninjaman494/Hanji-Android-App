@@ -1,11 +1,13 @@
 package com.a494studios.koreanconjugator;
 
-import android.app.Application;
+import android.content.Context;
 import android.view.View;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.multidex.MultiDex;
+import androidx.multidex.MultiDexApplication;
 
 import com.a494studios.koreanconjugator.display.DisplayCardView;
 import com.a494studios.koreanconjugator.display.cards.AdCard;
@@ -33,7 +35,7 @@ import java.util.List;
 
 import okhttp3.OkHttpClient;
 
-public class CustomApplication extends Application implements PurchasesUpdatedListener {
+public class CustomApplication extends MultiDexApplication implements PurchasesUpdatedListener {
     private static final String APP_ID = BuildConfig.ADMOB_KEY;
     private static final String SERVER_URL = com.a494studios.koreanconjugator.BuildConfig.SERVER_URL;
 
@@ -109,6 +111,12 @@ public class CustomApplication extends Application implements PurchasesUpdatedLi
 
         // Setup Firebase Analytics
         Logger.initialize(FirebaseAnalytics.getInstance(this));
+    }
+
+    @Override
+    protected void attachBaseContext(Context context) {
+        super.attachBaseContext(context);
+        MultiDex.install(this);
     }
 
     public static ApolloClient getApolloClient() {
