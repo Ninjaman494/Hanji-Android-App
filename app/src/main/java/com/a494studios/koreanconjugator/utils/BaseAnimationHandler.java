@@ -2,10 +2,7 @@ package com.a494studios.koreanconjugator.utils;
 
 import android.content.Context;
 import android.view.View;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
-
-import com.a494studios.koreanconjugator.R;
+import android.view.animation.DecelerateInterpolator;
 
 public class BaseAnimationHandler {
     protected Context context;
@@ -15,11 +12,13 @@ public class BaseAnimationHandler {
     }
 
     public void slideInViews(View extendedBar, View bodyView) {
-        Animation topBot = AnimationUtils.loadAnimation(context, R.anim.slide_top_to_bot);
-        Animation botTop = AnimationUtils.loadAnimation(context, R.anim.slide_bot_to_top);
+        DecelerateInterpolator interpolator = new DecelerateInterpolator(2);
 
+        extendedBar.setY(200 * -1);
         extendedBar.setVisibility(View.VISIBLE); // Prevents stuttering
-        extendedBar.startAnimation(topBot);
-        bodyView.startAnimation(botTop);
+        extendedBar.animate().setInterpolator(interpolator).translationY(0);
+
+        bodyView.setY(200);
+        bodyView.animate().setInterpolator(interpolator).translationY(0);
     }
 }
