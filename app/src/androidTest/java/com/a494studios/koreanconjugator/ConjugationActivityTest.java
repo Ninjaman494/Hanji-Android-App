@@ -18,8 +18,8 @@ import org.junit.runner.RunWith;
 import java.util.List;
 
 import static androidx.test.espresso.Espresso.onView;
-import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
+import static com.a494studios.koreanconjugator.Utils.setChecked;
 import static junit.framework.TestCase.assertEquals;
 import static junit.framework.TestCase.assertFalse;
 import static junit.framework.TestCase.assertTrue;
@@ -81,8 +81,14 @@ public class ConjugationActivityTest {
         RecyclerView recyclerView = activityRule.getActivity().findViewById(R.id.conj_list);
         int numItems = recyclerView.getAdapter().getItemCount();
 
+        try {
+            Thread.sleep(1000);
+        } catch (Exception e){
+            e.printStackTrace(System.err);
+        }
+
         // Honorific
-        onView(withId(R.id.conj_switch)).perform(click());
+        onView(withId(R.id.conj_switch)).perform(setChecked(true));
         try {
             Thread.sleep(100);
         } catch (InterruptedException e) {
@@ -95,7 +101,7 @@ public class ConjugationActivityTest {
         assertTrue(conjugations.get(0).honorific);
 
         // Back to regular
-        onView(withId(R.id.conj_switch)).perform(click());
+        onView(withId(R.id.conj_switch)).perform(setChecked(false));
         try {
             Thread.sleep(100);
         } catch (InterruptedException e) {
