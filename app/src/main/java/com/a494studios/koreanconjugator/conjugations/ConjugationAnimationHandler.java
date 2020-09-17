@@ -7,6 +7,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.view.animation.DecelerateInterpolator;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -52,8 +53,10 @@ public class ConjugationAnimationHandler extends RecyclerAnimationHandler {
     }
 
     public void slideInConjugations() {
-        Animation botTop = AnimationUtils.loadAnimation(context, R.anim.slide_bot_to_top);
-        recyclerView.startAnimation(botTop);
+        DecelerateInterpolator interpolator = new DecelerateInterpolator(2);
+
+        recyclerView.setTranslationY(200);
+        recyclerView.animate().setInterpolator(interpolator).translationY(0);
     }
 
     private class GestureListener extends GestureDetector.SimpleOnGestureListener {
