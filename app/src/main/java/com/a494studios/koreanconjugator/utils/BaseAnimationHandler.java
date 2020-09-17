@@ -14,11 +14,11 @@ public class BaseAnimationHandler {
     public void slideInViews(View extendedBar, View bodyView) {
         DecelerateInterpolator interpolator = new DecelerateInterpolator(2);
 
-        extendedBar.setY(200 * -1);
+        extendedBar.setTranslationY(200 * -1);
         extendedBar.setVisibility(View.VISIBLE); // Prevents stuttering
         extendedBar.animate().setInterpolator(interpolator).translationY(0);
 
-        bodyView.setY(200);
+        bodyView.setTranslationY(200);
         bodyView.animate().setInterpolator(interpolator).translationY(0);
     }
 }

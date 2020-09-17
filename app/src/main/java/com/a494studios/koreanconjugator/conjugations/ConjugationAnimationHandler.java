@@ -83,7 +83,7 @@ public class ConjugationAnimationHandler extends RecyclerAnimationHandler {
                 anim.setAnimationListener(listener);
                 extendedBar.startAnimation(anim);
                 extendedBar.setVisibility(View.VISIBLE);
-            } else if(dy > 0 && visibility == View.VISIBLE ) { // Scroll down
+            } else if(dy > 0 && pos > 1 && visibility == View.VISIBLE ) { // Scroll down
                 Animation anim = AnimationUtils.loadAnimation(context, R.anim.slide_out);
                 anim.setAnimationListener(listener);
                 extendedBar.startAnimation(anim);
