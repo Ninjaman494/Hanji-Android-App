@@ -1,0 +1,26 @@
+name: Hanji App Crawl
+
+on:
+  push:
+
+jobs:
+  run_tests:
+
+    runs-on: macos-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v2
+      - name: Create keys.txt
+        env:
+          KEYS_TXT: ${{ secrets.KEYS_TXT }}
+        run: echo $KEYS_TXT > keys.txt
+      - name: Create google-services.json
+        env:
+          FIREBASE_SECRET: ${{ secrets.GOOGLE_SERVICES }}
+        run: echo $FIREBASE_SECRET > app/google-services.json
+      - name: run tests
+          uses: reactivecircus/android-emulator-runner@v2
+          with:
+            api-level: 29
+            script: ./main.sh
