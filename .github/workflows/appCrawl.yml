@@ -23,6 +23,12 @@ jobs:
         run: chmod +x main.sh
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
+      - name: Download app-crawler
+        run: wget https://dl.google.com/appcrawler/beta1/app-crawler.zip
+        shell: bash
+      - name: Unzip app-crawler
+        run: unzip app-crawler.zip
+        shell: bash
       - name: run tests
         uses: reactivecircus/android-emulator-runner@v2
         with:
