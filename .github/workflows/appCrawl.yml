@@ -19,6 +19,8 @@ jobs:
         env:
           FIREBASE_SECRET: ${{ secrets.GOOGLE_SERVICES }}
         run: echo $FIREBASE_SECRET > app/google-services.json
+      - name: Grant execute permission for main.sh
+        run: chmod +x main.sh
       - name: run tests
         uses: reactivecircus/android-emulator-runner@v2
         with:
