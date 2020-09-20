@@ -1,0 +1,6 @@
+query ExamplesQuery($id: ID!) {
+  examples(id: $id){
+    sentence,
+    translation
+  }
+}

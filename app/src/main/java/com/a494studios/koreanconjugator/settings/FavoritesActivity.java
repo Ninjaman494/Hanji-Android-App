@@ -1,10 +1,11 @@
 package com.a494studios.koreanconjugator.settings;
 
-import android.support.v7.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatActivity;
+
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
-import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -14,20 +15,27 @@ import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.a494studios.koreanconjugator.ConjugationNamesQuery;
 import com.a494studios.koreanconjugator.R;
-import com.a494studios.koreanconjugator.Utils;
-import com.a494studios.koreanconjugator.parsing.Category;
+import com.a494studios.koreanconjugator.utils.Logger;
+import com.a494studios.koreanconjugator.utils.Utils;
+import com.a494studios.koreanconjugator.parsing.Favorite;
+import com.a494studios.koreanconjugator.parsing.Server;
+import com.apollographql.apollo.api.Response;
 
-import java.util.AbstractMap;
 import java.util.ArrayList;
-import java.util.Map;
+import java.util.HashMap;
+import java.util.List;
+
+import io.reactivex.observers.DisposableObserver;
 
 
-public class FavoritesActivity extends AppCompatActivity implements AddFavoriteFragment.AddFavoriteFragmentListener
-        ,RenameFavoriteFragment.RenameFavoriteFragmentListener{
+public class FavoritesActivity extends AppCompatActivity implements AddFavoriteFragment.AddFavoriteFragmentListener {
 
     FavoritesAdapter adapter;
+    AddFavoriteFragment addFavoriteFragment;
 
+    @SuppressLint("CheckResult")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,6 +47,53 @@ public class FavoritesActivity extends AppCompatActivity implements AddFavoriteF
 
         ListView listView = findViewById(R.id.fav_listView);
         adapter = new FavoritesAdapter(Utils.getFavorites(this));
+        listView.setAdapter(adapter);
+
+        Server.doConjugationNamesQuery()
+                .subscribeWith(new DisposableObserver<Response<ConjugationNamesQuery.Data>>() {
+                    @Override
+                    public void onNext(Response<ConjugationNamesQuery.Data> response) {
+                        if (response.data() == null) {
+                            return;
+                        }
+
+                        List<String> names = response.data().conjugationNames();
+                        HashMap<String, Boolean> data = new HashMap<>();
+                        for (String name : names) {
+                            name = name.toLowerCase();
+                            boolean showSpeechLevels = false;
+                            if (name.contains("informal low")) {
+                                showSpeechLevels = true;
+                                name = name.replace("informal low", "");
+                            } else if (name.contains("informal high")) {
+                                showSpeechLevels = true;
+                                name = name.replace("informal high", "");
+                            } else if (name.contains("formal low")) {
+                                showSpeechLevels = true;
+                                name = name.replace("formal low", "");
+                            } else if (name.contains("formal high")) {
+                                showSpeechLevels = true;
+                                name = name.replace("formal high", "");
+                            }
+
+                            if (!data.containsKey(name)) {
+                                data.put(Utils.toTitleCase(name), showSpeechLevels);
+                            }
+                        }
+                        addFavoriteFragment = AddFavoriteFragment.newInstance(data);
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                       Utils.handleError(e, FavoritesActivity.this, 9);
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
+
         listView.setAdapter(adapter);
         registerForContextMenu(listView);
     }
@@ -54,13 +109,9 @@ public class FavoritesActivity extends AppCompatActivity implements AddFavoriteF
     public boolean onContextItemSelected(MenuItem item) {
         AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
         if( item.getItemId() == R.id.context_delete) {
-            ArrayList<Map.Entry<String,Category[]>> data = adapter.remove(adapter.getItem(info.position));
-            Utils.setFavorites(data,this);
+            ArrayList<Favorite> favorites = adapter.remove(adapter.getItem(info.position));
+            Utils.setFavorites(favorites,this);
             adapter.notifyDataSetChanged();
-            return true;
-        }else if(item.getItemId() == R.id.context_rename) {
-            RenameFavoriteFragment frag = RenameFavoriteFragment.newInstance(info.position);
-            frag.show(getSupportFragmentManager(),"rename_frag");
             return true;
         }else{
             return super.onContextItemSelected(item);
@@ -68,18 +119,8 @@ public class FavoritesActivity extends AppCompatActivity implements AddFavoriteF
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.fav_menu, menu);
-        return true;
-    }
-
-    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if(item.getItemId() == R.id.menu_add) {
-            AddFavoriteFragment.newInstance().show(getSupportFragmentManager(),"add_fav_frag");
-            return true;
-        }else if(item.getItemId() == android.R.id.home) {
+       if(item.getItemId() == android.R.id.home) {
             this.onBackPressed();
             return true;
         }else{
@@ -88,27 +129,24 @@ public class FavoritesActivity extends AppCompatActivity implements AddFavoriteF
     }
 
     @Override
-    public void onFavoriteAdded(Map.Entry<String, Category[]> entry) {
-        ArrayList<Map.Entry<String,Category[]>> data = adapter.add(entry);
-        Utils.setFavorites(data,this);
+    public void onFavoriteAdded(Favorite entry) {
+        Logger.getInstance().logFavoriteAdded(entry.getName(), entry.getConjugationName(), entry.isHonorific());
+        ArrayList<Favorite> favorites = adapter.add(entry);
+        Utils.setFavorites(favorites,this);
         adapter.notifyDataSetChanged();
     }
 
-    @Override
-    public void onRenameSelected(String newName, int position) {
-        Map.Entry<String, Category[]> entry = adapter.getItem(position);
-        Map.Entry<String, Category[]> newEntry = new AbstractMap.SimpleEntry<>(newName, entry.getValue());
-        ArrayList<Map.Entry<String, Category[]>> data = adapter.replace(entry, newEntry);
-        Utils.setFavorites(data, this);
-        adapter.notifyDataSetChanged();
+    // FAB's onClick listener
+    public void onAddFavorite(View view) {
+        addFavoriteFragment.show(getSupportFragmentManager(),"add_fav_frag");
     }
 
     private class FavoritesAdapter extends BaseAdapter {
 
-        private ArrayList<Map.Entry<String,Category[]>> entries;
+        private ArrayList<Favorite> entries;
         private static final int RESOURCE_ID = R.layout.item_setting_fav;
 
-        public FavoritesAdapter(ArrayList<Map.Entry<String,Category[]>> entries) {
+        FavoritesAdapter(ArrayList<Favorite> entries) {
             this.entries = entries;
         }
 
@@ -117,24 +155,14 @@ public class FavoritesActivity extends AppCompatActivity implements AddFavoriteF
             if (view == null) {
                 view = LayoutInflater.from(viewGroup.getContext()).inflate(RESOURCE_ID, viewGroup, false);
             }
-            Map.Entry<String,Category[]> entry = entries.get(i);
-            Category[] categories = entry.getValue();
-            TextView typeView = view.findViewById(R.id.fav_title);
-            TextView formView = view.findViewById(R.id.fav_form);
-            TextView formalityView = view.findViewById(R.id.fav_formality);
-            TextView tenseView = view.findViewById(R.id.fav_tense);
 
-            typeView.setText(entry.getKey());
-            formView.setText(categories[1].printName());
-            if(categories[0] != null) {
-                formalityView.setText(categories[0].printName());
-            }else{
-                formalityView.setText("");
-            }
-            if(categories[2] != null) {
-                tenseView.setText(categories[2].printName());
-            }else{
-                tenseView.setText("");
+            Favorite favorite = entries.get(i);
+            ((TextView)view.findViewById(R.id.item_fav_title)).setText(favorite.getName());
+            ((TextView)view.findViewById(R.id.item_fav_subtitle)).setText(Utils.toTitleCase(favorite.getConjugationName()));
+            if(favorite.isHonorific()) {
+                view.findViewById(R.id.item_fav_honorific).setVisibility(View.VISIBLE);
+            } else {
+                view.findViewById(R.id.item_fav_honorific).setVisibility(View.GONE);
             }
             return view;
         }
@@ -145,7 +173,7 @@ public class FavoritesActivity extends AppCompatActivity implements AddFavoriteF
         }
 
         @Override
-        public Map.Entry<String,Category[]> getItem(int i) {
+        public Favorite getItem(int i) {
             return entries.get(i);
         }
 
@@ -159,18 +187,13 @@ public class FavoritesActivity extends AppCompatActivity implements AddFavoriteF
             return true;
         }
 
-        public ArrayList<Map.Entry<String,Category[]>> remove(Map.Entry<String,Category[]> entry){
+        public ArrayList<Favorite> remove(Favorite entry){
             entries.remove(entry);
             return entries;
         }
 
-        public ArrayList<Map.Entry<String,Category[]>> add(Map.Entry<String,Category[]> entry){
+        public ArrayList<Favorite> add(Favorite entry){
             entries.add(entry);
-            return entries;
-        }
-
-        public ArrayList<Map.Entry<String,Category[]>> replace(Map.Entry<String,Category[]> old, Map.Entry<String,Category[]> newEntry){
-            entries.set(entries.indexOf(old),newEntry);
             return entries;
         }
     }

@@ -1,17 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context="com.a494studios.koreanconjugator.SearchResultsActivity">
+    android:orientation="vertical"
+    tools:context="com.a494studios.koreanconjugator.search_results.SearchResultsActivity">
 
-    <ListView
+    <View
+        android:id="@+id/search_results_extendedBar"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:visibility="invisible"
+        android:background="@color/colorPrimary"/>
+
+    <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/search_listView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:paddingBottom="50dp"
-        android:divider="@null" />
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:paddingBottom="70dp"
+        android:clipToPadding="false"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
     <com.google.android.gms.ads.AdView
         android:id="@+id/search_results_adView"
@@ -19,6 +30,6 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         app:adSize="BANNER"
-        app:adUnitId="@string/SEARCH_RESULTS_AD_ID"/>
+        app:adUnitId="@string/SEARCH_RESULTS_AD_ID" />
 
 </RelativeLayout>

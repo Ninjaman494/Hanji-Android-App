@@ -4,7 +4,7 @@
     <item android:id="@+id/menu_search"
         android:title="@string/menu_search"
         android:icon="@drawable/ic_search_white_24dp"
-        app:actionViewClass="android.support.v7.widget.SearchView"
+        app:actionViewClass="androidx.appcompat.widget.SearchView"
         app:showAsAction="ifRoom"/>
     <item android:id="@+id/overflow_settings"
         android:title="@string/menu_settings"
@@ -14,5 +14,8 @@
         app:showAsAction="never"/>
     <item android:id="@+id/overflow_bug"
         android:title="@string/menu_bug"
+        app:showAsAction="never"/>
+    <item android:id="@+id/overflow_ad_free"
+        android:title="@string/menu_ad_free"
         app:showAsAction="never"/>
 </menu>

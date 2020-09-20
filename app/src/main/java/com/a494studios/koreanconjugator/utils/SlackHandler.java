@@ -4,15 +4,14 @@ import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatActivity;
 import android.view.View;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import com.a494studios.koreanconjugator.BuildConfig;
 import com.a494studios.koreanconjugator.R;
-import com.a494studios.koreanconjugator.Utils;
-import com.crashlytics.android.Crashlytics;
+import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
 import org.rm3l.maoni.common.contract.Handler;
 import org.rm3l.maoni.common.model.Feedback;
@@ -56,8 +55,7 @@ public class SlackHandler implements Handler {
                     System.out.println(webApiClient.auth());
                     success[0] = true;
                 }catch (SlackResponseErrorException e) {
-                    Crashlytics.log("Wrong token code for Slack app?");
-                    Crashlytics.logException(e);
+                    FirebaseCrashlytics.getInstance().recordException(e);
                     success[0] = false;
                 }catch (SlackException e){
                     e.printStackTrace();
@@ -137,10 +135,9 @@ public class SlackHandler implements Handler {
                     }
 
                     if(feedback.screenshotFile != null) {
-                        webApiClient.uploadFile(feedback.screenshotFile, "screenshot", body.toString(), channel);
-                    }else { // User opted-out of sharing a screenshot
-                        webApiClient.postMessage(channel,body.toString());
+                        webApiClient.uploadFile(feedback.screenshotFile, "screenshot", "", channel);
                     }
+                    webApiClient.postMessage(channel,body.toString());
                 }catch (SlackException e){
                     e.printStackTrace();
                 }finally {

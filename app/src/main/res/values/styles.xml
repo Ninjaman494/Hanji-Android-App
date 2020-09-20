@@ -8,16 +8,41 @@
         <item name="colorAccent">@color/colorAccent</item>
         <item name="popupMenuStyle">@style/OverflowMenuStyle</item>
     </style>
+
+    <style name="AppTheme.NoTransition" parent="AppTheme">
+        <item name="android:windowAnimationStyle">@null</item>
+    </style>
     
     <style name="AppTheme.NoActionBar" parent="AppTheme">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
     </style>
 
+    <style name="AppTheme.LaunchActivityTheme" parent="AppTheme.NoActionBar">
+        <item name="android:windowBackground">@drawable/background</item>
+    </style>
+
+    <style name="AppTheme.LibrariesTheme" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+    </style>
+
     <style name="OverflowMenuStyle" parent="Widget.AppCompat.Light.PopupMenu.Overflow">
         <item name="android:dropDownVerticalOffset">-9dp</item>
         <item name="android:dropDownHorizontalOffset">3dp</item>
         <item name="android:popupBackground">@android:color/white</item>
+    </style>
+
+    <style name="AppSearchView" parent="Widget.AppCompat.SearchView" >
+        <item name="android:textSize">20sp</item>
+    </style>
+
+    <style name="HonorificSwitchStyle" parent="ThemeOverlay.AppCompat.Light">
+        <!-- Active thumb color & Active track color(30% transparency) -->
+        <item name="colorControlActivated">@color/white</item>
+        <!-- Inactive thumb color -->
+        <item name="colorSwitchThumbNormal">@color/grey_200</item>
     </style>
 
 </resources>

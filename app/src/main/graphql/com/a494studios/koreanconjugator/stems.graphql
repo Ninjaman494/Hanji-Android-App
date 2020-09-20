@@ -1,0 +1,3 @@
+query StemQuery($term: String!) {
+    stems(term: $term)
+}

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:clipToPadding="false"
+    android:clipChildren="false"
+    tools:context=".display.ConjInfoActivity">
+
+    <View
+        android:id="@+id/info_extendedBar"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:background="@color/colorPrimary" />
+
+    <ScrollView
+        android:id="@+id/info_scroll"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:id="@+id/info_root"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:clipToPadding="false"
+            android:clipChildren="false"
+            android:paddingBottom="16dp">
+
+            <com.a494studios.koreanconjugator.display.DisplayCardView
+                android:id="@+id/info_infoCard"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <com.a494studios.koreanconjugator.display.DisplayCardView
+                android:id="@+id/info_adCard"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+        </LinearLayout>
+    </ScrollView>
+</RelativeLayout>

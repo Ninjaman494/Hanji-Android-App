@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.appcompat.widget.SearchView
+        android:id="@+id/searchCard_search"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:focusable="false"
+        android:imeOptions="actionSearch"
+        android:inputType="text"
+        android:maxLines="1"
+        app:iconifiedByDefault="false"
+        app:queryBackground="@color/maoni_transparent_full"
+        app:queryHint="@string/main_search_hint"
+        app:searchIcon="@null"
+        app:theme="@style/AppSearchView" />
+</RelativeLayout>

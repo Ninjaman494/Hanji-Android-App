@@ -1,0 +1,10 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/listCard"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <com.linearlistview.LinearListView
+        android:id="@+id/listCard_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical" />
+</RelativeLayout>

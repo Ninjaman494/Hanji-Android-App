@@ -1,0 +1,6 @@
+query WordOfTheDayQuery {
+    wordOfTheDay {
+        id,
+        term
+    }
+}
