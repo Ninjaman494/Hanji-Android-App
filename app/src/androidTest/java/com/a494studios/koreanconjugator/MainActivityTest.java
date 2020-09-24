@@ -45,6 +45,7 @@ import static androidx.test.espresso.matcher.ViewMatchers.withContentDescription
 import static androidx.test.espresso.matcher.ViewMatchers.withHint;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
+import static com.a494studios.koreanconjugator.Utils.testActionBar;
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.is;
 
@@ -64,53 +65,7 @@ public class MainActivityTest {
 
     @Test
     public void overflowOptions() {
-        ViewInteraction overflowMenuButton = onView(
-                allOf(withContentDescription("More options"),
-                        childAtPosition(
-                                childAtPosition(
-                                        withId(R.id.action_bar),
-                                        0),
-                                0),
-                        isDisplayed()));
-
-        overflowMenuButton.perform(click());
-        ViewInteraction settings = onView(
-                allOf(withId(R.id.title), withText("Settings"),
-                        childAtPosition(
-                                childAtPosition(
-                                        withId(R.id.content),
-                                        0),
-                                0),
-                        isDisplayed()));
-        settings.perform(click());
-
-        intended(hasComponent(SettingsActivity.class.getName()));
-
-        overflowMenuButton.perform(click());
-        ViewInteraction about = onView(
-                allOf(withId(R.id.title), withText("About"),
-                        childAtPosition(
-                                childAtPosition(
-                                        withId(R.id.content),
-                                        0),
-                                0),
-                        isDisplayed()));
-        about.perform(click());
-
-        intended(hasComponent(AboutActivity.class.getName()));
-
-        overflowMenuButton.perform(click());
-        ViewInteraction reportABug = onView(
-                allOf(withId(R.id.title), withText("Report a Bug"),
-                        childAtPosition(
-                                childAtPosition(
-                                        withId(R.id.content),
-                                        0),
-                                0),
-                        isDisplayed()));
-        reportABug.perform(click());
-
-        intended(hasComponent(MaoniActivity.class.getName()));
+        testActionBar();
     }
 
     @Test
@@ -165,7 +120,7 @@ public class MainActivityTest {
                     hasExtraWithKey(SearchManager.QUERY)));
     }
 
-    private static Matcher<View> childAtPosition(
+    static Matcher<View> childAtPosition(
             final Matcher<View> parentMatcher, final int position) {
 
         return new TypeSafeMatcher<View>() {
