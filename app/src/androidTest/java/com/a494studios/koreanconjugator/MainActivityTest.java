@@ -9,24 +9,23 @@ import android.view.ViewGroup;
 import android.view.ViewParent;
 
 import androidx.test.espresso.ViewInteraction;
-import androidx.test.espresso.intent.rule.IntentsTestRule;
+import androidx.test.espresso.intent.Intents;
+import androidx.test.ext.junit.rules.ActivityScenarioRule;
+import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.filters.LargeTest;
-import androidx.test.runner.AndroidJUnit4;
 
 import com.a494studios.koreanconjugator.display.DisplayActivity;
 import com.a494studios.koreanconjugator.search.SearchActivity;
-import com.a494studios.koreanconjugator.settings.SettingsActivity;
-import com.eggheadgames.aboutbox.activity.AboutActivity;
 
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 import org.hamcrest.TypeSafeMatcher;
 import org.hamcrest.core.IsInstanceOf;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.rm3l.maoni.ui.MaoniActivity;
 
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
@@ -41,7 +40,6 @@ import static androidx.test.espresso.intent.matcher.IntentMatchers.hasExtraWithK
 import static androidx.test.espresso.intent.matcher.IntentMatchers.isInternal;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withClassName;
-import static androidx.test.espresso.matcher.ViewMatchers.withContentDescription;
 import static androidx.test.espresso.matcher.ViewMatchers.withHint;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
@@ -54,18 +52,25 @@ import static org.hamcrest.Matchers.is;
 public class MainActivityTest {
 
     @Rule
-    public IntentsTestRule<MainActivity> mActivityTestRule = new IntentsTestRule<>(MainActivity.class);
+    public ActivityScenarioRule<MainActivity> mActivityTestRule = new ActivityScenarioRule<>(MainActivity.class);
 
     @Before
     public void stubIntents() {
+        Intents.init();
+
         Intent resultData = new Intent();
         Instrumentation.ActivityResult result = new Instrumentation.ActivityResult(Activity.RESULT_OK, resultData);
         intending(isInternal()).respondWith(result);
     }
 
+    @After
+    public void releaseIntents() {
+        Intents.release();
+    }
+
     @Test
     public void overflowOptions() {
-        testActionBar();
+        testActionBar(false);
     }
 
     @Test
@@ -75,7 +80,7 @@ public class MainActivityTest {
                         childAtPosition(
                                 allOf(withId(R.id.displayCard_relativeLayout),
                                         childAtPosition(
-                                                IsInstanceOf.<View>instanceOf(android.widget.FrameLayout.class),
+                                                IsInstanceOf.instanceOf(android.widget.FrameLayout.class),
                                                 0)),
                                 0),
                         isDisplayed()));
@@ -100,7 +105,7 @@ public class MainActivityTest {
     }
 
     @Test
-    public void launchActivityTest() {
+    public void search_redirectsToSearch() {
         ViewInteraction searchAutoComplete = onView(
                 allOf(withId(R.id.search_src_text),
                         childAtPosition(

@@ -44,10 +44,12 @@ class Utils {
                     }
 
                     @Override
-                    public void describeMismatch(Object item, Description mismatchDescription) {}
+                    public void describeMismatch(Object item, Description mismatchDescription) {
+                    }
 
                     @Override
-                    public void describeTo(Description description) {}
+                    public void describeTo(Description description) {
+                    }
                 };
             }
 
@@ -64,14 +66,14 @@ class Utils {
         };
     }
 
-    public static void testActionBar() {
+    public static void testActionBar(boolean hasSearch) {
         ViewInteraction overflowMenuButton = onView(
                 allOf(withContentDescription("More options"),
                         childAtPosition(
                                 childAtPosition(
                                         withId(R.id.action_bar),
                                         0),
-                                0),
+                                hasSearch ? 1 : 0),
                         isDisplayed()));
 
         overflowMenuButton.perform(click());
