@@ -7,7 +7,6 @@ on:
   pull_request:
     branches:
       - master
-      - 2.0
 
 jobs:
   run_tests:
