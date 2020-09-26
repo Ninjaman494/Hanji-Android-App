@@ -37,7 +37,7 @@ android {
         multiDexEnabled true
         versionCode 20
         versionName "2.0.3"
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner "com.a494studios.koreanconjugator.HanjiTestRunner"
     }
     buildTypes {
         release {
@@ -126,6 +126,7 @@ dependencies {
     implementation 'com.android.billingclient:billing:3.0.0'
 
     // Testing dependencies
+    implementation 'androidx.test.espresso:espresso-contrib:3.3.0' // Needed for idler
     testImplementation 'junit:junit:4.12'
     testImplementation 'org.mockito:mockito-core:1.10.19'
     testImplementation 'org.robolectric:robolectric:4.2.1' // Can't be upgraded until #5454 is fixed
@@ -134,7 +135,9 @@ dependencies {
     androidTestImplementation 'androidx.test:rules:1.3.0'
     androidTestImplementation 'androidx.test.espresso:espresso-intents:3.3.0'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
+    androidTestImplementation 'androidx.test.espresso:espresso-contrib:3.3.0'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
+    androidTestImplementation 'com.squareup.okhttp3:mockwebserver:3.8.1'
     androidTestUtil 'androidx.test:orchestrator:1.3.0'
 }
 apply plugin: 'com.google.gms.google-services'
