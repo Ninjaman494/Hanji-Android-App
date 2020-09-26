@@ -11,6 +11,7 @@ import androidx.test.runner.AndroidJUnit4;
 import com.a494studios.koreanconjugator.conjugations.ConjugationActivity;
 import com.a494studios.koreanconjugator.conjugations.ConjugationCardsAdapter;
 
+import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -42,6 +43,15 @@ public class ConjugationActivityTest {
             return intent;
         }
     };
+
+    @Before
+    public void addWait() {
+        try {
+            Thread.sleep(500);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
 
     @Test
     public void test_displaysData() {
