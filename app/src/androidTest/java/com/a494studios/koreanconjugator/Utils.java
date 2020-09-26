@@ -14,12 +14,15 @@ import org.hamcrest.BaseMatcher;
 import org.hamcrest.Description;
 import org.rm3l.maoni.ui.MaoniActivity;
 
+import okhttp3.mockwebserver.RecordedRequest;
+
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.intent.Intents.intended;
 import static androidx.test.espresso.intent.matcher.IntentMatchers.hasComponent;
 import static androidx.test.espresso.matcher.ViewMatchers.withContentDescription;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
+import static junit.framework.TestCase.assertTrue;
 import static org.hamcrest.Matchers.isA;
 
 class Utils {
@@ -76,5 +79,10 @@ class Utils {
         onView(withText("Report a Bug")).perform(click());
 
         intended(hasComponent(MaoniActivity.class.getName()));
+    }
+
+    public static void assertBodyContains(RecordedRequest request, String contains) {
+        String requestBody = request.getBody().readByteString().utf8();
+        assertTrue(requestBody.contains(contains));
     }
 }

@@ -70,6 +70,8 @@ public class Server {
     public static Observable<Response<ConjugationQuery.Data>> doConjugationQuery(
             String stem, boolean honorific, boolean isAdj, Boolean regular, List<String> conjugations,
             CustomApplication app){
+        idler.increment();
+
         ConjugationQuery.Builder queryBuilder = ConjugationQuery.builder()
                 .stem(stem)
                 .honorific(honorific)
@@ -87,7 +89,10 @@ public class Server {
         return Rx2Apollo.from(call)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .filter((dataResponse) -> dataResponse.data() != null);
+                .filter((dataResponse) -> dataResponse.data() != null)
+                .doFinally(() -> {
+                    idler.decrement();
+                });
     }
 
     public static Observable<Response<ExamplesQuery.Data>> doExamplesQuery(final String id, CustomApplication app) {

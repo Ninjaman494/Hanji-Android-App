@@ -38,6 +38,7 @@ android {
         versionCode 20
         versionName "2.0.3"
         testInstrumentationRunner "com.a494studios.koreanconjugator.HanjiTestRunner"
+        testInstrumentationRunnerArguments clearPackageData: 'true'
     }
     buildTypes {
         release {

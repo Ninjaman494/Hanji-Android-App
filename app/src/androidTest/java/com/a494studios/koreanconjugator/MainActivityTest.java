@@ -51,15 +51,6 @@ import static org.hamcrest.Matchers.not;
 public class MainActivityTest {
 
     private static final CountingIdlingResource idler = Server.getIdler();
-    private static final String WOD_RESPONSE = "{\n" +
-            "  \"data\": {\n" +
-            "    \"wordOfTheDay\": {\n" +
-            "      \"id\": \"가로0\",\n" +
-            "      \"term\": \"가로\",\n" +
-            "      \"__typename\": \"Entry\" \n" +
-            "    }\n" +
-            "  }\n" +
-            "}";
 
     @Rule
     @SuppressWarnings("deprecation")
@@ -84,7 +75,7 @@ public class MainActivityTest {
         testApp.setServerUrl(server.url("/").toString());
 
         // Enqueue a response
-        server.enqueue(new MockResponse().setBody(WOD_RESPONSE));
+        server.enqueue(new MockResponse().setBody(MockedResponses.WOD_RESPONSE));
 
         // Start test
         activityRule.launchActivity(null);
