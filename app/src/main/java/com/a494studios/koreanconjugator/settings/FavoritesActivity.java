@@ -16,6 +16,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.a494studios.koreanconjugator.ConjugationNamesQuery;
+import com.a494studios.koreanconjugator.CustomApplication;
 import com.a494studios.koreanconjugator.R;
 import com.a494studios.koreanconjugator.utils.Logger;
 import com.a494studios.koreanconjugator.utils.Utils;
@@ -49,7 +50,7 @@ public class FavoritesActivity extends AppCompatActivity implements AddFavoriteF
         adapter = new FavoritesAdapter(Utils.getFavorites(this));
         listView.setAdapter(adapter);
 
-        Server.doConjugationNamesQuery()
+        Server.doConjugationNamesQuery((CustomApplication)getApplication())
                 .subscribeWith(new DisposableObserver<Response<ConjugationNamesQuery.Data>>() {
                     @Override
                     public void onNext(Response<ConjugationNamesQuery.Data> response) {

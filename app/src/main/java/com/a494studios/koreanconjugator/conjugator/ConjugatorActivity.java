@@ -18,6 +18,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.a494studios.koreanconjugator.ConjugationQuery;
+import com.a494studios.koreanconjugator.CustomApplication;
 import com.a494studios.koreanconjugator.R;
 import com.a494studios.koreanconjugator.StemQuery;
 import com.a494studios.koreanconjugator.conjugations.ConjugationCardsAdapter;
@@ -111,7 +112,7 @@ public class ConjugatorActivity extends BaseActivity implements AdapterView.OnIt
             }
         });
 
-        Server.doStemQuery(term)
+        Server.doStemQuery(term, (CustomApplication)getApplication())
                 .subscribeWith(new DisposableObserver<Response<StemQuery.Data>>() {
                     @Override
                     public void onNext(Response<StemQuery.Data> response) {
@@ -187,7 +188,7 @@ public class ConjugatorActivity extends BaseActivity implements AdapterView.OnIt
             }
         });
 
-        Server.doConjugationQuery(stem, honorific, isAdj, regular)
+        Server.doConjugationQuery(stem, honorific, isAdj, regular, (CustomApplication)getApplication())
                 .subscribeWith(observer);
     }
 

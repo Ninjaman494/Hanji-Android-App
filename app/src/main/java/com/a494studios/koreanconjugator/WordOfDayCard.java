@@ -29,7 +29,7 @@ public class WordOfDayCard implements DisplayCardBody {
             view = View.inflate(context, R.layout.dcard_wod,parentView);
         }
 
-        Server.doWODQuery()
+        Server.doWODQuery((CustomApplication)context.getApplicationContext())
                 .subscribeWith(new DisposableObserver<Response<WordOfTheDayQuery.Data>>() {
                     @Override
                     public void onNext(Response<WordOfTheDayQuery.Data> dataResponse) {

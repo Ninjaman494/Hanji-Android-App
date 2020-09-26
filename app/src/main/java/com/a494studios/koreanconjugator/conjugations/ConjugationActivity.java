@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.a494studios.koreanconjugator.ConjugationQuery;
+import com.a494studios.koreanconjugator.CustomApplication;
 import com.a494studios.koreanconjugator.R;
 import com.a494studios.koreanconjugator.parsing.Server;
 import com.a494studios.koreanconjugator.utils.BaseActivity;
@@ -86,7 +87,7 @@ public class ConjugationActivity extends BaseActivity {
             }
         });
 
-        Server.doConjugationQuery(stem, honorific, isAdj, regular)
+        Server.doConjugationQuery(stem, honorific, isAdj, regular, (CustomApplication)getApplication())
         .subscribeWith(observer);
     }
 

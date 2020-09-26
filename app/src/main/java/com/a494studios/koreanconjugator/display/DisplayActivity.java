@@ -78,8 +78,9 @@ public class DisplayActivity extends BaseActivity {
 
         // Create Entry and Conjugations Observable
         final ArrayList<Favorite> favorites = Utils.getFavorites(this);
+        CustomApplication app = (CustomApplication)getApplication();
         ObservableSource<Object> observable = Server
-                .doEntryQuery(id)
+                .doEntryQuery(id, app)
                 .flatMap(dataResponse -> {
                     assert dataResponse.data() != null;
                     entry = dataResponse.data().entry();
@@ -99,11 +100,11 @@ public class DisplayActivity extends BaseActivity {
                             .map(Favorite::getConjugationName)
                             .toList()
                             .blockingGet();
-                    return Server.doConjugationQuery(entry.term(), false, isAdj, regular, conjugations);
+                    return Server.doConjugationQuery(entry.term(), false, isAdj, regular, conjugations, app);
                 });
 
         // Combine with Examples Observable and execute
-        Server.doExamplesQuery(id)
+        Server.doExamplesQuery(id, app)
                 .zipWith(observable, (examplesResponse, conjResponse) -> {
                     ConjugationQuery.Data conjData = null;
                     if(conjResponse instanceof Response) {

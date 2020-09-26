@@ -39,7 +39,6 @@ public class CustomApplication extends MultiDexApplication implements PurchasesU
     private static final String APP_ID = BuildConfig.ADMOB_KEY;
     private static final String SERVER_URL = com.a494studios.koreanconjugator.BuildConfig.SERVER_URL;
 
-    private static ApolloClient apolloClient;
     private static boolean isAdFree = false;
     private static boolean billingConnected = false;
     private static BillingClient billingClient;
@@ -58,19 +57,6 @@ public class CustomApplication extends MultiDexApplication implements PurchasesU
             System.out.println("Got Ad Free from prefs");
             isAdFree = prefAdFree;
         }
-
-        // Setup response cache for Apollo
-        File file = this.getCacheDir();
-        int size = 1024*1024;
-        DiskLruHttpCacheStore cacheStore = new DiskLruHttpCacheStore(file,size);
-
-        //Build the Apollo Client
-        OkHttpClient okHttpClient = new OkHttpClient.Builder().build();
-        apolloClient =  ApolloClient.builder()
-                .serverUrl(SERVER_URL)
-                .okHttpClient(okHttpClient)
-                .httpCache(new ApolloHttpCache(cacheStore))
-                .build();
 
         // Setup Google Play Billing
         billingClient = BillingClient.newBuilder(this)
@@ -119,8 +105,8 @@ public class CustomApplication extends MultiDexApplication implements PurchasesU
         MultiDex.install(this);
     }
 
-    public static ApolloClient getApolloClient() {
-        return apolloClient;
+    public String getServerUrl() {
+        return SERVER_URL;
     }
 
     public static void handleAdCard(DisplayCardView cardView, String adId){
