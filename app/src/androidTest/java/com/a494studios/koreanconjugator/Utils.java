@@ -78,6 +78,12 @@ class Utils {
         overflowMenuButton.perform(click());
         onView(withText("Report a Bug")).perform(click());
 
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
         intended(hasComponent(MaoniActivity.class.getName()));
     }
 
