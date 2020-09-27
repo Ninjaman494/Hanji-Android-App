@@ -127,7 +127,7 @@ public class ConjugationActivityTest {
         // Honorific
         onView(withId(R.id.conj_switch)).perform(setChecked(true));
 
-        Thread.sleep(100);
+        Thread.sleep(300);
 
         ConjugationCardsAdapter adapter = (ConjugationCardsAdapter)recyclerView.getAdapter();
         assertEquals(numItems, adapter.getItemCount());
@@ -138,7 +138,7 @@ public class ConjugationActivityTest {
         // Back to regular, it's cached so we can't check the request
         onView(withId(R.id.conj_switch)).perform(setChecked(false));
 
-        Thread.sleep(100);
+        Thread.sleep(300);
 
         adapter = (ConjugationCardsAdapter) recyclerView.getAdapter();
         assertEquals(numItems, adapter.getItemCount());

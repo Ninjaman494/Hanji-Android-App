@@ -18,8 +18,10 @@ import okhttp3.mockwebserver.RecordedRequest;
 
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
+import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.intent.Intents.intended;
 import static androidx.test.espresso.intent.matcher.IntentMatchers.hasComponent;
+import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withContentDescription;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static junit.framework.TestCase.assertTrue;
@@ -76,15 +78,7 @@ class Utils {
         intended(hasComponent(AboutActivity.class.getName()));
 
         overflowMenuButton.perform(click());
-        onView(withText("Report a Bug")).perform(click());
-
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-
-        intended(hasComponent(MaoniActivity.class.getName()));
+        onView(withText("Report a Bug")).check(matches(isDisplayed()));
     }
 
     public static void assertBodyContains(RecordedRequest request, String contains) {
