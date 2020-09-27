@@ -75,7 +75,7 @@ public class MainActivityTest {
         testApp.setServerUrl(server.url("/").toString());
 
         // Enqueue a response
-        server.enqueue(new MockResponse().setBody(MockedResponses.WOD_RESPONSE));
+        server.enqueue(new MockResponse().setBody(MockedResponses.WOD));
 
         // Start test
         activityRule.launchActivity(null);
