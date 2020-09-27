@@ -6,7 +6,6 @@ import android.view.View;
 
 import com.a494studios.koreanconjugator.ConjugationQuery;
 import com.a494studios.koreanconjugator.EntryQuery;
-import com.a494studios.koreanconjugator.ExamplesQuery;
 import com.a494studios.koreanconjugator.R;
 import com.a494studios.koreanconjugator.utils.Utils;
 import com.a494studios.koreanconjugator.display.cards.DefPOSCard;
@@ -15,6 +14,7 @@ import com.a494studios.koreanconjugator.display.cards.FavoritesCard;
 import com.a494studios.koreanconjugator.display.cards.NoteCard;
 import com.a494studios.koreanconjugator.display.cards.SynAntCard;
 import com.a494studios.koreanconjugator.parsing.Favorite;
+import com.apollographql.apollo.api.Response;
 
 import java.util.AbstractMap;
 import java.util.ArrayList;
@@ -24,7 +24,7 @@ import java.util.Map;
 import io.reactivex.Observable;
 import io.reactivex.observers.DisposableObserver;
 
-public class DisplayObserver extends DisposableObserver<Pair<ConjugationQuery.Data, ExamplesQuery.Data>> {
+public class DisplayObserver extends DisposableObserver<Response<ConjugationQuery.Data>> {
     private DisplayCardView displayCardView;
     private DisplayCardView note;
     private DisplayCardView examples;
@@ -51,9 +51,8 @@ public class DisplayObserver extends DisposableObserver<Pair<ConjugationQuery.Da
 
     @SuppressLint("CheckResult")
     @Override
-    public void onNext(Pair<ConjugationQuery.Data,ExamplesQuery.Data> response) {
-        ConjugationQuery.Data conjData = response.first;
-        ExamplesQuery.Data examplesData = response.second;
+    public void onNext(Response<ConjugationQuery.Data> response) {
+        ConjugationQuery.Data conjData = response.data();
 
         // Favorites, skip if not a Verb or Adjective
         if (conjData == null) {
@@ -108,8 +107,8 @@ public class DisplayObserver extends DisposableObserver<Pair<ConjugationQuery.Da
         }
 
         // Examples
-        if(examplesData.examples() != null && !examplesData.examples().isEmpty()){
-            examples.setCardBody(new ExamplesCard(examplesData.examples()));
+        if(entry.examples() != null && !entry.examples().isEmpty()){
+            examples.setCardBody(new ExamplesCard(entry.examples()));
         } else {
             examples.setVisibility(View.GONE);
         }

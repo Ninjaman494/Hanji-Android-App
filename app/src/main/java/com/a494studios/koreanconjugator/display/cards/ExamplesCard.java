@@ -4,8 +4,8 @@ import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.a494studios.koreanconjugator.EntryQuery;
 import com.a494studios.koreanconjugator.display.adapters.ExampleAdapter;
-import com.a494studios.koreanconjugator.ExamplesQuery;
 import com.a494studios.koreanconjugator.R;
 import com.linearlistview.LinearListView;
 
@@ -16,7 +16,7 @@ public class ExamplesCard implements DisplayCardBody{
     private View view;
     private ExampleAdapter adapter;
 
-    public ExamplesCard(List<ExamplesQuery.Example> examples) {
+    public ExamplesCard(List<EntryQuery.Example> examples) {
         adapter = new ExampleAdapter(Objects.requireNonNull(examples));
     }
 
