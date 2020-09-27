@@ -1,6 +1,7 @@
 package com.a494studios.koreanconjugator;
 
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Checkable;
 
 import androidx.test.espresso.UiController;
@@ -12,7 +13,8 @@ import com.eggheadgames.aboutbox.activity.AboutActivity;
 
 import org.hamcrest.BaseMatcher;
 import org.hamcrest.Description;
-import org.rm3l.maoni.ui.MaoniActivity;
+import org.hamcrest.Matcher;
+import org.hamcrest.TypeSafeMatcher;
 
 import okhttp3.mockwebserver.RecordedRequest;
 
@@ -60,6 +62,26 @@ class Utils {
             public void perform(UiController uiController, View view) {
                 Checkable checkableView = (Checkable) view;
                 checkableView.setChecked(checked);
+            }
+        };
+    }
+
+    // From: https://stackoverflow.com/questions/38773804/espress-accessing-nth-child-element-of-linear-layout
+    public static Matcher<View> nthChildOf(final Matcher<View> parentMatcher, final int childPosition) {
+        return new TypeSafeMatcher<View>() {
+            @Override
+            public void describeTo(Description description) {
+                description.appendText("with "+childPosition+" child view of type parentMatcher");
+            }
+
+            @Override
+            public boolean matchesSafely(View view) {
+                if (!(view.getParent() instanceof ViewGroup)) {
+                    return parentMatcher.matches(view.getParent());
+                }
+
+                ViewGroup group = (ViewGroup) view.getParent();
+                return parentMatcher.matches(view.getParent()) && group.getChildAt(childPosition).equals(view);
             }
         };
     }
