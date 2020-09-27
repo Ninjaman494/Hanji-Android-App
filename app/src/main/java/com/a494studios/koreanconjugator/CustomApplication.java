@@ -8,6 +8,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.multidex.MultiDex;
 import androidx.multidex.MultiDexApplication;
+import androidx.test.espresso.idling.CountingIdlingResource;
 
 import com.a494studios.koreanconjugator.display.DisplayCardView;
 import com.a494studios.koreanconjugator.display.cards.AdCard;
@@ -42,6 +43,7 @@ public class CustomApplication extends MultiDexApplication implements PurchasesU
     private static boolean isAdFree = false;
     private static boolean billingConnected = false;
     private static BillingClient billingClient;
+    private static CountingIdlingResource idler;
 
     // Called when the application is starting, before any other application objects have been created.
     @Override
@@ -168,5 +170,12 @@ public class CustomApplication extends MultiDexApplication implements PurchasesU
 
     public static BillingClient getBillingClient() {
         return billingClient;
+    }
+
+    public static CountingIdlingResource getIdler(){
+        if(idler == null) {
+            idler = new CountingIdlingResource("idlingResource");
+        }
+        return idler;
     }
 }

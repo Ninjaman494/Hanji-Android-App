@@ -31,7 +31,7 @@ import okhttp3.OkHttpClient;
  */
 
 public class Server {
-    private static CountingIdlingResource idler = new CountingIdlingResource("idlingResource");
+    private static CountingIdlingResource idler = CustomApplication.getIdler();
     private static ApolloClient apolloClient;
 
     public static Observable<Response<SearchQuery.Data>> doSearchQuery(final String query, CustomApplication app){
@@ -54,12 +54,15 @@ public class Server {
     }
 
     public static Observable<Response<EntryQuery.Data>> doEntryQuery(final String id, CustomApplication app) {
+        idler.increment();
+
         EntryQuery query = EntryQuery.builder().id(id).build();
         ApolloQueryCall<EntryQuery.Data> call = getApolloClient(app).query(query);
         return Rx2Apollo.from(call)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .filter((dataResponse) -> dataResponse.data() != null);
+                .filter((dataResponse) -> dataResponse.data() != null)
+                .doFinally(() -> idler.decrement());
     }
 
     public static Observable<Response<ConjugationQuery.Data>> doConjugationQuery(
@@ -90,9 +93,7 @@ public class Server {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .filter((dataResponse) -> dataResponse.data() != null)
-                .doFinally(() -> {
-                    idler.decrement();
-                });
+                .doFinally(() -> idler.decrement());
     }
 
     public static Observable<Response<ExamplesQuery.Data>> doExamplesQuery(final String id, CustomApplication app) {
@@ -128,9 +129,7 @@ public class Server {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .filter((dataResponse -> dataResponse.data() != null))
-                .doFinally(() -> {
-                    idler.decrement();
-                });
+                .doFinally(() -> idler.decrement());
     }
 
     public static Observable<Response<StemQuery.Data>> doStemQuery(String term, CustomApplication app) {

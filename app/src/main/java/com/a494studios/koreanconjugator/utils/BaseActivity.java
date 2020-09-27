@@ -10,6 +10,7 @@ import android.view.MenuItem;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 
+import com.a494studios.koreanconjugator.CustomApplication;
 import com.a494studios.koreanconjugator.R;
 import com.a494studios.koreanconjugator.settings.SettingsActivity;
 
@@ -53,10 +54,14 @@ public abstract class BaseActivity extends AppCompatActivity {
             launch(this);
             return true;
         }else if(item.getItemId() == R.id.overflow_bug) {
+            CustomApplication.getIdler().increment();
+
             Maoni maoni = Utils.makeMaoniActivity(this);
             if (maoni != null) {
                 maoni.start(this);
             }
+
+            CustomApplication.getIdler().decrement();
             return true;
         } else if(item.getItemId() == R.id.overflow_ad_free) {
             Logger.getInstance().logViewUpgrade();
