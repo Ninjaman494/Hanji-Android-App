@@ -100,7 +100,9 @@ public class DisplayActivity extends BaseActivity {
                             .blockingGet();
                     return Server.doConjugationQuery(entry.term(), false, isAdj, regular, conjugations, app);
                 })
-                .map(o -> (Response<ConjugationQuery.Data>) o)
+                .map(o -> o instanceof String
+                        ? new ConjugationQuery.Data(new ArrayList<>())
+                        : ((Response<ConjugationQuery.Data>) o).data())
                 .subscribeWith(observer);
 
         LinearLayout linearLayout = findViewById(R.id.disp_root);

@@ -14,7 +14,6 @@ import com.a494studios.koreanconjugator.display.cards.FavoritesCard;
 import com.a494studios.koreanconjugator.display.cards.NoteCard;
 import com.a494studios.koreanconjugator.display.cards.SynAntCard;
 import com.a494studios.koreanconjugator.parsing.Favorite;
-import com.apollographql.apollo.api.Response;
 
 import java.util.AbstractMap;
 import java.util.ArrayList;
@@ -24,7 +23,7 @@ import java.util.Map;
 import io.reactivex.Observable;
 import io.reactivex.observers.DisposableObserver;
 
-public class DisplayObserver extends DisposableObserver<Response<ConjugationQuery.Data>> {
+public class DisplayObserver extends DisposableObserver<ConjugationQuery.Data> {
     private DisplayCardView displayCardView;
     private DisplayCardView note;
     private DisplayCardView examples;
@@ -51,11 +50,9 @@ public class DisplayObserver extends DisposableObserver<Response<ConjugationQuer
 
     @SuppressLint("CheckResult")
     @Override
-    public void onNext(Response<ConjugationQuery.Data> response) {
-        ConjugationQuery.Data conjData = response.data();
-
-        // Favorites, skip if not a Verb or Adjective
-        if (conjData == null) {
+    public void onNext(ConjugationQuery.Data conjData) {
+        // Favorites, hide the card and skip if there are none
+        if (conjData.conjugations().isEmpty()) {
             conjugations.setVisibility(View.GONE);
         } else {
             List<ConjugationQuery.Conjugation> conjugations = conjData.conjugations();
