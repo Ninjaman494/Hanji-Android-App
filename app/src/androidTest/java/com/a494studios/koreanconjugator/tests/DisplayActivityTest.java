@@ -1,4 +1,4 @@
-package com.a494studios.koreanconjugator;
+package com.a494studios.koreanconjugator.tests;
 
 import android.app.Activity;
 import android.app.Instrumentation;
@@ -10,10 +10,14 @@ import androidx.test.core.app.ApplicationProvider;
 import androidx.test.espresso.IdlingRegistry;
 import androidx.test.espresso.idling.CountingIdlingResource;
 import androidx.test.espresso.intent.Intents;
+import androidx.test.espresso.matcher.ViewMatchers;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.filters.LargeTest;
 import androidx.test.rule.ActivityTestRule;
 
+import com.a494studios.koreanconjugator.MockApplication;
+import com.a494studios.koreanconjugator.MockedResponses;
+import com.a494studios.koreanconjugator.R;
 import com.a494studios.koreanconjugator.conjugations.ConjugationActivity;
 import com.a494studios.koreanconjugator.display.DisplayActivity;
 import com.a494studios.koreanconjugator.parsing.Favorite;
@@ -114,7 +118,7 @@ public class DisplayActivityTest {
     @Test
     public void contents_areDisplayed() {
         // Term and POS
-        onView(withId(R.id.word_info_term)).check(matches(withText("가다")));
+        onView(ViewMatchers.withId(R.id.word_info_term)).check(matches(withText("가다")));
         onView(withId(R.id.word_info_pos)).check(matches(withText("Verb")));
 
         // Definitions

@@ -1,14 +1,18 @@
-package com.a494studios.koreanconjugator;
+package com.a494studios.koreanconjugator.tests;
 
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
+
+import androidx.test.espresso.matcher.ViewMatchers;
+import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.filters.LargeTest;
 import androidx.test.rule.ActivityTestRule;
-import androidx.test.runner.AndroidJUnit4;
 
+import com.a494studios.koreanconjugator.R;
 import com.a494studios.koreanconjugator.display.ConjInfoActivity;
 import com.linearlistview.LinearListView;
 
+import org.hamcrest.Matchers;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -21,7 +25,6 @@ import static androidx.test.espresso.matcher.ViewMatchers.isDescendantOfA;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
-import static org.hamcrest.Matchers.allOf;
 import static org.junit.Assert.assertEquals;
 
 @RunWith(AndroidJUnit4.class)
@@ -34,6 +37,7 @@ public class ConjInfoActivityTest {
     private ArrayList<String> EXTRA_EXPL;
 
     @Rule
+    @SuppressWarnings("deprecation")
     public ActivityTestRule<ConjInfoActivity> activityRule = new ActivityTestRule<ConjInfoActivity>(ConjInfoActivity.class) {
         @Override
         protected Intent getActivityIntent() {
@@ -73,7 +77,7 @@ public class ConjInfoActivityTest {
 
 
     private void checkUI() {
-        onView(allOf(withId(R.id.displayCard_heading), isDescendantOfA(withId(R.id.info_infoCard))))
+        onView(Matchers.allOf(ViewMatchers.withId(R.id.displayCard_heading), isDescendantOfA(withId(R.id.info_infoCard))))
                 .check(matches(isDisplayed()))
                 .check(matches(withText(EXTRA_NAME)));
         onView(withId(R.id.conjInfo_conjugated))
