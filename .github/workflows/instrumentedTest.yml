@@ -10,8 +10,9 @@ jobs:
   run_tests:
     runs-on: macos-latest
     strategy:
+      fail-fast: false
       matrix:
-        api-level: [23, 29]
+        api-level: [19, 23, 29]
 
     steps:
       - name: Checkout repo
