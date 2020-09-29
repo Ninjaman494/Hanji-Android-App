@@ -79,6 +79,11 @@ android {
         sourceCompatibility = '1.8'
         targetCompatibility = '1.8'
     }
+
+    // Gradle automatically adds 'android.test.runner' as a dependency.
+    useLibrary 'android.test.runner'
+    useLibrary 'android.test.base'
+    useLibrary 'android.test.mock'
 }
 
 //return a MY API KEY from a properties file.

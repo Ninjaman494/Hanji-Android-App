@@ -41,5 +41,5 @@ jobs:
         uses: actions/upload-artifact@v2
         if: ${{ always() }}
         with:
-          name: reports
+          name: ${{matrix.api-level }} reports
           path: app/build/reports
