@@ -5,7 +5,7 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.a494studios.koreanconjugator.ExamplesQuery;
+import com.a494studios.koreanconjugator.EntryQuery;
 import com.a494studios.koreanconjugator.R;
 
 import org.junit.Before;
@@ -21,14 +21,14 @@ import static org.junit.Assert.assertEquals;
 
 @RunWith(RobolectricTestRunner.class)
 public class ExampleAdapterUnitTest {
-    private List<ExamplesQuery.Example> examples;
+    private List<EntryQuery.Example> examples;
     private ExampleAdapter adapter;
 
     @Before
     public void init() {
-        ExamplesQuery.Example e1 = new ExamplesQuery.Example("type","sen1","tran1");
-        ExamplesQuery.Example e2 = new ExamplesQuery.Example("type","sen2","tran2");
-        ExamplesQuery.Example e3 = new ExamplesQuery.Example("type","sen3","tran3");
+        EntryQuery.Example e1 = new EntryQuery.Example("type","sen1","tran1");
+        EntryQuery.Example e2 = new EntryQuery.Example("type","sen2","tran2");
+        EntryQuery.Example e3 = new EntryQuery.Example("type","sen3","tran3");
         examples = new ArrayList<>();
         examples.add(e1);
         examples.add(e2);
