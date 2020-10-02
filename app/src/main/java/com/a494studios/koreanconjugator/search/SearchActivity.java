@@ -62,7 +62,7 @@ public class SearchActivity extends AppCompatActivity {
         Logger.getInstance().logSearch(entry);
 
         // Search
-        Server.doSearchQuery(entry)
+        Server.doSearchQuery(entry, (CustomApplication)getApplication())
                 .subscribeWith(new DisposableObserver<Response<SearchQuery.Data>>() {
                     @Override
                     public void onNext(Response<SearchQuery.Data> dataResponse) {

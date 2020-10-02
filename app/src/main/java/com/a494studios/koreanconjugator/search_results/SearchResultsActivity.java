@@ -114,7 +114,7 @@ public class SearchResultsActivity extends BaseActivity {
 
     @SuppressLint("CheckResult")
     private void fetchSearchResponse(String query, int cur){
-        Server.doSearchQuery(query, cur)
+        Server.doSearchQuery(query, cur, (CustomApplication)getApplication())
                 .subscribeWith(new DisposableObserver<Response<SearchQuery.Data>>() {
                     @Override
                     public void onNext(Response<SearchQuery.Data> dataResponse) {

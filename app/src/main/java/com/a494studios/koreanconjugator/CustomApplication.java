@@ -8,6 +8,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.multidex.MultiDex;
 import androidx.multidex.MultiDexApplication;
+import androidx.test.espresso.idling.CountingIdlingResource;
 
 import com.a494studios.koreanconjugator.display.DisplayCardView;
 import com.a494studios.koreanconjugator.display.cards.AdCard;
@@ -39,10 +40,10 @@ public class CustomApplication extends MultiDexApplication implements PurchasesU
     private static final String APP_ID = BuildConfig.ADMOB_KEY;
     private static final String SERVER_URL = com.a494studios.koreanconjugator.BuildConfig.SERVER_URL;
 
-    private static ApolloClient apolloClient;
     private static boolean isAdFree = false;
     private static boolean billingConnected = false;
     private static BillingClient billingClient;
+    private static CountingIdlingResource idler;
 
     // Called when the application is starting, before any other application objects have been created.
     @Override
@@ -58,19 +59,6 @@ public class CustomApplication extends MultiDexApplication implements PurchasesU
             System.out.println("Got Ad Free from prefs");
             isAdFree = prefAdFree;
         }
-
-        // Setup response cache for Apollo
-        File file = this.getCacheDir();
-        int size = 1024*1024;
-        DiskLruHttpCacheStore cacheStore = new DiskLruHttpCacheStore(file,size);
-
-        //Build the Apollo Client
-        OkHttpClient okHttpClient = new OkHttpClient.Builder().build();
-        apolloClient =  ApolloClient.builder()
-                .serverUrl(SERVER_URL)
-                .okHttpClient(okHttpClient)
-                .httpCache(new ApolloHttpCache(cacheStore))
-                .build();
 
         // Setup Google Play Billing
         billingClient = BillingClient.newBuilder(this)
@@ -119,8 +107,8 @@ public class CustomApplication extends MultiDexApplication implements PurchasesU
         MultiDex.install(this);
     }
 
-    public static ApolloClient getApolloClient() {
-        return apolloClient;
+    public String getServerUrl() {
+        return SERVER_URL;
     }
 
     public static void handleAdCard(DisplayCardView cardView, String adId){
@@ -182,5 +170,12 @@ public class CustomApplication extends MultiDexApplication implements PurchasesU
 
     public static BillingClient getBillingClient() {
         return billingClient;
+    }
+
+    public static CountingIdlingResource getIdler(){
+        if(idler == null) {
+            idler = new CountingIdlingResource("idlingResource");
+        }
+        return idler;
     }
 }

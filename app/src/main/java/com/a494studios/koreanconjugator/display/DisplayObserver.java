@@ -6,7 +6,6 @@ import android.view.View;
 
 import com.a494studios.koreanconjugator.ConjugationQuery;
 import com.a494studios.koreanconjugator.EntryQuery;
-import com.a494studios.koreanconjugator.ExamplesQuery;
 import com.a494studios.koreanconjugator.R;
 import com.a494studios.koreanconjugator.utils.Utils;
 import com.a494studios.koreanconjugator.display.cards.DefPOSCard;
@@ -24,7 +23,7 @@ import java.util.Map;
 import io.reactivex.Observable;
 import io.reactivex.observers.DisposableObserver;
 
-public class DisplayObserver extends DisposableObserver<Pair<ConjugationQuery.Data, ExamplesQuery.Data>> {
+public class DisplayObserver extends DisposableObserver<ConjugationQuery.Data> {
     private DisplayCardView displayCardView;
     private DisplayCardView note;
     private DisplayCardView examples;
@@ -51,12 +50,9 @@ public class DisplayObserver extends DisposableObserver<Pair<ConjugationQuery.Da
 
     @SuppressLint("CheckResult")
     @Override
-    public void onNext(Pair<ConjugationQuery.Data,ExamplesQuery.Data> response) {
-        ConjugationQuery.Data conjData = response.first;
-        ExamplesQuery.Data examplesData = response.second;
-
-        // Favorites, skip if not a Verb or Adjective
-        if (conjData == null) {
+    public void onNext(ConjugationQuery.Data conjData) {
+        // Favorites, hide the card and skip if there are none
+        if (conjData.conjugations().isEmpty()) {
             conjugations.setVisibility(View.GONE);
         } else {
             List<ConjugationQuery.Conjugation> conjugations = conjData.conjugations();
@@ -108,8 +104,8 @@ public class DisplayObserver extends DisposableObserver<Pair<ConjugationQuery.Da
         }
 
         // Examples
-        if(examplesData.examples() != null && !examplesData.examples().isEmpty()){
-            examples.setCardBody(new ExamplesCard(examplesData.examples()));
+        if(entry.examples() != null && !entry.examples().isEmpty()){
+            examples.setCardBody(new ExamplesCard(entry.examples()));
         } else {
             examples.setVisibility(View.GONE);
         }

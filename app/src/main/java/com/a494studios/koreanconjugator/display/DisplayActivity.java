@@ -4,7 +4,6 @@ import android.annotation.SuppressLint;
 import androidx.appcompat.app.ActionBar;
 import android.os.Bundle;
 
-import android.util.Pair;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
@@ -25,7 +24,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import io.reactivex.Observable;
-import io.reactivex.ObservableSource;
 
 public class DisplayActivity extends BaseActivity {
 
@@ -78,9 +76,10 @@ public class DisplayActivity extends BaseActivity {
 
         // Create Entry and Conjugations Observable
         final ArrayList<Favorite> favorites = Utils.getFavorites(this);
-        ObservableSource<Object> observable = Server
-                .doEntryQuery(id)
-                .flatMap(dataResponse -> {
+        CustomApplication app = (CustomApplication)getApplication();
+
+        Server.doEntryQuery(id, app)
+                .concatMap(dataResponse -> {
                     assert dataResponse.data() != null;
                     entry = dataResponse.data().entry();
                     boolean isAdj = entry.pos().equals("Adjective");
@@ -99,19 +98,11 @@ public class DisplayActivity extends BaseActivity {
                             .map(Favorite::getConjugationName)
                             .toList()
                             .blockingGet();
-                    return Server.doConjugationQuery(entry.term(), false, isAdj, regular, conjugations);
-                });
-
-        // Combine with Examples Observable and execute
-        Server.doExamplesQuery(id)
-                .zipWith(observable, (examplesResponse, conjResponse) -> {
-                    ConjugationQuery.Data conjData = null;
-                    if(conjResponse instanceof Response) {
-                        conjData = ((Response<ConjugationQuery.Data>) conjResponse).data();
-                    }
-
-                    return new Pair<>(conjData, examplesResponse.data());
+                    return Server.doConjugationQuery(entry.term(), false, isAdj, regular, conjugations, app);
                 })
+                .map(o -> o instanceof String
+                        ? new ConjugationQuery.Data(new ArrayList<>())
+                        : ((Response<ConjugationQuery.Data>) o).data())
                 .subscribeWith(observer);
 
         LinearLayout linearLayout = findViewById(R.id.disp_root);

@@ -1,0 +1,47 @@
+name: Instrumented Testing
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  run_tests:
+    runs-on: macos-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        api-level: [21, 23, 29]
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v2
+
+      - name: Create keys.txt
+        env:
+          KEYS_TXT: ${{ secrets.KEYS_TXT }}
+        run: echo $KEYS_TXT > keys.txt
+
+      - name: Create google-services.json
+        env:
+          FIREBASE_SECRET: ${{ secrets.GOOGLE_SERVICES }}
+        run: echo $FIREBASE_SECRET > app/google-services.json
+
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
+
+      - name: Run tests
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: ${{ matrix.api-level }}
+          script: ./gradlew connectedDebugAndroidTest --stacktrace --scan
+
+      - name: Upload test reports
+        uses: actions/upload-artifact@v2
+        if: ${{ always() }}
+        with:
+          name: ${{matrix.api-level }} reports
+          path: app/build/reports
