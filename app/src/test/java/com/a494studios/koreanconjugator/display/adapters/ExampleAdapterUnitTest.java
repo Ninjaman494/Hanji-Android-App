@@ -49,8 +49,8 @@ public class ExampleAdapterUnitTest {
             TextView senView = view.findViewById(R.id.item_example_sentence);
             TextView transView = view.findViewById(R.id.item_example_translation);
 
-            assertEquals(examples.get(i).sentence(),senView.getText());
-            assertEquals(examples.get(i).translation(),transView.getText());
+            assertEquals(examples.get(i).sentence(), senView.getText().toString());
+            assertEquals(examples.get(i).translation(), transView.getText().toString());
         }
     }
 

@@ -73,10 +73,10 @@ public class ConjInfoCardUnitTest {
         TextView pronc = group.findViewById(R.id.conjInfo_hpronc);
         TextView roman = group.findViewById(R.id.conjInfo_roman);
 
-        assertEquals(group.getChildAt(0).getId(),R.id.conjInfo);
-        assertEquals(CONJUGATED,conj.getText());
-        assertEquals(PRONC,pronc.getText());
-        assertEquals(ROME,roman.getText());
+        assertEquals(group.getChildAt(0).getId(), R.id.conjInfo);
+        assertEquals(CONJUGATED, conj.getText().toString());
+        assertEquals(PRONC, pronc.getText().toString());
+        assertEquals(ROME, roman.getText().toString());
     }
 
     @Test

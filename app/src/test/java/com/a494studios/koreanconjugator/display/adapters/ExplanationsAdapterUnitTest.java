@@ -46,12 +46,12 @@ public class ExplanationsAdapterUnitTest {
             TextView transView = view.findViewById(R.id.item_example_translation);
 
             if(i == 0) {
-                assertEquals(explanations.get(i),senView.getText());
+                assertEquals(explanations.get(i), senView.getText().toString());
                 assertEquals(View.GONE,transView.getVisibility());
             } else {
                 String sub = explanations.get(i).replace("title ","");
-                assertEquals("title",senView.getText());
-                assertEquals(sub,transView.getText());
+                assertEquals("title", senView.getText().toString());
+                assertEquals(sub, transView.getText().toString());
             }
 
         }

@@ -48,7 +48,7 @@ public class SynAntCardUnitTest {
         ViewGroup group = new LinearLayout(context);
         synCard.addBodyView(context,group);
         TextView note = group.findViewById(R.id.simpleCard_text);
-        assertEquals("syn1, syn2, syn3",note.getText());
+        assertEquals("syn1, syn2, syn3",note.getText().toString());
         assertEquals(group.getChildAt(0).getId(),R.id.simpleCard);
     }
 
@@ -57,7 +57,7 @@ public class SynAntCardUnitTest {
         ViewGroup group = new LinearLayout(context);
         antCard.addBodyView(context,group);
         TextView note = group.findViewById(R.id.simpleCard_text);
-        assertEquals("syn1, syn2, syn3",note.getText());
+        assertEquals("syn1, syn2, syn3",note.getText().toString());
         assertEquals(group.getChildAt(0).getId(),R.id.simpleCard);
     }
 
