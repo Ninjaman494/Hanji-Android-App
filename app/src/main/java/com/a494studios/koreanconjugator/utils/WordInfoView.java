@@ -55,17 +55,26 @@ public class WordInfoView extends RelativeLayout {
         posView.setText(pos);
     }
 
-    public void setShowAll(boolean showAll) {
+    public void clickShowAll(boolean showAll) {
         this.showAll = showAll;
-        defsView.removeAllViews();
         if(showAll) {
-            for(int i = 0;i<definitions.size();i++) {
+            // Remove show more text is it's showing (which should be never)
+            if(showMore) {
+                defsView.removeViewAt(2);
+            }
+
+            // Add views starting from index 3, or 2 if show more was removed
+            int startingIndex = showMore ? 2 : 3;
+            for(int i = startingIndex;i<definitions.size();i++) {
                 View vi = inflate(getContext(), R.layout.item_word_info,null);
                 ((TextView)vi.findViewById(R.id.content)).setText(definitions.get(i));
-                defsView.addView(vi);
+                defsView.addView(vi, i);
             }
         } else {
-            this.setDefinitions(definitions);
+            // Remove views from index 3 till end
+            for(int i = definitions.size()-1;i>2;i--) {
+                defsView.removeViewAt(i);
+            }
         }
     }
 

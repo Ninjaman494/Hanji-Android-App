@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<merge xmlns:android="http://schemas.android.com/apk/res/android">
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -9,7 +10,7 @@
             android:id="@+id/word_info_term"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="가깝다"
+            tools:text="가깝다"
             android:textColor="@android:color/primary_text_light"
             android:textSize="30sp"
             android:textIsSelectable="true"/>
@@ -20,7 +21,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/word_info_term"
             android:layout_marginBottom="8dp"
-            android:text="Adjective"
+            tools:text="Adjective"
             android:textSize="16sp"
             android:textIsSelectable="true"/>
 
@@ -29,7 +30,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/word_info_pos"
-            android:orientation="vertical" />
+            android:orientation="vertical"
+            android:animateLayoutChanges="true"/>
     </RelativeLayout>
 
 </merge>
