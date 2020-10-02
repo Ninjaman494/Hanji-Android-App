@@ -49,7 +49,7 @@ public class DefPOSCard implements DisplayCardBody {
         } else {
             buttonText = "COLLAPSE";
         }
-        view.setShowAll(!showingAll);
+        view.clickShowAll(!showingAll);
     }
 
     @Override
