@@ -63,11 +63,11 @@ public class ConjugationAdapterUnitTest {
             TextView conjView = view.findViewById(R.id.conjText);
 
             if(c.speechLevel() == SpeechLevel.NONE){
-                assertEquals(c.name(),nameView.getText());
+                assertEquals(c.name(), nameView.getText().toString());
             } else {
-                assertEquals(formatSpeechLevel(c.speechLevel()), nameView.getText());
+                assertEquals(formatSpeechLevel(c.speechLevel()), nameView.getText().toString());
             }
-            assertEquals(c.conjugation(),conjView.getText());
+            assertEquals(c.conjugation(), conjView.getText().toString());
         }
     }
 

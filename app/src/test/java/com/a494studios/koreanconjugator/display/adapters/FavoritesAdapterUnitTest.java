@@ -61,8 +61,8 @@ public class FavoritesAdapterUnitTest {
         for(int i = 0;i<entries.size();i++) {
             View view = adapter.getView(i,null,group);
             Map.Entry<String, ConjugationQuery.Conjugation> e = entries.get(i);
-            assertEquals(e.getKey(),((TextView)view.findViewById(NAME_VIEW_ID)).getText());
-            assertEquals(e.getValue().conjugation(),((TextView)view.findViewById(CONJ_VIEW_ID)).getText());
+            assertEquals(e.getKey(), ((TextView)view.findViewById(NAME_VIEW_ID)).getText().toString());
+            assertEquals(e.getValue().conjugation(), ((TextView)view.findViewById(CONJ_VIEW_ID)).getText().toString());
         }
     }
 

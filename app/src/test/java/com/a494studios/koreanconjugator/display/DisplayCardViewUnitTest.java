@@ -6,6 +6,8 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.test.core.app.ApplicationProvider;
+
 import com.a494studios.koreanconjugator.R;
 import com.a494studios.koreanconjugator.display.cards.DisplayCardBody;
 
@@ -13,13 +15,8 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
-import org.robolectric.RuntimeEnvironment;
 
 import static org.junit.Assert.assertEquals;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyBoolean;
-import static org.mockito.Matchers.anyString;
-import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -32,7 +29,7 @@ public class DisplayCardViewUnitTest {
 
     @Before
     public void init() {
-        context = RuntimeEnvironment.application.getApplicationContext();
+        context = ApplicationProvider.getApplicationContext();
     }
 
     @Test
@@ -102,7 +99,6 @@ public class DisplayCardViewUnitTest {
         DisplayCardBody cardBody = mock(DisplayCardBody.class);
         Button btn = view.findViewById(BUTTON_ID);
         TextView headingView = view.findViewById(HEADING_ID);
-        LinearLayout root = view.findViewById(R.id.displayCard_body);
 
         when(cardBody.getButtonText()).thenReturn(btnText);
         when(cardBody.getHeading()).thenReturn(heading);

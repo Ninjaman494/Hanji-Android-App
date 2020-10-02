@@ -11,7 +11,8 @@
             android:layout_height="wrap_content"
             android:text="가깝다"
             android:textColor="@android:color/primary_text_light"
-            android:textSize="30sp" />
+            android:textSize="30sp"
+            android:textIsSelectable="true"/>
 
         <TextView
             android:id="@+id/word_info_pos"
@@ -20,7 +21,8 @@
             android:layout_below="@id/word_info_term"
             android:layout_marginBottom="8dp"
             android:text="Adjective"
-            android:textSize="16sp" />
+            android:textSize="16sp"
+            android:textIsSelectable="true"/>
 
         <LinearLayout
             android:id="@+id/word_info_recycler"

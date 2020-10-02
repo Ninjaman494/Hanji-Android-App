@@ -5,14 +5,14 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.test.core.app.ApplicationProvider;
+
 import com.a494studios.koreanconjugator.R;
-import com.a494studios.koreanconjugator.display.cards.NoteCard;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
-import org.robolectric.RuntimeEnvironment;
 
 import static org.junit.Assert.*;
 
@@ -25,7 +25,7 @@ public class NoteCardUnitTest {
     @Before
     public void init() {
         card = new NoteCard(NOTE);
-        context = RuntimeEnvironment.application.getApplicationContext();
+        context = ApplicationProvider.getApplicationContext();
     }
 
     @Test(expected =  NullPointerException.class)
@@ -39,7 +39,7 @@ public class NoteCardUnitTest {
         card.addBodyView(context,group);
         TextView note = group.findViewById(R.id.simpleCard_text);
 
-        assertEquals(NOTE,note.getText());
+        assertEquals(NOTE, note.getText().toString());
         assertEquals(group.getChildAt(0).getId(),R.id.simpleCard);
     }
 

@@ -4,14 +4,14 @@ import android.content.Context;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
-import com.a494studios.koreanconjugator.display.cards.DefPOSCard;
+import androidx.test.core.app.ApplicationProvider;
+
 import com.a494studios.koreanconjugator.utils.WordInfoView;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
-import org.robolectric.RuntimeEnvironment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,7 +39,7 @@ public class DefPOSCardUnitTest {
         definitions3.add("def 3");
         definitions4 = new ArrayList<>(definitions3);
         definitions4.add("def 4");
-        context = RuntimeEnvironment.application.getApplicationContext();
+        context = ApplicationProvider.getApplicationContext();
 
         card3 = new DefPOSCard(TERM,POS,definitions3);
         card4 = new DefPOSCard(TERM,POS,definitions4);

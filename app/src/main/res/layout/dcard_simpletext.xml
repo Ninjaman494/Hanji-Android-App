@@ -11,5 +11,6 @@
         android:layout_height="wrap_content"
         android:paddingTop="8dp"
         android:text="Content"
-        android:textSize="24sp" />
+        android:textSize="24sp"
+        android:textIsSelectable="true"/>
 </RelativeLayout>
