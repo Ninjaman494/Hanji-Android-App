@@ -5,14 +5,14 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.test.core.app.ApplicationProvider;
+
 import com.a494studios.koreanconjugator.R;
-import com.a494studios.koreanconjugator.display.cards.ConjInfoCard;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
-import org.robolectric.RuntimeEnvironment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,7 +36,7 @@ public class ConjInfoCardUnitTest {
         reasons.add("reason (hi + hi -> hihi)");
         reasons.add("reason (hi + hi -> hihi)");
         reasons.add("reason (hi + hi -> hihi)");
-        context = RuntimeEnvironment.application.getApplicationContext();
+        context = ApplicationProvider.getApplicationContext();
         card = new ConjInfoCard(NAME,CONJUGATED,PRONC,ROME,reasons);
     }
 

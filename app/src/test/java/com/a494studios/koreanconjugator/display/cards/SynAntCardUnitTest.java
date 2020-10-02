@@ -5,14 +5,14 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.test.core.app.ApplicationProvider;
+
 import com.a494studios.koreanconjugator.R;
-import com.a494studios.koreanconjugator.display.cards.SynAntCard;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
-import org.robolectric.RuntimeEnvironment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,7 +35,7 @@ public class SynAntCardUnitTest {
         wordList.add("syn3");
         synCard = new SynAntCard(wordList,true);
         antCard = new SynAntCard(wordList,false);
-        context = RuntimeEnvironment.application.getApplicationContext();
+        context = ApplicationProvider.getApplicationContext();
     }
 
     @Test(expected =  NullPointerException.class)

@@ -7,6 +7,8 @@ import android.content.Intent;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
+import androidx.test.core.app.ApplicationProvider;
+
 import com.a494studios.koreanconjugator.ConjugationQuery;
 import com.a494studios.koreanconjugator.R;
 import com.a494studios.koreanconjugator.conjugations.ConjugationActivity;
@@ -17,7 +19,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
-import org.robolectric.RuntimeEnvironment;
 import org.robolectric.Shadows;
 
 import java.util.AbstractMap;
@@ -39,7 +40,7 @@ public class FavoritesCardUnitTest {
     @Before
     public void init() {
         entries = new ArrayList<>();
-        context = RuntimeEnvironment.application.getApplicationContext();
+        context = ApplicationProvider.getApplicationContext();
         card = new FavoritesCard(entries,STEM,HONORIFIC,IS_ADJ, true);
     }
 

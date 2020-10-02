@@ -8,6 +8,8 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
+import androidx.test.core.app.ApplicationProvider;
+
 import com.a494studios.koreanconjugator.ConjugationQuery;
 import com.a494studios.koreanconjugator.R;
 import com.a494studios.koreanconjugator.display.ConjInfoActivity;
@@ -21,7 +23,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
-import org.robolectric.RuntimeEnvironment;
 import org.robolectric.Shadows;
 
 import java.util.ArrayList;
@@ -41,11 +42,11 @@ public class ConjugationCardUnitTest {
     public void init() {
         ConjugationQuery.Conjugation c = new ConjugationQuery.Conjugation("type",
                 "name","conj", "TYPE", Tense.PRESENT, SpeechLevel.INFORMAL_HIGH,
-                false,"","",new ArrayList<String>());
+                false,"","",new ArrayList<>());
 
         conjugations = new ArrayList<>();
         conjugations.add(c);
-        context = RuntimeEnvironment.application.getApplicationContext();
+        context = ApplicationProvider.getApplicationContext();
         card = new ConjugationCard(conjugations, "term", "pos");
     }
 
@@ -101,7 +102,7 @@ public class ConjugationCardUnitTest {
 
     @Test
     public void test_getHeading() {
-        ConjugationCard empty = new ConjugationCard(new ArrayList<ConjugationQuery.Conjugation>(), "term", "pos");
+        ConjugationCard empty = new ConjugationCard(new ArrayList<>(), "term", "pos");
         assertEquals("Conjugations",empty.getHeading());
         assertEquals("Type",card.getHeading());
     }

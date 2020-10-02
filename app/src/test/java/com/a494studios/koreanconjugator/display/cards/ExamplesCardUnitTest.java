@@ -4,6 +4,8 @@ import android.content.Context;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
+import androidx.test.core.app.ApplicationProvider;
+
 import com.a494studios.koreanconjugator.EntryQuery;
 import com.a494studios.koreanconjugator.R;
 
@@ -12,7 +14,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
-import org.robolectric.RuntimeEnvironment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,7 +29,7 @@ public class ExamplesCardUnitTest {
 
     @Before
     public void init() {
-        context = RuntimeEnvironment.application.getApplicationContext();
+        context = ApplicationProvider.getApplicationContext();
         examples = new ArrayList<>();
         card = new ExamplesCard(examples);
     }
