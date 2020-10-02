@@ -12,7 +12,8 @@
         android:layout_height="wrap_content"
         android:layout_weight="0.5"
         android:textSize="24sp"
-        android:text="Informal low"/>
+        android:text="Informal low"
+        android:textIsSelectable="true"/>
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -28,6 +29,7 @@
         android:textSize="24sp"
         android:text="갈 거예요"
         android:maxLines="1"
+        android:textIsSelectable="true"
         app:autoSizeTextType="uniform"
         app:autoSizeMaxTextSize="24sp"/>
 

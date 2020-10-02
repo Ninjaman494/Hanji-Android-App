@@ -10,7 +10,8 @@
         android:layout_height="wrap_content"
         android:text="다음 학기에 한국에 갈 거예요"
         android:textColor="@android:color/primary_text_light"
-        android:textSize="24sp" />
+        android:textSize="24sp"
+        android:textIsSelectable="true"/>
 
     <TextView
         android:id="@+id/item_example_translation"
@@ -18,5 +19,6 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/item_example_sentence"
         android:text="I will go to Korea next semester"
-        android:textSize="20sp" />
+        android:textSize="20sp"
+        android:textIsSelectable="true"/>
 </RelativeLayout>

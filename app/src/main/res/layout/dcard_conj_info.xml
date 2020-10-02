@@ -10,7 +10,8 @@
         android:layout_height="wrap_content"
         android:text="가셨어요"
         android:textColor="@android:color/primary_text_light"
-        android:textSize="30sp" />
+        android:textSize="30sp"
+        android:textIsSelectable="true"/>
 
     <TextView
         android:id="@+id/conjInfo_pheading"
@@ -31,7 +32,8 @@
         android:layout_marginTop="8dp"
         android:text="가셔써요"
         android:textColor="@android:color/primary_text_light"
-        android:textSize="24sp" />
+        android:textSize="24sp"
+        android:textIsSelectable="true"/>
 
     <TextView
         android:id="@+id/conjInfo_roman"
@@ -39,7 +41,8 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/conjInfo_hpronc"
         android:text="gah-syuh-ssuh-yoh"
-        android:textSize="22sp" />
+        android:textSize="22sp"
+        android:textIsSelectable="true"/>
 
     <TextView
         android:id="@+id/conjInfo_eheading"
