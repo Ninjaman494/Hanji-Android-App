@@ -6,7 +6,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:paddingTop="8dp"
     android:orientation="horizontal"
-    android:background="?attr/selectableItemBackground">
+    android:background="?android:attr/selectableItemBackground">
 
     <TextView
         android:id="@+id/conjFormal"
@@ -19,7 +19,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="24sp"
-        tools:text=":"/>
+        android:text="@string/conj_seperator"/>
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/conjText"
         android:layout_width="match_parent"
