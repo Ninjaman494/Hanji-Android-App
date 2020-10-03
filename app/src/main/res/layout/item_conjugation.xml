@@ -3,8 +3,10 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:paddingTop="8dp"
-    android:orientation="horizontal">
+    android:orientation="horizontal"
+    android:background="?android:attr/selectableItemBackground">
 
     <TextView
         android:id="@+id/conjFormal"
@@ -12,24 +14,21 @@
         android:layout_height="wrap_content"
         android:layout_weight="0.5"
         android:textSize="24sp"
-        android:text="Informal low"
-        android:textIsSelectable="true"/>
+        tools:text="Informal low"/>
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="24sp"
-        android:text=":"/>
+        android:text="@string/conj_seperator"/>
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/conjText"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginStart="10dp"
-        android:layout_marginLeft="10dp"
         android:layout_weight="0.5"
         android:textSize="24sp"
-        android:text="갈 거예요"
+        tools:text="갈 거예요"
         android:maxLines="1"
-        android:textIsSelectable="true"
         app:autoSizeTextType="uniform"
         app:autoSizeMaxTextSize="24sp"/>
 
