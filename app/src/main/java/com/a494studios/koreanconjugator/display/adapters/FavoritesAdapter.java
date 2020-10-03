@@ -50,7 +50,7 @@ public class FavoritesAdapter extends BaseAdapter {
     }
 
     @Override
-    public Object getItem(int i) {
+    public Map.Entry<String,ConjugationQuery.Conjugation> getItem(int i) {
         return entries.get(i);
     }
 

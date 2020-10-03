@@ -9,6 +9,7 @@ public class Logger {
     private static final String EVENT_SELECT_CONJ = "select_conjugation";
     private static final String EVENT_VIEW_UPGRADE = "view_upgrade";
     private static final String EVENT_ADD_FAVORITE = "add_favorite";
+    private static final String EVENT_SELECT_FAV = "select_fav";
 
     private FirebaseAnalytics mFirebaseAnalytics;
     private static Logger logger;
@@ -61,6 +62,14 @@ public class Logger {
         bundle.putString("conjugation", conjugation);
         bundle.putBoolean("is_honorific", honorific);
         mFirebaseAnalytics.logEvent(EVENT_ADD_FAVORITE, bundle);
+    }
+
+    public void logSelectFavorite(String favName, String conjugation, String conjugated) {
+        Bundle bundle = new Bundle();
+        bundle.putString("favorite_name", favName);
+        bundle.putString("conjugation", conjugation);
+        bundle.putString("conjugated", conjugated);
+        mFirebaseAnalytics.logEvent(EVENT_SELECT_FAV, bundle);
     }
 
     private String detectLanguage(String term){
