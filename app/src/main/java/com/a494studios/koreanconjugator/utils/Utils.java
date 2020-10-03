@@ -27,7 +27,6 @@ import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
-import com.mikepenz.aboutlibraries.Libs;
 import com.mikepenz.aboutlibraries.LibsBuilder;
 
 import org.rm3l.maoni.Maoni;
@@ -232,5 +231,20 @@ public class Utils {
                 .beginTransaction()
                 .add(fragment,"frag_alert")
                 .commitAllowingStateLoss();
+    }
+
+    public static boolean isHangul(String korean){
+        if(korean.isEmpty()){
+            return false;
+        }
+
+        korean = korean.replace(" ","");
+        for(int i=0;i<korean.length();i++){
+            char c = korean.charAt(i);
+            if(!((int)c >= '가' && (int)c <= '힣')){
+                return false;
+            }
+        }
+        return true;
     }
 }
