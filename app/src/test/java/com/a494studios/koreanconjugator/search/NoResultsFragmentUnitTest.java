@@ -11,7 +11,6 @@ import android.widget.TextView;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
-import androidx.test.espresso.matcher.ViewMatchers;
 
 import com.a494studios.koreanconjugator.conjugator.ConjugatorActivity;
 
@@ -23,7 +22,6 @@ import org.robolectric.RobolectricTestRunner;
 import org.robolectric.Shadows;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.anyInt;
 import static org.mockito.Matchers.anyObject;
@@ -45,7 +43,7 @@ public class NoResultsFragmentUnitTest {
     }
 
     @Test
-    public void test_correctTextKorean() {
+    public void view_correctWhenSearchKorean() {
         String term = "가다";
         DialogInterface.OnClickListener listener = mock(DialogInterface.OnClickListener.class);
         NoResultsFragment fragment = NoResultsFragment.newInstance(term, listener);
@@ -77,7 +75,7 @@ public class NoResultsFragmentUnitTest {
     }
 
     @Test
-    public void test_correctTextEnglish() {
+    public void view_correctWhenSearchEnglish() {
         NoResultsFragment fragment = NoResultsFragment.newInstance("english", null);
         FragmentManager fragmentManager = activity.getSupportFragmentManager();
         fragment.show(fragmentManager, "tag");
@@ -100,7 +98,7 @@ public class NoResultsFragmentUnitTest {
     }
 
     @Test
-    public void test_cancelBtn() {
+    public void cancelBtn_works() {
         DialogInterface.OnClickListener listener = mock(DialogInterface.OnClickListener.class);
         NoResultsFragment fragment = NoResultsFragment.newInstance("term", listener);
 
