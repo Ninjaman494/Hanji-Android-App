@@ -11,6 +11,7 @@ import androidx.fragment.app.DialogFragment;
 
 import com.a494studios.koreanconjugator.R;
 import com.a494studios.koreanconjugator.conjugator.ConjugatorActivity;
+import com.a494studios.koreanconjugator.utils.Utils;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -42,8 +43,20 @@ public class NoResultsFragment extends DialogFragment implements DialogInterface
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         String title = getString(R.string.no_results_title);
-        String msg = getString(R.string.no_results_msg);
+        String msg = getString(R.string.no_results_msg_eng);
         String searchTerm = getArguments().getString(ARG_SEARCH_TERM);
+
+        // Change message and add Conjugator option
+        if(Utils.isHangul(searchTerm)) {
+            msg = getString(R.string.no_results_msg_kor);
+
+            String okBtnText = getResources().getString(R.string.no_results_positive_btn);
+            builder.setPositiveButton(okBtnText, (dialogInterface, i) -> {
+                Intent intent = new Intent(getContext(), ConjugatorActivity.class);
+                intent.putExtra(ConjugatorActivity.EXTRA_TERM, searchTerm);
+                startActivity(intent);
+            });
+        }
 
         builder.setTitle(title);
         builder.setMessage(msg);
@@ -54,13 +67,6 @@ public class NoResultsFragment extends DialogFragment implements DialogInterface
         } else {
             builder.setNegativeButton(cancelBtnText,this);
         }
-
-        String okBtnText = getResources().getString(R.string.no_results_positive_btn);
-        builder.setPositiveButton(okBtnText, (dialogInterface, i) -> {
-            Intent intent = new Intent(getContext(), ConjugatorActivity.class);
-            intent.putExtra(ConjugatorActivity.EXTRA_TERM, searchTerm);
-            startActivity(intent);
-        });
 
         return builder.create();
     }

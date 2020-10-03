@@ -18,7 +18,8 @@
     <string name="logo_text">한지 |Hanji</string>
     <!--Error Messages-->
     <string name="no_results_title">No Results</string>
-    <string name="no_results_msg">We couldn\'t find anything matching your search. You can use the conjugator, but the conjugations might not be accurate.</string>
+    <string name="no_results_msg_eng">We couldn\'t find anything matching your search.</string>
+    <string name="no_results_msg_kor">We couldn\'t find anything matching your search. You can use the conjugator, but the conjugations might not be accurate.</string>
     <string name="no_results_positive_btn">Use Conjugator</string>
     <!--Feedback Strings-->
     <string name="feed_title">How are you enjoying our app?</string>
