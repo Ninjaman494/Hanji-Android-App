@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.a494studios.koreanconjugator.display.ConjInfoActivity;
+import com.a494studios.koreanconjugator.display.DisplayCardView;
 import com.a494studios.koreanconjugator.display.adapters.ConjugationAdapter;
 import com.a494studios.koreanconjugator.ConjugationQuery;
 import com.a494studios.koreanconjugator.R;
@@ -37,7 +38,7 @@ public class ConjugationCard implements DisplayCardBody {
     }
 
     @Override
-    public View addBodyView(Context context, ViewGroup parentView) {
+    public View addBodyView(Context context, ViewGroup parentView, DisplayCardView cardView) {
         if(view == null) {
             view = View.inflate(context, R.layout.dcard_list,parentView);
         }
@@ -58,6 +59,9 @@ public class ConjugationCard implements DisplayCardBody {
             i.putExtra(ConjInfoActivity.EXTRA_HONO, conjugation.honorific());
             view.getContext().startActivity(i);
         });
+
+        cardView.hideButton(true);
+
         return view;
     }
 
@@ -67,18 +71,8 @@ public class ConjugationCard implements DisplayCardBody {
     }
 
     @Override
-    public boolean shouldHideButton() {
-        return true;
-    }
-
-    @Override
     public int getCount() {
         return adapter.getCount();
-    }
-
-    @Override
-    public String getButtonText() {
-        return "Button";
     }
 
     @Override

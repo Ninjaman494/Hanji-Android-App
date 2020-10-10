@@ -1,52 +1,45 @@
 package com.a494studios.koreanconjugator.display.cards;
 
-import android.content.Context;
+import android.app.Activity;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
-import androidx.test.core.app.ApplicationProvider;
-
 import com.a494studios.koreanconjugator.R;
+import com.a494studios.koreanconjugator.display.DisplayCardView;
 
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 
 @RunWith(RobolectricTestRunner.class)
 public class AdCardUnitTest {
     private AdCard card;
-    private Context context;
+    private Activity activity;
+    private DisplayCardView cardView;
+    private LinearLayout viewGroup;
 
     @Before
     public void init() {
         card = new AdCard("Ad unit id");
-        context = ApplicationProvider.getApplicationContext();
-    }
-    @Test
-    public void test_addBodyView() {
-        ViewGroup group = new LinearLayout(context);
-        card.addBodyView(context,group);
-        Assert.assertEquals(group.getChildAt(0).getId(), R.id.adCard);
+        activity = Robolectric.buildActivity(Activity.class).create().start().visible().get();
+        cardView = new DisplayCardView(activity);
+        viewGroup = new LinearLayout(activity);
     }
 
     @Test
     public void test_shouldHideButton() {
-        assertTrue(card.shouldHideButton());
+        card.addBodyView(activity, viewGroup, cardView);
+
+        assertEquals(cardView.findViewById(R.id.displayCard_button).getVisibility(), ViewGroup.GONE);
     }
 
     @Test
     public void test_getCount() {
         assertEquals(1,card.getCount());
-    }
-
-    @Test
-    public void test_getButtonText() {
-        assertEquals("Button", card.getButtonText());
     }
 
     @Test

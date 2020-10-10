@@ -8,6 +8,7 @@ import android.widget.TextView;
 import androidx.test.core.app.ApplicationProvider;
 
 import com.a494studios.koreanconjugator.R;
+import com.a494studios.koreanconjugator.display.DisplayCardView;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -18,7 +19,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 
 @RunWith(RobolectricTestRunner.class)
 public class ConjInfoCardUnitTest {
@@ -29,6 +29,8 @@ public class ConjInfoCardUnitTest {
     private List<String> reasons;
     private Context context;
     private ConjInfoCard card;
+    private DisplayCardView cardView;
+    private LinearLayout viewGroup;
 
     @Before
     public void init() {
@@ -38,6 +40,10 @@ public class ConjInfoCardUnitTest {
         reasons.add("reason (hi + hi -> hihi)");
         context = ApplicationProvider.getApplicationContext();
         card = new ConjInfoCard(NAME,CONJUGATED,PRONC,ROME,reasons);
+        cardView = new DisplayCardView(context);
+        viewGroup = new LinearLayout(context);
+
+        card.addBodyView(context, viewGroup, cardView);
     }
 
     @Test(expected = NullPointerException.class)
@@ -67,13 +73,12 @@ public class ConjInfoCardUnitTest {
 
     @Test
     public void test_addBodyView() {
-        ViewGroup group = new LinearLayout(context);
-        card.addBodyView(context,group);
-        TextView conj = group.findViewById(R.id.conjInfo_conjugated);
-        TextView pronc = group.findViewById(R.id.conjInfo_hpronc);
-        TextView roman = group.findViewById(R.id.conjInfo_roman);
+        card.addBodyView(context, viewGroup, cardView);
+        TextView conj = viewGroup.findViewById(R.id.conjInfo_conjugated);
+        TextView pronc = viewGroup.findViewById(R.id.conjInfo_hpronc);
+        TextView roman = viewGroup.findViewById(R.id.conjInfo_roman);
 
-        assertEquals(group.getChildAt(0).getId(), R.id.conjInfo);
+        assertEquals(viewGroup.getChildAt(0).getId(), R.id.conjInfo);
         assertEquals(CONJUGATED, conj.getText().toString());
         assertEquals(PRONC, pronc.getText().toString());
         assertEquals(ROME, roman.getText().toString());
@@ -81,17 +86,12 @@ public class ConjInfoCardUnitTest {
 
     @Test
     public void test_shouldHideButton() {
-        assertTrue(card.shouldHideButton());
+        assertEquals(cardView.findViewById(R.id.displayCard_button).getVisibility(), ViewGroup.GONE);
     }
 
     @Test
     public void test_getCount() {
         assertEquals(1,card.getCount());
-    }
-
-    @Test
-    public void test_getButtonText() {
-        assertEquals("Button", card.getButtonText());
     }
 
     @Test
