@@ -10,6 +10,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
 import com.a494studios.koreanconjugator.R;
+import com.a494studios.koreanconjugator.display.DisplayCardView;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdSize;
 import com.google.android.gms.ads.AdView;
@@ -23,7 +24,7 @@ public class AdCard implements DisplayCardBody {
     }
 
     @Override
-    public View addBodyView(Context context, ViewGroup parentView) {
+    public View addBodyView(Context context, ViewGroup parentView, DisplayCardView cardView) {
         if(view == null) {
             view = View.inflate(context, R.layout.dcard_ad,parentView);
         }
@@ -44,6 +45,9 @@ public class AdCard implements DisplayCardBody {
         container.addView(adView);
 
         adView.loadAd(new AdRequest.Builder().build());
+
+        cardView.hideButton(true);
+
         return view;
     }
 
@@ -53,18 +57,8 @@ public class AdCard implements DisplayCardBody {
     }
 
     @Override
-    public boolean shouldHideButton() {
-        return true;
-    }
-
-    @Override
     public int getCount() {
         return 1;
-    }
-
-    @Override
-    public String getButtonText() {
-        return "Button";
     }
 
     @Override

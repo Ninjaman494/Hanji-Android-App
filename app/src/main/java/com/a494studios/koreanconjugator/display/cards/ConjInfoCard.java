@@ -6,6 +6,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.a494studios.koreanconjugator.R;
+import com.a494studios.koreanconjugator.display.DisplayCardView;
 import com.a494studios.koreanconjugator.utils.Utils;
 import com.a494studios.koreanconjugator.display.adapters.ExplanationsAdapter;
 import com.linearlistview.LinearListView;
@@ -31,7 +32,7 @@ public class ConjInfoCard implements DisplayCardBody {
     }
 
     @Override
-    public View addBodyView(Context context, ViewGroup parentView) {
+    public View addBodyView(Context context, ViewGroup parentView, DisplayCardView cardView) {
         if(view == null) {
             view = View.inflate(context, R.layout.dcard_conj_info,parentView);
         }
@@ -42,6 +43,9 @@ public class ConjInfoCard implements DisplayCardBody {
 
         LinearListView listView = view.findViewById(R.id.conjInfo_explainList);
         listView.setAdapter(new ExplanationsAdapter(explanations));
+
+        cardView.hideButton(true);
+
         return view;
     }
 
@@ -51,18 +55,8 @@ public class ConjInfoCard implements DisplayCardBody {
     }
 
     @Override
-    public boolean shouldHideButton() {
-        return true;
-    }
-
-    @Override
     public int getCount() {
         return 1;
-    }
-
-    @Override
-    public String getButtonText() {
-        return "Button";
     }
 
     @Override

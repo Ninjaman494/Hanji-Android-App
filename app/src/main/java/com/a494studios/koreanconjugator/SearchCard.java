@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 
 import androidx.appcompat.widget.SearchView;
 
+import com.a494studios.koreanconjugator.display.DisplayCardView;
 import com.a494studios.koreanconjugator.display.cards.DisplayCardBody;
 
 import static android.content.Context.SEARCH_SERVICE;
@@ -20,14 +21,18 @@ public class SearchCard implements DisplayCardBody {
     public SearchCard(Activity activity){
         this.activity = activity;
     }
+
     @Override
-    public View addBodyView(Context context, ViewGroup parentView) {
+    public View addBodyView(Context context, ViewGroup parentView, DisplayCardView cardView) {
         if(view == null) {
             view = View.inflate(context, R.layout.dcard_search,parentView);
         }
         searchView = view.findViewById(R.id.searchCard_search);
         SearchManager searchManager = (SearchManager) context.getSystemService(SEARCH_SERVICE);
         searchView.setSearchableInfo(searchManager.getSearchableInfo(activity.getComponentName()));
+
+        cardView.hideButton(true);
+
         return view;
     }
 
@@ -41,18 +46,8 @@ public class SearchCard implements DisplayCardBody {
     }
 
     @Override
-    public boolean shouldHideButton() {
-        return true;
-    }
-
-    @Override
     public int getCount() {
         return 1;
-    }
-
-    @Override
-    public String getButtonText() {
-        return "Button";
     }
 
     @Override

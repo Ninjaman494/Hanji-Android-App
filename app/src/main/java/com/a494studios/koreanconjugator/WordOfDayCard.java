@@ -10,6 +10,7 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.a494studios.koreanconjugator.display.DisplayActivity;
+import com.a494studios.koreanconjugator.display.DisplayCardView;
 import com.a494studios.koreanconjugator.display.cards.DisplayCardBody;
 import com.a494studios.koreanconjugator.parsing.Server;
 import com.a494studios.koreanconjugator.utils.Utils;
@@ -24,10 +25,13 @@ public class WordOfDayCard implements DisplayCardBody {
 
     @SuppressLint("CheckResult")
     @Override
-    public View addBodyView(Context context, ViewGroup parentView) {
+    public View addBodyView(Context context, ViewGroup parentView, DisplayCardView cardView) {
         if(view == null) {
             view = View.inflate(context, R.layout.dcard_wod,parentView);
         }
+
+        cardView.setButtonText(context.getString(R.string.see_entry));
+        cardView.disableButton(true);
 
         Server.doWODQuery((CustomApplication)context.getApplicationContext())
                 .subscribeWith(new DisposableObserver<Response<WordOfTheDayQuery.Data>>() {
@@ -37,6 +41,7 @@ public class WordOfDayCard implements DisplayCardBody {
                         textView.setText(dataResponse.data().wordOfTheDay.term);
 
                         id = dataResponse.data().wordOfTheDay.id;
+                        cardView.disableButton(false);
                     }
 
                     @Override
@@ -62,18 +67,8 @@ public class WordOfDayCard implements DisplayCardBody {
     }
 
     @Override
-    public boolean shouldHideButton() {
-        return false;
-    }
-
-    @Override
     public int getCount() {
         return 1;
-    }
-
-    @Override
-    public String getButtonText() {
-        return view.getContext().getString(R.string.see_entry);
     }
 
     @Override

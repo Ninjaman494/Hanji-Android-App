@@ -5,6 +5,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.a494studios.koreanconjugator.EntryQuery;
+import com.a494studios.koreanconjugator.display.DisplayCardView;
 import com.a494studios.koreanconjugator.display.adapters.ExampleAdapter;
 import com.a494studios.koreanconjugator.R;
 import com.linearlistview.LinearListView;
@@ -21,13 +22,16 @@ public class ExamplesCard implements DisplayCardBody{
     }
 
     @Override
-    public View addBodyView(Context context, ViewGroup parentView) {
+    public View addBodyView(Context context, ViewGroup parentView, DisplayCardView cardView) {
         if(view == null) {
             view = View.inflate(context, R.layout.dcard_list,parentView);
         }
 
         LinearListView listView = view.findViewById(R.id.listCard_list);
         listView.setAdapter(adapter);
+
+        cardView.hideButton(true);
+
         return view;
     }
 
@@ -37,18 +41,8 @@ public class ExamplesCard implements DisplayCardBody{
     }
 
     @Override
-    public boolean shouldHideButton() {
-        return true;
-    }
-
-    @Override
     public int getCount() {
         return adapter.getCount();
-    }
-
-    @Override
-    public String getButtonText() {
-        return "Button";
     }
 
     @Override

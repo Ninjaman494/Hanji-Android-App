@@ -9,6 +9,7 @@ import com.a494studios.koreanconjugator.conjugations.ConjugationActivity;
 import com.a494studios.koreanconjugator.ConjugationQuery;
 import com.a494studios.koreanconjugator.R;
 import com.a494studios.koreanconjugator.display.ConjInfoActivity;
+import com.a494studios.koreanconjugator.display.DisplayCardView;
 import com.a494studios.koreanconjugator.display.adapters.FavoritesAdapter;
 import com.a494studios.koreanconjugator.utils.Logger;
 import com.linearlistview.LinearListView;
@@ -36,7 +37,7 @@ public class FavoritesCard implements DisplayCardBody {
     }
 
     @Override
-    public View addBodyView(Context context, ViewGroup parentView) {
+    public View addBodyView(Context context, ViewGroup parentView, DisplayCardView cardView) {
         if(view == null) {
             view = View.inflate(context, R.layout.dcard_list, parentView);
         }
@@ -58,6 +59,10 @@ public class FavoritesCard implements DisplayCardBody {
             i.putExtra(ConjInfoActivity.EXTRA_HONO, conjugation.honorific());
             view.getContext().startActivity(i);
         });
+
+        cardView.hideButton(false);
+        cardView.setButtonText("SEE ALL");
+
         return view;
     }
 
@@ -72,18 +77,8 @@ public class FavoritesCard implements DisplayCardBody {
     }
 
     @Override
-    public boolean shouldHideButton() {
-        return false;
-    }
-
-    @Override
     public int getCount() {
         return adapter.getCount();
-    }
-
-    @Override
-    public String getButtonText() {
-        return "SEE ALL";
     }
 
     @Override

@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.a494studios.koreanconjugator.R;
+import com.a494studios.koreanconjugator.display.DisplayCardView;
 
 import java.util.List;
 import java.util.Objects;
@@ -22,13 +23,16 @@ public class SynAntCard implements DisplayCardBody {
     }
 
     @Override
-    public View addBodyView(Context context, ViewGroup parentView) {
+    public View addBodyView(Context context, ViewGroup parentView, DisplayCardView cardView) {
         if(view == null) {
             view = View.inflate(context, R.layout.dcard_simpletext,parentView);
         }
 
         TextView textView = view.findViewById(R.id.simpleCard_text);
         textView.setText(TextUtils.join(", ", wordList));
+
+        cardView.hideButton(true);
+
         return view;
     }
 
@@ -38,18 +42,8 @@ public class SynAntCard implements DisplayCardBody {
     }
 
     @Override
-    public boolean shouldHideButton() {
-        return true;
-    }
-
-    @Override
     public int getCount() {
         return wordList.size();
-    }
-
-    @Override
-    public String getButtonText() {
-        return "Button";
     }
 
     @Override

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.a494studios.koreanconjugator.display.DisplayCardView;
 import com.a494studios.koreanconjugator.utils.WordInfoView;
 
 import java.util.List;
@@ -16,6 +17,7 @@ public class DefPOSCard implements DisplayCardBody {
     private List<String> definitions;
     private WordInfoView view;
     private String buttonText;
+    private DisplayCardView cardView;
 
     public DefPOSCard(String term, String pos, List<String> definitions) {
         this.term = Objects.requireNonNull(term);
@@ -25,12 +27,7 @@ public class DefPOSCard implements DisplayCardBody {
     }
 
     @Override
-    public boolean shouldHideButton() {
-        return definitions.size() <= 3; // show if more than 3 definitions
-    }
-
-    @Override
-    public View addBodyView(Context context, ViewGroup parentView) {
+    public View addBodyView(Context context, ViewGroup parentView, DisplayCardView cardView) {
         if(view == null) {
             view = new WordInfoView(context, term, pos, definitions, false);
         }
@@ -38,6 +35,11 @@ public class DefPOSCard implements DisplayCardBody {
         if(view.getParent() == null) {
             parentView.addView(view);
         }
+
+        this.cardView = cardView;
+        cardView.hideButton(definitions.size() <= 3);
+        cardView.setButtonText(buttonText);
+
         return view;
     }
 
@@ -50,16 +52,12 @@ public class DefPOSCard implements DisplayCardBody {
             buttonText = "COLLAPSE";
         }
         view.clickShowAll(!showingAll);
+        cardView.setButtonText(buttonText);
     }
 
     @Override
     public int getCount() {
         return definitions.size();
-    }
-
-    @Override
-    public String getButtonText() {
-        return buttonText;
     }
 
     @Override
