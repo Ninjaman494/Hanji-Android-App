@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<changelog>
+    <!-- TODO Fill in when update is ready -->
+    <release versionCode="23" versionName="2.0.6" date="Oct 10th 2020">
+        <info>Some info</info>
+        <new type="summary">Some improvement</new>
+        <bugfix>Some bugfix</bugfix>
+    </release>
+    <release versionCode="22" versionName="2.0.5" date="Oct 4th 2020">
+        <info>New features and a small bugfix</info>
+        <new type="summary">Most text is now selectable, which means you can long press to copy it</new>
+        <new type="summary">Added an animation when showing/hiding additional definitions</new>
+        <bugfix>The "Use conjugator" option now only shows up for Korean language searches</bugfix>
+    </release>
+    <release versionCode="21" versionName="2.0.4" date="Sep 10th 2020">
+        <info>Hanji 2.0 is Here!</info>
+        <new type="summary">Fresh UI</new>
+        <new type="summary">Words in other POS (nouns, adverbs, etc.)</new>
+        <new type="summary">Some words have antonyms, synonyms, examples</new>
+        <new type="summary">Honorific forms for all conjugations</new>
+        <new type="summary">Breakdowns, pronunciation, and romanizations for conjugations</new>
+    </release>
+</changelog>

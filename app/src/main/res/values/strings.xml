@@ -43,6 +43,8 @@
     <string name="possible_stems">Possible stems</string>
     <string name="part_of_speech">Part of Speech</string>
     <string name="regularity">Regularity</string>
+    <!-- Changelog -->
+    <string name="changelog_title">What\'s New</string>
     <!--Other-->
     <string name="honorific">Honorific</string>
     <string name="see_entry">See Entry</string>

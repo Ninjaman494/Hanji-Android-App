@@ -18,6 +18,7 @@ import com.codemybrainsout.ratingdialog.RatingDialog;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.eggheadgames.aboutbox.AboutBoxUtils;
 import com.eggheadgames.aboutbox.AboutConfig;
+import com.michaelflisar.changelog.ChangelogBuilder;
 
 public class MainActivity extends BaseActivity {
 
@@ -119,6 +120,12 @@ public class MainActivity extends BaseActivity {
         linearLayout = findViewById(R.id.main_linearLayout);
         animationHandler = new ScrollViewAnimationHandler(this, logo, findViewById(R.id.main_scrollView));
         animationHandler.setupScrollAnimation(linearLayout);
+
+        // Setup Changelog
+        new ChangelogBuilder()
+                .withTitle(getString(R.string.changelog_title))
+                .withManagedShowOnStart(true)
+                .buildAndShowDialog(this, false);
     }
 
     @Override
