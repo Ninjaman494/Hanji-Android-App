@@ -2,17 +2,15 @@ package com.a494studios.koreanconjugator.display.cards;
 
 import android.app.Activity;
 import android.content.ComponentName;
-import android.content.Context;
 import android.content.Intent;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
-import androidx.test.core.app.ApplicationProvider;
-
 import com.a494studios.koreanconjugator.ConjugationQuery;
 import com.a494studios.koreanconjugator.R;
 import com.a494studios.koreanconjugator.display.ConjInfoActivity;
+import com.a494studios.koreanconjugator.display.DisplayCardView;
 import com.a494studios.koreanconjugator.type.SpeechLevel;
 import com.a494studios.koreanconjugator.type.Tense;
 import com.linearlistview.LinearListView;
@@ -30,13 +28,14 @@ import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
 
 @RunWith(RobolectricTestRunner.class)
 public class ConjugationCardUnitTest {
     private List<ConjugationQuery.Conjugation> conjugations;
-    private Context context;
     private ConjugationCard card;
+    private DisplayCardView cardView;
+    private LinearLayout viewGroup;
+    private Activity activity;
 
     @Before
     public void init() {
@@ -46,8 +45,12 @@ public class ConjugationCardUnitTest {
 
         conjugations = new ArrayList<>();
         conjugations.add(c);
-        context = ApplicationProvider.getApplicationContext();
+        activity = Robolectric.buildActivity(Activity.class).create().start().visible().get();
         card = new ConjugationCard(conjugations, "term", "pos");
+        cardView = new DisplayCardView(activity);
+        viewGroup = new LinearLayout(activity);
+
+        card.addBodyView(activity, viewGroup, cardView);
     }
 
     @Test(expected = NullPointerException.class)
@@ -57,26 +60,23 @@ public class ConjugationCardUnitTest {
 
     @Test
     public void test_addBodyView() {
-        ViewGroup group = new LinearLayout(context);
-        card.addBodyView(context,group);
-        Assert.assertEquals(group.getChildAt(0).getId(), R.id.listCard);
+        Assert.assertEquals(viewGroup.getChildAt(0).getId(), R.id.listCard);
     }
 
     @Test
     public void test_clickConjugation() {
-        Activity activity = Robolectric.buildActivity(Activity.class).create().start().visible().get();
-        ViewGroup group = new LinearLayout(activity);
-        card.addBodyView(activity, group);
+        RelativeLayout relativeLayout = (RelativeLayout)viewGroup.getChildAt(0);
 
-        RelativeLayout relativeLayout = (RelativeLayout)group.getChildAt(0);
         Assert.assertEquals(relativeLayout.getId(), R.id.listCard);
 
         LinearListView listView = relativeLayout.findViewById(R.id.listCard_list);
         listView.getChildAt(0).callOnClick();
+
         assertNotNull(Shadows.shadowOf(activity).peekNextStartedActivity());
 
         Intent intent = Shadows.shadowOf(activity).peekNextStartedActivityForResult().intent;
         ConjugationQuery.Conjugation c = conjugations.get(0);
+
         assertEquals(intent.getComponent(),new ComponentName(activity, ConjInfoActivity.class));
         assertEquals(intent.getStringExtra(ConjInfoActivity.EXTRA_NAME),c.name());
         assertEquals(intent.getStringExtra(ConjInfoActivity.EXTRA_CONJ),c.conjugation());
@@ -87,17 +87,12 @@ public class ConjugationCardUnitTest {
 
     @Test
     public void test_shouldHideButton() {
-        assertTrue(card.shouldHideButton());
+        assertEquals(cardView.findViewById(R.id.displayCard_button).getVisibility(), ViewGroup.GONE);
     }
 
     @Test
     public void test_getCount() {
         assertEquals(conjugations.size(), card.getCount());
-    }
-
-    @Test
-    public void test_getButtonText() {
-        assertEquals("Button", card.getButtonText());
     }
 
     @Test

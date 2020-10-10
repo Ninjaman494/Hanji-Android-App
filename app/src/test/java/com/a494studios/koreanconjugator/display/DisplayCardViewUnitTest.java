@@ -3,7 +3,6 @@ package com.a494studios.koreanconjugator.display;
 import android.content.Context;
 import android.view.View;
 import android.widget.Button;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.test.core.app.ApplicationProvider;
@@ -14,9 +13,12 @@ import com.a494studios.koreanconjugator.display.cards.DisplayCardBody;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.invocation.InvocationOnMock;
+import org.mockito.stubbing.Answer;
 import org.robolectric.RobolectricTestRunner;
 
 import static org.junit.Assert.assertEquals;
+import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -35,12 +37,14 @@ public class DisplayCardViewUnitTest {
     @Test
     public void test_buttonVisibility() {
         DisplayCardBody cardBody = mock(DisplayCardBody.class);
-        when(cardBody.shouldHideButton()).thenReturn(true);
         DisplayCardView view1 = new DisplayCardView(context,cardBody);
+        view1.hideButton(true);
+
         assertEquals(View.GONE,view1.findViewById(BUTTON_ID).getVisibility());
 
-        when(cardBody.shouldHideButton()).thenReturn(false);
         DisplayCardView view2 = new DisplayCardView(context,cardBody);
+        view2.hideButton(false);
+
         assertEquals(view2.findViewById(BUTTON_ID).getVisibility(),View.VISIBLE);
     }
 
@@ -48,8 +52,10 @@ public class DisplayCardViewUnitTest {
     public void test_buttonText() {
         String text = "button text";
         DisplayCardBody cardBody = mock(DisplayCardBody.class);
-        when(cardBody.getButtonText()).thenReturn(text);
         DisplayCardView view = new DisplayCardView(context,cardBody);
+        view.setButtonText(text);
+
+
         Button btn = view.findViewById(BUTTON_ID);
         assertEquals(text,btn.getText());
     }
@@ -69,28 +75,6 @@ public class DisplayCardViewUnitTest {
     }
 
     @Test
-    public void test_buttonUpdates() {
-        String btnText = "button text";
-        String heading = "hi";
-
-        DisplayCardBody cardBody = mock(DisplayCardBody.class);
-        DisplayCardView view = new DisplayCardView(context,cardBody);
-        Button btn = view.findViewById(BUTTON_ID);
-        TextView headingView = view.findViewById(HEADING_ID);
-
-        // Simulate cardBody changing itself when clicked
-        when(cardBody.getButtonText()).thenReturn(btnText);
-        when(cardBody.getHeading()).thenReturn(heading);
-        when(cardBody.shouldHideButton()).thenReturn(false);
-        btn.callOnClick();
-
-        assertEquals(btnText,btn.getText());
-        assertEquals(View.VISIBLE,btn.getVisibility());
-        assertEquals(heading,headingView.getText());
-        assertEquals(View.VISIBLE,headingView.getVisibility());
-    }
-
-    @Test
     public void test_setCardBody() {
         String btnText = "button text";
         String heading = "hi";
@@ -100,9 +84,12 @@ public class DisplayCardViewUnitTest {
         Button btn = view.findViewById(BUTTON_ID);
         TextView headingView = view.findViewById(HEADING_ID);
 
-        when(cardBody.getButtonText()).thenReturn(btnText);
+        when(cardBody.addBodyView(any(), any(), any())).then(invocation -> {
+            DisplayCardView cardView = invocation.getArgumentAt(2, DisplayCardView.class);
+            cardView.setButtonText(btnText);
+            return null;
+        });
         when(cardBody.getHeading()).thenReturn(heading);
-        when(cardBody.shouldHideButton()).thenReturn(false);
 
         view.setCardBody(cardBody);
         assertEquals(btnText,btn.getText());

@@ -8,6 +8,7 @@ import android.widget.TextView;
 import androidx.test.core.app.ApplicationProvider;
 
 import com.a494studios.koreanconjugator.R;
+import com.a494studios.koreanconjugator.display.DisplayCardView;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -20,12 +21,17 @@ import static org.junit.Assert.*;
 public class NoteCardUnitTest {
     private static final String NOTE = "note";
     private NoteCard card;
-    private Context context;
+    private DisplayCardView cardView;
+    private LinearLayout viewGroup;
 
     @Before
     public void init() {
         card = new NoteCard(NOTE);
-        context = ApplicationProvider.getApplicationContext();
+        Context context = ApplicationProvider.getApplicationContext();
+        cardView = new DisplayCardView(context);
+        viewGroup = new LinearLayout(context);
+
+        card.addBodyView(context, viewGroup, cardView);
     }
 
     @Test(expected =  NullPointerException.class)
@@ -35,27 +41,20 @@ public class NoteCardUnitTest {
 
     @Test
     public void test_addBodyView() {
-        ViewGroup group = new LinearLayout(context);
-        card.addBodyView(context,group);
-        TextView note = group.findViewById(R.id.simpleCard_text);
+        TextView note = viewGroup.findViewById(R.id.simpleCard_text);
 
-        assertEquals(NOTE, note.getText().toString());
-        assertEquals(group.getChildAt(0).getId(),R.id.simpleCard);
+        assertEquals(note.getText().toString(), NOTE);
+        assertEquals(viewGroup.getChildAt(0).getId(), R.id.simpleCard);
     }
 
     @Test
     public void test_shouldHideButton() {
-        assertTrue(card.shouldHideButton());
+        assertEquals(cardView.findViewById(R.id.displayCard_button).getVisibility(), ViewGroup.GONE);
     }
 
     @Test
     public void test_getCount() {
         assertEquals(1,card.getCount());
-    }
-
-    @Test
-    public void test_getButtonText() {
-        assertEquals("Button", card.getButtonText());
     }
 
     @Test

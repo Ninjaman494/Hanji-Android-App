@@ -2,16 +2,17 @@ package com.a494studios.koreanconjugator.display.cards;
 
 import android.app.Activity;
 import android.content.ComponentName;
-import android.content.Context;
 import android.content.Intent;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.LinearLayout;
-
-import androidx.test.core.app.ApplicationProvider;
 
 import com.a494studios.koreanconjugator.ConjugationQuery;
 import com.a494studios.koreanconjugator.R;
 import com.a494studios.koreanconjugator.conjugations.ConjugationActivity;
+import com.a494studios.koreanconjugator.display.DisplayCardView;
+import com.a494studios.koreanconjugator.type.SpeechLevel;
+import com.a494studios.koreanconjugator.type.Tense;
 
 import org.junit.Assert;
 import org.junit.Before;
@@ -26,7 +27,6 @@ import java.util.ArrayList;
 import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
 
 @RunWith(RobolectricTestRunner.class)
 public class FavoritesCardUnitTest {
@@ -35,13 +35,19 @@ public class FavoritesCardUnitTest {
     private final boolean IS_ADJ = false;
     private ArrayList<Map.Entry<String, ConjugationQuery.Conjugation>> entries;
     private FavoritesCard card;
-    private Context context;
+    private DisplayCardView cardView;
+    private LinearLayout viewGroup;
+    private Activity activity;
 
     @Before
     public void init() {
         entries = new ArrayList<>();
-        context = ApplicationProvider.getApplicationContext();
+        activity = Robolectric.buildActivity(Activity.class).create().start().visible().get();
         card = new FavoritesCard(entries,STEM,HONORIFIC,IS_ADJ, true);
+        cardView = new DisplayCardView(activity);
+        viewGroup = new LinearLayout(activity);
+
+        card.addBodyView(activity, viewGroup, cardView);
     }
 
     @Test(expected =  NullPointerException.class)
@@ -61,15 +67,11 @@ public class FavoritesCardUnitTest {
 
     @Test
     public void test_addBodyView() {
-        ViewGroup group = new LinearLayout(context);
-        card.addBodyView(context,group);
-        Assert.assertEquals(group.getChildAt(0).getId(), R.id.listCard);
+        Assert.assertEquals(viewGroup.getChildAt(0).getId(), R.id.listCard);
     }
 
     @Test
     public void test_onButtonClick() {
-        Activity activity = Robolectric.buildActivity(Activity.class).create().start().visible().get();
-        card.addBodyView(activity,new LinearLayout(activity));
         card.onButtonClick();
 
         Intent intent = Shadows.shadowOf(activity).peekNextStartedActivityForResult().intent;
@@ -81,7 +83,7 @@ public class FavoritesCardUnitTest {
 
     @Test
     public void test_shouldHideButton() {
-        assertFalse(card.shouldHideButton());
+        assertEquals(cardView.findViewById(R.id.displayCard_button).getVisibility(), ViewGroup.VISIBLE);
     }
 
     @Test
@@ -91,7 +93,8 @@ public class FavoritesCardUnitTest {
 
     @Test
     public void test_getButtonText() {
-        assertEquals("SEE ALL", card.getButtonText());
+        Button btn = cardView.findViewById(R.id.displayCard_button);
+        assertEquals(btn.getText(), "SEE ALL");
     }
 
     @Test
@@ -101,7 +104,12 @@ public class FavoritesCardUnitTest {
 
     @Test
     public void test_addConjugation() {
-        Map.Entry<String, ConjugationQuery.Conjugation> entry = new AbstractMap.SimpleEntry<>("new",null);
+        ConjugationQuery.Conjugation conjugation =
+                new ConjugationQuery.Conjugation("type", "name", "conj",
+                        "type", Tense.PAST, SpeechLevel.FORMAL_HIGH, false,
+                        "pronunc", "romani", new ArrayList<>());
+
+        Map.Entry<String, ConjugationQuery.Conjugation> entry = new AbstractMap.SimpleEntry<>("new", conjugation);
         card.addConjugation(entry,0);
         assertEquals(1,card.getCount());
     }
