@@ -20,6 +20,7 @@
         app:layout_anchor="@+id/fav_listView"
         app:layout_anchorGravity="bottom|end"
         android:layout_margin="20dp"
+        app:tint="@null"
         android:src="@drawable/ic_add_white_24dp"
         android:onClick="onAddFavorite"/>
 

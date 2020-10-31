@@ -6,6 +6,7 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="colorSecondary">@color/colorAccent</item>
         <item name="popupMenuStyle">@style/OverflowMenuStyle</item>
         <item name="colorSurface">@color/white</item>
     </style>
@@ -44,6 +45,10 @@
         <item name="colorControlActivated">@color/white</item>
         <!-- Inactive thumb color -->
         <item name="colorSwitchThumbNormal">@color/grey_200</item>
+    </style>
+
+    <style name="OutlinedButton" parent="Widget.AppCompat.Button.Borderless.Colored">
+        <item name="android:textColor">@color/button_color</item>
     </style>
 
 </resources>
