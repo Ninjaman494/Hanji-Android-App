@@ -38,9 +38,9 @@ public class WordOfDayCard implements DisplayCardBody {
                     @Override
                     public void onNext(Response<WordOfTheDayQuery.Data> dataResponse) {
                         TextView textView = view.findViewById(R.id.wod_text);
-                        textView.setText(dataResponse.data().wordOfTheDay.term);
+                        textView.setText(dataResponse.getData().wordOfTheDay.term);
 
-                        id = dataResponse.data().wordOfTheDay.id;
+                        id = dataResponse.getData().wordOfTheDay.id;
                         cardView.disableButton(false);
                     }
 

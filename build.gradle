@@ -9,7 +9,7 @@ buildscript {
     dependencies {
         classpath 'com.android.tools.build:gradle:3.6.4'
         classpath 'com.google.gms:google-services:4.3.3'
-        classpath 'com.apollographql.apollo:apollo-gradle-plugin:1.2.3'
+        classpath 'com.apollographql.apollo:apollo-gradle-plugin:2.4.1'
         classpath 'org.jacoco:org.jacoco.core:0.8.2'
         classpath 'com.google.firebase:firebase-crashlytics-gradle:2.3.0'
 

@@ -139,10 +139,11 @@ public class CustomApplication extends MultiDexApplication implements PurchasesU
                         .build();
 
                 // Weird bug requires this not be a lambda
+                @SuppressWarnings("Convert2Lambda")
                 AcknowledgePurchaseResponseListener listener = new AcknowledgePurchaseResponseListener() {
                     @Override
                     public void onAcknowledgePurchaseResponse(@NonNull BillingResult billingResult) {
-                        String toastMsg = "";
+                        String toastMsg;
                         if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK) {
                             System.out.println("Purchase Acknowledged");
                             isAdFree = true;

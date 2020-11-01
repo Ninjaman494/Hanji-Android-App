@@ -82,7 +82,7 @@ android {
 }
 
 //return a MY API KEY from a properties file.
-def getApiKey(String property) {
+static def getApiKey(String property) {
     Properties properties = new Properties()
     properties.load(new FileInputStream("keys.txt"))
     return "\"" + properties.getProperty(property) + "\""
@@ -91,7 +91,7 @@ def getApiKey(String property) {
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation 'androidx.appcompat:appcompat:1.2.0'
-    implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
+    implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'androidx.multidex:multidex:2.0.1'
     implementation 'androidx.cardview:cardview:1.0.0'
@@ -103,11 +103,11 @@ dependencies {
     implementation 'com.github.MFlisar:changelog:1.1.7'
 
     // Firebase
-    implementation 'com.google.firebase:firebase-core:17.4.3'
-    implementation 'com.google.firebase:firebase-ads:19.2.0'
-    implementation 'com.google.firebase:firebase-messaging:20.2.1'
-    implementation 'com.google.firebase:firebase-analytics:17.5.0'
-    implementation 'com.google.firebase:firebase-crashlytics:17.2.1'
+    implementation platform('com.google.firebase:firebase-bom:26.0.0')
+    implementation 'com.google.firebase:firebase-ads'
+    implementation 'com.google.firebase:firebase-messaging'
+    implementation 'com.google.firebase:firebase-analytics'
+    implementation 'com.google.firebase:firebase-crashlytics'
 
     // Favorites parsing
     implementation 'com.google.code.gson:gson:2.8.5'
@@ -122,13 +122,13 @@ dependencies {
     implementation 'com.github.pschroen:slack-api-android:c66cc8d997'
 
     // Apollo
-    implementation 'com.apollographql.apollo:apollo-runtime:1.2.3'
-    implementation 'com.apollographql.apollo:apollo-http-cache:1.0.1'
-    implementation 'com.apollographql.apollo:apollo-rx2-support:1.0.1'
+    implementation 'com.apollographql.apollo:apollo-runtime:2.4.1'
+    implementation 'com.apollographql.apollo:apollo-http-cache:2.4.1'
+    implementation 'com.apollographql.apollo:apollo-rx2-support:2.4.1'
     implementation 'io.reactivex.rxjava2:rxandroid:2.0.1'
 
     // Google Play Billing
-    implementation 'com.android.billingclient:billing:3.0.0'
+    implementation 'com.android.billingclient:billing:3.0.1'
 
     // Testing dependencies
     implementation 'androidx.test.espresso:espresso-contrib:3.3.0' // Needed for idler
@@ -147,5 +147,5 @@ dependencies {
     androidTestUtil 'androidx.test:orchestrator:1.3.0'
 }
 apply plugin: 'com.google.gms.google-services'
-apply plugin: 'com.apollographql.android'
+apply plugin: 'com.apollographql.apollo'
 apply plugin: 'com.google.firebase.crashlytics'
