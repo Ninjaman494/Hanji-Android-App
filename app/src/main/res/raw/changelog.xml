@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <changelog>
-    <!-- TODO Fill in when update is ready -->
-    <release versionCode="23" versionName="2.0.6" date="Oct 10th 2020">
-        <info>Some info</info>
-        <new type="summary">Some improvement</new>
-        <bugfix>Some bugfix</bugfix>
+    <release versionCode="23" versionName="2.0.6" date="Nov 1st 2020">
+        <info>New update info and a bugfix</info>
+        <new type="summary">Added this dialog which will provide a changelog when a new update is applied</new>
+        <bugfix>The Word of Day card can no longer be clicked early, which was causing some crashes</bugfix>
     </release>
     <release versionCode="22" versionName="2.0.5" date="Oct 4th 2020">
         <info>New features and a small bugfix</info>
