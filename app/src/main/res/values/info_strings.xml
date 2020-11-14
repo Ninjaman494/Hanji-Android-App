@@ -80,4 +80,14 @@
     <string name="library_slack_licenseId">MIT</string>
     <string name="library_slack_isOpenSource">true</string>
     <string name="library_slack_repositoryLink">https://github.com/pschroen/slack-api-android</string>
+    <string name="define_changelog"/>
+    <string name="library_changelog_author">Michael Flisar</string>
+    <string name="library_changelog_authorWebsite">https://mflisar.github.io/</string>
+    <string name="library_changelog_libraryName">Changelog</string>
+    <string name="library_changelog_libraryDescription">A simple builder based changelog library that shows a changelog in a RecyclerView, a RecyclerView dialog or a RecyclerView activity</string>
+    <string name="library_changelog_libraryVersion">1.1.7</string>
+    <string name="library_changelog_libraryWebsite">https://github.com/MFlisar/changelog</string>
+    <string name="library_changelog_licenseId">apache_2_0</string>
+    <string name="library_changelog_isOpenSource">true</string>
+    <string name="library_changelog_repositoryLink">https://github.com/MFlisar/changelog</string>
 </resources>
