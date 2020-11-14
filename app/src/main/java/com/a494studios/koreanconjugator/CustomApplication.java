@@ -21,9 +21,6 @@ import com.android.billingclient.api.BillingClientStateListener;
 import com.android.billingclient.api.BillingResult;
 import com.android.billingclient.api.Purchase;
 import com.android.billingclient.api.PurchasesUpdatedListener;
-import com.apollographql.apollo.ApolloClient;
-import com.apollographql.apollo.cache.http.ApolloHttpCache;
-import com.apollographql.apollo.cache.http.DiskLruHttpCacheStore;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.MobileAds;
@@ -31,10 +28,7 @@ import com.google.firebase.analytics.FirebaseAnalytics;
 
 import org.jetbrains.annotations.NotNull;
 
-import java.io.File;
 import java.util.List;
-
-import okhttp3.OkHttpClient;
 
 public class CustomApplication extends MultiDexApplication implements PurchasesUpdatedListener {
     private static final String APP_ID = BuildConfig.ADMOB_KEY;
@@ -125,6 +119,10 @@ public class CustomApplication extends MultiDexApplication implements PurchasesU
         } else {
             adView.loadAd(new AdRequest.Builder().build());
         }
+    }
+
+    public static boolean isAdFree() {
+        return isAdFree;
     }
 
     @Override
