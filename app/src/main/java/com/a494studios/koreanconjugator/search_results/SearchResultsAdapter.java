@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.res.ResourcesCompat;
 import androidx.core.view.ViewCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -51,14 +52,15 @@ public abstract class SearchResultsAdapter extends RecyclerView.Adapter<Recycler
 
         // Set background based on position
         Resources resources = context.getResources();
+        Resources.Theme theme = context.getTheme();
         if (position == 0) {
-            Drawable drawable = resources.getDrawable(R.drawable.search_results_item_top);
+            Drawable drawable = ResourcesCompat.getDrawable(resources, R.drawable.search_results_item_top, theme);
             viewHolder.itemView.setBackground(drawable);
         } else if (position == itemCount - 1) {
-            Drawable drawable = resources.getDrawable(R.drawable.search_results_item_bottom);
+            Drawable drawable = ResourcesCompat.getDrawable(resources, R.drawable.search_results_item_bottom, theme);
             viewHolder.itemView.setBackground(drawable);
         } else {
-            Drawable drawable = resources.getDrawable(R.drawable.search_results_item_middle);
+            Drawable drawable = ResourcesCompat.getDrawable(resources, R.drawable.search_results_item_middle, theme);
             viewHolder.itemView.setBackground(drawable);
         }
 
@@ -129,6 +131,7 @@ public abstract class SearchResultsAdapter extends RecyclerView.Adapter<Recycler
 
     public abstract void loadMore();
 
+    @SuppressWarnings("InnerClassMayBeStatic")
     private class ViewHolder extends RecyclerView.ViewHolder {
         AdView adView;
         WordInfoView wordInfoView;
