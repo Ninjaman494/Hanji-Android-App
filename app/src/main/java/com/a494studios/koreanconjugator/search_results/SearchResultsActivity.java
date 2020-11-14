@@ -18,7 +18,6 @@ import com.a494studios.koreanconjugator.parsing.Server;
 import com.a494studios.koreanconjugator.utils.RecyclerAnimationHandler;
 import com.a494studios.koreanconjugator.utils.Utils;
 import com.apollographql.apollo.api.Response;
-import com.google.android.gms.ads.AdView;
 
 import io.reactivex.observers.DisposableObserver;
 
@@ -27,7 +26,6 @@ public class SearchResultsActivity extends BaseActivity {
     public static final String EXTRA_QUERY = "query";
 
     private SearchResultsAdapter adapter;
-    private boolean snackbarShown;
     private boolean overflowClicked;
     private boolean dataLoaded = false;
     private int cursor = 0;
@@ -39,15 +37,12 @@ public class SearchResultsActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search_results);
         RecyclerView recyclerView = findViewById(R.id.search_listView);
-        snackbarShown = false;
         String query = getIntent().getStringExtra(EXTRA_QUERY);
         if(query == null){ // Null check for extra
             Exception exception = new Exception("Query was null in SearchResultsActivity");
             Utils.handleError(exception, this, 6, (dialogInterface, i) -> onBackPressed());
             return;
         }
-
-        CustomApplication.handleAdCard((AdView)findViewById(R.id.search_results_adView));
 
         ActionBar actionBar = getSupportActionBar();
         if(actionBar != null){
@@ -118,11 +113,11 @@ public class SearchResultsActivity extends BaseActivity {
                 .subscribeWith(new DisposableObserver<Response<SearchQuery.Data>>() {
                     @Override
                     public void onNext(Response<SearchQuery.Data> dataResponse) {
-                        assert dataResponse.data() != null; // Check should be done in Server
-                        adapter.addAll(dataResponse.data().search().results());
-                        String returnedCursor = dataResponse.data().search().cursor();
+                        assert dataResponse.getData() != null; // Check should be done in Server
+                        adapter.addAll(dataResponse.getData().search().results());
+                        String returnedCursor = dataResponse.getData().search().cursor();
                         if(returnedCursor != null) {
-                            cursor = Integer.parseInt(dataResponse.data().search().cursor());
+                            cursor = Integer.parseInt(dataResponse.getData().search().cursor());
                         } else {
                             cursor = -1; // No more results left to load
                         }
