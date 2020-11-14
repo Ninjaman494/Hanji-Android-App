@@ -18,7 +18,6 @@ import com.a494studios.koreanconjugator.parsing.Server;
 import com.a494studios.koreanconjugator.utils.RecyclerAnimationHandler;
 import com.a494studios.koreanconjugator.utils.Utils;
 import com.apollographql.apollo.api.Response;
-import com.google.android.gms.ads.AdView;
 
 import io.reactivex.observers.DisposableObserver;
 
@@ -46,8 +45,6 @@ public class SearchResultsActivity extends BaseActivity {
             Utils.handleError(exception, this, 6, (dialogInterface, i) -> onBackPressed());
             return;
         }
-
-        CustomApplication.handleAdCard((AdView)findViewById(R.id.search_results_adView));
 
         ActionBar actionBar = getSupportActionBar();
         if(actionBar != null){

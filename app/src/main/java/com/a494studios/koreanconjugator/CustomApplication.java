@@ -127,6 +127,10 @@ public class CustomApplication extends MultiDexApplication implements PurchasesU
         }
     }
 
+    public static boolean isAdFree() {
+        return isAdFree;
+    }
+
     @Override
     public void onPurchasesUpdated(@NotNull BillingResult billingResult, @Nullable List<Purchase> list) {
         if(billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK
