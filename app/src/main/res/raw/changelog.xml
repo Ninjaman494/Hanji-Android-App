@@ -1,5 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <changelog>
+    <release versionCode="24" versionName="2.0.7" date="Nov 16th 2020">
+        <info>Some minor visual improvements</info>
+        <new type="summary">Added the Changelog library to the Acknowledgements section</new>
+        <bugfix>Dialogs now have the correct button color</bugfix>
+        <bugfix>Moved an ad on the Search Results page because it was causing an AdMob violation</bugfix>
+    </release>
     <release versionCode="23" versionName="2.0.6" date="Nov 1st 2020">
         <info>New update info and a bugfix</info>
         <new type="summary">Added this dialog which will provide a changelog when a new update is applied</new>
