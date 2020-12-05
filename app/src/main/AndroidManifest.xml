@@ -81,7 +81,7 @@
             android:value="true" />
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"
-            android:value="@string/ADMOB_KEY" />
+            android:value="ca-app-pub-7378286993062620~3014364162" />
 
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_icon"
