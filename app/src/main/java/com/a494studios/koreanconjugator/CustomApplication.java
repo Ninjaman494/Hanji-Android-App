@@ -25,6 +25,7 @@ import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.MobileAds;
 import com.google.firebase.analytics.FirebaseAnalytics;
+import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -90,6 +91,10 @@ public class CustomApplication extends MultiDexApplication implements PurchasesU
                 billingConnected = false;
             }
         });
+
+        // Disable Crashlytics for debug builds
+        FirebaseCrashlytics.getInstance()
+                .setCrashlyticsCollectionEnabled(!BuildConfig.DEBUG);
 
         // Setup Firebase Analytics
         Logger.initialize(FirebaseAnalytics.getInstance(this));
