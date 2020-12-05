@@ -57,6 +57,7 @@ android {
         it.buildConfigField("String", "SERVER_URL", getApiKey("serverURL"))
         it.buildConfigField("String", "SLACK_KEY", getApiKey("slackKey"))
         it.buildConfigField("String", "ADMOB_KEY", getApiKey("adMobKey"))
+        it.resValue("string", "ADMOB_KEY", getApiKey("adMobKey"))
         it.resValue("string", "DISPLAY_AD_ID", getApiKey("displayAdID"))
         it.resValue("string", "MAIN_AD_ID", getApiKey("mainAdID"))
         it.resValue("string", "SEARCH_AD_ID", getApiKey("searchAdID"))
