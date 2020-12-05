@@ -70,14 +70,18 @@ public class DisplayObserver extends DisposableObserver<ConjugationQuery.Data> {
                                 return new Pair<>(favorite, c);
                             }
                         }
-                        return null;
+
+                        return new Pair<>(null, null);
                     })
                     .subscribe(pair -> {
-                        Favorite f = pair.first;
-                        ConjugationQuery.Conjugation conjugation = pair.second;
-                        Map.Entry<String, ConjugationQuery.Conjugation> entry =
-                                new AbstractMap.SimpleEntry<>(f.getName(), conjugation);
-                        card.addConjugation(entry, favorites.indexOf(f));
+                        if(pair.first != null && pair.second != null) {
+                            Favorite f = (Favorite)pair.first;
+                            ConjugationQuery.Conjugation conjugation =
+                                    (ConjugationQuery.Conjugation) pair.second;
+                            Map.Entry<String, ConjugationQuery.Conjugation> entry =
+                                    new AbstractMap.SimpleEntry<>(f.getName(), conjugation);
+                            card.addConjugation(entry, favorites.indexOf(f));
+                        }
                     });
         }
 
