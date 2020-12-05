@@ -11,6 +11,7 @@ import androidx.fragment.app.DialogFragment;
 
 import com.a494studios.koreanconjugator.R;
 import com.a494studios.koreanconjugator.conjugator.ConjugatorActivity;
+import com.a494studios.koreanconjugator.utils.BaseDialogFragment;
 import com.a494studios.koreanconjugator.utils.Utils;
 
 import org.jetbrains.annotations.NotNull;
@@ -18,7 +19,7 @@ import org.jetbrains.annotations.NotNull;
 /**
  * A simple {@link DialogFragment} subclass.
  */
-public class NoResultsFragment extends DialogFragment implements DialogInterface.OnClickListener {
+public class NoResultsFragment extends BaseDialogFragment implements DialogInterface.OnClickListener {
 
     private static final String ARG_SEARCH_TERM = "search_term";
 

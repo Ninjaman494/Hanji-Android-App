@@ -31,7 +31,6 @@ import org.jetbrains.annotations.NotNull;
 import java.util.List;
 
 public class CustomApplication extends MultiDexApplication implements PurchasesUpdatedListener {
-    private static final String APP_ID = BuildConfig.ADMOB_KEY;
     private static final String SERVER_URL = com.a494studios.koreanconjugator.BuildConfig.SERVER_URL;
 
     private static boolean isAdFree = false;
@@ -45,7 +44,7 @@ public class CustomApplication extends MultiDexApplication implements PurchasesU
         super.onCreate();
 
         // Setup ads
-        MobileAds.initialize(this, APP_ID);
+        MobileAds.initialize(this);
 
         // Check preferences first, to save us a billing request
         Boolean prefAdFree = Utils.isAdFree(getApplicationContext());
