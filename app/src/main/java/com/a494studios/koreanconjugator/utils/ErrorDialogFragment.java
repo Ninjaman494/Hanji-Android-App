@@ -7,18 +7,18 @@ import android.os.Bundle;
 import androidx.fragment.app.DialogFragment;
 import androidx.appcompat.app.AlertDialog;
 
+import org.jetbrains.annotations.NotNull;
+
 /**
  * A simple {@link DialogFragment} subclass.
  */
-public class ErrorDialogFragment extends DialogFragment implements DialogInterface.OnClickListener {
+public class ErrorDialogFragment extends BaseDialogFragment implements DialogInterface.OnClickListener {
 
     private static final String TITLE = "Error Occurred";
     private static final String MSG = "Something went wrong while loading this page, please contact support or try again later.";
     private static final String ARG_TITLE = "title";
     private static final String ARG_MSG = "message";
 
-    private String title;
-    private String msg;
     private DialogInterface.OnClickListener listener = null;
 
     public ErrorDialogFragment() {
@@ -41,11 +41,12 @@ public class ErrorDialogFragment extends DialogFragment implements DialogInterfa
         return frag;
     }
 
+    @NotNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        title = getArguments().getString(ARG_TITLE,TITLE);
-        msg = getArguments().getString(ARG_MSG,MSG);
+        String title = getArguments().getString(ARG_TITLE, TITLE);
+        String msg = getArguments().getString(ARG_MSG, MSG);
 
         builder.setTitle(title);
         builder.setMessage(msg);
@@ -69,7 +70,7 @@ public class ErrorDialogFragment extends DialogFragment implements DialogInterfa
     }
 
     @Override
-    public void onDismiss(DialogInterface dialog){
+    public void onDismiss(@NotNull DialogInterface dialog){
         super.onDismiss(dialog);
         if (listener != null) {
             listener.onClick(dialog, -1);

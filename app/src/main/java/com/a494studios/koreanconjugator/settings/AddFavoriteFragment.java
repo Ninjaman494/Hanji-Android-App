@@ -4,7 +4,6 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.appcompat.app.AlertDialog;
 import android.text.Editable;
@@ -19,6 +18,9 @@ import android.widget.Toast;
 
 import com.a494studios.koreanconjugator.R;
 import com.a494studios.koreanconjugator.parsing.Favorite;
+import com.a494studios.koreanconjugator.utils.BaseDialogFragment;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -32,7 +34,7 @@ import java.util.HashMap;
  * Use the {@link AddFavoriteFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class AddFavoriteFragment extends DialogFragment implements DialogInterface.OnClickListener {
+public class AddFavoriteFragment extends BaseDialogFragment implements DialogInterface.OnClickListener {
     public static final String ARG_NAMES = "NAMES";
     private static final int ITEM_LAYOUT = R.layout.item_spinner;
 
@@ -69,6 +71,7 @@ public class AddFavoriteFragment extends DialogFragment implements DialogInterfa
         }
     }
 
+    @NotNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         // Set up builder
@@ -148,7 +151,7 @@ public class AddFavoriteFragment extends DialogFragment implements DialogInterfa
     }
 
     @Override
-    public void onAttach(Context context) {
+    public void onAttach(@NotNull Context context) {
         super.onAttach(context);
         if (context instanceof AddFavoriteFragmentListener) {
             mListener = (AddFavoriteFragmentListener) context;
