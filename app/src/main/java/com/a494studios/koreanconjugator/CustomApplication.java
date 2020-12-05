@@ -44,7 +44,7 @@ public class CustomApplication extends MultiDexApplication implements PurchasesU
         super.onCreate();
 
         // Setup ads
-        MobileAds.initialize(this, BuildConfig.ADMOB_KEY);
+        MobileAds.initialize(this);
 
         // Check preferences first, to save us a billing request
         Boolean prefAdFree = Utils.isAdFree(getApplicationContext());
