@@ -17,12 +17,12 @@ import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import com.a494studios.koreanconjugator.ConjugationQuery;
 import com.a494studios.koreanconjugator.CustomApplication;
 import com.a494studios.koreanconjugator.R;
 import com.a494studios.koreanconjugator.StemQuery;
 import com.a494studios.koreanconjugator.conjugations.ConjugationCardsAdapter;
 import com.a494studios.koreanconjugator.conjugations.ConjugationObserver;
+import com.a494studios.koreanconjugator.fragment.ConjugationFragment;
 import com.a494studios.koreanconjugator.parsing.Server;
 import com.a494studios.koreanconjugator.utils.BaseActivity;
 import com.a494studios.koreanconjugator.utils.Utils;
@@ -86,9 +86,9 @@ public class ConjugatorActivity extends BaseActivity implements AdapterView.OnIt
         posSpinner = findViewById(R.id.conjugator_posSpinner);
         regSpinner = findViewById(R.id.conjugator_regSpinner);
 
-        ArrayAdapter posAdapter = ArrayAdapter.createFromResource(this,
+        ArrayAdapter<CharSequence> posAdapter = ArrayAdapter.createFromResource(this,
                 R.array.pos, SPINNER_ITEM);
-        ArrayAdapter regAdapter = ArrayAdapter.createFromResource(this,
+        ArrayAdapter<CharSequence> regAdapter = ArrayAdapter.createFromResource(this,
                 R.array.regularity, SPINNER_ITEM);
 
         posSpinner.setAdapter(posAdapter);
@@ -105,22 +105,21 @@ public class ConjugatorActivity extends BaseActivity implements AdapterView.OnIt
             setLoading(true);
             if(checked) {
                 honorificText.setText(getString(R.string.honorific_forms));
-                getConjugations();
             } else {
                 honorificText.setText(getString(R.string.regular_forms));
-                getConjugations();
             }
+            getConjugations();
         });
 
         Server.doStemQuery(term, (CustomApplication)getApplication())
                 .subscribeWith(new DisposableObserver<Response<StemQuery.Data>>() {
                     @Override
                     public void onNext(Response<StemQuery.Data> response) {
-                        if (response.data() == null) {
+                        if (response.getData() == null) {
                             return;
                         }
 
-                        List<String> stems = response.data().stems();
+                        List<String> stems = response.getData().stems();
                         runOnUiThread(() -> {
                             ArrayAdapter<String> adapter =
                                     new ArrayAdapter<>(ConjugatorActivity.this, SPINNER_ITEM, stems);
@@ -174,7 +173,7 @@ public class ConjugatorActivity extends BaseActivity implements AdapterView.OnIt
 
         ConjugationObserver observer = new ConjugationObserver(new ConjugationObserver.ConjugationObserverListener() {
             @Override
-            public void onDataReceived(List<List<ConjugationQuery.Conjugation>> conjugations) {
+            public void onDataReceived(List<List<ConjugationFragment>> conjugations) {
                 recyclerView.setAdapter(new ConjugationCardsAdapter(conjugations, stem, isAdj ? "Adjective" : "Verb"));
                 setLoading(false);
                 isRefreshing = false;

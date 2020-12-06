@@ -7,6 +7,7 @@ import android.view.View;
 import com.a494studios.koreanconjugator.EntryQuery;
 import com.a494studios.koreanconjugator.FavoritesQuery;
 import com.a494studios.koreanconjugator.R;
+import com.a494studios.koreanconjugator.fragment.ConjugationFragment;
 import com.a494studios.koreanconjugator.utils.Utils;
 import com.a494studios.koreanconjugator.display.cards.DefPOSCard;
 import com.a494studios.koreanconjugator.display.cards.ExamplesCard;
@@ -67,7 +68,10 @@ public class DisplayObserver extends DisposableObserver<FavoritesQuery.Data> {
                     .map(favorite -> {
                         // Pair up conjugations and favorites
                         for (FavoritesQuery.FavConjugation c : conjugations) {
-                            if (c.name().equals(favorite.getConjugationName()) && c.honorific() == favorite.isHonorific()) {
+                            ConjugationFragment fragment = c.fragments().conjugationFragment();
+
+                            if (fragment.name().equals(favorite.getConjugationName())
+                                    && fragment.honorific() == favorite.isHonorific()) {
                                 return new Pair<>(favorite, c);
                             }
                         }
@@ -79,8 +83,9 @@ public class DisplayObserver extends DisposableObserver<FavoritesQuery.Data> {
                             Favorite f = (Favorite)pair.first;
                             FavoritesQuery.FavConjugation conjugation = (FavoritesQuery.FavConjugation) pair.second;
 
-                            Map.Entry<String, FavoritesQuery.FavConjugation> entry =
-                                    new AbstractMap.SimpleEntry<>(f.getName(), conjugation);
+                            ConjugationFragment fragment = conjugation.fragments().conjugationFragment();
+                            Map.Entry<String, ConjugationFragment> entry =
+                                    new AbstractMap.SimpleEntry<>(f.getName(), fragment);
 
                             card.addConjugation(entry, favorites.indexOf(f));
                         }

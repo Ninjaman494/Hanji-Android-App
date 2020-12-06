@@ -10,9 +10,9 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 
-import com.a494studios.koreanconjugator.ConjugationQuery;
 import com.a494studios.koreanconjugator.CustomApplication;
 import com.a494studios.koreanconjugator.R;
+import com.a494studios.koreanconjugator.fragment.ConjugationFragment;
 import com.a494studios.koreanconjugator.parsing.Server;
 import com.a494studios.koreanconjugator.utils.BaseActivity;
 import com.a494studios.koreanconjugator.utils.Utils;
@@ -73,7 +73,7 @@ public class ConjugationActivity extends BaseActivity {
     private void getConjugations(String stem, boolean honorific, boolean isAdj, Boolean regular) {
         ConjugationObserver observer = new ConjugationObserver(new ConjugationObserver.ConjugationObserverListener() {
             @Override
-            public void onDataReceived(List<List<ConjugationQuery.Conjugation>> conjugations) {
+            public void onDataReceived(List<List<ConjugationFragment>> conjugations) {
                 recyclerView.setAdapter(new ConjugationCardsAdapter(conjugations, stem, isAdj ? "Adjective" : "Verb"));
                 setLoading(false);
                 dataLoaded = true;

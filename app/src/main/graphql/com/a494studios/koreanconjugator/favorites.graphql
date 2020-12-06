@@ -1,13 +1,5 @@
 query FavoritesQuery($stem: String!, $isAdj: Boolean!, $regular: Boolean, $favorites: [FavInput]!) {
     favConjugations: favorites(stem: $stem, isAdj: $isAdj, regular: $regular, favorites: $favorites) {
-        name,
-        conjugation,
-        type,
-        tense,
-        speechLevel,
-        honorific,
-        pronunciation,
-        romanization,
-        reasons
+       ...conjugationFragment
     }
 }
