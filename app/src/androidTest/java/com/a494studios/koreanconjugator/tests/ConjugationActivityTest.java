@@ -36,6 +36,7 @@ import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static com.a494studios.koreanconjugator.MockReader.readStringFromFile;
 import static com.a494studios.koreanconjugator.Utils.assertBodyContains;
 import static com.a494studios.koreanconjugator.Utils.setChecked;
+import static com.a494studios.koreanconjugator.Utils.testActionBar;
 import static junit.framework.TestCase.assertEquals;
 import static junit.framework.TestCase.assertFalse;
 import static junit.framework.TestCase.assertTrue;
@@ -85,6 +86,11 @@ public class ConjugationActivityTest {
     @After
     public void tearDown() {
         IdlingRegistry.getInstance().unregister(idler);
+    }
+
+    @Test
+    public void overflowOptions() {
+        testActionBar();
     }
 
     @Test

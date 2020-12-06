@@ -10,6 +10,7 @@ import androidx.test.rule.ActivityTestRule;
 
 import com.a494studios.koreanconjugator.R;
 import com.a494studios.koreanconjugator.display.ConjInfoActivity;
+import com.a494studios.koreanconjugator.rules.StubIntentsRule;
 import com.linearlistview.LinearListView;
 
 import org.hamcrest.Matchers;
@@ -25,6 +26,7 @@ import static androidx.test.espresso.matcher.ViewMatchers.isDescendantOfA;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
+import static com.a494studios.koreanconjugator.Utils.testActionBar;
 import static org.junit.Assert.assertEquals;
 
 @RunWith(AndroidJUnit4.class)
@@ -55,6 +57,14 @@ public class ConjInfoActivityTest {
             return intent;
         }
     };
+
+    @Rule
+    public StubIntentsRule intentsRule = new StubIntentsRule(ConjInfoActivity.class.getName());
+
+    @Test
+    public void overflowOptions() {
+        testActionBar();
+    }
 
     @Test
     public void test_displaysData() {
