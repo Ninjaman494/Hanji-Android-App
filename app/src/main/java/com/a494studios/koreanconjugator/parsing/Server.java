@@ -7,9 +7,11 @@ import com.a494studios.koreanconjugator.ConjugationQuery;
 import com.a494studios.koreanconjugator.CustomApplication;
 import com.a494studios.koreanconjugator.EntryQuery;
 import com.a494studios.koreanconjugator.ExamplesQuery;
+import com.a494studios.koreanconjugator.FavoritesQuery;
 import com.a494studios.koreanconjugator.SearchQuery;
 import com.a494studios.koreanconjugator.StemQuery;
 import com.a494studios.koreanconjugator.WordOfTheDayQuery;
+import com.a494studios.koreanconjugator.type.FavInput;
 import com.apollographql.apollo.ApolloClient;
 import com.apollographql.apollo.ApolloQueryCall;
 import com.apollographql.apollo.api.Response;
@@ -88,6 +90,29 @@ public class Server {
 
         ApolloQueryCall<ConjugationQuery.Data> call = getApolloClient(app)
                 .query(queryBuilder.build())
+                .httpCachePolicy(HttpCachePolicy.CACHE_FIRST);
+        return Rx2Apollo.from(call)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .filter((dataResponse) -> dataResponse.data() != null)
+                .doFinally(() -> idler.decrement());
+    }
+
+    public static Observable<Response<FavoritesQuery.Data>> doFavoritesQuery(
+            String stem, boolean isAdj, Boolean regular, List<FavInput> favorites,
+            CustomApplication app) {
+        idler.increment();
+
+        FavoritesQuery.Builder builder = FavoritesQuery.builder()
+                .stem(stem)
+                .isAdj(isAdj)
+                .favorites(favorites);
+        if (regular != null) {
+            builder.regular(regular);
+        }
+
+        ApolloQueryCall<FavoritesQuery.Data> call = getApolloClient(app)
+                .query(builder.build())
                 .httpCachePolicy(HttpCachePolicy.CACHE_FIRST);
         return Rx2Apollo.from(call)
                 .subscribeOn(Schedulers.io())

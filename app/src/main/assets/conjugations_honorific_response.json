@@ -1,0 +1,606 @@
+{
+  "data": {
+    "conjugations": [
+      {
+        "name": "connective if",
+        "conjugation": "가시면",
+        "type": "connective",
+        "tense": "NONE",
+        "speechLevel": "NONE",
+        "honorific": true,
+        "pronunciation": "가시면",
+        "romanization": "gah-shee-myuhn",
+        "reasons": [
+          "join (가 + 시 -> 가시)",
+          "join (가시 + 면 -> 가시면)"
+        ],
+        "__typename": "Conjugation"
+      },
+      {
+        "name": "connective and",
+        "conjugation": "가시고",
+        "type": "connective",
+        "tense": "NONE",
+        "speechLevel": "NONE",
+        "honorific": true,
+        "pronunciation": "가시고",
+        "romanization": "gah-shee-goh",
+        "reasons": [
+          "join (가 + 시 -> 가시)",
+          "join (가시 + 고 -> 가시고)"
+        ],
+        "__typename": "Conjugation"
+      },
+      {
+        "name": "connective but",
+        "conjugation": "가시지만",
+        "type": "connective",
+        "tense": "NONE",
+        "speechLevel": "NONE",
+        "honorific": true,
+        "pronunciation": "가시지만",
+        "romanization": "gah-shee-chee-mahn",
+        "reasons": [
+          "join (가 + 시 -> 가시)",
+          "join (가시 + 지만 -> 가시지만)"
+        ],
+        "__typename": "Conjugation"
+      },
+      {
+        "name": "declarative present informal low",
+        "conjugation": "가셔",
+        "type": "declarative present",
+        "tense": "PRESENT",
+        "speechLevel": "INFORMAL_LOW",
+        "honorific": true,
+        "pronunciation": "가셔",
+        "romanization": "gah-syuh",
+        "reasons": [
+          "join (가 + 시 -> 가시)",
+          "vowel contraction [ㅣ ㅓ -> ㅕ] (가시 + 어 -> 가셔)"
+        ],
+        "__typename": "Conjugation"
+      },
+      {
+        "name": "declarative present informal high",
+        "conjugation": "가세요",
+        "type": "declarative present",
+        "tense": "PRESENT",
+        "speechLevel": "INFORMAL_HIGH",
+        "honorific": true,
+        "pronunciation": "가세요",
+        "romanization": "gah-sae-yoh",
+        "reasons": [
+          "join (가 + 세요 -> 가세요)"
+        ],
+        "__typename": "Conjugation"
+      },
+      {
+        "name": "declarative present formal low",
+        "conjugation": "가신다",
+        "type": "declarative present",
+        "tense": "PRESENT",
+        "speechLevel": "FORMAL_LOW",
+        "honorific": true,
+        "pronunciation": "가신다",
+        "romanization": "gah-sheen-dah",
+        "reasons": [
+          "join (가 + 시 -> 가시)",
+          "borrow padchim (가시 + 는다 -> 가신다)"
+        ],
+        "__typename": "Conjugation"
+      },
+      {
+        "name": "declarative present formal high",
+        "conjugation": "가십니다",
+        "type": "declarative present",
+        "tense": "PRESENT",
+        "speechLevel": "FORMAL_HIGH",
+        "honorific": true,
+        "pronunciation": "가심니다",
+        "romanization": "gah-sheem-nee-dah",
+        "reasons": [
+          "join (가 + 십니다 -> 가십니다)"
+        ],
+        "__typename": "Conjugation"
+      },
+      {
+        "name": "declarative past informal low",
+        "conjugation": "가셨어",
+        "type": "declarative past",
+        "tense": "PAST",
+        "speechLevel": "INFORMAL_LOW",
+        "honorific": true,
+        "pronunciation": "가셔써",
+        "romanization": "gah-syuh-ssuh",
+        "reasons": [
+          "join (가 + 시 -> 가시)",
+          "vowel contraction [ㅣ ㅓ -> ㅕ] (가시 + 어 -> 가셔)",
+          "vowel contraction [ㅕ ㅓ -> ㅕ] (가셔 + 었 -> 가셨)",
+          "join (가셨 + 어 -> 가셨어)"
+        ],
+        "__typename": "Conjugation"
+      },
+      {
+        "name": "declarative past informal high",
+        "conjugation": "가셨어요",
+        "type": "declarative past",
+        "tense": "PAST",
+        "speechLevel": "INFORMAL_HIGH",
+        "honorific": true,
+        "pronunciation": "가셔써요",
+        "romanization": "gah-syuh-ssuh-yoh",
+        "reasons": [
+          "join (가 + 시 -> 가시)",
+          "vowel contraction [ㅣ ㅓ -> ㅕ] (가시 + 어 -> 가셔)",
+          "vowel contraction [ㅕ ㅓ -> ㅕ] (가셔 + 었 -> 가셨)",
+          "join (가셨 + 어 -> 가셨어)",
+          "join (가셨어 + 요 -> 가셨어요)"
+        ],
+        "__typename": "Conjugation"
+      },
+      {
+        "name": "declarative past formal low",
+        "conjugation": "가셨다",
+        "type": "declarative past",
+        "tense": "PAST",
+        "speechLevel": "FORMAL_LOW",
+        "honorific": true,
+        "pronunciation": "가셔따",
+        "romanization": "gah-syuh-ttah",
+        "reasons": [
+          "join (가 + 시 -> 가시)",
+          "vowel contraction [ㅣ ㅓ -> ㅕ] (가시 + 어 -> 가셔)",
+          "vowel contraction [ㅕ ㅓ -> ㅕ] (가셔 + 었 -> 가셨)",
+          "join (가셨 + 다 -> 가셨다)"
+        ],
+        "__typename": "Conjugation"
+      },
+      {
+        "name": "declarative past formal high",
+        "conjugation": "가셨습니다",
+        "type": "declarative past",
+        "tense": "PAST",
+        "speechLevel": "FORMAL_HIGH",
+        "honorific": true,
+        "pronunciation": "가셔씀니다",
+        "romanization": "gah-syuh-sseum-nee-dah",
+        "reasons": [
+          "join (가 + 시 -> 가시)",
+          "vowel contraction [ㅣ ㅓ -> ㅕ] (가시 + 어 -> 가셔)",
+          "vowel contraction [ㅕ ㅓ -> ㅕ] (가셔 + 었 -> 가셨)",
+          "join (가셨 + 습니다 -> 가셨습니다)"
+        ],
+        "__typename": "Conjugation"
+      },
+      {
+        "name": "declarative future informal low",
+        "conjugation": "가실 거야",
+        "type": "declarative future",
+        "tense": "FUTURE",
+        "speechLevel": "INFORMAL_LOW",
+        "honorific": true,
+        "pronunciation": "가실 거야",
+        "romanization": "gah-sheel- -guh-yah",
+        "reasons": [
+          "join (가 + 시 -> 가시)",
+          "borrow padchim (가시 + 을 -> 가실)",
+          "join (가실 +  거야 -> 가실 거야)"
+        ],
+        "__typename": "Conjugation"
+      },
+      {
+        "name": "declarative future informal high",
+        "conjugation": "가실 거예요",
+        "type": "declarative future",
+        "tense": "FUTURE",
+        "speechLevel": "INFORMAL_HIGH",
+        "honorific": true,
+        "pronunciation": "가실 거예요",
+        "romanization": "gah-sheel- -guh-yae-yoh",
+        "reasons": [
+          "join (가 + 시 -> 가시)",
+          "borrow padchim (가시 + 을 -> 가실)",
+          "join (가실 +  거예요 -> 가실 거예요)"
+        ],
+        "__typename": "Conjugation"
+      },
+      {
+        "name": "declarative future formal low",
+        "conjugation": "가실 거다",
+        "type": "declarative future",
+        "tense": "FUTURE",
+        "speechLevel": "FORMAL_LOW",
+        "honorific": true,
+        "pronunciation": "가실 거다",
+        "romanization": "gah-sheel- -guh-dah",
+        "reasons": [
+          "join (가 + 시 -> 가시)",
+          "borrow padchim (가시 + 을 -> 가실)",
+          "join (가실 +  거다 -> 가실 거다)"
+        ],
+        "__typename": "Conjugation"
+      },
+      {
+        "name": "declarative future formal high",
+        "conjugation": "가실 겁니다",
+        "type": "declarative future",
+        "tense": "FUTURE",
+        "speechLevel": "FORMAL_HIGH",
+        "honorific": true,
+        "pronunciation": "가실 검니다",
+        "romanization": "gah-sheel- -guhm-nee-dah",
+        "reasons": [
+          "join (가 + 시 -> 가시)",
+          "borrow padchim (가시 + 을 -> 가실)",
+          "join (가실 +  겁니다 -> 가실 겁니다)"
+        ],
+        "__typename": "Conjugation"
+      },
+      {
+        "name": "determiner present",
+        "conjugation": "가시는",
+        "type": "determiner",
+        "tense": "PRESENT",
+        "speechLevel": "NONE",
+        "honorific": true,
+        "pronunciation": "가시는",
+        "romanization": "gah-shee-neun",
+        "reasons": [
+          "join (가 + 시 -> 가시)",
+          "join (가시 + 는 -> 가시는)"
+        ],
+        "__typename": "Conjugation"
+      },
+      {
+        "name": "determiner past",
+        "conjugation": "가신",
+        "type": "determiner",
+        "tense": "PAST",
+        "speechLevel": "NONE",
+        "honorific": true,
+        "pronunciation": "가신",
+        "romanization": "gah-sheen",
+        "reasons": [
+          "join (가 + 시 -> 가시)",
+          "borrow padchim (가시 + 은 -> 가신)"
+        ],
+        "__typename": "Conjugation"
+      },
+      {
+        "name": "determiner future",
+        "conjugation": "가실",
+        "type": "determiner",
+        "tense": "FUTURE",
+        "speechLevel": "NONE",
+        "honorific": true,
+        "pronunciation": "가실",
+        "romanization": "gah-sheel",
+        "reasons": [
+          "join (가 + 시 -> 가시)",
+          "borrow padchim (가시 + 을 -> 가실)"
+        ],
+        "__typename": "Conjugation"
+      },
+      {
+        "name": "imperative informal low",
+        "conjugation": "가셔",
+        "type": "imperative",
+        "tense": "PRESENT",
+        "speechLevel": "INFORMAL_LOW",
+        "honorific": true,
+        "pronunciation": "가셔",
+        "romanization": "gah-syuh",
+        "reasons": [
+          "join (가 + 시 -> 가시)",
+          "vowel contraction [ㅣ ㅓ -> ㅕ] (가시 + 어 -> 가셔)"
+        ],
+        "__typename": "Conjugation"
+      },
+      {
+        "name": "imperative informal high",
+        "conjugation": "가세요",
+        "type": "imperative",
+        "tense": "PRESENT",
+        "speechLevel": "INFORMAL_HIGH",
+        "honorific": true,
+        "pronunciation": "가세요",
+        "romanization": "gah-sae-yoh",
+        "reasons": [
+          "join (가 + 세요 -> 가세요)"
+        ],
+        "__typename": "Conjugation"
+      },
+      {
+        "name": "imperative formal low",
+        "conjugation": "가셔라",
+        "type": "imperative",
+        "tense": "PRESENT",
+        "speechLevel": "FORMAL_LOW",
+        "honorific": true,
+        "pronunciation": "가셔라",
+        "romanization": "gah-syuh-rah",
+        "reasons": [
+          "join (가 + 시 -> 가시)",
+          "vowel contraction [ㅣ ㅓ -> ㅕ] (가시 + 어 -> 가셔)",
+          "join (가셔 + 라 -> 가셔라)"
+        ],
+        "__typename": "Conjugation"
+      },
+      {
+        "name": "imperative formal high",
+        "conjugation": "가십시오",
+        "type": "imperative",
+        "tense": "PRESENT",
+        "speechLevel": "FORMAL_HIGH",
+        "honorific": true,
+        "pronunciation": "가십씨오",
+        "romanization": "gah-sheep-shee-oh",
+        "reasons": [
+          "join (가 + 십시오 -> 가십시오)"
+        ],
+        "__typename": "Conjugation"
+      },
+      {
+        "name": "interrogative present informal low",
+        "conjugation": "가셔",
+        "type": "interrogative present",
+        "tense": "PRESENT",
+        "speechLevel": "INFORMAL_LOW",
+        "honorific": true,
+        "pronunciation": "가셔",
+        "romanization": "gah-syuh",
+        "reasons": [
+          "join (가 + 시 -> 가시)",
+          "vowel contraction [ㅣ ㅓ -> ㅕ] (가시 + 어 -> 가셔)"
+        ],
+        "__typename": "Conjugation"
+      },
+      {
+        "name": "interrogative present informal high",
+        "conjugation": "가세요",
+        "type": "interrogative present",
+        "tense": "PRESENT",
+        "speechLevel": "INFORMAL_HIGH",
+        "honorific": true,
+        "pronunciation": "가세요",
+        "romanization": "gah-sae-yoh",
+        "reasons": [
+          "join (가 + 세요 -> 가세요)"
+        ],
+        "__typename": "Conjugation"
+      },
+      {
+        "name": "interrogative present formal low",
+        "conjugation": "가시느냐",
+        "type": "interrogative present",
+        "tense": "PRESENT",
+        "speechLevel": "FORMAL_LOW",
+        "honorific": true,
+        "pronunciation": "가시느냐",
+        "romanization": "gah-shee-neu-nyah",
+        "reasons": [
+          "join (가 + 시 -> 가시)",
+          "join (가시 + 느냐 -> 가시느냐)"
+        ],
+        "__typename": "Conjugation"
+      },
+      {
+        "name": "interrogative present formal high",
+        "conjugation": "가십니까",
+        "type": "interrogative present",
+        "tense": "PRESENT",
+        "speechLevel": "FORMAL_HIGH",
+        "honorific": true,
+        "pronunciation": "가심니까",
+        "romanization": "gah-sheem-nee-ggah",
+        "reasons": [
+          "join (가 + 십니까 -> 가십니까)"
+        ],
+        "__typename": "Conjugation"
+      },
+      {
+        "name": "interrogative past informal low",
+        "conjugation": "가셨어",
+        "type": "interrogative past",
+        "tense": "PAST",
+        "speechLevel": "INFORMAL_LOW",
+        "honorific": true,
+        "pronunciation": "가셔써",
+        "romanization": "gah-syuh-ssuh",
+        "reasons": [
+          "join (가 + 시 -> 가시)",
+          "vowel contraction [ㅣ ㅓ -> ㅕ] (가시 + 어 -> 가셔)",
+          "vowel contraction [ㅕ ㅓ -> ㅕ] (가셔 + 었 -> 가셨)",
+          "join (가셨 + 어 -> 가셨어)"
+        ],
+        "__typename": "Conjugation"
+      },
+      {
+        "name": "interrogative past informal high",
+        "conjugation": "가셨어요",
+        "type": "interrogative past",
+        "tense": "PAST",
+        "speechLevel": "INFORMAL_HIGH",
+        "honorific": true,
+        "pronunciation": "가셔써요",
+        "romanization": "gah-syuh-ssuh-yoh",
+        "reasons": [
+          "join (가 + 시 -> 가시)",
+          "vowel contraction [ㅣ ㅓ -> ㅕ] (가시 + 어 -> 가셔)",
+          "vowel contraction [ㅕ ㅓ -> ㅕ] (가셔 + 었 -> 가셨)",
+          "join (가셨 + 어 -> 가셨어)",
+          "join (가셨어 + 요 -> 가셨어요)"
+        ],
+        "__typename": "Conjugation"
+      },
+      {
+        "name": "interrogative past formal low",
+        "conjugation": "가셨느냐",
+        "type": "interrogative past",
+        "tense": "PAST",
+        "speechLevel": "FORMAL_LOW",
+        "honorific": true,
+        "pronunciation": "가션느냐",
+        "romanization": "gah-syuhn-neu-nyah",
+        "reasons": [
+          "join (가 + 시 -> 가시)",
+          "vowel contraction [ㅣ ㅓ -> ㅕ] (가시 + 어 -> 가셔)",
+          "vowel contraction [ㅕ ㅓ -> ㅕ] (가셔 + 었 -> 가셨)",
+          "join (가셨 + 느냐 -> 가셨느냐)"
+        ],
+        "__typename": "Conjugation"
+      },
+      {
+        "name": "interrogative past formal high",
+        "conjugation": "가셨습니까",
+        "type": "interrogative past",
+        "tense": "PAST",
+        "speechLevel": "FORMAL_HIGH",
+        "honorific": true,
+        "pronunciation": "가셔씀니까",
+        "romanization": "gah-syuh-sseum-nee-ggah",
+        "reasons": [
+          "join (가 + 시 -> 가시)",
+          "vowel contraction [ㅣ ㅓ -> ㅕ] (가시 + 어 -> 가셔)",
+          "vowel contraction [ㅕ ㅓ -> ㅕ] (가셔 + 었 -> 가셨)",
+          "join (가셨 + 습니까 -> 가셨습니까)"
+        ],
+        "__typename": "Conjugation"
+      },
+      {
+        "name": "nominal ing",
+        "conjugation": "가심",
+        "type": "verbal noun",
+        "tense": "NONE",
+        "speechLevel": "NONE",
+        "honorific": true,
+        "pronunciation": "가심",
+        "romanization": "gah-sheem",
+        "reasons": [
+          "join (가 + 시 -> 가시)",
+          "borrow padchim (가시 + 음 -> 가심)"
+        ],
+        "__typename": "Conjugation"
+      },
+      {
+        "name": "propositive informal low",
+        "conjugation": "가셔",
+        "type": "propositive",
+        "tense": "PRESENT",
+        "speechLevel": "INFORMAL_LOW",
+        "honorific": true,
+        "pronunciation": "가셔",
+        "romanization": "gah-syuh",
+        "reasons": [
+          "join (가 + 시 -> 가시)",
+          "vowel contraction [ㅣ ㅓ -> ㅕ] (가시 + 어 -> 가셔)"
+        ],
+        "__typename": "Conjugation"
+      },
+      {
+        "name": "propositive informal high",
+        "conjugation": "가세요",
+        "type": "propositive",
+        "tense": "PRESENT",
+        "speechLevel": "INFORMAL_HIGH",
+        "honorific": true,
+        "pronunciation": "가세요",
+        "romanization": "gah-sae-yoh",
+        "reasons": [
+          "join (가 + 세요 -> 가세요)"
+        ],
+        "__typename": "Conjugation"
+      },
+      {
+        "name": "propositive formal low",
+        "conjugation": "가시자",
+        "type": "propositive",
+        "tense": "PRESENT",
+        "speechLevel": "FORMAL_LOW",
+        "honorific": true,
+        "pronunciation": "가시자",
+        "romanization": "gah-shee-chah",
+        "reasons": [
+          "join (가 + 시 -> 가시)",
+          "join (가시 + 자 -> 가시자)"
+        ],
+        "__typename": "Conjugation"
+      },
+      {
+        "name": "propositive formal high",
+        "conjugation": "가십시다",
+        "type": "propositive",
+        "tense": "PRESENT",
+        "speechLevel": "FORMAL_HIGH",
+        "honorific": true,
+        "pronunciation": "가십씨다",
+        "romanization": "gah-sheep-shee-dah",
+        "reasons": [
+          "join (가 + 십시다 -> 가십시다)"
+        ],
+        "__typename": "Conjugation"
+      },
+      {
+        "name": "suppositive informal low",
+        "conjugation": "가시겠어",
+        "type": "suppositive",
+        "tense": "NONE",
+        "speechLevel": "INFORMAL_LOW",
+        "honorific": true,
+        "pronunciation": "가시게써",
+        "romanization": "gah-shee-gae-ssuh",
+        "reasons": [
+          "join (가 + 시 -> 가시)",
+          "join (가시 + 겠어 -> 가시겠어)"
+        ],
+        "__typename": "Conjugation"
+      },
+      {
+        "name": "suppositive informal high",
+        "conjugation": "가시겠어요",
+        "type": "suppositive",
+        "tense": "NONE",
+        "speechLevel": "INFORMAL_HIGH",
+        "honorific": true,
+        "pronunciation": "가시게써요",
+        "romanization": "gah-shee-gae-ssuh-yoh",
+        "reasons": [
+          "join (가 + 시 -> 가시)",
+          "join (가시 + 겠어요 -> 가시겠어요)"
+        ],
+        "__typename": "Conjugation"
+      },
+      {
+        "name": "suppositive formal low",
+        "conjugation": "가시겠다",
+        "type": "suppositive",
+        "tense": "NONE",
+        "speechLevel": "FORMAL_LOW",
+        "honorific": true,
+        "pronunciation": "가시게따",
+        "romanization": "gah-shee-gae-ttah",
+        "reasons": [
+          "join (가 + 시 -> 가시)",
+          "join (가시 + 겠다 -> 가시겠다)"
+        ],
+        "__typename": "Conjugation"
+      },
+      {
+        "name": "suppositive formal high",
+        "conjugation": "가시겠습니다",
+        "type": "suppositive",
+        "tense": "NONE",
+        "speechLevel": "FORMAL_HIGH",
+        "honorific": true,
+        "pronunciation": "가시게씀니다",
+        "romanization": "gah-shee-gae-sseum-nee-dah",
+        "reasons": [
+          "join (가 + 시 -> 가시)",
+          "join (가시 + 겠습니다 -> 가시겠습니다)"
+        ],
+        "__typename": "Conjugation"
+      }
+    ]
+  }
+}

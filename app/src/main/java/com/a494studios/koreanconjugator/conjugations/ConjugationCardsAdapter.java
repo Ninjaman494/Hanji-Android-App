@@ -5,20 +5,20 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.a494studios.koreanconjugator.ConjugationQuery;
 import com.a494studios.koreanconjugator.display.DisplayCardView;
 import com.a494studios.koreanconjugator.display.cards.ConjugationCard;
+import com.a494studios.koreanconjugator.fragment.ConjugationFragment;
 
 import java.util.List;
 import java.util.Objects;
 
 public class ConjugationCardsAdapter extends RecyclerView.Adapter<ConjugationCardsAdapter.ViewHolder> {
 
-    private List<List<ConjugationQuery.Conjugation>> conjugations;
+    private List<List<ConjugationFragment>> conjugations;
     private String term;
     private String pos;
 
-    public ConjugationCardsAdapter(List<List<ConjugationQuery.Conjugation>> conjugations, String term, String pos) {
+    public ConjugationCardsAdapter(List<List<ConjugationFragment>> conjugations, String term, String pos) {
         this.conjugations = Objects.requireNonNull(conjugations, "conjugations can't be null");
         this.term = Objects.requireNonNull(term, "term can't be null");
         this.pos = Objects.requireNonNull(pos, "pos can't be null");
@@ -44,7 +44,7 @@ public class ConjugationCardsAdapter extends RecyclerView.Adapter<ConjugationCar
         return conjugations.size();
     }
 
-    public List<ConjugationQuery.Conjugation> getItem(int i) {
+    public List<ConjugationFragment> getItem(int i) {
         return conjugations.get(i);
     }
 

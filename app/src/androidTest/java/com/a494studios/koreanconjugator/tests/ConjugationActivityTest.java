@@ -11,11 +11,11 @@ import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.filters.LargeTest;
 import androidx.test.rule.ActivityTestRule;
 
-import com.a494studios.koreanconjugator.ConjugationQuery;
-import com.a494studios.koreanconjugator.MockedResponses;
+import com.a494studios.koreanconjugator.MockReader;
 import com.a494studios.koreanconjugator.R;
 import com.a494studios.koreanconjugator.conjugations.ConjugationActivity;
 import com.a494studios.koreanconjugator.conjugations.ConjugationCardsAdapter;
+import com.a494studios.koreanconjugator.fragment.ConjugationFragment;
 import com.a494studios.koreanconjugator.parsing.Server;
 import com.a494studios.koreanconjugator.rules.MockServerRule;
 import com.a494studios.koreanconjugator.rules.StubIntentsRule;
@@ -33,6 +33,7 @@ import okhttp3.mockwebserver.MockResponse;
 
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
+import static com.a494studios.koreanconjugator.MockReader.readStringFromFile;
 import static com.a494studios.koreanconjugator.Utils.assertBodyContains;
 import static com.a494studios.koreanconjugator.Utils.setChecked;
 import static junit.framework.TestCase.assertEquals;
@@ -74,8 +75,8 @@ public class ConjugationActivityTest {
         IdlingRegistry.getInstance().register(idler);
 
         // Enqueue responses
-        serverRule.server.enqueue(new MockResponse().setBody(MockedResponses.CONJUGATIONS));
-        serverRule.server.enqueue(new MockResponse().setBody(MockedResponses.CONJUGATIONS_HONORIFIC));
+        serverRule.server.enqueue(new MockResponse().setBody(readStringFromFile(MockReader.CONJUGATIONS)));
+        serverRule.server.enqueue(new MockResponse().setBody(readStringFromFile(MockReader.CONJUGATIONS_HONORIFIC)));
 
         // Start test
         activityRule.launchActivity(null);
@@ -121,7 +122,7 @@ public class ConjugationActivityTest {
 
         ConjugationCardsAdapter adapter = (ConjugationCardsAdapter)recyclerView.getAdapter();
         assertEquals(numItems, adapter.getItemCount());
-        List<ConjugationQuery.Conjugation> conjugations = adapter.getItem(0);
+        List<ConjugationFragment> conjugations = adapter.getItem(0);
         assertBodyContains(serverRule.server.takeRequest(2, TimeUnit.SECONDS),
                 "\"honorific\":true");
         assertTrue(conjugations.get(0).honorific());

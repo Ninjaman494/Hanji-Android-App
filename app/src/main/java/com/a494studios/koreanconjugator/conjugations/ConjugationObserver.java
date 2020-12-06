@@ -1,6 +1,7 @@
 package com.a494studios.koreanconjugator.conjugations;
 
 import com.a494studios.koreanconjugator.ConjugationQuery;
+import com.a494studios.koreanconjugator.fragment.ConjugationFragment;
 import com.apollographql.apollo.api.Response;
 
 import java.util.ArrayList;
@@ -18,24 +19,27 @@ public class ConjugationObserver extends DisposableObserver<Response<Conjugation
 
     @Override
     public void onNext(Response<ConjugationQuery.Data> response) {
-        if(response.data() == null) {
+        if(response.getData() == null) {
             return;
         }
 
-        List<ConjugationQuery.Conjugation> conjugations = response.data().conjugations();
-        final TreeMap<String,List<ConjugationQuery.Conjugation>> conjMap = new TreeMap<>();
+        List<ConjugationQuery.Conjugation> conjugations = response.getData().conjugations();
+
+        final TreeMap<String,List<ConjugationFragment>> conjMap = new TreeMap<>();
         for(ConjugationQuery.Conjugation conjugation : conjugations){
-            String type = conjugation.type();
+            ConjugationFragment fragment = conjugation.fragments().conjugationFragment();
+
+            String type = fragment.type();
             if(conjMap.containsKey(type)){
-                conjMap.get(type).add(conjugation);
+                conjMap.get(type).add(fragment);
             }else{
-                List<ConjugationQuery.Conjugation> value = new ArrayList<>();
-                value.add(conjugation);
+                List<ConjugationFragment> value = new ArrayList<>();
+                value.add(fragment);
                 conjMap.put(type,value);
             }
         }
 
-        List<List<ConjugationQuery.Conjugation>> sortedConj = new ArrayList<>(conjMap.values());
+        List<List<ConjugationFragment>> sortedConj = new ArrayList<>(conjMap.values());
         listener.onDataReceived(sortedConj);
     }
 
@@ -51,7 +55,7 @@ public class ConjugationObserver extends DisposableObserver<Response<Conjugation
 
 
     public interface ConjugationObserverListener {
-        void onDataReceived(List<List<ConjugationQuery.Conjugation>> conjugations);
+        void onDataReceived(List<List<ConjugationFragment>> conjugations);
 
         void onError(Throwable e);
     }

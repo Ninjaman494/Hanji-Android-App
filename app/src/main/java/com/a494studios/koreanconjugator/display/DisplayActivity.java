@@ -8,10 +8,11 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 
-import com.a494studios.koreanconjugator.ConjugationQuery;
 import com.a494studios.koreanconjugator.CustomApplication;
 import com.a494studios.koreanconjugator.EntryQuery;
+import com.a494studios.koreanconjugator.FavoritesQuery;
 import com.a494studios.koreanconjugator.R;
+import com.a494studios.koreanconjugator.type.FavInput;
 import com.a494studios.koreanconjugator.utils.BaseActivity;
 import com.a494studios.koreanconjugator.utils.Logger;
 import com.a494studios.koreanconjugator.utils.Utils;
@@ -80,8 +81,9 @@ public class DisplayActivity extends BaseActivity {
 
         Server.doEntryQuery(id, app)
                 .concatMap(dataResponse -> {
-                    assert dataResponse.data() != null;
-                    entry = dataResponse.data().entry();
+                    assert dataResponse.getData() != null;
+
+                    entry = dataResponse.getData().entry();
                     boolean isAdj = entry.pos().equals("Adjective");
                     Boolean regular = entry.regular();
                     observer.setEntry(entry);
@@ -93,16 +95,23 @@ public class DisplayActivity extends BaseActivity {
                     // Log select content event
                     Logger.getInstance().logSelectContent(entry.term(), entry.pos());
 
-                    // Get favorite conjugation names and fetch them
-                    List<String> conjugations = Observable.fromIterable(favorites)
-                            .map(Favorite::getConjugationName)
+                    // Create favorites input list
+                    List<FavInput> conjugations = Observable.fromIterable(favorites)
+                            .map((favorite -> FavInput.builder()
+                                    .name(favorite.getName())
+                                    .conjugationName(favorite.getConjugationName())
+                                    .honorific(favorite.isHonorific())
+                                    .build()
+                            ))
                             .toList()
                             .blockingGet();
-                    return Server.doConjugationQuery(entry.term(), false, isAdj, regular, conjugations, app);
+
+                    return Server.doFavoritesQuery(entry.term(),  isAdj, regular, conjugations, app);
                 })
+                // If no conjugations, create an empty list to prevent a null exception
                 .map(o -> o instanceof String
-                        ? new ConjugationQuery.Data(new ArrayList<>())
-                        : ((Response<ConjugationQuery.Data>) o).data())
+                        ? new FavoritesQuery.Data(new ArrayList<>())
+                        : ((Response<FavoritesQuery.Data>) o).data())
                 .subscribeWith(observer);
 
         LinearLayout linearLayout = findViewById(R.id.disp_root);

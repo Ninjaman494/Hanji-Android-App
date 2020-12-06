@@ -16,7 +16,7 @@ import androidx.test.filters.LargeTest;
 import androidx.test.rule.ActivityTestRule;
 
 import com.a494studios.koreanconjugator.MockApplication;
-import com.a494studios.koreanconjugator.MockedResponses;
+import com.a494studios.koreanconjugator.MockReader;
 import com.a494studios.koreanconjugator.R;
 import com.a494studios.koreanconjugator.conjugations.ConjugationActivity;
 import com.a494studios.koreanconjugator.display.DisplayActivity;
@@ -46,6 +46,7 @@ import static androidx.test.espresso.intent.matcher.IntentMatchers.hasComponent;
 import static androidx.test.espresso.intent.matcher.IntentMatchers.hasExtra;
 import static androidx.test.espresso.matcher.ViewMatchers.*;
 import static androidx.test.platform.app.InstrumentationRegistry.getInstrumentation;
+import static com.a494studios.koreanconjugator.MockReader.readStringFromFile;
 import static com.a494studios.koreanconjugator.Utils.nthChildOf;
 import static com.a494studios.koreanconjugator.Utils.testActionBar;
 import static org.hamcrest.Matchers.allOf;
@@ -88,15 +89,16 @@ public class DisplayActivityTest {
         testApp.setServerUrl(server.url("/").toString());
 
         // Enqueue responses
-        server.enqueue(new MockResponse().setBody(MockedResponses.ENTRY));
-        server.enqueue(new MockResponse().setBody(MockedResponses.CONJUGATIONS));
+        server.enqueue(new MockResponse().setBody(readStringFromFile(MockReader.ENTRY)));
+        server.enqueue(new MockResponse().setBody(readStringFromFile(MockReader.FAVORITES)));
 
         // Write favorites in SharedPreferences
         Context context = getInstrumentation().getTargetContext();
         ArrayList<Favorite> favs = new ArrayList<>();
         favs.add(new Favorite("Past","declarative past informal high",false));
-        favs.add(new Favorite("Present","declarative present informal high",false));
+        favs.add(new Favorite("Present Honorific","declarative present informal high",true));
         favs.add(new Favorite("Future","declarative future informal high",false));
+        favs.add(new Favorite("Verbs only","determiner past",false));
         com.a494studios.koreanconjugator.utils.Utils.setFavorites(favs,context);
 
         // Start test
@@ -118,22 +120,24 @@ public class DisplayActivityTest {
     @Test
     public void contents_areDisplayed() {
         // Term and POS
-        onView(ViewMatchers.withId(R.id.word_info_term)).check(matches(withText("가다")));
-        onView(withId(R.id.word_info_pos)).check(matches(withText("Verb")));
+        onView(ViewMatchers.withId(R.id.word_info_term)).check(matches(withText("춥다")));
+        onView(withId(R.id.word_info_pos)).check(matches(withText("Adjective")));
 
         // Definitions
         onView(nthChildOf(withId(R.id.word_info_recycler), 0))
-                .check(matches(withText("to go")));
+                .check(matches(withText("(usually, of weather) (to be) cold")));
         onView(nthChildOf(withId(R.id.word_info_recycler), 1))
                 .check(matches(withText("second definition")));
         onView(nthChildOf(withId(R.id.word_info_recycler), 2))
                 .check(matches(withText("third definition")));
 
         // Show all definitions
-        onView(withText("1 MORE")).perform(click());
+        onView(withText("2 MORE")).perform(click());
 
         onView(nthChildOf(withId(R.id.word_info_recycler), 3))
                 .check(matches(withText("fourth definition")));
+        onView(nthChildOf(withId(R.id.word_info_recycler), 4))
+                .check(matches(withText("fifth definition")));
 
         onView(withText("COLLAPSE")).perform(click());
 
@@ -143,9 +147,9 @@ public class DisplayActivityTest {
                 .check(matches(withText("Examples")));
 
         List<Pair<String, String>> examples = Arrays.asList(
-                new Pair<>("가자!", "Let's go!"),
-                new Pair<>("Second sentence", "Second translation"),
-                new Pair<>("Third sentence", "Third translation"));
+                new Pair<>("뉴욕은 미국에 있다.", "New York is in the United States."),
+                new Pair<>("서 있다", "to be standing"),
+                new Pair<>("그녀는 남자 친구가 있다.", "She has a boyfriend."));
 
         for(int i = 0;i<examples.size();i++) {
             String sentence = examples.get(i).first;
@@ -167,7 +171,7 @@ public class DisplayActivityTest {
                 .check(matches(withText("Antonyms")));
         onView(allOf(isDescendantOfA(withId(R.id.disp_antCard)),
                 withId(R.id.simpleCard_text)))
-                .check(matches(withText("오다, antonym two, antonym three")));
+                .check(matches(withText("덥다, antonym two, antonym three")));
 
         // Synonyms
         onView(withId(R.id.disp_synCard))
@@ -185,9 +189,9 @@ public class DisplayActivityTest {
                 .check(matches(withText("Conjugations")));
 
         List<Pair<String, String>> favorites = Arrays.asList(
-                new Pair<>("Past", "갔어요"),
-                new Pair<>("Present", "가요"),
-                new Pair<>("Future", "갈 거예요"));
+                new Pair<>("Past", "추웠어요"),
+                new Pair<>("Present Honorific", "추우세요"),
+                new Pair<>("Future", "추울 거예요"));
 
         // Verify favorite conjugations are shown
         for(int i = 0;i<favorites.size();i++) {
@@ -210,8 +214,8 @@ public class DisplayActivityTest {
         onView(withText("SEE ALL")).perform(click());
 
         intended(allOf(hasComponent(ConjugationActivity.class.getName()),
-                hasExtra(ConjugationActivity.EXTRA_STEM, "가다"),
-                hasExtra(ConjugationActivity.EXTRA_ISADJ, false),
+                hasExtra(ConjugationActivity.EXTRA_STEM, "춥다"),
+                hasExtra(ConjugationActivity.EXTRA_ISADJ, true),
                 hasExtra(ConjugationActivity.EXTRA_HONORIFIC, false),
                 hasExtra(ConjugationActivity.EXTRA_REGULAR, null)));
     }

@@ -1,13 +1,17 @@
 query ConjugationQuery($stem: String!, $honorific: Boolean!, $isAdj: Boolean!, $regular: Boolean $conjugations:[String]) {
   conjugations(stem: $stem, honorific: $honorific, isAdj: $isAdj, regular: $regular, conjugations: $conjugations) {
-    name,
-    conjugation,
-    type,
-    tense,
-    speechLevel,
-    honorific,
-    pronunciation,
-    romanization,
-    reasons
+   ...conjugationFragment
   }
+}
+
+fragment conjugationFragment on Conjugation {
+  name,
+  conjugation,
+  type,
+  tense,
+  speechLevel,
+  honorific,
+  pronunciation,
+  romanization,
+  reasons
 }

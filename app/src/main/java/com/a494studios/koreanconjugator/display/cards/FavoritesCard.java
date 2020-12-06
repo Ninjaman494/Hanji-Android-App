@@ -6,11 +6,11 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.a494studios.koreanconjugator.conjugations.ConjugationActivity;
-import com.a494studios.koreanconjugator.ConjugationQuery;
 import com.a494studios.koreanconjugator.R;
 import com.a494studios.koreanconjugator.display.ConjInfoActivity;
 import com.a494studios.koreanconjugator.display.DisplayCardView;
 import com.a494studios.koreanconjugator.display.adapters.FavoritesAdapter;
+import com.a494studios.koreanconjugator.fragment.ConjugationFragment;
 import com.a494studios.koreanconjugator.utils.Logger;
 import com.linearlistview.LinearListView;
 
@@ -28,7 +28,7 @@ public class FavoritesCard implements DisplayCardBody {
     private Boolean regular;
     private FavoritesAdapter adapter;
 
-    public FavoritesCard(ArrayList<Map.Entry<String,ConjugationQuery.Conjugation>> entries, String stem, boolean honorific, boolean isAdj, Boolean regular) {
+    public FavoritesCard(ArrayList<Map.Entry<String, ConjugationFragment>> entries, String stem, boolean honorific, boolean isAdj, Boolean regular) {
         this.adapter = new FavoritesAdapter(Objects.requireNonNull(entries));
         this.stem = Objects.requireNonNull(stem);
         this.honorific = honorific;
@@ -45,7 +45,7 @@ public class FavoritesCard implements DisplayCardBody {
         listView.setAdapter(adapter);
         listView.setOnItemClickListener((parent, view, position, id) -> {
             String favName = adapter.getItem(position).getKey();
-            ConjugationQuery.Conjugation conjugation = adapter.getItem(position).getValue();
+           ConjugationFragment conjugation = adapter.getItem(position).getValue();
 
             // Log select favorite event
             Logger.getInstance().logSelectFavorite(favName, conjugation.name(), conjugation.conjugation());
@@ -86,7 +86,7 @@ public class FavoritesCard implements DisplayCardBody {
         return "Conjugations";
     }
 
-    public void addConjugation(Map.Entry<String, ConjugationQuery.Conjugation> conjugation, int index) {
+    public void addConjugation(Map.Entry<String, ConjugationFragment> conjugation, int index) {
         adapter.addConjugation(conjugation, index);
         adapter.notifyDataSetChanged();
     }

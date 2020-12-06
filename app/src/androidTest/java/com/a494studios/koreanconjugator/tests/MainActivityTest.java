@@ -12,7 +12,7 @@ import androidx.test.filters.LargeTest;
 import androidx.test.rule.ActivityTestRule;
 
 import com.a494studios.koreanconjugator.MainActivity;
-import com.a494studios.koreanconjugator.MockedResponses;
+import com.a494studios.koreanconjugator.MockReader;
 import com.a494studios.koreanconjugator.R;
 import com.a494studios.koreanconjugator.display.DisplayActivity;
 import com.a494studios.koreanconjugator.parsing.Server;
@@ -40,6 +40,7 @@ import static androidx.test.espresso.intent.matcher.IntentMatchers.hasExtra;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withHint;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
+import static com.a494studios.koreanconjugator.MockReader.readStringFromFile;
 import static com.a494studios.koreanconjugator.Utils.testActionBar;
 import static org.hamcrest.Matchers.allOf;
 
@@ -65,7 +66,7 @@ public class MainActivityTest {
         IdlingRegistry.getInstance().register(idler);
 
         // Enqueue a response
-        serverRule.server.enqueue(new MockResponse().setBody(MockedResponses.WOD));
+        serverRule.server.enqueue(new MockResponse().setBody(readStringFromFile(MockReader.WOD)));
 
         // Start test
         activityRule.launchActivity(null);
@@ -91,7 +92,7 @@ public class MainActivityTest {
                 .perform(click());
 
         intended(allOf(hasComponent(DisplayActivity.class.getName()),
-                hasExtra(DisplayActivity.EXTRA_ID, "가로0")));
+                hasExtra(DisplayActivity.EXTRA_ID, "속속들이0")));
     }
 
     @Test
