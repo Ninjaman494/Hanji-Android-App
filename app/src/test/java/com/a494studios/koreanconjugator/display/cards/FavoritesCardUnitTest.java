@@ -7,10 +7,10 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
 
-import com.a494studios.koreanconjugator.ConjugationQuery;
 import com.a494studios.koreanconjugator.R;
 import com.a494studios.koreanconjugator.conjugations.ConjugationActivity;
 import com.a494studios.koreanconjugator.display.DisplayCardView;
+import com.a494studios.koreanconjugator.fragment.ConjugationFragment;
 import com.a494studios.koreanconjugator.type.SpeechLevel;
 import com.a494studios.koreanconjugator.type.Tense;
 
@@ -33,7 +33,7 @@ public class FavoritesCardUnitTest {
     private final String STEM = "stem";
     private final boolean HONORIFIC = false;
     private final boolean IS_ADJ = false;
-    private ArrayList<Map.Entry<String, ConjugationQuery.Conjugation>> entries;
+    private ArrayList<Map.Entry<String, ConjugationFragment>> entries;
     private FavoritesCard card;
     private DisplayCardView cardView;
     private LinearLayout viewGroup;
@@ -104,12 +104,12 @@ public class FavoritesCardUnitTest {
 
     @Test
     public void test_addConjugation() {
-        ConjugationQuery.Conjugation conjugation =
-                new ConjugationQuery.Conjugation("type", "name", "conj",
+        ConjugationFragment conjugation =
+                new ConjugationFragment("type", "name", "conj",
                         "type", Tense.PAST, SpeechLevel.FORMAL_HIGH, false,
                         "pronunc", "romani", new ArrayList<>());
 
-        Map.Entry<String, ConjugationQuery.Conjugation> entry = new AbstractMap.SimpleEntry<>("new", conjugation);
+        Map.Entry<String, ConjugationFragment> entry = new AbstractMap.SimpleEntry<>("new", conjugation);
         card.addConjugation(entry,0);
         assertEquals(1,card.getCount());
     }

@@ -6,8 +6,8 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.a494studios.koreanconjugator.ConjugationQuery;
 import com.a494studios.koreanconjugator.R;
+import com.a494studios.koreanconjugator.fragment.ConjugationFragment;
 import com.a494studios.koreanconjugator.type.SpeechLevel;
 import com.a494studios.koreanconjugator.type.Tense;
 
@@ -25,20 +25,20 @@ import static org.junit.Assert.assertTrue;
 
 @RunWith(RobolectricTestRunner.class)
 public class ConjugationAdapterUnitTest {
-    private List<ConjugationQuery.Conjugation> conjugations;
+    private List<ConjugationFragment> conjugations;
     private ConjugationAdapter adapter;
 
     @Before
     public void init() {
-        ConjugationQuery.Conjugation c1 = new ConjugationQuery.Conjugation("type",
+        ConjugationFragment c1 = new ConjugationFragment("type",
                 "name1","conj1", "TYPE", Tense.PRESENT, SpeechLevel.INFORMAL_HIGH,
-                false,"pron1","rome1",new ArrayList<String>());
-        ConjugationQuery.Conjugation c2 = new ConjugationQuery.Conjugation("type",
+                false,"pron1","rome1",new ArrayList<>());
+        ConjugationFragment c2 = new ConjugationFragment("type",
                 "name2","conj2", "TYPE", Tense.PRESENT, SpeechLevel.INFORMAL_HIGH,
-                false,"pron2","rome2",new ArrayList<String>());
-        ConjugationQuery.Conjugation c3 = new ConjugationQuery.Conjugation("type",
+                false,"pron2","rome2",new ArrayList<>());
+        ConjugationFragment c3 = new ConjugationFragment("type",
                 "name3","conj3", "TYPE", Tense.PRESENT, SpeechLevel.NONE,
-                false,"pron3","rome3",new ArrayList<String>());
+                false,"pron3","rome3",new ArrayList<>());
 
         conjugations = new ArrayList<>();
         conjugations.add(c1);
@@ -58,7 +58,7 @@ public class ConjugationAdapterUnitTest {
         ViewGroup group = new LinearLayout(activity);
         for(int i = 0;i<conjugations.size();i++) {
             View view = adapter.getView(i,null,group);
-            ConjugationQuery.Conjugation c = conjugations.get(i);
+            ConjugationFragment c = conjugations.get(i);
             TextView nameView = view.findViewById(R.id.conjFormal);
             TextView conjView = view.findViewById(R.id.conjText);
 

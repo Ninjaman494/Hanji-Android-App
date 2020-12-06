@@ -1,6 +1,6 @@
 package com.a494studios.koreanconjugator.conjugations;
 
-import com.a494studios.koreanconjugator.ConjugationQuery;
+import com.a494studios.koreanconjugator.fragment.ConjugationFragment;
 import com.a494studios.koreanconjugator.type.SpeechLevel;
 import com.a494studios.koreanconjugator.type.Tense;
 
@@ -15,23 +15,23 @@ import java.util.List;
 @RunWith(RobolectricTestRunner.class)
 public class ConjugationCardsAdapterUnitTest {
 
-    private List<List<ConjugationQuery.Conjugation>> conjugations;
+    private List<List<ConjugationFragment>> conjugations;
 
     @Before
     public void init() {
-        ConjugationQuery.Conjugation c1 = new ConjugationQuery.Conjugation("type",
+        ConjugationFragment c1 = new ConjugationFragment("type",
                 "name1","conj1", "TYPE", Tense.PRESENT, SpeechLevel.INFORMAL_HIGH,
                 false,"pron1","rome1",new ArrayList<>());
-        ConjugationQuery.Conjugation c2 = new ConjugationQuery.Conjugation("type",
+        ConjugationFragment c2 = new ConjugationFragment("type",
                 "name2","conj2", "TYPE", Tense.PRESENT, SpeechLevel.INFORMAL_HIGH,
                 false,"pron2","rome2",new ArrayList<>());
-        ConjugationQuery.Conjugation c3 = new ConjugationQuery.Conjugation("type",
+        ConjugationFragment c3 = new ConjugationFragment("type",
                 "name3","conj3", "TYPE", Tense.PRESENT, SpeechLevel.INFORMAL_HIGH,
                 false,"pron3","rome3",new ArrayList<>());
 
-        ArrayList<ConjugationQuery.Conjugation> group1 = new ArrayList<>();
-        ArrayList<ConjugationQuery.Conjugation> group2 = new ArrayList<>();
-        ArrayList<ConjugationQuery.Conjugation> group3 = new ArrayList<>();
+        ArrayList<ConjugationFragment> group1 = new ArrayList<>();
+        ArrayList<ConjugationFragment> group2 = new ArrayList<>();
+        ArrayList<ConjugationFragment> group3 = new ArrayList<>();
 
         group1.add(c1);
         group2.add(c2);
