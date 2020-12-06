@@ -1,0 +1,42 @@
+{
+  "data": {
+    "entry": {
+      "id": "춥다0",
+      "term": "춥다",
+      "pos": "Adjective",
+      "definitions": [
+        "(usually, of weather) (to be) cold",
+        "second definition",
+        "third definition",
+        "fourth definition",
+        "fifth definition"
+      ],
+      "antonyms": [
+        "덥다",
+        "antonym two",
+        "antonym three"
+      ],
+      "synonyms": null,
+      "examples": [
+        {
+          "sentence": "뉴욕은 미국에 있다.",
+          "translation": "New York is in the United States.",
+          "__typename": "Example"
+        },
+        {
+          "sentence": "서 있다",
+          "translation": "to be standing",
+          "__typename": "Example"
+        },
+        {
+          "sentence": "그녀는 남자 친구가 있다.",
+          "translation": "She has a boyfriend.",
+          "__typename": "Example"
+        }
+      ],
+      "regular": null,
+      "note": null,
+      "__typename": "Entry"
+    }
+  }
+}

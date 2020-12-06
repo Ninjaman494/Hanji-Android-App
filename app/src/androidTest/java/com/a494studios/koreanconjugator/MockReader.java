@@ -12,6 +12,7 @@ import java.io.InputStreamReader;
 
 public class MockReader {
     public static final String FAVORITES = "favorites_response.json";
+    public static final String ENTRY = "entry_response.json";
 
 
     public static String readStringFromFile(String fileName) {
