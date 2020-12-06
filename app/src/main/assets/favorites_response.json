@@ -1,0 +1,53 @@
+{
+  "data": {
+    "favConjugations": [
+      {
+        "name": "declarative past informal high",
+        "conjugation": "추웠어요",
+        "type": "declarative past",
+        "tense": "PAST",
+        "speechLevel": "INFORMAL_HIGH",
+        "honorific": false,
+        "pronunciation": "추워써요",
+        "romanization": "choo-wuh-ssuh-yoh",
+        "reasons": [
+          "ㅂ irregular (춥 -> 추우)",
+          "vowel contraction [ㅜ ㅓ -> ㅝ] (추우 + 어 -> 추워)",
+          "vowel contraction [ㅝ ㅓ -> ㅝ] (추워 + 었 -> 추웠)",
+          "join (추웠 + 어 -> 추웠어)",
+          "join (추웠어 + 요 -> 추웠어요)"
+        ],
+        "__typename": "Conjugation"
+      },
+      {
+        "name": "declarative present informal high",
+        "conjugation": "추우세요",
+        "type": "declarative present",
+        "tense": "PRESENT",
+        "speechLevel": "INFORMAL_HIGH",
+        "honorific": true,
+        "pronunciation": "추우세요",
+        "romanization": "choo-oo-sae-yoh",
+        "reasons": [
+          "join (추우 + 세요 -> 추우세요)"
+        ],
+        "__typename": "Conjugation"
+      },
+      {
+        "name": "declarative future informal high",
+        "conjugation": "추울 거예요",
+        "type": "declarative future",
+        "tense": "FUTURE",
+        "speechLevel": "INFORMAL_HIGH",
+        "honorific": false,
+        "pronunciation": "추울 거예요",
+        "romanization": "choo-ool- -guh-yae-yoh",
+        "reasons": [
+          "borrow padchim (추우 + 을 -> 추울)",
+          "join (추울 +  거예요 -> 추울 거예요)"
+        ],
+        "__typename": "Conjugation"
+      }
+    ]
+  }
+}

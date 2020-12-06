@@ -16,6 +16,7 @@ import androidx.test.filters.LargeTest;
 import androidx.test.rule.ActivityTestRule;
 
 import com.a494studios.koreanconjugator.MockApplication;
+import com.a494studios.koreanconjugator.MockReader;
 import com.a494studios.koreanconjugator.MockedResponses;
 import com.a494studios.koreanconjugator.R;
 import com.a494studios.koreanconjugator.conjugations.ConjugationActivity;
@@ -46,6 +47,7 @@ import static androidx.test.espresso.intent.matcher.IntentMatchers.hasComponent;
 import static androidx.test.espresso.intent.matcher.IntentMatchers.hasExtra;
 import static androidx.test.espresso.matcher.ViewMatchers.*;
 import static androidx.test.platform.app.InstrumentationRegistry.getInstrumentation;
+import static com.a494studios.koreanconjugator.MockReader.readStringFromFile;
 import static com.a494studios.koreanconjugator.Utils.nthChildOf;
 import static com.a494studios.koreanconjugator.Utils.testActionBar;
 import static org.hamcrest.Matchers.allOf;
@@ -89,14 +91,15 @@ public class DisplayActivityTest {
 
         // Enqueue responses
         server.enqueue(new MockResponse().setBody(MockedResponses.ENTRY));
-        server.enqueue(new MockResponse().setBody(MockedResponses.CONJUGATIONS));
+        server.enqueue(new MockResponse().setBody(readStringFromFile(MockReader.FAVORITES)));
 
         // Write favorites in SharedPreferences
         Context context = getInstrumentation().getTargetContext();
         ArrayList<Favorite> favs = new ArrayList<>();
         favs.add(new Favorite("Past","declarative past informal high",false));
-        favs.add(new Favorite("Present","declarative present informal high",false));
+        favs.add(new Favorite("Present Honorific","declarative present informal high",true));
         favs.add(new Favorite("Future","declarative future informal high",false));
+        favs.add(new Favorite("Verbs only","determiner past",false));
         com.a494studios.koreanconjugator.utils.Utils.setFavorites(favs,context);
 
         // Start test
@@ -185,9 +188,9 @@ public class DisplayActivityTest {
                 .check(matches(withText("Conjugations")));
 
         List<Pair<String, String>> favorites = Arrays.asList(
-                new Pair<>("Past", "갔어요"),
-                new Pair<>("Present", "가요"),
-                new Pair<>("Future", "갈 거예요"));
+                new Pair<>("Past", "추웠어요"),
+                new Pair<>("Present Honorific", "추우세요"),
+                new Pair<>("Future", "추울 거예요"));
 
         // Verify favorite conjugations are shown
         for(int i = 0;i<favorites.size();i++) {

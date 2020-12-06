@@ -16,6 +16,7 @@ import com.a494studios.koreanconjugator.MockedResponses;
 import com.a494studios.koreanconjugator.R;
 import com.a494studios.koreanconjugator.conjugations.ConjugationActivity;
 import com.a494studios.koreanconjugator.conjugations.ConjugationCardsAdapter;
+import com.a494studios.koreanconjugator.fragment.ConjugationFragment;
 import com.a494studios.koreanconjugator.parsing.Server;
 import com.a494studios.koreanconjugator.rules.MockServerRule;
 import com.a494studios.koreanconjugator.rules.StubIntentsRule;
@@ -121,7 +122,7 @@ public class ConjugationActivityTest {
 
         ConjugationCardsAdapter adapter = (ConjugationCardsAdapter)recyclerView.getAdapter();
         assertEquals(numItems, adapter.getItemCount());
-        List<ConjugationQuery.Conjugation> conjugations = adapter.getItem(0);
+        List<ConjugationFragment> conjugations = adapter.getItem(0);
         assertBodyContains(serverRule.server.takeRequest(2, TimeUnit.SECONDS),
                 "\"honorific\":true");
         assertTrue(conjugations.get(0).honorific());
