@@ -4,8 +4,8 @@ import android.annotation.SuppressLint;
 import android.util.Pair;
 import android.view.View;
 
-import com.a494studios.koreanconjugator.ConjugationQuery;
 import com.a494studios.koreanconjugator.EntryQuery;
+import com.a494studios.koreanconjugator.FavoritesQuery;
 import com.a494studios.koreanconjugator.R;
 import com.a494studios.koreanconjugator.utils.Utils;
 import com.a494studios.koreanconjugator.display.cards.DefPOSCard;
@@ -23,7 +23,7 @@ import java.util.Map;
 import io.reactivex.Observable;
 import io.reactivex.observers.DisposableObserver;
 
-public class DisplayObserver extends DisposableObserver<ConjugationQuery.Data> {
+public class DisplayObserver extends DisposableObserver<FavoritesQuery.Data> {
     private DisplayCardView displayCardView;
     private DisplayCardView note;
     private DisplayCardView examples;
@@ -50,23 +50,24 @@ public class DisplayObserver extends DisposableObserver<ConjugationQuery.Data> {
 
     @SuppressLint("CheckResult")
     @Override
-    public void onNext(ConjugationQuery.Data conjData) {
+    public void onNext(FavoritesQuery.Data favData) {
         // Favorites, hide the card and skip if there are none
-        if (conjData.conjugations().isEmpty()) {
+        if (favData.favConjugations().isEmpty()) {
             conjugations.setVisibility(View.GONE);
         } else {
-            List<ConjugationQuery.Conjugation> conjugations = conjData.conjugations();
+            List<FavoritesQuery.FavConjugation> conjugations = favData.favConjugations();
             boolean isAdj = entry.pos().equals("Adjective");
             Boolean regular = entry.regular();
             List<Favorite> favorites = Utils.getFavorites(displayCardView.getContext());
 
             FavoritesCard card = new FavoritesCard(new ArrayList<>(), entry.term(), false, isAdj, regular);
             this.conjugations.setCardBody(card);
+
             Observable.fromIterable(favorites)
                     .map(favorite -> {
                         // Pair up conjugations and favorites
-                        for (ConjugationQuery.Conjugation c : conjugations) {
-                            if (c.name().equals(favorite.getConjugationName())) {
+                        for (FavoritesQuery.FavConjugation c : conjugations) {
+                            if (c.name().equals(favorite.getConjugationName()) && c.honorific() == favorite.isHonorific()) {
                                 return new Pair<>(favorite, c);
                             }
                         }
@@ -76,10 +77,11 @@ public class DisplayObserver extends DisposableObserver<ConjugationQuery.Data> {
                     .subscribe(pair -> {
                         if(pair.first != null && pair.second != null) {
                             Favorite f = (Favorite)pair.first;
-                            ConjugationQuery.Conjugation conjugation =
-                                    (ConjugationQuery.Conjugation) pair.second;
-                            Map.Entry<String, ConjugationQuery.Conjugation> entry =
+                            FavoritesQuery.FavConjugation conjugation = (FavoritesQuery.FavConjugation) pair.second;
+
+                            Map.Entry<String, FavoritesQuery.FavConjugation> entry =
                                     new AbstractMap.SimpleEntry<>(f.getName(), conjugation);
+
                             card.addConjugation(entry, favorites.indexOf(f));
                         }
                     });

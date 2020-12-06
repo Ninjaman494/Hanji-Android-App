@@ -6,7 +6,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
-import com.a494studios.koreanconjugator.ConjugationQuery;
+import com.a494studios.koreanconjugator.FavoritesQuery;
 import com.a494studios.koreanconjugator.R;
 
 import java.util.ArrayList;
@@ -15,10 +15,10 @@ import java.util.Objects;
 
 public class FavoritesAdapter extends BaseAdapter {
 
-    private ArrayList<Map.Entry<String, ConjugationQuery.Conjugation>> entries;
+    private ArrayList<Map.Entry<String, FavoritesQuery.FavConjugation>> entries;
     private static final int RESOURCE_ID = R.layout.item_conjugation;
 
-    public FavoritesAdapter(ArrayList<Map.Entry<String,ConjugationQuery.Conjugation>> entries) {
+    public FavoritesAdapter(ArrayList<Map.Entry<String, FavoritesQuery.FavConjugation>> entries) {
         this.entries = Objects.requireNonNull(entries);
     }
 
@@ -27,7 +27,7 @@ public class FavoritesAdapter extends BaseAdapter {
         if (view == null) {
             view = LayoutInflater.from(viewGroup.getContext()).inflate(RESOURCE_ID, viewGroup, false);
         }
-        Map.Entry<String,ConjugationQuery.Conjugation> entry = entries.get(i);
+        Map.Entry<String,FavoritesQuery.FavConjugation> entry = entries.get(i);
         TextView typeView = view.findViewById(R.id.conjFormal);
         TextView conjView = view.findViewById(R.id.conjText);
         typeView.setText(entry.getKey());
@@ -35,7 +35,7 @@ public class FavoritesAdapter extends BaseAdapter {
         return view;
     }
 
-    public void addConjugation(Map.Entry<String, ConjugationQuery.Conjugation> entry, int index) {
+    public void addConjugation(Map.Entry<String, FavoritesQuery.FavConjugation> entry, int index) {
         if(index < entries.size() && index > 0) {
             entries.add(index, entry);
         } else {
@@ -50,7 +50,7 @@ public class FavoritesAdapter extends BaseAdapter {
     }
 
     @Override
-    public Map.Entry<String,ConjugationQuery.Conjugation> getItem(int i) {
+    public Map.Entry<String,FavoritesQuery.FavConjugation> getItem(int i) {
         return entries.get(i);
     }
 
