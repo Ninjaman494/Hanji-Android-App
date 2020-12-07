@@ -1,5 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <changelog>
+    <release versionCode="25" versionName="2.0.8" date="Dec 6th 2020">
+        <info>Bug fixes for favorites and stability</info>
+        <bugfix>Honorific favorites are working again</bugfix>
+        <bugfix>Having Determiner Past favorited no longer causes a crash with adjectives</bugfix>
+        <bugfix>Stability improvements to dialogs so they no longer cause random crashes</bugfix>
+    </release>
     <release versionCode="24" versionName="2.0.7" date="Nov 16th 2020">
         <info>Some minor visual improvements</info>
         <new type="summary">Added the Changelog library to the Acknowledgements section</new>

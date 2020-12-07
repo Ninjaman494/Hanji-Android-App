@@ -35,8 +35,8 @@ android {
         minSdkVersion 19
         targetSdkVersion 29
         multiDexEnabled true
-        versionCode 24
-        versionName "2.0.7"
+        versionCode 25
+        versionName "2.0.8"
         testInstrumentationRunner "com.a494studios.koreanconjugator.HanjiTestRunner"
 
         // Comment out for coverage to work
