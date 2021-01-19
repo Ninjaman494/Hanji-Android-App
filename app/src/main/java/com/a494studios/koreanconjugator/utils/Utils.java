@@ -97,7 +97,25 @@ public class Utils {
         GsonBuilder builder = new GsonBuilder();
         builder.registerTypeHierarchyAdapter(Favorite.class, new FavoriteSerializer());
         java.lang.reflect.Type type = new TypeToken<ArrayList<Favorite>>(){}.getType();
-        return builder.create().fromJson(jsonString,type);
+
+        ArrayList<Favorite> favorites;
+        try {
+            favorites = builder.create().fromJson(jsonString,type);
+        } catch (Exception e) {
+            FirebaseCrashlytics crashlytics = FirebaseCrashlytics.getInstance();
+            crashlytics.log("Exception caught while parsing favorites");
+            crashlytics.recordException(e);
+
+            crashlytics.log("Resetting favorites");
+            favorites = new ArrayList<>();
+            favorites.add(new Favorite("Past","declarative past informal high",false));
+            favorites.add(new Favorite("Present","declarative present informal high",false));
+            favorites.add(new Favorite("Future","declarative future informal high",false));
+            setFavorites(favorites, context);
+            crashlytics.log("Reset favorites");
+        }
+
+        return favorites;
     }
 
     public static String toTitleCase(String string) {

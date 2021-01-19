@@ -12,7 +12,6 @@ import java.lang.reflect.Type;
 /**
  * Created by akash on 1/13/2018.
  */
-//TODO reimplement Crashlytics
 public class FavoriteSerializer implements JsonDeserializer<Favorite> {
     @Override
     public Favorite deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {

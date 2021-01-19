@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.app.Instrumentation;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 
 import androidx.core.util.Pair;
 import androidx.test.core.app.ApplicationProvider;
@@ -218,5 +220,29 @@ public class DisplayActivityTest {
                 hasExtra(ConjugationActivity.EXTRA_ISADJ, true),
                 hasExtra(ConjugationActivity.EXTRA_HONORIFIC, false),
                 hasExtra(ConjugationActivity.EXTRA_REGULAR, null)));
+    }
+
+    @Test
+    public void favorites_handlesParsingError() {
+        // Create old favorites
+        Context context = getInstrumentation().getTargetContext();
+        SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(context).edit();
+        editor.putString("FAVORITES_VALUES",
+                "[{\"key\":\"Past\",\"value\":[\"INFORMAL_HIGH\",\"DECLARATIVE\",\"PAST\"]}]");
+        editor.apply();
+
+        // Verify conjugations card is shown
+        onView(allOf(isDescendantOfA(withId(R.id.disp_conjCard)),
+                withId(R.id.displayCard_heading)))
+                .check(matches(withText("Conjugations")));
+
+        // Verify favorites have been reset with defaults
+        ArrayList<Favorite> favPrefs = com.a494studios.koreanconjugator.utils.Utils.getFavorites(context);
+        assert favPrefs.get(0).getName().equals("Past");
+        assert favPrefs.get(0).getConjugationName().equals("declarative past informal high");
+        assert favPrefs.get(1).getName().equals("Present");
+        assert favPrefs.get(1).getConjugationName().equals("declarative present informal high");
+        assert favPrefs.get(2).getName().equals("Future");
+        assert favPrefs.get(2).getConjugationName().equals("declarative future informal high");
     }
 }
