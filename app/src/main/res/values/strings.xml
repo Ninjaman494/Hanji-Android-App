@@ -31,6 +31,12 @@
     <string name="feed_rate_never">Never</string>
     <string name="feedback_sent">Feedback sent</string>
     <string name="feedback_sending">Sending feedback</string>
+    <!--Maoni Activity-->
+    <string name="email_label">Email (optional)</string>
+    <string name="feedback_type_title">Select Feedback Type</string>
+    <string name="bug_option">Found a Bug</string>
+    <string name="new_feature_option">Suggesting a New Feature</string>
+    <string name="other_option">Just Saying Hi</string>
     <!--Onboarding-->
     <string name="onboarding1_title">Hanji 2.0</string>
     <string name="onboarding1_desc">Welcome to Hanji 2.0! This new update adds a ton of new features and takes Hanji to the next level.</string>
