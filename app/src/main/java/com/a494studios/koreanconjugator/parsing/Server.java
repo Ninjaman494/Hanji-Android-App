@@ -64,7 +64,7 @@ public class Server {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .filter((dataResponse) -> dataResponse.data() != null)
-                .doFinally(() -> idler.decrement());
+                .doAfterTerminate(() -> idler.decrement());
     }
 
     public static Observable<Response<ConjugationQuery.Data>> doConjugationQuery(
@@ -95,7 +95,7 @@ public class Server {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .filter((dataResponse) -> dataResponse.data() != null)
-                .doFinally(() -> idler.decrement());
+                .doAfterTerminate(() -> idler.decrement());
     }
 
     public static Observable<Response<FavoritesQuery.Data>> doFavoritesQuery(
@@ -118,18 +118,7 @@ public class Server {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .filter((dataResponse) -> dataResponse.data() != null)
-                .doFinally(() -> idler.decrement());
-    }
-
-    public static Observable<Response<ExamplesQuery.Data>> doExamplesQuery(final String id, CustomApplication app) {
-       ApolloQueryCall<ExamplesQuery.Data> call =  getApolloClient(app)
-                .query(new ExamplesQuery(id))
-                .httpCachePolicy(HttpCachePolicy.CACHE_FIRST);
-       return Rx2Apollo.from(call)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .filter((dataResponse) -> dataResponse.data() != null);
-
+                .doAfterTerminate(() -> idler.decrement());
     }
 
     public static Observable<Response<ConjugationNamesQuery.Data>> doConjugationNamesQuery(CustomApplication app) {
@@ -154,7 +143,7 @@ public class Server {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .filter((dataResponse -> dataResponse.data() != null))
-                .doFinally(() -> idler.decrement());
+                .doAfterTerminate(() -> idler.decrement());
     }
 
     public static Observable<Response<StemQuery.Data>> doStemQuery(String term, CustomApplication app) {
