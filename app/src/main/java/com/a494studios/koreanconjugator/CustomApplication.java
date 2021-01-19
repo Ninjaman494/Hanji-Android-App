@@ -1,6 +1,8 @@
 package com.a494studios.koreanconjugator;
 
 import android.content.Context;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.view.View;
 import android.widget.Toast;
 
@@ -25,10 +27,12 @@ import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.MobileAds;
 import com.google.firebase.analytics.FirebaseAnalytics;
+import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
+import java.util.Map;
 
 public class CustomApplication extends MultiDexApplication implements PurchasesUpdatedListener {
     private static final String SERVER_URL = com.a494studios.koreanconjugator.BuildConfig.SERVER_URL;
@@ -92,6 +96,15 @@ public class CustomApplication extends MultiDexApplication implements PurchasesU
 
         // Setup Firebase Analytics
         Logger.initialize(FirebaseAnalytics.getInstance(this));
+
+        // Log shared preferences in Crashlytics
+        FirebaseCrashlytics crashlytics = FirebaseCrashlytics.getInstance();
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+
+        Map<String, ?> entries = preferences.getAll();
+        for (Map.Entry<String, ?> entry : entries.entrySet()) {
+            crashlytics.setCustomKey("PREF_" + entry.getKey(), entry.getValue().toString());
+        }
     }
 
     @Override
