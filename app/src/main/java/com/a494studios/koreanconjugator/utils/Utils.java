@@ -174,7 +174,7 @@ public class Utils {
                 .withLogsCapturingFeature(false)
                 .withHandler(listener)
                 .withExtraLayout(R.layout.activity_maoni_extra)
-                .withHeader(R.drawable.feedback_header)
+                .withHeader(R.color.colorPrimary)
                 .withTheme(R.style.AppTheme_NoActionBar)
                 .build();
     }

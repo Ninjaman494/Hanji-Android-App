@@ -3,12 +3,25 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/extra_emailField"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="16dp"
+        android:hint="@string/email_label">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:imeOptions="actionDone"
+            android:inputType="text" />
+    </com.google.android.material.textfield.TextInputLayout>
+
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Select Feedback Type"
+        android:text="@string/feedback_type_title"
         android:textColor="@android:color/black"
-        android:paddingTop="8dp"
         android:paddingBottom="16dp"/>
 
     <RadioGroup
@@ -22,20 +35,20 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
             android:checked="true"
-            android:text="Found a Bug"/>
+            android:text="@string/bug_option"/>
         <RadioButton
             android:id="@+id/extra_feature_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
             android:checked="false"
-            android:text="Suggesting a New Feature"/>
+            android:text="@string/new_feature_option"/>
         <RadioButton
             android:id="@+id/extra_hi_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
             android:checked="false"
-            android:text="Just Saying Hi"/>
+            android:text="@string/other_option"/>
     </RadioGroup>
 </LinearLayout>

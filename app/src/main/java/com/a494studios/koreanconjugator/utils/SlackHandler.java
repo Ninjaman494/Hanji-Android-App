@@ -11,6 +11,7 @@ import android.widget.Toast;
 
 import com.a494studios.koreanconjugator.BuildConfig;
 import com.a494studios.koreanconjugator.R;
+import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
 import org.rm3l.maoni.common.contract.Handler;
@@ -30,6 +31,7 @@ public class SlackHandler implements Handler {
     private AppCompatActivity context;
     private SlackWebApiClient webApiClient;
     private RadioGroup radioGroup;
+    private TextInputLayout emailField;
 
     public SlackHandler(AppCompatActivity context){
         this.context  = context;
@@ -39,6 +41,7 @@ public class SlackHandler implements Handler {
     @Override
     public void onCreate(View view, Bundle bundle) {
         radioGroup = view.findViewById(R.id.extra_radiogroup);
+        emailField = view.findViewById(R.id.extra_emailField);
     }
 
     @Override
@@ -94,6 +97,14 @@ public class SlackHandler implements Handler {
                 final StringBuilder body = new StringBuilder();
 
                 body.append(feedback.userComment).append("\n\n");
+
+                body.append("Email: ");
+                String email = emailField.getEditText().getText().toString();
+                if(email.length() > 0) {
+                    body.append(email);
+                } else {
+                    body.append("None given");
+                }
 
                 body.append("\n------ Application ------\n");
                 if (feedback.appInfo != null) {
