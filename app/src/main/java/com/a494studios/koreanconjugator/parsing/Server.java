@@ -6,7 +6,6 @@ import com.a494studios.koreanconjugator.ConjugationNamesQuery;
 import com.a494studios.koreanconjugator.ConjugationQuery;
 import com.a494studios.koreanconjugator.CustomApplication;
 import com.a494studios.koreanconjugator.EntryQuery;
-import com.a494studios.koreanconjugator.ExamplesQuery;
 import com.a494studios.koreanconjugator.FavoritesQuery;
 import com.a494studios.koreanconjugator.SearchQuery;
 import com.a494studios.koreanconjugator.StemQuery;
@@ -52,7 +51,7 @@ public class Server {
         return Rx2Apollo.from(call)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .filter((dataResponse) -> dataResponse.data() != null);
+                .filter((dataResponse) -> dataResponse.getData() != null);
     }
 
     public static Observable<Response<EntryQuery.Data>> doEntryQuery(final String id, CustomApplication app) {
@@ -63,7 +62,7 @@ public class Server {
         return Rx2Apollo.from(call)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .filter((dataResponse) -> dataResponse.data() != null)
+                .filter((dataResponse) -> dataResponse.getData() != null)
                 .doAfterTerminate(() -> idler.decrement());
     }
 
@@ -94,7 +93,7 @@ public class Server {
         return Rx2Apollo.from(call)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .filter((dataResponse) -> dataResponse.data() != null)
+                .filter((dataResponse) -> dataResponse.getData() != null)
                 .doAfterTerminate(() -> idler.decrement());
     }
 
@@ -117,7 +116,7 @@ public class Server {
         return Rx2Apollo.from(call)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .filter((dataResponse) -> dataResponse.data() != null)
+                .filter((dataResponse) -> dataResponse.getData() != null)
                 .doAfterTerminate(() -> idler.decrement());
     }
 
@@ -128,7 +127,7 @@ public class Server {
         return Rx2Apollo.from(call)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .filter((dataResponse -> dataResponse.data() != null));
+                .filter((dataResponse -> dataResponse.getData() != null));
     }
 
     public static Observable<Response<WordOfTheDayQuery.Data>> doWODQuery(CustomApplication app) {
@@ -142,7 +141,7 @@ public class Server {
         return Rx2Apollo.from(call)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .filter((dataResponse -> dataResponse.data() != null))
+                .filter((dataResponse -> dataResponse.getData() != null))
                 .doAfterTerminate(() -> idler.decrement());
     }
 
@@ -157,7 +156,7 @@ public class Server {
         return Rx2Apollo.from(call)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .filter((dataResponse -> dataResponse.data() != null));
+                .filter((dataResponse -> dataResponse.getData() != null));
     }
 
     private static ApolloClient getApolloClient(CustomApplication app) {
