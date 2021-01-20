@@ -1,4 +1,4 @@
-package com.a494studios.koreanconjugator;
+package com.a494studios.koreanconjugator.tests;
 
 import android.content.Context;
 import android.content.Intent;
