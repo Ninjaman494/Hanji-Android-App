@@ -15,20 +15,14 @@
         <Preference
             android:persistent="false"
             android:title="Terms and Conditions of Use">
-            <intent android:targetClass="com.a494studios.koreanconjugator.settings.LegalDisplayActivity"
-                android:targetPackage="com.a494studios.koreanconjugator">
-                <extra android:name="type"
-                    android:value="TERMS_CONDITIONS" />
-            </intent>
+            <intent android:action="android.intent.action.VIEW"
+                android:data="https://hanji-website.vercel.app/terms" />
         </Preference>
         <Preference
             android:persistent="false"
             android:title="Privacy Policy">
-            <intent android:targetClass="com.a494studios.koreanconjugator.settings.LegalDisplayActivity"
-                android:targetPackage="com.a494studios.koreanconjugator">
-                <extra android:name="type"
-                    android:value="PRIVACY_POLICY" />
-            </intent>
+            <intent android:action="android.intent.action.VIEW"
+                android:data="https://hanji-website.vercel.app/privacy" />
         </Preference>
     </PreferenceCategory>
 </PreferenceScreen>
