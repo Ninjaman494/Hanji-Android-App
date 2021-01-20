@@ -1,6 +1,8 @@
 package com.a494studios.koreanconjugator;
 
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.filters.LargeTest;
@@ -9,7 +11,6 @@ import androidx.test.rule.ActivityTestRule;
 import com.a494studios.koreanconjugator.parsing.Favorite;
 import com.a494studios.koreanconjugator.rules.StubIntentsRule;
 import com.a494studios.koreanconjugator.settings.FavoritesActivity;
-import com.a494studios.koreanconjugator.settings.LegalDisplayActivity;
 import com.a494studios.koreanconjugator.settings.SettingsActivity;
 
 import org.junit.Before;
@@ -23,8 +24,9 @@ import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.intent.Intents.intended;
+import static androidx.test.espresso.intent.matcher.IntentMatchers.hasAction;
 import static androidx.test.espresso.intent.matcher.IntentMatchers.hasComponent;
-import static androidx.test.espresso.intent.matcher.IntentMatchers.hasExtra;
+import static androidx.test.espresso.intent.matcher.IntentMatchers.hasData;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static androidx.test.platform.app.InstrumentationRegistry.getInstrumentation;
@@ -66,18 +68,18 @@ public class SettingsActivityTest {
     }
 
     @Test
-    public void tcu_redirectsToLegal() {
+    public void tcu_redirectsToWebsite() {
         onView(withText("Terms and Conditions of Use")).perform(click());
 
-        intended(allOf(hasComponent(LegalDisplayActivity.class.getName()),
-                    hasExtra("type", "TERMS_CONDITIONS")));
+        intended(allOf(hasAction(Intent.ACTION_VIEW),
+                hasData(Uri.parse("https://hanji-website.vercel.app/terms"))));
     }
 
     @Test
-    public void privacy_redirectsToLegal() {
+    public void privacy_redirectsToWebsite() {
         onView(withText("Privacy Policy")).perform(click());
 
-        intended(allOf(hasComponent(LegalDisplayActivity.class.getName()),
-                hasExtra("type", "PRIVACY_POLICY")));
+        intended(allOf(hasAction(Intent.ACTION_VIEW),
+                hasData(Uri.parse("https://hanji-website.vercel.app/privacy"))));
     }
 }

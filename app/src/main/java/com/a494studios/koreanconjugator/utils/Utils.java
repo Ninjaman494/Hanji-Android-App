@@ -16,7 +16,6 @@ import com.a494studios.koreanconjugator.CustomApplication;
 import com.a494studios.koreanconjugator.R;
 import com.a494studios.koreanconjugator.parsing.Favorite;
 import com.a494studios.koreanconjugator.parsing.FavoriteSerializer;
-import com.a494studios.koreanconjugator.settings.LegalDisplayActivity;
 import com.android.billingclient.api.BillingClient;
 import com.android.billingclient.api.BillingFlowParams;
 import com.android.billingclient.api.BillingResult;
