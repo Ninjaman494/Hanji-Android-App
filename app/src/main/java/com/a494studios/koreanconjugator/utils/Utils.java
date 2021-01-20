@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.preference.PreferenceManager;
 import android.widget.Toast;
 
@@ -140,13 +141,12 @@ public class Utils {
         aboutConfig.packageName = activity.getPackageName();
         aboutConfig.buildType = AboutConfig.BuildType.GOOGLE;
         aboutConfig.appPublisher = "494 Studios"; // app publisher for "Try Other Apps" item
-        aboutConfig.privacyHtmlPath = "file:///android_asset/PrivacyPolicy.html";
+        aboutConfig.privacyHtmlPath = "https://hanji-website.vercel.app/privacy";
         aboutConfig.acknowledgmentHtmlPath = "www.google.com";
         // Custom handler for Acknowledgements and Privacy Policy options
         aboutConfig.dialog = (appCompatActivity, url, tag) -> {
             if(tag.equals(activity.getString(R.string.egab_privacy_policy))) {
-                Intent intent = new Intent(activity,LegalDisplayActivity.class);
-                intent.putExtra("type",LegalDisplayActivity.TYPE_PRIV_POLICY);
+                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://hanji-website.vercel.app/privacy"));
                 activity.startActivity(intent);
             }else if(tag.equals(activity.getString(R.string.egab_acknowledgements))){
                 new LibsBuilder()
