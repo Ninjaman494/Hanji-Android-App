@@ -125,7 +125,7 @@ public class CustomApplication extends MultiDexApplication implements PurchasesU
         }
     }
 
-    public static void handleAdCard(AdView adView) {
+    public void handleAdCard(AdView adView) {
         if(isAdFree) {
             adView.setVisibility(View.GONE);
         } else {
@@ -133,7 +133,7 @@ public class CustomApplication extends MultiDexApplication implements PurchasesU
         }
     }
 
-    public static boolean isAdFree() {
+    public boolean isAdFree() {
         return isAdFree;
     }
 

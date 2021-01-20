@@ -28,10 +28,12 @@ public abstract class SearchResultsAdapter extends RecyclerView.Adapter<Recycler
 
     private ArrayList<SearchQuery.Result> results;
     private Context context;
+    private CustomApplication app;
 
     SearchResultsAdapter(Context context) {
         this.results = new ArrayList<>();
         this.context = context;
+        this.app = (CustomApplication) context.getApplicationContext();
     }
 
     @NonNull
@@ -66,7 +68,7 @@ public abstract class SearchResultsAdapter extends RecyclerView.Adapter<Recycler
 
         // Handle showing ad
         int offset = 0;
-        if (!CustomApplication.isAdFree()) {
+        if (!app.isAdFree()) {
             if (itemCount > 3) {
                 // If this is the 3rd item in a list greater than 3, show ad here
                 if (position == 2) {
@@ -74,7 +76,7 @@ public abstract class SearchResultsAdapter extends RecyclerView.Adapter<Recycler
                     viewHolder.button.setVisibility(View.GONE);
                     viewHolder.wordInfoView.setVisibility(View.GONE);
 
-                    CustomApplication.handleAdCard(viewHolder.adView);
+                    app.handleAdCard(viewHolder.adView);
                     return;
                 } else if (position > 2) {
                     // If we're past the 3rd item, use offset to get the correct item.
@@ -86,7 +88,7 @@ public abstract class SearchResultsAdapter extends RecyclerView.Adapter<Recycler
                 viewHolder.button.setVisibility(View.GONE);
                 viewHolder.wordInfoView.setVisibility(View.GONE);
 
-                CustomApplication.handleAdCard(viewHolder.adView);
+                app.handleAdCard(viewHolder.adView);
                 return;
             }
 
@@ -117,7 +119,7 @@ public abstract class SearchResultsAdapter extends RecyclerView.Adapter<Recycler
     public int getItemCount() {
         int size = results.size();
         if (size > 0) {
-            return CustomApplication.isAdFree() ? size : size + 1;
+            return app.isAdFree() ? size : size + 1;
         } else {
             return size;
         }

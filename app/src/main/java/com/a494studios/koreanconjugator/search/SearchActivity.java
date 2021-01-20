@@ -38,7 +38,7 @@ public class SearchActivity extends AppCompatActivity {
         progressBar = findViewById(R.id.main_loadingBar);
         loadingText = findViewById(R.id.main_loadingText);
         AdView adView = findViewById(R.id.search_adView);
-        CustomApplication.handleAdCard(adView);
+        ((CustomApplication)getApplication()).handleAdCard(adView);
 
         if (!Intent.ACTION_SEARCH.equals(getIntent().getAction())) {
             finish();
@@ -66,7 +66,7 @@ public class SearchActivity extends AppCompatActivity {
                 .subscribeWith(new DisposableObserver<Response<SearchQuery.Data>>() {
                     @Override
                     public void onNext(Response<SearchQuery.Data> dataResponse) {
-                        List<SearchQuery.Result> results = dataResponse.data().search().results();
+                        List<SearchQuery.Result> results = dataResponse.getData().search().results();
                         if(results.isEmpty()) {
                             NoResultsFragment.newInstance(entry, (dialogInterface, i) -> finish())
                                     .show(getSupportFragmentManager(), "no_results_dialog");
