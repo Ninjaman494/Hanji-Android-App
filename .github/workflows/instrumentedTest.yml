@@ -38,7 +38,7 @@ jobs:
         with:
           api-level: ${{ matrix.api-level }}
           disable-animations: true
-          profile: Pixel 2
+          profile: pixel
           script: ./gradlew connectedDebugAndroidTest --stacktrace --scan
 
       - name: Upload test reports
