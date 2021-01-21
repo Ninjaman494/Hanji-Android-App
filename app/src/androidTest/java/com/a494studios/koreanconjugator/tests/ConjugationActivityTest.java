@@ -107,31 +107,27 @@ public class ConjugationActivityTest {
                 withId(R.id.conjText)))
                 .check(matches(withText("가면")));
 
-        // Declarative Present
-        onView(withId(R.id.conj_list)).perform(scrollToPosition(3));
-
-        onView(allOf(isDescendantOfA(nthChildOf(withId(R.id.conj_list),3)),
+        // Declarative Future
+        onView(allOf(isDescendantOfA(nthChildOf(withId(R.id.conj_list),1)),
                 isDescendantOfA(nthChildOf(withId(R.id.listCard_list), 1)),
                 withId(R.id.conjFormal)))
                 .check(matches(withText("informal high")));
 
-        onView(allOf(isDescendantOfA(nthChildOf(withId(R.id.conj_list),3)),
+        onView(allOf(isDescendantOfA(nthChildOf(withId(R.id.conj_list),1)),
                 isDescendantOfA(nthChildOf(withId(R.id.listCard_list), 1)),
                 withId(R.id.conjText)))
-                .check(matches(withText("가요")));
+                .check(matches(withText("갈 거예요")));
 
-        // Interrogative Past
-        onView(withId(R.id.conj_list)).perform(scrollToPosition(6));
-
-        onView(allOf(isDescendantOfA(nthChildOf(withId(R.id.conj_list),3)),
+        // Declarative Past
+        onView(allOf(isDescendantOfA(nthChildOf(withId(R.id.conj_list),2)),
                 isDescendantOfA(nthChildOf(withId(R.id.listCard_list), 3)),
                 withId(R.id.conjFormal)))
                 .check(matches(withText("formal high")));
 
-        onView(allOf(isDescendantOfA(nthChildOf(withId(R.id.conj_list),3)),
+        onView(allOf(isDescendantOfA(nthChildOf(withId(R.id.conj_list),2)),
                 isDescendantOfA(nthChildOf(withId(R.id.listCard_list), 3)),
                 withId(R.id.conjText)))
-                .check(matches(withText("갔습니까")));
+                .check(matches(withText("갔습니다")));
     }
 
     @Test
