@@ -3,7 +3,6 @@ package com.a494studios.koreanconjugator.tests;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 
-import androidx.recyclerview.widget.RecyclerView;
 import androidx.test.core.app.ApplicationProvider;
 import androidx.test.espresso.IdlingRegistry;
 import androidx.test.espresso.idling.CountingIdlingResource;
@@ -14,8 +13,6 @@ import androidx.test.rule.ActivityTestRule;
 import com.a494studios.koreanconjugator.MockReader;
 import com.a494studios.koreanconjugator.R;
 import com.a494studios.koreanconjugator.conjugations.ConjugationActivity;
-import com.a494studios.koreanconjugator.conjugations.ConjugationCardsAdapter;
-import com.a494studios.koreanconjugator.fragment.ConjugationFragment;
 import com.a494studios.koreanconjugator.parsing.Server;
 import com.a494studios.koreanconjugator.rules.MockServerRule;
 import com.a494studios.koreanconjugator.rules.StubIntentsRule;
@@ -26,20 +23,22 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import okhttp3.mockwebserver.MockResponse;
 
 import static androidx.test.espresso.Espresso.onView;
+import static androidx.test.espresso.assertion.ViewAssertions.matches;
+import static androidx.test.espresso.contrib.RecyclerViewActions.scrollToPosition;
+import static androidx.test.espresso.matcher.ViewMatchers.hasDescendant;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
+import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static com.a494studios.koreanconjugator.MockReader.readStringFromFile;
+import static com.a494studios.koreanconjugator.RecyclerViewMatchers.withRecyclerView;
 import static com.a494studios.koreanconjugator.Utils.assertBodyContains;
+import static com.a494studios.koreanconjugator.Utils.nthChildOf;
 import static com.a494studios.koreanconjugator.Utils.setChecked;
 import static com.a494studios.koreanconjugator.Utils.testActionBar;
-import static junit.framework.TestCase.assertEquals;
-import static junit.framework.TestCase.assertFalse;
-import static junit.framework.TestCase.assertTrue;
 
 @RunWith(AndroidJUnit4.class)
 @LargeTest
@@ -94,53 +93,52 @@ public class ConjugationActivityTest {
     }
 
     @Test
-    public void test_displaysData() {
-        RecyclerView recyclerView = activityRule.getActivity().findViewById(R.id.conj_list);
-        int numItem = recyclerView.getAdapter().getItemCount();
-        assertTrue(numItem > 0);
-    }
-
-    @Test
     public void test_displayAfterRotation() {
-        RecyclerView recyclerView = activityRule.getActivity().findViewById(R.id.conj_list);
-        int numItem = recyclerView.getAdapter().getItemCount();
-        assertTrue(numItem > 0);
-
         activityRule.getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-        assertEquals(numItem, recyclerView.getAdapter().getItemCount());
+        checkConjugations(false);
 
         activityRule.getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-        assertEquals(numItem, recyclerView.getAdapter().getItemCount());
+        checkConjugations(false);
     }
 
     @Test
     public void test_honorificSwitch() throws InterruptedException {
         assertBodyContains(serverRule.server.takeRequest(2, TimeUnit.SECONDS),
                 "\"honorific\":false");
-
-        RecyclerView recyclerView = activityRule.getActivity().findViewById(R.id.conj_list);
-        int numItems = recyclerView.getAdapter().getItemCount();
+        checkConjugations(false);
 
         // Honorific
         onView(withId(R.id.conj_switch)).perform(setChecked(true));
 
-        Thread.sleep(300);
-
-        ConjugationCardsAdapter adapter = (ConjugationCardsAdapter)recyclerView.getAdapter();
-        assertEquals(numItems, adapter.getItemCount());
-        List<ConjugationFragment> conjugations = adapter.getItem(0);
         assertBodyContains(serverRule.server.takeRequest(2, TimeUnit.SECONDS),
                 "\"honorific\":true");
-        assertTrue(conjugations.get(0).honorific());
+        checkConjugations(true);
 
         // Back to regular, it's cached so we can't check the request
         onView(withId(R.id.conj_switch)).perform(setChecked(false));
+        checkConjugations(false);
+    }
 
-        Thread.sleep(300);
+    private void checkConjugations(boolean honorific) {
+        // Connective If
+        onView(withId(R.id.conj_list)).perform(scrollToPosition(0));
+        onView(nthChildOf(withRecyclerView(R.id.conj_list).atPositionOnView(0, R.id.listCard_list), 0))
+                .check(matches(hasDescendant(withText("connective if"))));
+        onView(nthChildOf(withRecyclerView(R.id.conj_list).atPositionOnView(0, R.id.listCard_list), 0))
+                .check(matches(hasDescendant(withText(honorific ? "가시면" : "가면"))));
 
-        adapter = (ConjugationCardsAdapter) recyclerView.getAdapter();
-        assertEquals(numItems, adapter.getItemCount());
-        conjugations = adapter.getItem(0);
-        assertFalse(conjugations.get(0).honorific());
+        // Declarative Present Informal High
+        onView(withId(R.id.conj_list)).perform(scrollToPosition(3));
+        onView(nthChildOf(withRecyclerView(R.id.conj_list).atPositionOnView(3, R.id.listCard_list), 1))
+                .check(matches(hasDescendant(withText("informal high"))));
+        onView(nthChildOf(withRecyclerView(R.id.conj_list).atPositionOnView(3, R.id.listCard_list), 1))
+                .check(matches(hasDescendant(withText(honorific ? "가세요" : "가요"))));
+
+        // Interrogative Present Formal High
+        onView(withId(R.id.conj_list)).perform(scrollToPosition(7));
+        onView(nthChildOf(withRecyclerView(R.id.conj_list).atPositionOnView(7, R.id.listCard_list), 3))
+                .check(matches(hasDescendant(withText("formal high"))));
+        onView(nthChildOf(withRecyclerView(R.id.conj_list).atPositionOnView(7, R.id.listCard_list), 3))
+                .check(matches(hasDescendant(withText(honorific ? "가십니까" : "갑니까"))));
     }
 }

@@ -13,8 +13,6 @@ jobs:
     runs-on: macos-latest
     strategy:
       fail-fast: false
-      matrix:
-        api-level: [21, 23, 29]
 
     steps:
       - name: Checkout repo
@@ -36,12 +34,13 @@ jobs:
       - name: Run tests
         uses: reactivecircus/android-emulator-runner@v2
         with:
-          api-level: ${{ matrix.api-level }}
+          api-level: 28
+          disable-animations: true
           script: ./gradlew connectedDebugAndroidTest --stacktrace --scan
 
       - name: Upload test reports
         uses: actions/upload-artifact@v2
         if: ${{ always() }}
         with:
-          name: ${{matrix.api-level }} reports
+          name: reports
           path: app/build/reports

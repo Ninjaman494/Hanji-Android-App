@@ -1,0 +1,217 @@
+{
+  "data": {
+    "search": {
+      "results": [
+        {
+          "id": "먹다0",
+          "term": "먹다",
+          "pos": "Verb",
+          "definitions": [
+            "to eat, to have",
+            "to have a drink",
+            "to pocket, to embezzle, to seize upon",
+            "to receive, to get",
+            "to make up (one's mind), to be determined",
+            "to grow older"
+          ],
+          "__typename": "Entry"
+        },
+        {
+          "id": "5ef7cf05ad8b51d5dc68b080",
+          "term": "외식하다",
+          "pos": "Verb",
+          "definitions": [
+            "to eat out"
+          ],
+          "__typename": "Entry"
+        },
+        {
+          "id": "끽반하다0",
+          "term": "끽반하다",
+          "pos": "Verb",
+          "definitions": [
+            "to eat, to have a meal"
+          ],
+          "__typename": "Entry"
+        },
+        {
+          "id": "식사하다0",
+          "term": "식사하다",
+          "pos": "Verb",
+          "definitions": [
+            "to eat, to have a meal"
+          ],
+          "__typename": "Entry"
+        },
+        {
+          "id": "5ef7cf05ad8b51d5dc68aeb0",
+          "term": "잡아먹다",
+          "pos": "Verb",
+          "definitions": [
+            "Slaughter and eat"
+          ],
+          "__typename": "Entry"
+        },
+        {
+          "id": "5ef7d2d2e8ee75e548c0d60c",
+          "term": "잡수다",
+          "pos": "Verb",
+          "definitions": [
+            "eat,drink"
+          ],
+          "__typename": "Entry"
+        },
+        {
+          "id": "5ef7d2d2e8ee75e548c0d7d9",
+          "term": "부식하다",
+          "pos": "Verb",
+          "definitions": [
+            "rot",
+            "eat away"
+          ],
+          "__typename": "Entry"
+        },
+        {
+          "id": "5f1624fd39ead9b6883d794d",
+          "term": "퍼먹다",
+          "pos": "Verb",
+          "definitions": [
+            "to eat a spoonful"
+          ],
+          "__typename": "Entry"
+        },
+        {
+          "id": "5f1624fd39ead9b6883d78bf",
+          "term": "잘라먹다",
+          "pos": "Verb",
+          "definitions": [
+            "to cut and eat"
+          ],
+          "__typename": "Entry"
+        },
+        {
+          "id": "5f1c97af3e750279e4e24760",
+          "term": "게걸스레먹다",
+          "pos": "Verb",
+          "definitions": [
+            "eat greedily"
+          ],
+          "__typename": "Entry"
+        },
+        {
+          "id": "드시다0",
+          "term": "드시다",
+          "pos": "Verb",
+          "definitions": [
+            "honorific of 마시다; to drink",
+            "honorific of 먹다: to eat"
+          ],
+          "__typename": "Entry"
+        },
+        {
+          "id": "들다0",
+          "term": "들다",
+          "pos": "Verb",
+          "definitions": [
+            "(inside from outside) to come in; to get in; to enter",
+            "(light or water) to come in; to get in; to enter",
+            "to move to; to get in; to stay",
+            "to get on; to take (a certain road.)",
+            "(to a place to sleep) to get into",
+            "to cost; be spent; be used; be poured; be invested (money, effort, etc.)",
+            "(color, flavor, or moisture) to get in; to permeate; to saturate with",
+            "to reach; be in; to come in",
+            "to enter, to infiltrate, be drawn to; be attracted to",
+            "to join an organization",
+            "(auxiliary  verb) to actively strive to do",
+            "to stop raining",
+            "to grow older; to age",
+            "to hold; to carry",
+            "to raise; to lift",
+            "(honorific) to eat; to drink"
+          ],
+          "__typename": "Entry"
+        },
+        {
+          "id": "식생활0",
+          "term": "식생활",
+          "pos": "Noun",
+          "definitions": [
+            "eating habits; diet"
+          ],
+          "__typename": "Entry"
+        },
+        {
+          "id": "식욕0",
+          "term": "식욕",
+          "pos": "Noun",
+          "definitions": [
+            "appetite, desire to eat"
+          ],
+          "__typename": "Entry"
+        },
+        {
+          "id": "잡수시다0",
+          "term": "잡수시다",
+          "pos": "Verb",
+          "definitions": [
+            "honorific of 먹다, to eat"
+          ],
+          "__typename": "Entry"
+        },
+        {
+          "id": "5ef7cf05ad8b51d5dc68afae",
+          "term": "미식하다",
+          "pos": "Verb",
+          "definitions": [
+            "to eat good food"
+          ],
+          "__typename": "Entry"
+        },
+        {
+          "id": "5f29c0a7bcd0037744246b88",
+          "term": "파먹다",
+          "pos": "Verb",
+          "definitions": [
+            "to dig in the dirt and eat what's in there",
+            "live by farming"
+          ],
+          "__typename": "Entry"
+        },
+        {
+          "id": "먹이다0",
+          "term": "먹이다",
+          "pos": "Verb",
+          "definitions": [
+            "to feed something, to cause to eat",
+            "to support",
+            "(colloquial) to bribe, pay off",
+            "(vulgar) to hit"
+          ],
+          "__typename": "Entry"
+        },
+        {
+          "id": "5f1c94df5a1f373fd85d7edb",
+          "term": "식언하다",
+          "pos": "Verb",
+          "definitions": [
+            "eat one's  word  s"
+          ],
+          "__typename": "Entry"
+        },
+        {
+          "id": "5f1c9a0a821998a0247f3fc6",
+          "term": "포식하다",
+          "pos": "Verb",
+          "definitions": [
+            "to gluttonize",
+            "eat with glee and great appetite"
+          ],
+          "__typename": "Entry"
+        }
+      ],
+      "cursor": "20",
+      "__typename": "Result"
+    }
+  }
+}
