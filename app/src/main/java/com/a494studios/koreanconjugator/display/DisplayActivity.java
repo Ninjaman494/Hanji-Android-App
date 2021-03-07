@@ -44,7 +44,7 @@ public class DisplayActivity extends BaseActivity {
         // Make sure extras were passed
         if(id == null){
             Exception exception = new Exception("ID was null in DisplayActivity");
-            Utils.handleError(exception, this, 5, (dialogInterface, i) -> onBackPressed());
+            Utils.handleError(exception, this, 5, (dialogInterface, i) -> finish());
             return;
         }
 
@@ -66,7 +66,7 @@ public class DisplayActivity extends BaseActivity {
             @Override
             public void onError(Throwable t) {
                 t.printStackTrace();
-                Utils.handleError(t, DisplayActivity.this,2, (dialogInterface, i) -> DisplayActivity.this.onBackPressed());
+                Utils.handleError(t, DisplayActivity.this,2, (dialogInterface, i) -> DisplayActivity.this.finish());
             }
 
             @Override
@@ -111,7 +111,7 @@ public class DisplayActivity extends BaseActivity {
                 // If no conjugations, create an empty list to prevent a null exception
                 .map(o -> o instanceof String
                         ? new FavoritesQuery.Data(new ArrayList<>())
-                        : ((Response<FavoritesQuery.Data>) o).data())
+                        : ((Response<FavoritesQuery.Data>) o).getData())
                 .subscribeWith(observer);
 
         LinearLayout linearLayout = findViewById(R.id.disp_root);

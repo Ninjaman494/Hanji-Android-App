@@ -40,7 +40,7 @@ public class SearchResultsActivity extends BaseActivity {
         String query = getIntent().getStringExtra(EXTRA_QUERY);
         if(query == null){ // Null check for extra
             Exception exception = new Exception("Query was null in SearchResultsActivity");
-            Utils.handleError(exception, this, 6, (dialogInterface, i) -> onBackPressed());
+            Utils.handleError(exception, this, 6, (dialogInterface, i) -> finish());
             return;
         }
 
@@ -130,7 +130,7 @@ public class SearchResultsActivity extends BaseActivity {
                     @Override
                     public void onError(Throwable e) {
                         e.printStackTrace();
-                        Utils.handleError(e, SearchResultsActivity.this, 3, (dialogInterface, i) -> SearchResultsActivity.this.onBackPressed());
+                        Utils.handleError(e, SearchResultsActivity.this, 3, (dialogInterface, i) -> SearchResultsActivity.this.finish());
                     }
 
                     @Override
