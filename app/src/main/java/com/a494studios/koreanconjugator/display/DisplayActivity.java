@@ -111,7 +111,7 @@ public class DisplayActivity extends BaseActivity {
                 // If no conjugations, create an empty list to prevent a null exception
                 .map(o -> o instanceof String
                         ? new FavoritesQuery.Data(new ArrayList<>())
-                        : ((Response<FavoritesQuery.Data>) o).data())
+                        : ((Response<FavoritesQuery.Data>) o).getData())
                 .subscribeWith(observer);
 
         LinearLayout linearLayout = findViewById(R.id.disp_root);
