@@ -135,7 +135,7 @@ public class ConjugatorActivity extends BaseActivity implements AdapterView.OnIt
                         e.printStackTrace();
                         AppCompatActivity activity = ConjugatorActivity.this;
                         Utils.handleError(e, activity,11,
-                                (dialogInterface, i) -> activity.onBackPressed());
+                                (dialogInterface, i) -> activity.finish());
                     }
 
                     @Override
@@ -183,7 +183,7 @@ public class ConjugatorActivity extends BaseActivity implements AdapterView.OnIt
             public void onError(Throwable e) {
                 e.printStackTrace();
                 Utils.handleError(e, ConjugatorActivity.this,10,
-                        (dialogInterface, i) -> ConjugatorActivity.this.onBackPressed());
+                        (dialogInterface, i) -> ConjugatorActivity.this.finish());
             }
         });
 

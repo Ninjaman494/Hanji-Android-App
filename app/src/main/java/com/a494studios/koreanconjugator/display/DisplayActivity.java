@@ -44,7 +44,7 @@ public class DisplayActivity extends BaseActivity {
         // Make sure extras were passed
         if(id == null){
             Exception exception = new Exception("ID was null in DisplayActivity");
-            Utils.handleError(exception, this, 5, (dialogInterface, i) -> onBackPressed());
+            Utils.handleError(exception, this, 5, (dialogInterface, i) -> finish());
             return;
         }
 
@@ -66,7 +66,7 @@ public class DisplayActivity extends BaseActivity {
             @Override
             public void onError(Throwable t) {
                 t.printStackTrace();
-                Utils.handleError(t, DisplayActivity.this,2, (dialogInterface, i) -> DisplayActivity.this.onBackPressed());
+                Utils.handleError(t, DisplayActivity.this,2, (dialogInterface, i) -> DisplayActivity.this.finish());
             }
 
             @Override

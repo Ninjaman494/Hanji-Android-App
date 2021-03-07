@@ -83,7 +83,7 @@ public class ConjugationActivity extends BaseActivity {
             public void onError(Throwable e) {
                 e.printStackTrace();
                 Utils.handleError(e, ConjugationActivity.this,4,
-                        (dialogInterface, i) -> ConjugationActivity.this.onBackPressed());
+                        (dialogInterface, i) -> ConjugationActivity.this.finish());
             }
         });
 
