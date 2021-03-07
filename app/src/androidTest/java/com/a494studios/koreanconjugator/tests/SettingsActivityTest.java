@@ -72,7 +72,7 @@ public class SettingsActivityTest {
         onView(withText("Terms and Conditions of Use")).perform(click());
 
         intended(allOf(hasAction(Intent.ACTION_VIEW),
-                hasData(Uri.parse("https://hanji-website.vercel.app/terms"))));
+                hasData(Uri.parse("https://hanji.vercel.app/terms"))));
     }
 
     @Test
@@ -80,6 +80,6 @@ public class SettingsActivityTest {
         onView(withText("Privacy Policy")).perform(click());
 
         intended(allOf(hasAction(Intent.ACTION_VIEW),
-                hasData(Uri.parse("https://hanji-website.vercel.app/privacy"))));
+                hasData(Uri.parse("https://hanji.vercel.app/privacy"))));
     }
 }

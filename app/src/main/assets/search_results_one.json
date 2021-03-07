@@ -1,0 +1,24 @@
+{
+  "data": {
+    "search": {
+      "results": [
+        {
+          "id": "먹다0",
+          "term": "먹다",
+          "pos": "Verb",
+          "definitions": [
+            "to eat, to have",
+            "to have a drink",
+            "to pocket, to embezzle, to seize upon",
+            "to receive, to get",
+            "to make up (one's mind), to be determined",
+            "to grow older"
+          ],
+          "__typename": "Entry"
+        }
+      ],
+      "cursor": null,
+      "__typename": "Result"
+    }
+  }
+}
