@@ -1,5 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <changelog>
+    <release versionCode="26" versionName="2.0.9" date="Mar 14th 2021">
+        <info>Bug fixes and improved feedback page</info>
+        <new type="summary">You can now provide your email when leaving feedback if you want to be contacted further</new>
+        <bugfix>Fixed favorites issues for users who migrated from Hanji 1.0</bugfix>
+        <bugfix>Further stability improvements for dialogs</bugfix>
+    </release>
     <release versionCode="25" versionName="2.0.8" date="Dec 6th 2020">
         <info>Bug fixes for favorites and stability</info>
         <bugfix>Honorific favorites are working again</bugfix>
