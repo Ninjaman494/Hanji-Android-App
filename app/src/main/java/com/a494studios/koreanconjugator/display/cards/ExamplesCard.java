@@ -1,6 +1,7 @@
 package com.a494studios.koreanconjugator.display.cards;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -8,6 +9,7 @@ import com.a494studios.koreanconjugator.EntryQuery;
 import com.a494studios.koreanconjugator.display.DisplayCardView;
 import com.a494studios.koreanconjugator.display.adapters.ExampleAdapter;
 import com.a494studios.koreanconjugator.R;
+import com.a494studios.koreanconjugator.suggestions.ExampleSuggestionActivity;
 import com.linearlistview.LinearListView;
 
 import java.util.List;
@@ -30,14 +32,16 @@ public class ExamplesCard implements DisplayCardBody{
         LinearListView listView = view.findViewById(R.id.listCard_list);
         listView.setAdapter(adapter);
 
-        cardView.hideButton(true);
+        cardView.hideButton(false);
+        cardView.setButtonText("Add Example");
 
         return view;
     }
 
     @Override
     public void onButtonClick() {
-        //Empty on purpose
+        Context context = view.getContext();
+        context.startActivity(new Intent(context, ExampleSuggestionActivity.class));
     }
 
     @Override

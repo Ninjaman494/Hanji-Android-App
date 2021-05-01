@@ -58,4 +58,8 @@
     <string name="regular_forms">Regular Forms</string>
     <string name="menu_ad_free">Remove Ads</string>
     <string name="conj_seperator">:</string>
+    <!-- Suggestions -->
+    <string name="suggestion_example_sentence">Korean sentence</string>
+    <string name="suggestion_example_translation">English translation</string>
+    <string name="suggestion_submit">Submit</string>
 </resources>
