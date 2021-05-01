@@ -62,4 +62,6 @@
     <string name="suggestion_example_sentence">Korean sentence</string>
     <string name="suggestion_example_translation">English translation</string>
     <string name="suggestion_submit">Submit</string>
+    <string name="menu_add">Add suggestion</string>
+    <string name="empty_examples">This word doesn\'t have any examples</string>
 </resources>
