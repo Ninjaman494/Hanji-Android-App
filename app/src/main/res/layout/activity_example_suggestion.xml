@@ -7,13 +7,13 @@
     android:orientation="vertical"
     android:paddingHorizontal="@dimen/horizontalMargin"
     android:paddingVertical="@dimen/verticalMargin"
-    tools:context=".suggestions.ExampleSuggestionActivity">
+    tools:context=".suggestions.SuggestionActivity">
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="16dp"
-        android:text="Enter at least one addition"
+        android:text="@string/suggestion_title"
         android:textSize="30sp"
         android:textColor="@android:color/primary_text_light"/>
 
@@ -21,7 +21,7 @@
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Antonym">
+        android:hint="@string/suggestion_antonym">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/suggestion_antonym"
@@ -36,7 +36,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:hint="Synonym">
+        android:hint="@string/suggestion_synonym">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/suggestion_synonym"
@@ -50,7 +50,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:text="Example"
+        android:text="@string/suggestion_example_title"
         android:textSize="20sp"/>
 
     <com.google.android.material.textfield.TextInputLayout
@@ -83,7 +83,6 @@
             android:imeOptions="actionDone"
             android:inputType="text" />
     </com.google.android.material.textfield.TextInputLayout>
-
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/suggestion_submit"

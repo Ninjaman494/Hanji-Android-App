@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
 
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.a494studios.koreanconjugator.CreateSuggestionMutation;
@@ -12,6 +13,7 @@ import com.a494studios.koreanconjugator.CustomApplication;
 import com.a494studios.koreanconjugator.R;
 import com.a494studios.koreanconjugator.parsing.Server;
 import com.a494studios.koreanconjugator.type.ExampleInput;
+import com.a494studios.koreanconjugator.utils.BaseActivity;
 import com.a494studios.koreanconjugator.utils.Utils;
 import com.apollographql.apollo.api.Response;
 import com.google.android.material.textfield.TextInputEditText;
@@ -19,7 +21,7 @@ import com.google.android.material.textfield.TextInputLayout;
 
 import io.reactivex.observers.DisposableObserver;
 
-public class ExampleSuggestionActivity extends AppCompatActivity implements View.OnClickListener {
+public class SuggestionActivity extends BaseActivity implements View.OnClickListener {
 
     public final static String EXTRA_ENTRY_ID = "EXTRA_ENTRY_ID";
 
@@ -29,9 +31,10 @@ public class ExampleSuggestionActivity extends AppCompatActivity implements View
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_example_suggestion);
 
-        if(getSupportActionBar() != null) {
-            getSupportActionBar().setTitle("Suggest Example");
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        ActionBar actionBar = getSupportActionBar();
+        if(actionBar != null) {
+            actionBar.setTitle("Add to Entry");
+            actionBar.setDisplayHomeAsUpEnabled(true);
         }
 
         entryID = getIntent().getStringExtra(EXTRA_ENTRY_ID);
@@ -81,6 +84,7 @@ public class ExampleSuggestionActivity extends AppCompatActivity implements View
             public void onNext(Response<CreateSuggestionMutation.Data> dataResponse) {
                 if(dataResponse.getData().createEntrySuggestion().success()) {
                     Toast.makeText(getBaseContext(), "Succeeded!", Toast.LENGTH_SHORT).show();
+                    SuggestionActivity.this.onBackPressed();
                 } else {
                     Toast.makeText(getBaseContext(), "Failed!", Toast.LENGTH_SHORT).show();
                 }
@@ -89,7 +93,7 @@ public class ExampleSuggestionActivity extends AppCompatActivity implements View
             @Override
             public void onError(Throwable e) {
                 e.printStackTrace();
-                AppCompatActivity activity = ExampleSuggestionActivity.this;
+                AppCompatActivity activity = SuggestionActivity.this;
                 Utils.handleError(e, activity,12, (dialogInterface, i) -> activity.finish());
             }
 

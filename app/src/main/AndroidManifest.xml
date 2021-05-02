@@ -15,7 +15,7 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".suggestions.ExampleSuggestionActivity"/>
+        <activity android:name=".suggestions.SuggestionActivity"/>
         <activity android:name=".conjugator.ConjugatorActivity">
             <meta-data
                 android:name="android.app.default_searchable"
@@ -98,7 +98,7 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/filepaths" />
         </provider> <!-- If not defined yet, declare a file provider to be able to share screenshots captured by Maoni -->
-        <service android:name=".MessagingService">
+        <service android:name=".MessagingService" android:exported="false">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>

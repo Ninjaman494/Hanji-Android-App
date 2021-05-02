@@ -59,9 +59,12 @@
     <string name="menu_ad_free">Remove Ads</string>
     <string name="conj_seperator">:</string>
     <!-- Suggestions -->
-    <string name="suggestion_example_sentence">Korean sentence</string>
-    <string name="suggestion_example_translation">English translation</string>
     <string name="suggestion_submit">Submit</string>
     <string name="menu_add">Add suggestion</string>
-    <string name="empty_examples">This word doesn\'t have any examples</string>
+    <string name="suggestion_title">Enter at least one addition</string>
+    <string name="suggestion_antonym">Antonym</string>
+    <string name="suggestion_synonym">Synonym</string>
+    <string name="suggestion_example_title">Example</string>
+    <string name="suggestion_example_sentence">Korean sentence</string>
+    <string name="suggestion_example_translation">English translation</string>
 </resources>

@@ -2,26 +2,21 @@ package com.a494studios.koreanconjugator.display;
 
 import android.annotation.SuppressLint;
 import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.widget.ListPopupWindow;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
-import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
-import android.widget.Toast;
 
 import com.a494studios.koreanconjugator.CustomApplication;
 import com.a494studios.koreanconjugator.EntryQuery;
 import com.a494studios.koreanconjugator.FavoritesQuery;
 import com.a494studios.koreanconjugator.R;
-import com.a494studios.koreanconjugator.suggestions.ExampleSuggestionActivity;
+import com.a494studios.koreanconjugator.suggestions.SuggestionActivity;
 import com.a494studios.koreanconjugator.type.FavInput;
 import com.a494studios.koreanconjugator.utils.BaseActivity;
 import com.a494studios.koreanconjugator.utils.Logger;
@@ -32,7 +27,6 @@ import com.a494studios.koreanconjugator.utils.ScrollViewAnimationHandler;
 import com.apollographql.apollo.api.Response;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import io.reactivex.Observable;
@@ -148,37 +142,9 @@ public class DisplayActivity extends BaseActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if(item.getItemId() == R.id.menu_add){
-            ListPopupWindow popup = new ListPopupWindow(this);
-            ArrayList<String> options = new ArrayList<>(Arrays.asList("Add Example", "Add Synonym", "Add Antonym"));
-            ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, options);
-
-            popup.setAdapter(adapter);
-            popup.setAnchorView(findViewById(item.getItemId()));
-            popup.setWidth(500);
-            popup.setVerticalOffset(-170);
-            popup.setDropDownGravity(Gravity.END);
-
-            popup.setOnItemClickListener((adapterView, view, i, l) -> {
-                Context context = view.getContext();
-                if (entry != null) {
-                    switch (i) {
-                        case 0:
-                            Intent intent = new Intent(context, ExampleSuggestionActivity.class);
-                            intent.putExtra(ExampleSuggestionActivity.EXTRA_ENTRY_ID, entry.id());
-                            context.startActivity(intent);
-                            break;
-                        case 1:
-                            Toast.makeText(context, "Add Synonyms", Toast.LENGTH_SHORT).show();
-                            break;
-                        case 2:
-                            Toast.makeText(context, "Add Antonyms", Toast.LENGTH_SHORT).show();
-                            break;
-                    }
-                }
-                popup.dismiss();
-            });
-
-            popup.show();
+            Intent intent = new Intent(this, SuggestionActivity.class);
+            intent.putExtra(SuggestionActivity.EXTRA_ENTRY_ID, entry.id());
+            startActivity(intent);
             return true;
         } else {
             return super.onOptionsItemSelected(item);
