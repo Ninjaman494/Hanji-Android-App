@@ -1,0 +1,6 @@
+mutation CreateSuggestion($suggestion: EntrySuggestionInput!) {
+    createEntrySuggestion(suggestion: $suggestion) {
+        success,
+        message,
+    }
+}

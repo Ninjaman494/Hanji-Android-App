@@ -160,16 +160,20 @@ public class DisplayActivity extends BaseActivity {
 
             popup.setOnItemClickListener((adapterView, view, i, l) -> {
                 Context context = view.getContext();
-                switch(i) {
-                    case 0:
-                        context.startActivity(new Intent(context, ExampleSuggestionActivity.class));
-                        break;
-                    case 1:
-                        Toast.makeText(context, "Add Synonyms", Toast.LENGTH_SHORT).show();
-                        break;
-                    case 2:
-                        Toast.makeText(context, "Add Antonyms", Toast.LENGTH_SHORT).show();
-                        break;
+                if (entry != null) {
+                    switch (i) {
+                        case 0:
+                            Intent intent = new Intent(context, ExampleSuggestionActivity.class);
+                            intent.putExtra(ExampleSuggestionActivity.EXTRA_ENTRY_ID, entry.id());
+                            context.startActivity(intent);
+                            break;
+                        case 1:
+                            Toast.makeText(context, "Add Synonyms", Toast.LENGTH_SHORT).show();
+                            break;
+                        case 2:
+                            Toast.makeText(context, "Add Antonyms", Toast.LENGTH_SHORT).show();
+                            break;
+                    }
                 }
                 popup.dismiss();
             });

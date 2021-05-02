@@ -4,14 +4,18 @@ import androidx.test.espresso.idling.CountingIdlingResource;
 
 import com.a494studios.koreanconjugator.ConjugationNamesQuery;
 import com.a494studios.koreanconjugator.ConjugationQuery;
+import com.a494studios.koreanconjugator.CreateSuggestionMutation;
 import com.a494studios.koreanconjugator.CustomApplication;
 import com.a494studios.koreanconjugator.EntryQuery;
 import com.a494studios.koreanconjugator.FavoritesQuery;
 import com.a494studios.koreanconjugator.SearchQuery;
 import com.a494studios.koreanconjugator.StemQuery;
 import com.a494studios.koreanconjugator.WordOfTheDayQuery;
+import com.a494studios.koreanconjugator.type.EntrySuggestionInput;
+import com.a494studios.koreanconjugator.type.ExampleInput;
 import com.a494studios.koreanconjugator.type.FavInput;
 import com.apollographql.apollo.ApolloClient;
+import com.apollographql.apollo.ApolloMutationCall;
 import com.apollographql.apollo.ApolloQueryCall;
 import com.apollographql.apollo.api.Response;
 import com.apollographql.apollo.api.cache.http.HttpCachePolicy;
@@ -20,6 +24,8 @@ import com.apollographql.apollo.cache.http.DiskLruHttpCacheStore;
 import com.apollographql.apollo.rx2.Rx2Apollo;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import io.reactivex.Observable;
@@ -152,6 +158,51 @@ public class Server {
 
         ApolloQueryCall<StemQuery.Data> call = getApolloClient(app)
                 .query(query);
+
+        return Rx2Apollo.from(call)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .filter((dataResponse -> dataResponse.getData() != null));
+    }
+
+    public static Observable<Response<CreateSuggestionMutation.Data>> createAntonymSuggestion(
+            String entryID, CustomApplication app, String... antonyms) {
+        return createSuggestion(entryID, Arrays.asList(antonyms), null, null, app);
+    }
+
+    public static Observable<Response<CreateSuggestionMutation.Data>> createSynonymSuggestion(
+            String entryID, CustomApplication app, String... synonyms) {
+        return createSuggestion(entryID, null, Arrays.asList(synonyms), null, app);
+    }
+
+    public static Observable<Response<CreateSuggestionMutation.Data>> createExampleSuggestion(
+            String entryID, CustomApplication app, ExampleInput... examples) {
+        return createSuggestion(entryID, null, null, Arrays.asList(examples), app);
+    }
+
+    private static Observable<Response<CreateSuggestionMutation.Data>> createSuggestion
+            (String entryID, List<String> antonyms, List<String> synonyms, List<ExampleInput> examples,
+             CustomApplication app) {
+
+        EntrySuggestionInput.Builder inputBuilder = EntrySuggestionInput.builder()
+                .entryID(entryID);
+
+        if (antonyms != null && !antonyms.isEmpty()) {
+            inputBuilder.antonyms(antonyms);
+        }
+        if (synonyms != null && !synonyms.isEmpty()) {
+            inputBuilder.synonyms(synonyms);
+        }
+        if (examples != null && !examples.isEmpty()) {
+            inputBuilder.examples(examples);
+        }
+
+        CreateSuggestionMutation mutation = CreateSuggestionMutation.builder()
+                .suggestion(inputBuilder.build())
+                .build();
+
+        ApolloMutationCall<CreateSuggestionMutation.Data> call = getApolloClient(app)
+                .mutate(mutation);
 
         return Rx2Apollo.from(call)
                 .subscribeOn(Schedulers.io())

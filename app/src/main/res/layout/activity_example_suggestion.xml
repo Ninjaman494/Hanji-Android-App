@@ -10,15 +10,13 @@
     tools:context=".suggestions.ExampleSuggestionActivity">
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/exampleSuggestion_sentence"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="@string/suggestion_example_sentence"
-        app:hintTextColor="@color/colorAccent"
-        app:boxStrokeColor="@color/colorAccent">
+        android:hint="@string/suggestion_example_sentence">
 
         <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/exampleSuggestion_sentence"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:imeOptions="actionNext"
@@ -26,16 +24,14 @@
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/exampleSuggestion_translation"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:hint="@string/suggestion_example_translation"
-        app:hintTextColor="@color/colorAccent"
-        app:boxStrokeColor="@color/colorAccent">
+        android:hint="@string/suggestion_example_translation">
 
         <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/exampleSuggestion_translation"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:imeOptions="actionDone"
@@ -49,5 +45,6 @@
         android:layout_gravity="center"
         android:layout_marginTop="16dp"
         android:text="@string/suggestion_submit"
-        app:backgroundTint="@color/button_color" />
+        app:backgroundTint="@color/button_color"
+        android:onClick="onClick"/>
 </LinearLayout>
