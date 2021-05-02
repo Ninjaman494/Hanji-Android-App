@@ -24,8 +24,7 @@ import com.apollographql.apollo.cache.http.DiskLruHttpCacheStore;
 import com.apollographql.apollo.rx2.Rx2Apollo;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import io.reactivex.Observable;
@@ -165,22 +164,25 @@ public class Server {
                 .filter((dataResponse -> dataResponse.getData() != null));
     }
 
-    public static Observable<Response<CreateSuggestionMutation.Data>> createAntonymSuggestion(
-            String entryID, CustomApplication app, String... antonyms) {
-        return createSuggestion(entryID, Arrays.asList(antonyms), null, null, app);
+    public static Observable<Response<CreateSuggestionMutation.Data>> createSuggestion
+            (String entryID, String antonym, String synonym, ExampleInput example, CustomApplication app){
+
+        List<String> antonyms = null;
+        List<String> synonyms = null;
+        List<ExampleInput> examples =  null;
+        if(antonym != null && antonym.length() > 0) {
+            antonyms = Collections.singletonList(antonym);
+        }
+        if(synonym != null && synonym.length() > 0) {
+            synonyms = Collections.singletonList(synonym);
+        }
+        if(example != null) {
+            examples = Collections.singletonList(example);
+        }
+        return createSuggestion(entryID, antonyms, synonyms, examples, app);
     }
 
-    public static Observable<Response<CreateSuggestionMutation.Data>> createSynonymSuggestion(
-            String entryID, CustomApplication app, String... synonyms) {
-        return createSuggestion(entryID, null, Arrays.asList(synonyms), null, app);
-    }
-
-    public static Observable<Response<CreateSuggestionMutation.Data>> createExampleSuggestion(
-            String entryID, CustomApplication app, ExampleInput... examples) {
-        return createSuggestion(entryID, null, null, Arrays.asList(examples), app);
-    }
-
-    private static Observable<Response<CreateSuggestionMutation.Data>> createSuggestion
+    public static Observable<Response<CreateSuggestionMutation.Data>> createSuggestion
             (String entryID, List<String> antonyms, List<String> synonyms, List<ExampleInput> examples,
              CustomApplication app) {
 

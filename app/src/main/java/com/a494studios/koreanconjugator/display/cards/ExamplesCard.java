@@ -30,6 +30,8 @@ public class ExamplesCard implements DisplayCardBody{
         LinearListView listView = view.findViewById(R.id.listCard_list);
         listView.setAdapter(adapter);
 
+        cardView.hideButton(true);
+
         return view;
     }
 
