@@ -14,6 +14,7 @@ import com.a494studios.koreanconjugator.R;
 import com.a494studios.koreanconjugator.parsing.Server;
 import com.a494studios.koreanconjugator.type.ExampleInput;
 import com.a494studios.koreanconjugator.utils.BaseActivity;
+import com.a494studios.koreanconjugator.utils.ErrorDialogFragment;
 import com.a494studios.koreanconjugator.utils.Utils;
 import com.apollographql.apollo.api.Response;
 import com.google.android.material.textfield.TextInputEditText;
@@ -34,7 +35,7 @@ public class SuggestionActivity extends BaseActivity implements View.OnClickList
         ActionBar actionBar = getSupportActionBar();
         if(actionBar != null) {
             actionBar.setTitle("Add to Entry");
-            actionBar.setDisplayHomeAsUpEnabled(true);
+            actionBar.setElevation(0);
         }
 
         entryID = getIntent().getStringExtra(EXTRA_ENTRY_ID);
@@ -82,19 +83,27 @@ public class SuggestionActivity extends BaseActivity implements View.OnClickList
                 .subscribeWith(new DisposableObserver<Response<CreateSuggestionMutation.Data>>() {
             @Override
             public void onNext(Response<CreateSuggestionMutation.Data> dataResponse) {
+                AppCompatActivity activity = SuggestionActivity.this;
+                ErrorDialogFragment fragment;
                 if(dataResponse.getData().createEntrySuggestion().success()) {
-                    Toast.makeText(getBaseContext(), "Succeeded!", Toast.LENGTH_SHORT).show();
-                    SuggestionActivity.this.onBackPressed();
+                    fragment = ErrorDialogFragment.newInstance("Sent for Review",
+                            "Thanks! Your additions have been sent for review. If approved, they will be added to this entry.");
+                    fragment.setListener((dialogInterface, i) -> activity.onBackPressed());
                 } else {
-                    Toast.makeText(getBaseContext(), "Failed!", Toast.LENGTH_SHORT).show();
+                    fragment = ErrorDialogFragment.newInstance("Can't connect to server",
+                            "Error code: 12. Please try again later or contact support.");
                 }
+
+                activity.getSupportFragmentManager()
+                        .beginTransaction()
+                        .add(fragment,"frag_alert")
+                        .commitAllowingStateLoss();
             }
 
             @Override
             public void onError(Throwable e) {
                 e.printStackTrace();
-                AppCompatActivity activity = SuggestionActivity.this;
-                Utils.handleError(e, activity,12, (dialogInterface, i) -> activity.finish());
+                Utils.handleError(e, SuggestionActivity.this,12);
             }
 
             @Override
