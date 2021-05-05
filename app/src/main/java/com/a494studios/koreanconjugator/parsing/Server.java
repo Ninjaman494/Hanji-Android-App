@@ -185,6 +185,7 @@ public class Server {
     public static Observable<Response<CreateSuggestionMutation.Data>> createSuggestion
             (String entryID, List<String> antonyms, List<String> synonyms, List<ExampleInput> examples,
              CustomApplication app) {
+        idler.increment();
 
         EntrySuggestionInput.Builder inputBuilder = EntrySuggestionInput.builder()
                 .entryID(entryID);
@@ -209,7 +210,8 @@ public class Server {
         return Rx2Apollo.from(call)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .filter((dataResponse -> dataResponse.getData() != null));
+                .filter((dataResponse -> dataResponse.getData() != null))
+                .doAfterTerminate(() -> idler.decrement());
     }
 
     private static ApolloClient getApolloClient(CustomApplication app) {
