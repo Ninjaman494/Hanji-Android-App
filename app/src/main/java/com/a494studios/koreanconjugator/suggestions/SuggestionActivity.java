@@ -85,13 +85,15 @@ public class SuggestionActivity extends BaseActivity implements View.OnClickList
             public void onNext(Response<CreateSuggestionMutation.Data> dataResponse) {
                 AppCompatActivity activity = SuggestionActivity.this;
                 ErrorDialogFragment fragment;
-                if(dataResponse.getData().createEntrySuggestion().success()) {
+
+                CreateSuggestionMutation.CreateEntrySuggestion response = dataResponse.getData().createEntrySuggestion();
+                if(response.success()) {
                     fragment = ErrorDialogFragment.newInstance("Sent for Review",
                             "Thanks! Your additions have been sent for review. If approved, they will be added to this entry.");
-                    fragment.setListener((dialogInterface, i) -> activity.onBackPressed());
+                    fragment.setListener((dialogInterface, i) -> activity.finish());
                 } else {
-                    fragment = ErrorDialogFragment.newInstance("Can't connect to server",
-                            "Error code: 12. Please try again later or contact support.");
+                    fragment = ErrorDialogFragment.newInstance("Failed to send addition",
+                            "Error: " + response.message() + ".Please try again later or contact support.");
                 }
 
                 activity.getSupportFragmentManager()

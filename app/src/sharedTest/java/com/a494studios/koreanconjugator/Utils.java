@@ -26,6 +26,7 @@ import static androidx.test.espresso.intent.matcher.IntentMatchers.hasComponent;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withContentDescription;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
+import static junit.framework.TestCase.assertNotNull;
 import static junit.framework.TestCase.assertTrue;
 import static org.hamcrest.Matchers.isA;
 
@@ -104,7 +105,8 @@ public class Utils {
     }
 
     public static void assertBodyContains(RecordedRequest request, String contains) {
-        String requestBody = request.getBody().readByteString().utf8();
+        assertNotNull(request);
+        String requestBody = request.getBody().clone().readUtf8();
         assertTrue(requestBody.contains(contains));
     }
 }

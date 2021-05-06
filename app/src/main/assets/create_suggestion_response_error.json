@@ -1,0 +1,9 @@
+{
+  "data": {
+    "createEntrySuggestion": {
+      "success": false,
+      "message": "This is a mock error",
+      "__typename": "EntrySuggestionResponse"
+    }
+  }
+}

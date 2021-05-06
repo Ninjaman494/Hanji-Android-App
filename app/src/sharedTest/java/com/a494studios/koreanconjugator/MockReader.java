@@ -14,11 +14,12 @@ public class MockReader {
     public static final String FAVORITES = "favorites_response.json";
     public static final String ENTRY = "entry_response.json";
     public static final String CONJUGATIONS = "conjugations_response.json";
-    public static final String CONJUGATIONS_HONORIFIC = "conjugations_honorific_response.json";
     public static final String WOD = "wod_response.json";
     public static final String SEARCH_RESULTS = "search_results.json";
     public static final String SEARCH_RESULTS_ONE = "search_results_one.json";
     public static final String STEMS = "stems_response.json";
+    public static final String CREATE_SUGGESTION = "create_suggestion_response.json";
+    public static final String CREATE_SUGGESTION_ERROR = "create_suggestion_response_error.json";
 
 
     public static String readStringFromFile(String fileName) {

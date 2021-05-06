@@ -1,0 +1,9 @@
+{
+  "data": {
+    "createEntrySuggestion": {
+      "success": true,
+      "message": "Entry suggestion successfully created",
+      "__typename": "EntrySuggestionResponse"
+    }
+  }
+}
