@@ -53,11 +53,12 @@ public class DisplayObserver extends DisposableObserver<FavoritesQuery.Data> {
     @Override
     public void onNext(FavoritesQuery.Data favData) {
         // Favorites, hide the card and skip if there are none
-        if (favData.favConjugations().isEmpty()) {
+        String pos = entry.pos();
+        if (!pos.equals("Adjective") && !pos.equals("Verb")) {
             conjugations.setVisibility(View.GONE);
         } else {
             List<FavoritesQuery.FavConjugation> conjugations = favData.favConjugations();
-            boolean isAdj = entry.pos().equals("Adjective");
+            boolean isAdj = pos.equals("Adjective");
             Boolean regular = entry.regular();
             List<Favorite> favorites = Utils.getFavorites(displayCardView.getContext());
 
