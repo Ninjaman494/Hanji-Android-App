@@ -23,8 +23,8 @@ public class ExamplesCard implements DisplayCardBody{
 
     @Override
     public View addBodyView(Context context, ViewGroup parentView, DisplayCardView cardView) {
-        if(view == null) {
-            view = View.inflate(context, R.layout.dcard_list,parentView);
+        if (view == null) {
+            view = View.inflate(context, R.layout.dcard_list, parentView);
         }
 
         LinearListView listView = view.findViewById(R.id.listCard_list);
@@ -37,7 +37,7 @@ public class ExamplesCard implements DisplayCardBody{
 
     @Override
     public void onButtonClick() {
-        //Empty on purpose
+        // Empty on purpose
     }
 
     @Override

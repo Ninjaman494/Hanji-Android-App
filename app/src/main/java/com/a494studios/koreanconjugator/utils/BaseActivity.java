@@ -31,17 +31,7 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.search_menu, menu);
-        SearchManager searchManager = (SearchManager) getSystemService(SEARCH_SERVICE);
-        searchView = (SearchView) menu.findItem(R.id.menu_search).getActionView();
-        searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
-
-        if(Utils.isAdFree(this) != null && Utils.isAdFree(this)) {
-            menu.findItem(R.id.overflow_ad_free).setVisible(false);
-        }
-
-        return true;
+        return setupMenu(menu);
     }
 
     @Override
@@ -80,5 +70,27 @@ public abstract class BaseActivity extends AppCompatActivity {
             searchView.setIconified(true);
             searchView.clearFocus();
         }
+    }
+
+    public boolean setupMenu(Menu menu) {
+        return setupMenu(R.menu.search_menu, menu);
+    }
+
+    public boolean setupMenu(int menuId, Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(menuId, menu);
+
+        MenuItem searchItem = menu.findItem(R.id.menu_search);
+        if(searchItem != null) {
+            SearchManager searchManager = (SearchManager) getSystemService(SEARCH_SERVICE);
+            searchView = (SearchView) searchItem.getActionView();
+            searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
+        }
+
+        if(Utils.isAdFree(this) != null && Utils.isAdFree(this)) {
+            menu.findItem(R.id.overflow_ad_free).setVisible(false);
+        }
+
+        return true;
     }
 }

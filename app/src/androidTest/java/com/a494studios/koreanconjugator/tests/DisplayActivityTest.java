@@ -17,9 +17,9 @@ import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.filters.LargeTest;
 import androidx.test.rule.ActivityTestRule;
 
-import com.a494studios.koreanconjugator.MockApplication;
 import com.a494studios.koreanconjugator.MockReader;
 import com.a494studios.koreanconjugator.R;
+import com.a494studios.koreanconjugator.TestCustomApplication;
 import com.a494studios.koreanconjugator.conjugations.ConjugationActivity;
 import com.a494studios.koreanconjugator.display.DisplayActivity;
 import com.a494studios.koreanconjugator.parsing.Favorite;
@@ -87,7 +87,7 @@ public class DisplayActivityTest {
         // Setup mock server
         server = new MockWebServer();
         server.start();
-        MockApplication testApp = ApplicationProvider.getApplicationContext();
+        TestCustomApplication testApp = ApplicationProvider.getApplicationContext();
         testApp.setServerUrl(server.url("/").toString());
 
         // Enqueue responses

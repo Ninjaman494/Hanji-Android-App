@@ -10,9 +10,9 @@ import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.filters.LargeTest;
 import androidx.test.rule.ActivityTestRule;
 
-import com.a494studios.koreanconjugator.MockApplication;
 import com.a494studios.koreanconjugator.MockReader;
 import com.a494studios.koreanconjugator.R;
+import com.a494studios.koreanconjugator.TestCustomApplication;
 import com.a494studios.koreanconjugator.display.DisplayActivity;
 import com.a494studios.koreanconjugator.parsing.Server;
 import com.a494studios.koreanconjugator.rules.MockServerRule;
@@ -84,7 +84,7 @@ public class SearchResultsActivityTest {
         serverRule.server.enqueue(new MockResponse().setBody(readStringFromFile(MockReader.SEARCH_RESULTS)));
 
         // Set ad free to true by default
-        MockApplication testApp = ApplicationProvider.getApplicationContext();
+        TestCustomApplication testApp = ApplicationProvider.getApplicationContext();
         testApp.setAdFree(true);
     }
 
@@ -152,7 +152,7 @@ public class SearchResultsActivityTest {
     @Test
     public void ad_isShownCorrectly() {
         // Set ad-free to false
-        MockApplication testApp = ApplicationProvider.getApplicationContext();
+        TestCustomApplication testApp = ApplicationProvider.getApplicationContext();
         testApp.setAdFree(false);
 
         // Start test

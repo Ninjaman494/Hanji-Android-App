@@ -11,7 +11,7 @@ import androidx.test.rule.ActivityTestRule;
 
 import com.a494studios.koreanconjugator.LaunchActivity;
 import com.a494studios.koreanconjugator.MainActivity;
-import com.a494studios.koreanconjugator.MockApplication;
+import com.a494studios.koreanconjugator.TestCustomApplication;
 import com.a494studios.koreanconjugator.parsing.Favorite;
 import com.a494studios.koreanconjugator.parsing.Server;
 import com.a494studios.koreanconjugator.rules.StubIntentsRule;
@@ -52,7 +52,7 @@ public class LaunchActivityTest {
         IdlingRegistry.getInstance().register(idler);
 
         // Set ad free to true by default
-        MockApplication testApp = ApplicationProvider.getApplicationContext();
+        TestCustomApplication testApp = ApplicationProvider.getApplicationContext();
         testApp.setAdFree(true);
     }
 

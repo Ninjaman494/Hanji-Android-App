@@ -2,12 +2,23 @@ package com.a494studios.koreanconjugator;
 
 import android.view.View;
 
+import androidx.test.core.app.ApplicationProvider;
+
+import com.a494studios.koreanconjugator.utils.Logger;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
+import com.google.firebase.FirebaseApp;
+import com.google.firebase.analytics.FirebaseAnalytics;
 
-public class MockApplication extends CustomApplication {
+public class TestCustomApplication extends CustomApplication {
     private String serverUrl;
     private boolean isAdFree;
+
+    @Override
+    public void onCreate() {
+        FirebaseApp.initializeApp(ApplicationProvider.getApplicationContext());
+        Logger.initialize(FirebaseAnalytics.getInstance(this));
+    }
 
     @Override
     public String getServerUrl() {

@@ -1,6 +1,6 @@
 package com.a494studios.koreanconjugator.rules;
 
-import com.a494studios.koreanconjugator.MockApplication;
+import com.a494studios.koreanconjugator.TestCustomApplication;
 
 import org.junit.rules.TestRule;
 import org.junit.runner.Description;
@@ -10,9 +10,9 @@ import okhttp3.mockwebserver.MockWebServer;
 
 public class MockServerRule implements TestRule {
     public final MockWebServer server = new MockWebServer();
-    private MockApplication app;
+    private TestCustomApplication app;
 
-    public MockServerRule(MockApplication app) {
+    public MockServerRule(TestCustomApplication app) {
         this.app = app;
     }
 

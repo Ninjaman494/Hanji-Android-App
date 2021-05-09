@@ -115,7 +115,7 @@ public class DisplayObserver extends DisposableObserver<FavoritesQuery.Data> {
         }
 
         // Examples
-        if(entry.examples() != null && !entry.examples().isEmpty()){
+        if(entry.examples() != null && !entry.examples().isEmpty()) {
             examples.setCardBody(new ExamplesCard(entry.examples()));
         } else {
             examples.setVisibility(View.GONE);
