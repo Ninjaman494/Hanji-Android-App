@@ -35,6 +35,7 @@ jobs:
         uses: reactivecircus/android-emulator-runner@v2
         with:
           api-level: 28
+          profile: Pixel 3 XL
           disable-animations: true
           script: ./gradlew connectedDebugAndroidTest --stacktrace --scan
 
