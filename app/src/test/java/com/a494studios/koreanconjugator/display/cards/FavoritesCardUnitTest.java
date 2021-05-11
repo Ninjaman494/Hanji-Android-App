@@ -3,9 +3,11 @@ package com.a494studios.koreanconjugator.display.cards;
 import android.app.Activity;
 import android.content.ComponentName;
 import android.content.Intent;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.a494studios.koreanconjugator.R;
 import com.a494studios.koreanconjugator.conjugations.ConjugationActivity;
@@ -111,6 +113,16 @@ public class FavoritesCardUnitTest {
 
         Map.Entry<String, ConjugationFragment> entry = new AbstractMap.SimpleEntry<>("new", conjugation);
         card.addConjugation(entry,0);
-        assertEquals(1,card.getCount());
+        assertEquals(1, card.getCount());
+
+        TextView emptyView = viewGroup.findViewById(R.id.listCard_empty);
+        assertEquals(emptyView.getVisibility(), View.GONE);
+    }
+
+    @Test
+    public void test_emptyState() {
+        TextView emptyView = viewGroup.findViewById(R.id.listCard_empty);
+        assertEquals(emptyView.getVisibility(), View.VISIBLE);
+        assertEquals(emptyView.getText().toString(), activity.getString(R.string.empty_favorites));
     }
 }
