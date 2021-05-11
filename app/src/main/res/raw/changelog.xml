@@ -1,5 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <changelog>
+    <release versionCode="27" versionName="2.1.0" date="May 11th 2021">
+        <info>Bug fixes and a major feature add!</info>
+        <new type="summary">You can now add examples, synonyms, and antonyms to words using the add button in the appbar!</new>
+        <bugfix>Conjugations are now accessible even if you don't have any favorites.</bugfix>
+        <bugfix>Fixed dialog crash when trying to add a favorite</bugfix>
+    </release>
     <release versionCode="26" versionName="2.0.9" date="Mar 14th 2021">
         <info>Bug fixes and improved feedback page</info>
         <new type="summary">You can now provide your email when leaving feedback if you want to be contacted further</new>
