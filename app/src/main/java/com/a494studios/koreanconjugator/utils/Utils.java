@@ -21,6 +21,7 @@ import com.android.billingclient.api.BillingFlowParams;
 import com.android.billingclient.api.BillingResult;
 import com.android.billingclient.api.SkuDetails;
 import com.android.billingclient.api.SkuDetailsParams;
+import com.apollographql.apollo.api.Error;
 import com.apollographql.apollo.exception.ApolloNetworkException;
 import com.eggheadgames.aboutbox.AboutConfig;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
@@ -211,6 +212,18 @@ public class Utils {
                 System.out.println("Error getting SKU Details: " + billingResult.getResponseCode());
             }
         });
+    }
+
+    public static void handleError(Error error, AppCompatActivity context, DialogInterface.OnClickListener listener){
+        ErrorDialogFragment fragment = ErrorDialogFragment.newInstance("Something went wrong", error.getMessage());
+
+        if(listener != null){
+            fragment.setListener(listener);
+        }
+        context.getSupportFragmentManager()
+                .beginTransaction()
+                .add(fragment,"frag_alert")
+                .commitAllowingStateLoss();
     }
 
     public static void handleError(Throwable error, AppCompatActivity context, int errorCode, DialogInterface.OnClickListener listener){
