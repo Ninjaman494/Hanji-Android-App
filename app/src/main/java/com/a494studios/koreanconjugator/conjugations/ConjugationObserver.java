@@ -2,6 +2,7 @@ package com.a494studios.koreanconjugator.conjugations;
 
 import com.a494studios.koreanconjugator.ConjugationQuery;
 import com.a494studios.koreanconjugator.fragment.ConjugationFragment;
+import com.apollographql.apollo.api.Error;
 import com.apollographql.apollo.api.Response;
 
 import java.util.ArrayList;
@@ -19,7 +20,8 @@ public class ConjugationObserver extends DisposableObserver<Response<Conjugation
 
     @Override
     public void onNext(Response<ConjugationQuery.Data> response) {
-        if(response.getData() == null) {
+        if(response.hasErrors()) {
+            listener.onApiError(response.getErrors().get(0));
             return;
         }
 
@@ -58,6 +60,8 @@ public class ConjugationObserver extends DisposableObserver<Response<Conjugation
         void onDataReceived(List<List<ConjugationFragment>> conjugations);
 
         void onError(Throwable e);
+
+        void onApiError(Error e);
     }
 }
 

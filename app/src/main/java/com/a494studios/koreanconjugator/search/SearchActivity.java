@@ -2,6 +2,7 @@ package com.a494studios.koreanconjugator.search;
 
 import android.annotation.SuppressLint;
 import android.app.SearchManager;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.PorterDuff;
 import androidx.appcompat.app.AppCompatActivity;
@@ -61,11 +62,19 @@ public class SearchActivity extends AppCompatActivity {
         // Log search event
         Logger.getInstance().logSearch(entry);
 
+        AppCompatActivity activity = this;
+        DialogInterface.OnClickListener listener = (dialogInterface, i) -> this.finish();
+
         // Search
         Server.doSearchQuery(entry, (CustomApplication)getApplication())
                 .subscribeWith(new DisposableObserver<Response<SearchQuery.Data>>() {
                     @Override
                     public void onNext(Response<SearchQuery.Data> dataResponse) {
+                        if(dataResponse.hasErrors()) {
+                            Utils.handleError(dataResponse.getErrors().get(0), activity, listener);
+                            return;
+                        }
+
                         List<SearchQuery.Result> results = dataResponse.getData().search().results();
                         if(results.isEmpty()) {
                             NoResultsFragment.newInstance(entry, (dialogInterface, i) -> finish())
@@ -80,7 +89,7 @@ public class SearchActivity extends AppCompatActivity {
                     @Override
                     public void onError(Throwable e) {
                         e.printStackTrace();
-                        Utils.handleError(e, SearchActivity.this, 1, (dialogInterface, i) -> SearchActivity.this.finish());
+                        Utils.handleError(e, activity, 1, listener);
                     }
 
                     @Override

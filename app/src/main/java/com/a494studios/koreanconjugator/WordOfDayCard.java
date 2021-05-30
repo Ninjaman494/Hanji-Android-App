@@ -38,8 +38,14 @@ public class WordOfDayCard implements DisplayCardBody {
                     @Override
                     public void onNext(Response<WordOfTheDayQuery.Data> dataResponse) {
                         TextView textView = view.findViewById(R.id.wod_text);
-                        textView.setText(dataResponse.getData().wordOfTheDay.term);
 
+                        if(dataResponse.hasErrors()) {
+                            Utils.handleError(dataResponse.getErrors().get(0), (AppCompatActivity)context, null);
+                            textView.setText(R.string.wod_cant_connect);
+                            return;
+                        }
+
+                        textView.setText(dataResponse.getData().wordOfTheDay.term);
                         id = dataResponse.getData().wordOfTheDay.id;
                         cardView.disableButton(false);
                     }

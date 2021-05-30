@@ -91,7 +91,7 @@ public class DisplayActivity extends BaseActivity {
                     assert dataResponse.getData() != null;
 
                     if(dataResponse.hasErrors()) {
-                        Utils.displayErrorDialog( DisplayActivity.this,"Timeout","Try again later", (dialogInterface, i) -> DisplayActivity.this.finish());
+                        Utils.handleError(dataResponse.getErrors().get(0), this, (dialogInterface, i) -> this.finish());
                         return Observable.just(new Pair<EntryQuery.Entry,FavoritesQuery.Data>(null, null));
                     }
 
