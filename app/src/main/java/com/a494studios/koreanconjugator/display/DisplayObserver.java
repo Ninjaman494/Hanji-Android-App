@@ -52,7 +52,7 @@ public class DisplayObserver extends DisposableObserver<Pair<? super EntryQuery.
         }
         EntryQuery.Entry entry = (EntryQuery.Entry) data.first;
 
-        // Favorites, hide the card and skip if there are none
+        // Favorites, hide the card if the entry's not a verb/adj
         String pos = entry.pos();
         if (data.second == null) {
             conjugations.setVisibility(View.GONE);
