@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <changelog>
+    <release versionCode="28" versionName="2.1.1" date="June 3rd 2021">
+        <info>Improved error handling and error messages</info>
+    </release>
     <release versionCode="27" versionName="2.1.0" date="May 11th 2021">
         <info>Bug fixes and a major feature add!</info>
         <new type="summary">You can now add examples, synonyms, and antonyms to words using the add button in the appbar!</new>
