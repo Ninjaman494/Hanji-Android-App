@@ -6,6 +6,7 @@ import androidx.appcompat.app.ActionBar;
 import android.content.Intent;
 import android.os.Bundle;
 
+import android.util.Pair;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -30,6 +31,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import io.reactivex.Observable;
+import io.reactivex.functions.Function;
 
 public class DisplayActivity extends BaseActivity {
 
@@ -88,13 +90,17 @@ public class DisplayActivity extends BaseActivity {
                 .concatMap(dataResponse -> {
                     assert dataResponse.getData() != null;
 
+                    if(dataResponse.hasErrors()) {
+                        Utils.handleError(dataResponse.getErrors().get(0), this, (dialogInterface, i) -> this.finish());
+                        return Observable.just(new Pair<EntryQuery.Entry,FavoritesQuery.Data>(null, null));
+                    }
+
                     entry = dataResponse.getData().entry();
                     boolean isAdj = entry.pos().equals("Adjective");
                     Boolean regular = entry.regular();
-                    observer.setEntry(entry);
 
                     if (!entry.pos().equals("Verb") && !isAdj) {
-                        return Observable.just("");
+                        return Observable.just(new Pair<EntryQuery.Entry,FavoritesQuery.Data>(entry, null));
                     }
 
                     // Log select content event
@@ -111,12 +117,9 @@ public class DisplayActivity extends BaseActivity {
                             .toList()
                             .blockingGet();
 
-                    return Server.doFavoritesQuery(entry.term(),  isAdj, regular, conjugations, app);
+                    return Server.doFavoritesQuery(entry.term(),  isAdj, regular, conjugations, app)
+                            .map((Function<Response<FavoritesQuery.Data>, Pair<? super EntryQuery.Entry, ?>>) res -> new Pair<>(entry, res.getData()));
                 })
-                // If no conjugations, create an empty list to prevent a null exception
-                .map(o -> o instanceof String
-                        ? new FavoritesQuery.Data(new ArrayList<>())
-                        : ((Response<FavoritesQuery.Data>) o).getData())
                 .subscribeWith(observer);
 
         LinearLayout linearLayout = findViewById(R.id.disp_root);

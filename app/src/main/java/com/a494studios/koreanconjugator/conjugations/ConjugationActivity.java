@@ -1,11 +1,13 @@
 package com.a494studios.koreanconjugator.conjugations;
 
 import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SwitchCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.annotation.SuppressLint;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
@@ -16,6 +18,7 @@ import com.a494studios.koreanconjugator.fragment.ConjugationFragment;
 import com.a494studios.koreanconjugator.parsing.Server;
 import com.a494studios.koreanconjugator.utils.BaseActivity;
 import com.a494studios.koreanconjugator.utils.Utils;
+import com.apollographql.apollo.api.Error;
 
 import java.util.List;
 
@@ -71,6 +74,9 @@ public class ConjugationActivity extends BaseActivity {
 
     @SuppressLint("CheckResult")
     private void getConjugations(String stem, boolean honorific, boolean isAdj, Boolean regular) {
+        AppCompatActivity activity = this;
+        DialogInterface.OnClickListener listener = (dialogInterface, i) -> this.finish();
+
         ConjugationObserver observer = new ConjugationObserver(new ConjugationObserver.ConjugationObserverListener() {
             @Override
             public void onDataReceived(List<List<ConjugationFragment>> conjugations) {
@@ -82,8 +88,12 @@ public class ConjugationActivity extends BaseActivity {
             @Override
             public void onError(Throwable e) {
                 e.printStackTrace();
-                Utils.handleError(e, ConjugationActivity.this,4,
-                        (dialogInterface, i) -> ConjugationActivity.this.finish());
+                Utils.handleError(e, activity,4, listener);
+            }
+
+            @Override
+            public void onApiError(Error e) {
+                Utils.handleError(e, activity, listener);
             }
         });
 

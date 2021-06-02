@@ -59,6 +59,7 @@
     <string name="menu_ad_free">Remove Ads</string>
     <string name="conj_seperator">:</string>
     <string name="empty_favorites">You don\'t have any favorites. Click on favorites in settings to make some.</string>
+    <string name="wod_cant_connect">Can\'t connect to server</string>
     <!-- Suggestions -->
     <string name="suggestion_submit">Submit</string>
     <string name="menu_add">Add suggestion</string>

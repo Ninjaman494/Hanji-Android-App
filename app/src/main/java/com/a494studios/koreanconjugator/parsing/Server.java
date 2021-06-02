@@ -55,8 +55,7 @@ public class Server {
 
         return Rx2Apollo.from(call)
                 .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .filter((dataResponse) -> dataResponse.getData() != null);
+                .observeOn(AndroidSchedulers.mainThread());
     }
 
     public static Observable<Response<EntryQuery.Data>> doEntryQuery(final String id, CustomApplication app) {
@@ -98,7 +97,6 @@ public class Server {
         return Rx2Apollo.from(call)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .filter((dataResponse) -> dataResponse.getData() != null)
                 .doAfterTerminate(() -> idler.decrement());
     }
 
@@ -146,7 +144,6 @@ public class Server {
         return Rx2Apollo.from(call)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .filter((dataResponse -> dataResponse.getData() != null))
                 .doAfterTerminate(() -> idler.decrement());
     }
 

@@ -24,7 +24,7 @@ import java.util.Map;
 import io.reactivex.Observable;
 import io.reactivex.observers.DisposableObserver;
 
-public class DisplayObserver extends DisposableObserver<FavoritesQuery.Data> {
+public class DisplayObserver extends DisposableObserver<Pair<? super EntryQuery.Entry, ?>> {
     private DisplayCardView displayCardView;
     private DisplayCardView note;
     private DisplayCardView examples;
@@ -32,7 +32,6 @@ public class DisplayObserver extends DisposableObserver<FavoritesQuery.Data> {
     private DisplayCardView antonyms;
     private DisplayCardView conjugations;
 
-    private EntryQuery.Entry entry;
     private DisplayObserverInterface listener;
 
     DisplayObserver(View rootView, DisplayObserverInterface listener) {
@@ -45,18 +44,20 @@ public class DisplayObserver extends DisposableObserver<FavoritesQuery.Data> {
         this.listener = listener;
     }
 
-    public void setEntry(EntryQuery.Entry entry) {
-        this.entry = entry;
-    }
-
     @SuppressLint("CheckResult")
     @Override
-    public void onNext(FavoritesQuery.Data favData) {
-        // Favorites, hide the card and skip if there are none
+    public void onNext(Pair<? super EntryQuery.Entry, ?> data) {
+        if(data.first == null) {
+            return;
+        }
+        EntryQuery.Entry entry = (EntryQuery.Entry) data.first;
+
+        // Favorites, hide the card if the entry's not a verb/adj
         String pos = entry.pos();
-        if (!pos.equals("Adjective") && !pos.equals("Verb")) {
+        if (data.second == null) {
             conjugations.setVisibility(View.GONE);
         } else {
+            FavoritesQuery.Data favData = (FavoritesQuery.Data) data.second;
             List<FavoritesQuery.FavConjugation> conjugations = favData.favConjugations();
             boolean isAdj = pos.equals("Adjective");
             Boolean regular = entry.regular();
@@ -85,10 +86,10 @@ public class DisplayObserver extends DisposableObserver<FavoritesQuery.Data> {
                             FavoritesQuery.FavConjugation conjugation = (FavoritesQuery.FavConjugation) pair.second;
 
                             ConjugationFragment fragment = conjugation.fragments().conjugationFragment();
-                            Map.Entry<String, ConjugationFragment> entry =
+                            Map.Entry<String, ConjugationFragment> conjEntry =
                                     new AbstractMap.SimpleEntry<>(f.getName(), fragment);
 
-                            card.addConjugation(entry, favorites.indexOf(f));
+                            card.addConjugation(conjEntry, favorites.indexOf(f));
                         }
                     });
         }

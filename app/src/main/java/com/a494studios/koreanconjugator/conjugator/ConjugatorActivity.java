@@ -26,6 +26,7 @@ import com.a494studios.koreanconjugator.fragment.ConjugationFragment;
 import com.a494studios.koreanconjugator.parsing.Server;
 import com.a494studios.koreanconjugator.utils.BaseActivity;
 import com.a494studios.koreanconjugator.utils.Utils;
+import com.apollographql.apollo.api.Error;
 import com.apollographql.apollo.api.Response;
 
 import java.util.List;
@@ -183,6 +184,12 @@ public class ConjugatorActivity extends BaseActivity implements AdapterView.OnIt
             public void onError(Throwable e) {
                 e.printStackTrace();
                 Utils.handleError(e, ConjugatorActivity.this,10,
+                        (dialogInterface, i) -> ConjugatorActivity.this.finish());
+            }
+
+            @Override
+            public void onApiError(Error e) {
+                Utils.handleError(e, ConjugatorActivity.this,
                         (dialogInterface, i) -> ConjugatorActivity.this.finish());
             }
         });
