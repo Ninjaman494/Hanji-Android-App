@@ -90,11 +90,17 @@ android {
     }
 }
 
-//return a MY API KEY from a properties file.
-static def getApiKey(String property) {
-    Properties properties = new Properties()
-    properties.load(new FileInputStream("keys.txt"))
-    return "\"" + properties.getProperty(property) + "\""
+// return a MY API KEY from a properties file.
+def getApiKey(String property) {
+    File file = new File("keys.txt")
+    if(file.exists()) {
+        Properties properties = new Properties()
+        properties.load(file.newInputStream())
+        return "\"" + properties.getProperty(property) + "\""
+    } else {
+        project.logger.log(LogLevel.ERROR, "No keys.txt file found")
+        return "\"NULL\""
+    }
 }
 
 dependencies {
