@@ -144,7 +144,7 @@ public class DisplayActivity extends BaseActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if(item.getItemId() == R.id.menu_add){
+        if(item.getItemId() == R.id.menu_add && entry != null){
             Intent intent = new Intent(this, SuggestionActivity.class);
             intent.putExtra(SuggestionActivity.EXTRA_ENTRY_ID, entry.id());
             startActivity(intent);
