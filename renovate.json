@@ -1,0 +1,31 @@
+{
+  "extends": [
+    "config:base"
+  ],
+  "labels": ["dependencies"],
+  "packageRules": [
+    {
+      "groupName": "Non-Major Dependencies",
+      "matchUpdateTypes": ["patch", "minor"]
+    },
+    {
+      "groupName": "AndroidX Test Dependencies",
+      "matchPackagePatterns": "androidx.test*"
+    },
+    {
+      "groupName": "OkHttp Dependencies",
+      "matchPackagePatterns": "com.squareup.okhttp3*"
+    },
+    {
+      "groupName": "Apollo Dependencies",
+      "matchPackagePatterns": "com.apollographql.apollo*"
+    },
+    {
+      "groupName": "Maoni Dependencies",
+      "matchPackagePatterns": "org.rm3l:maoni*"
+    }
+  ],
+  "schedule": [
+    "every weekend"
+  ]
+}
