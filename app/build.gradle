@@ -138,9 +138,9 @@ dependencies {
     implementation 'com.github.pschroen:slack-api-android:c66cc8d997'
 
     // Apollo
-    implementation 'com.apollographql.apollo:apollo-runtime:2.4.1'
-    implementation 'com.apollographql.apollo:apollo-http-cache:2.4.1'
-    implementation 'com.apollographql.apollo:apollo-rx2-support:2.4.1'
+    implementation 'com.apollographql.apollo:apollo-runtime:2.5.9'
+    implementation 'com.apollographql.apollo:apollo-http-cache:2.5.9'
+    implementation 'com.apollographql.apollo:apollo-rx2-support:2.5.9'
     implementation 'io.reactivex.rxjava2:rxandroid:2.0.1'
 
     // Google Play Billing
