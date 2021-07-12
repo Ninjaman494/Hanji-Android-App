@@ -133,8 +133,8 @@ dependencies {
     implementation 'com.codemybrainsout.rating:ratingdialog:1.0.8'
     implementation 'com.github.eggheadgames:android-about-box:2.0.1'
     implementation 'com.mikepenz:aboutlibraries:8.3.1'
-    implementation 'org.rm3l:maoni:6.0.0'
-    implementation 'org.rm3l:maoni-common:6.0.0'
+    implementation 'org.rm3l:maoni:9.1.0'
+    implementation 'org.rm3l:maoni-common:9.1.0'
     implementation 'com.github.pschroen:slack-api-android:c66cc8d997'
 
     // Apollo
