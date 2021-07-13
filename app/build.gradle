@@ -136,7 +136,7 @@ dependencies {
     implementation 'org.rm3l:maoni:9.1.0@aar'
     implementation 'org.rm3l:maoni-email:9.1.0@aar'
     api 'org.rm3l:maoni-common:9.1.0@aar'
-    implementation 'com.github.pschroen:slack-api-android:c66cc8d997'
+    implementation 'com.github.pschroen:slack-api-android:v1.3.0-RELEASE'
 
     // Apollo
     implementation 'com.apollographql.apollo:apollo-runtime:2.5.9'
