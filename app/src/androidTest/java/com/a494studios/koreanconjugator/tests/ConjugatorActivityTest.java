@@ -81,11 +81,6 @@ public class ConjugatorActivityTest {
     }
 
     @Test
-    public void overflowOptions() {
-        testActionBar();
-    }
-
-    @Test
     public void stems_areDisplayed() {
         onView(withId(R.id.conjugator_stemSpinner)).check(matches(withSpinnerText("노랄다")));
 
