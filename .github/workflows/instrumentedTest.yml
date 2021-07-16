@@ -34,8 +34,8 @@ jobs:
       - name: Run tests
         uses: reactivecircus/android-emulator-runner@v2
         with:
-          api-level: 27
-          profile: pixel_3_xl
+          api-level: 29
+          arch: x86_64
           disable-animations: true
           script: ./gradlew connectedDebugAndroidTest --stacktrace --scan
 
