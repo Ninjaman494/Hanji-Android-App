@@ -10,7 +10,7 @@ on:
 
 jobs:
   run_tests:
-    runs-on: macos-latest
+    runs-on: macos-10.14
     strategy:
       fail-fast: false
 
