@@ -88,11 +88,6 @@ public class ConjugationActivityTest {
     }
 
     @Test
-    public void overflowOptions() {
-        testActionBar();
-    }
-
-    @Test
     public void test_displayAfterRotation() {
         activityRule.getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
         checkConjugations(false);

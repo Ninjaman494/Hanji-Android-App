@@ -62,11 +62,6 @@ public class ConjInfoActivityTest {
     public StubIntentsRule intentsRule = new StubIntentsRule(ConjInfoActivity.class.getName());
 
     @Test
-    public void overflowOptions() {
-        testActionBar();
-    }
-
-    @Test
     public void test_displaysData() {
         checkUI();
     }

@@ -88,12 +88,6 @@ public class SearchResultsActivityTest {
         testApp.setAdFree(true);
     }
 
-    @Test
-    public void overflowOptions() {
-        activityRule.launchActivity(null);
-        testActionBar();
-    }
-
     @After
     public void teardown() {
         IdlingRegistry.getInstance().unregister(idler);

@@ -36,6 +36,7 @@ jobs:
         with:
           api-level: 27
           profile: pixel_3_xl
+          arch: x86_64
           disable-animations: true
           script: ./gradlew connectedDebugAndroidTest --stacktrace --scan
 
