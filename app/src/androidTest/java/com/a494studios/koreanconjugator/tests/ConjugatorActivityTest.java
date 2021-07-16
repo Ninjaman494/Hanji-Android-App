@@ -30,12 +30,12 @@ import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
-import static androidx.test.espresso.matcher.ViewMatchers.isDisplayingAtLeast;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withSpinnerText;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static com.a494studios.koreanconjugator.MockReader.readStringFromFile;
 import static com.a494studios.koreanconjugator.Utils.assertBodyContains;
+import static com.a494studios.koreanconjugator.Utils.nestedScrollTo;
 import static org.hamcrest.Matchers.allOf;
 
 @RunWith(AndroidJUnit4.class)
@@ -108,13 +108,13 @@ public class ConjugatorActivityTest {
                 "\"stem\":\"노랗다\"");
 
         // Change POS
-        onView(allOf(withId(R.id.conjugator_posSpinner), isDisplayingAtLeast((90)))).perform(click());
+        onView(allOf(withId(R.id.conjugator_posSpinner))).perform(nestedScrollTo(), click());
         onView(withText("Adjective")).perform(click());
         assertBodyContains(serverRule.server.takeRequest(2, TimeUnit.SECONDS),
                 "\"isAdj\":true");
 
         // Change regularity
-        onView(allOf(withId(R.id.conjugator_regSpinner), isDisplayingAtLeast(90))).perform(click());
+        onView(allOf(withId(R.id.conjugator_regSpinner))).perform(nestedScrollTo(), click());
         onView(withText("Irregular verb/adjective")).perform(click());
         assertBodyContains(serverRule.server.takeRequest(2, TimeUnit.SECONDS),
                 "\"regular\":false");
