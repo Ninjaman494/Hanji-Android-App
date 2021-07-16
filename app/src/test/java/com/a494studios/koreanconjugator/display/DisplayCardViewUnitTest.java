@@ -83,7 +83,7 @@ public class DisplayCardViewUnitTest {
         TextView headingView = view.findViewById(HEADING_ID);
 
         when(cardBody.addBodyView(any(), any(), any())).then(invocation -> {
-            DisplayCardView cardView = invocation.getArgumentAt(2, DisplayCardView.class);
+            DisplayCardView cardView = invocation.getArgument(2);
             cardView.setButtonText(btnText);
             return null;
         });
