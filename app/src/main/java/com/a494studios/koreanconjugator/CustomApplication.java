@@ -74,7 +74,7 @@ public class CustomApplication extends MultiDexApplication implements PurchasesU
                         billingClient.queryPurchaseHistoryAsync(BillingClient.SkuType.INAPP, (result, list) -> {
                             if (result.getResponseCode() == BillingClient.BillingResponseCode.OK) {
                                 System.out.println("Got Ad Free from purchases");
-                                isAdFree = list.size() > 0 && list.get(0).getSku().equals(Utils.SKU_AD_FREE);
+                                isAdFree = list.size() > 0 && list.get(0).getSkus().get(0).equals(Utils.SKU_AD_FREE);
                                 Utils.setAdFree(getApplicationContext(), isAdFree);
                             } else {
                                 System.out.println("Error occurred when fetching purchase history:" + result.getDebugMessage());
@@ -140,7 +140,7 @@ public class CustomApplication extends MultiDexApplication implements PurchasesU
     @Override
     public void onPurchasesUpdated(@NotNull BillingResult billingResult, @Nullable List<Purchase> list) {
         if(billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK
-                && !list.isEmpty() && list.get(0).getSku().equals(Utils.SKU_AD_FREE)) {
+                && !list.isEmpty() && list.get(0).getSkus().get(0).equals(Utils.SKU_AD_FREE)) {
 
             if(list.get(0).getPurchaseState() == Purchase.PurchaseState.PURCHASED) {
                 AcknowledgePurchaseParams consumeParams = AcknowledgePurchaseParams
