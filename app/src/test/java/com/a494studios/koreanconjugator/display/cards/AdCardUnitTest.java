@@ -1,6 +1,7 @@
 package com.a494studios.koreanconjugator.display.cards;
 
 import android.content.Context;
+import android.os.Looper;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
@@ -16,6 +17,7 @@ import org.robolectric.RobolectricTestRunner;
 import org.robolectric.annotation.LooperMode;
 
 import static org.junit.Assert.assertEquals;
+import static org.robolectric.Shadows.shadowOf;
 
 @RunWith(RobolectricTestRunner.class)
 @LooperMode(LooperMode.Mode.PAUSED)
@@ -45,6 +47,7 @@ public class AdCardUnitTest {
 
     @Test
     public void test_getHeading() {
+        shadowOf(Looper.getMainLooper()).idle();
         assertEquals("Ad", card.getHeading());
     }
 }
