@@ -27,6 +27,10 @@ public class ExampleAdapter extends BaseAdapter {
         }
 
         EntryQuery.Example example = examples.get(i);
+        if(example == null) {
+            return null;
+        }
+
         TextView sentenceView = view.findViewById(R.id.item_example_sentence);
         TextView transView = view.findViewById(R.id.item_example_translation);
         sentenceView.setText(example.sentence());

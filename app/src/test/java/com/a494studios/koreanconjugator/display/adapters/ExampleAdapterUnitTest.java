@@ -5,6 +5,8 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.test.core.app.ApplicationProvider;
+
 import com.a494studios.koreanconjugator.EntryQuery;
 import com.a494studios.koreanconjugator.R;
 
@@ -12,12 +14,12 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
-import org.robolectric.RuntimeEnvironment;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
 @RunWith(RobolectricTestRunner.class)
 public class ExampleAdapterUnitTest {
@@ -42,8 +44,21 @@ public class ExampleAdapterUnitTest {
     }
 
     @Test
+    public void test_nullExample() {
+        ArrayList<EntryQuery.Example> examples = new ArrayList<>();
+        examples.add(null);
+
+        // Shouldn't cause an exception
+        ExampleAdapter adapter = new ExampleAdapter(examples);
+        ViewGroup group = new LinearLayout(ApplicationProvider.getApplicationContext());
+
+        View view = adapter.getView(0, null, group);
+        assertNull(view);
+    }
+
+    @Test
     public void test_getView() {
-        ViewGroup group = new LinearLayout(RuntimeEnvironment.application.getApplicationContext());
+        ViewGroup group = new LinearLayout(ApplicationProvider.getApplicationContext());
         for(int i = 0;i<examples.size();i++) {
             View view = adapter.getView(i,null,group);
             TextView senView = view.findViewById(R.id.item_example_sentence);
