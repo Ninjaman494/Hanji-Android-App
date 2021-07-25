@@ -42,9 +42,4 @@ public class AdCardUnitTest {
     public void test_getCount() {
         assertEquals(1, card.getCount());
     }
-
-    @Test
-    public void test_getHeading() {
-        assertEquals("Ad", card.getHeading());
-    }
 }
