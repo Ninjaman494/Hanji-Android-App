@@ -71,4 +71,42 @@ public class SuggestionActivityTest {
         TextInputLayout translationLayout = activityRule.getActivity().findViewById(R.id.suggestion_translationLayout);
         assertEquals(translationLayout.getError(),"Translation is required for example");
     }
+
+    @Test
+    public void form_failsWhenEnglishAntonym() {
+        onView(withId(R.id.suggestion_antonym)).perform(typeText("antonym"));
+        onView(withText("Submit")).perform(click());
+
+        TextInputLayout antonymLayout = activityRule.getActivity().findViewById(R.id.suggestion_antonymLayout);
+        assertEquals(antonymLayout.getError(),"Antonym must be in Korean") ;
+    }
+
+    @Test
+    public void form_failsWhenEnglishSynonym() {
+        onView(withId(R.id.suggestion_synonym)).perform(typeText("synonym"));
+        onView(withText("Submit")).perform(click());
+
+        TextInputLayout synonymLayout = activityRule.getActivity().findViewById(R.id.suggestion_synonymLayout);
+        assertEquals(synonymLayout.getError(),"Synonym must be in Korean") ;
+    }
+
+    @Test
+    public void form_failsWhenEnglishSentence() {
+        onView(withId(R.id.suggestion_sentence)).perform(typeText("sentence"));
+        onView(withId(R.id.suggestion_translation)).perform(typeText("translation"));
+        onView(withText("Submit")).perform(click());
+
+        TextInputLayout sentenceLayout = activityRule.getActivity().findViewById(R.id.suggestion_sentenceLayout);
+        assertEquals(sentenceLayout.getError(),"Sentence must be in Korean");
+    }
+
+    @Test
+    public void form_failsWhenKoreanTranslation() {
+        onView(withId(R.id.suggestion_sentence)).perform(typeText("sentence"));
+        onView(withId(R.id.suggestion_translation)).perform(typeText("안녕하세요"));
+        onView(withText("Submit")).perform(click());
+
+        TextInputLayout translationLayout = activityRule.getActivity().findViewById(R.id.suggestion_translationLayout);
+        assertEquals(translationLayout.getError(),"Translation must be in English");
+    }
 }
