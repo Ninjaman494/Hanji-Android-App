@@ -19,6 +19,7 @@ import org.robolectric.shadows.ShadowToast;
 
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
+import static androidx.test.espresso.action.ViewActions.replaceText;
 import static androidx.test.espresso.action.ViewActions.typeText;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
@@ -51,7 +52,7 @@ public class SuggestionActivityTest {
     public void form_failsWhenEmpty() {
         onView(withText("Submit")).perform(click());
 
-        assertEquals(ShadowToast.getTextOfLatestToast(),"At least one addition is required");
+        assertEquals("At least one addition is required", ShadowToast.getTextOfLatestToast());
     }
 
     @Test
@@ -60,7 +61,7 @@ public class SuggestionActivityTest {
         onView(withText("Submit")).perform(click());
 
         TextInputLayout sentenceLayout = activityRule.getActivity().findViewById(R.id.suggestion_sentenceLayout);
-        assertEquals(sentenceLayout.getError(),"Sentence is required for example") ;
+        assertEquals("Sentence is required for example", sentenceLayout.getError());
     }
 
     @Test
@@ -69,7 +70,7 @@ public class SuggestionActivityTest {
         onView(withText("Submit")).perform(click());
 
         TextInputLayout translationLayout = activityRule.getActivity().findViewById(R.id.suggestion_translationLayout);
-        assertEquals(translationLayout.getError(),"Translation is required for example");
+        assertEquals("Translation is required for example", translationLayout.getError());
     }
 
     @Test
@@ -78,7 +79,7 @@ public class SuggestionActivityTest {
         onView(withText("Submit")).perform(click());
 
         TextInputLayout antonymLayout = activityRule.getActivity().findViewById(R.id.suggestion_antonymLayout);
-        assertEquals(antonymLayout.getError(),"Antonym must be in Korean") ;
+        assertEquals("Antonym must be in Korean", antonymLayout.getError());
     }
 
     @Test
@@ -87,7 +88,7 @@ public class SuggestionActivityTest {
         onView(withText("Submit")).perform(click());
 
         TextInputLayout synonymLayout = activityRule.getActivity().findViewById(R.id.suggestion_synonymLayout);
-        assertEquals(synonymLayout.getError(),"Synonym must be in Korean") ;
+        assertEquals("Synonym must be in Korean", synonymLayout.getError());
     }
 
     @Test
@@ -97,16 +98,17 @@ public class SuggestionActivityTest {
         onView(withText("Submit")).perform(click());
 
         TextInputLayout sentenceLayout = activityRule.getActivity().findViewById(R.id.suggestion_sentenceLayout);
-        assertEquals(sentenceLayout.getError(),"Sentence must be in Korean");
+        assertEquals("Sentence must be in Korean", sentenceLayout.getError());
     }
 
     @Test
     public void form_failsWhenKoreanTranslation() {
-        onView(withId(R.id.suggestion_sentence)).perform(typeText("sentence"));
-        onView(withId(R.id.suggestion_translation)).perform(typeText("안녕하세요"));
+        // Unicode for 안녕하세요
+        onView(withId(R.id.suggestion_sentence)).perform(replaceText("\uc548\ub155\ud558\uc138\uc694"));
+        onView(withId(R.id.suggestion_translation)).perform(replaceText("\uc548\ub155\ud558\uc138\uc694"));
         onView(withText("Submit")).perform(click());
 
         TextInputLayout translationLayout = activityRule.getActivity().findViewById(R.id.suggestion_translationLayout);
-        assertEquals(translationLayout.getError(),"Translation must be in English");
+        assertEquals("Translation must be in English", translationLayout.getError());
     }
 }
