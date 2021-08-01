@@ -28,6 +28,7 @@ import okhttp3.mockwebserver.RecordedRequest;
 
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
+import static androidx.test.espresso.action.ViewActions.replaceText;
 import static androidx.test.espresso.action.ViewActions.typeText;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
@@ -42,6 +43,8 @@ import static org.junit.Assert.assertTrue;
 public class SuggestionActivityTest {
 
     private final CountingIdlingResource idler = Server.getIdler();
+
+    private final String korean = "\uc548\ub155\ud558\uc138\uc694";
 
     @Rule
     @SuppressWarnings("deprecation")
@@ -70,11 +73,11 @@ public class SuggestionActivityTest {
     public void form_canSubmitPartial() throws InterruptedException {
         serverRule.server.enqueue(new MockResponse().setBody(readStringFromFile(MockReader.CREATE_SUGGESTION)));
 
-        onView(withId(R.id.suggestion_antonym)).perform(typeText("antonym"));
+        onView(withId(R.id.suggestion_antonym)).perform(replaceText(korean));
         onView(withText("Submit")).perform(click());
 
         assertBodyContains(serverRule.server.takeRequest(500, TimeUnit.MILLISECONDS),
-                "\"antonyms\":[\"antonym\"]");
+                "\"antonyms\":[\"안녕하세요\"]");
 
         onView(withText("OK")).perform(click());
 
@@ -85,16 +88,16 @@ public class SuggestionActivityTest {
     public void form_canSubmitFull() throws InterruptedException {
         serverRule.server.enqueue(new MockResponse().setBody(readStringFromFile(MockReader.CREATE_SUGGESTION)));
 
-        onView(withId(R.id.suggestion_antonym)).perform(typeText("antonym"));
-        onView(withId(R.id.suggestion_synonym)).perform(typeText("synonym"));
-        onView(withId(R.id.suggestion_sentence)).perform(typeText("sentence"));
-        onView(withId(R.id.suggestion_translation)).perform(typeText("translation"));
+        onView(withId(R.id.suggestion_antonym)).perform(replaceText(korean));
+        onView(withId(R.id.suggestion_synonym)).perform(replaceText(korean));
+        onView(withId(R.id.suggestion_sentence)).perform(replaceText(korean));
+        onView(withId(R.id.suggestion_translation)).perform(replaceText("translation"));
         onView(withText("Submit")).perform(click());
 
         RecordedRequest request = serverRule.server.takeRequest(500, TimeUnit.MILLISECONDS);
-        assertBodyContains(request, "\"antonyms\":[\"antonym\"]");
-        assertBodyContains(request, "\"synonyms\":[\"synonym\"]");
-        assertBodyContains(request, "\"sentence\":\"sentence\"");
+        assertBodyContains(request, "\"antonyms\":[\"안녕하세요\"]");
+        assertBodyContains(request, "\"synonyms\":[\"안녕하세요\"]");
+        assertBodyContains(request, "\"sentence\":\"안녕하세요\"");
         assertBodyContains(request, "\"translation\":\"translation\"");
 
         onView(withText("OK")).perform(click());
@@ -106,7 +109,7 @@ public class SuggestionActivityTest {
     public void activity_canHandleError() {
         serverRule.server.enqueue(new MockResponse().setBody(readStringFromFile(MockReader.CREATE_SUGGESTION_ERROR)));
 
-        onView(withId(R.id.suggestion_antonym)).perform(typeText("antonym"));
+        onView(withId(R.id.suggestion_antonym)).perform(replaceText(korean));
         onView(withText("Submit")).perform(click());
 
         onView(withText("Error: This is a mock error.Please try again later or contact support."))
