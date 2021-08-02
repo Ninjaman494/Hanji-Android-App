@@ -48,6 +48,9 @@ public class SuggestionActivity extends BaseActivity implements View.OnClickList
         TextInputEditText synonymInput = findViewById(R.id.suggestion_synonym);
         TextInputEditText sentenceInput = findViewById(R.id.suggestion_sentence);
         TextInputEditText translationInput = findViewById(R.id.suggestion_translation);
+
+        TextInputLayout antonymLayout = findViewById(R.id.suggestion_antonymLayout);
+        TextInputLayout synonymLayout = findViewById(R.id.suggestion_synonymLayout);
         TextInputLayout sentenceLayout = findViewById(R.id.suggestion_sentenceLayout);
         TextInputLayout translationLayout = findViewById(R.id.suggestion_translationLayout);
 
@@ -68,6 +71,24 @@ public class SuggestionActivity extends BaseActivity implements View.OnClickList
             return;
         } else if (sentence.length() > 0 && translation.length() == 0) {
             translationLayout.setError("Translation is required for example");
+            return;
+        }
+
+        // Language check
+        if(sentence.length() > 0 && !Utils.isHangul(sentence)) {
+            sentenceLayout.setError("Sentence must be in Korean");
+            return;
+        }
+        if(translation.length() > 0 && Utils.isHangul(translation)) {
+            translationLayout.setError("Translation must be in English");
+            return;
+        }
+        if(antonym.length() > 0 && !Utils.isHangul(antonym)) {
+            antonymLayout.setError("Antonym must be in Korean");
+            return;
+        }
+        if(synonym.length() > 0 && !Utils.isHangul(synonym)) {
+            synonymLayout.setError("Synonym must be in Korean");
             return;
         }
 
