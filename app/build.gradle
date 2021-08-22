@@ -113,7 +113,7 @@ dependencies {
     implementation "androidx.recyclerview:recyclerview:1.1.0"
     implementation 'androidx.preference:preference:1.1.1'
     implementation 'com.google.android.material:material:1.2.1'
-    implementation 'org.jetbrains:annotations:21.0.1'
+    implementation 'org.jetbrains:annotations:22.0.0'
     implementation 'com.github.frankiesardo:linearlistview:1.0.1@aar'
     implementation 'com.codemybrainsout.onboarding:onboarder:1.0.4'
     implementation 'com.github.MFlisar:changelog:1.1.7'
