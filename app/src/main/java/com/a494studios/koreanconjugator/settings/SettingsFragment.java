@@ -6,7 +6,6 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
-import android.widget.Toast;
 
 import com.a494studios.koreanconjugator.CustomApplication;
 import com.a494studios.koreanconjugator.R;
@@ -28,43 +27,9 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
         adFreeCheck.setOnPreferenceClickListener(preference -> {
             adFreeCheck.setSummary("Checking ad-free status...");
 
+            AdFreeCheckListener listener = new AdFreeCheckListener(activity, adFreeCheck);
             BillingClient client = CustomApplication.getBillingClient();
-            client.queryPurchaseHistoryAsync(BillingClient.SkuType.INAPP, (result, list) -> {
-                String msg;
-                int responseCode = result.getResponseCode();
-                switch (responseCode) {
-                    case BillingClient.BillingResponseCode.ITEM_ALREADY_OWNED:
-                    case BillingClient.BillingResponseCode.OK:
-                        boolean isAdFree = list.get(0).getSkus().get(0).equals(Utils.SKU_AD_FREE);
-                        Utils.setAdFree(activity, isAdFree);
-                        if (isAdFree) {
-                            msg = "Ad-free purchase activated, thank you for supporting Hanji!";
-                        } else {
-                            msg = "Ad-free purchase not found";
-                        }
-                        break;
-                    case BillingClient.BillingResponseCode.BILLING_UNAVAILABLE:
-                    case BillingClient.BillingResponseCode.FEATURE_NOT_SUPPORTED:
-                        msg = "You're device is not compatible. If you purchased an upgrade please contact support for a refund";
-                        break;
-                    case BillingClient.BillingResponseCode.ITEM_NOT_OWNED:
-                        msg = "Ad-free purchase not found";
-                        break;
-                    case BillingClient.BillingResponseCode.SERVICE_DISCONNECTED:
-                    case BillingClient.BillingResponseCode.SERVICE_TIMEOUT:
-                    case BillingClient.BillingResponseCode.SERVICE_UNAVAILABLE:
-                        msg = "Unable to connect to Google Play store. Please try again later";
-                        break;
-                    default:
-                        msg = "An error occurred. Please try again later";
-                        break;
-                }
-
-                activity.runOnUiThread(() -> {
-                    Toast.makeText(activity, msg, Toast.LENGTH_LONG).show();
-                    adFreeCheck.setSummary("Click here to check your ad-free status");
-                });
-            });
+            client.queryPurchaseHistoryAsync(BillingClient.SkuType.INAPP, listener);
 
             return true;
         });
