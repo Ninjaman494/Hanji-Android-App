@@ -10,6 +10,11 @@
             <intent android:targetClass="com.a494studios.koreanconjugator.settings.FavoritesActivity"
                 android:targetPackage="com.a494studios.koreanconjugator"/>
         </Preference>
+        <Preference
+            android:persistent="false"
+            android:key="adFreeCheck"
+            android:title="Check Ad-free Status"
+            android:summary="Click here to check your ad-free status"/>
     </PreferenceCategory>
     <PreferenceCategory android:title="Legal Information">
         <Preference
